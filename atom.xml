@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://fusijie.github.io/atom.xml" rel="self"/>
   <link href="http://fusijie.github.io/"/>
-  <updated>2013-10-31T17:13:35+08:00</updated>
+  <updated>2013-10-31T17:20:23+08:00</updated>
   <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -109,7 +109,7 @@ pause
 
 <p><img src="http://img.blog.csdn.net/20131009101659609?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="设置C++ build" /></p>
 
-<p>（4）添加C/C++ Builder Environment NDK_MODULE_PATH，值为cocos2dx目录和cocos2dx目录\cocos2dx\platform\third_party\android\prebuilt。</p>
+<p>（4）添加C/C++→Builder→Environment→NDK_MODULE_PATH，值为cocos2dx目录和cocos2dx目录\cocos2dx\platform\third_party\android\prebuilt。</p>
 
 <p><img src="http://img.blog.csdn.net/20131009101947328?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="设置NDK_MODULE_PATH" /></p>
 
