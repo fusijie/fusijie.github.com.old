@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://fusijie.github.io/atom.xml" rel="self"/>
   <link href="http://fusijie.github.io/"/>
-  <updated>2013-10-31T15:21:26+08:00</updated>
+  <updated>2013-10-31T15:36:14+08:00</updated>
   <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,14 +12,5 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[My first octopress blog]]></title>
-    <link href="http://fusijie.github.io/blog/2013/10/31/my-first-octopress-blog/"/>
-    <updated>2013-10-31T15:08:00+08:00</updated>
-    <id>http://fusijie.github.io/blog/2013/10/31/my-first-octopress-blog</id>
-    <content type="html"><![CDATA[<p>Hello,This is my 1st octopress blog.</p>
-]]></content>
-  </entry>
   
 </feed>
