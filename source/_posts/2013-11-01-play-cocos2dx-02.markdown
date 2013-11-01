@@ -1,0 +1,65 @@
+---
+layout: post
+title: 【玩转cocos2d-x之二】游戏和引擎构成
+date: 2013-11-01 16:53
+comments: true
+categories: cocos2d-x
+tags: [cocos2d-x, 游戏引擎]
+---
+原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/12432837)
+
+###1.游戏构成###
+
+我们以超级马里奥游戏作为蓝本来描述一下一个游戏的构成。
+
+1.首先我们需要一个容器来放置游戏元素，每一个关卡都是一个容器，这叫场景。
+
+2.蓝天白云，各种板砖水管，这些是布景，放置在关卡中，通过布景的叠加，构成了游戏的主要背景。
+
+3.主角马里奥兄弟和各种小怪兽，这些叫精灵。这是游戏互动的主要元素。
+
+<!-- more -->
+
+4.马里奥可以走路，可以跳跃，可以发射子弹。这些是精灵的动作。
+
+5.过关了，要进入下一关，这些需要幕后导演的控制。
+
+以上几个部分，在cocos2dx中，分别叫做**CCScene**，**CCLayer**，**CCSprite**，**CCAction**，**CCDirector**。而这五个部分是构成游戏的最基本元素。
+
+用一张图来看看它们的关系。
+
+![游戏构成](/images/blog/Play_cocos2dx_02/1.jpg)
+
+###2.引擎构成###
+
+![引擎构成](/images/blog/Play_cocos2dx_02/2.jpg)
+
+引擎目录的具体介绍如下：
+
+（1）*cocos2dx*，cocos2d-x游戏引擎核心部分，存放了引擎源码。
+
+（2）*CocosDenshion*，游戏声音引擎主要文件。
+
+（3）*Dwbug.win32*，Release.win32，win32下的项目debug/release目录。
+
+（4）*document*，帮助文档目录，可以用doxygen生成项目文档。
+
+（5）*extensions*，引擎扩展包，包含了一些本地存储类，网络传输类，GUI类等等。
+
+（6）*external*，存放了Box2D，chipmunk物理引擎源码等第三方库。
+
+（7）*licenses*，存放了一些许可文件。
+
+（8）*plugin*，插件工具集，还包含了一些广告，微博调用示例。
+
+（9）*projects*，开发者创建的项目。
+
+（10）*samples*，引擎自带示例，目前支持C++，js和Lua。
+
+（11）*scripting*，js和lua脚本的相关源文件。
+
+（12）*template*，C++，js和Lua的各平台模版。
+
+（13）*tools*，cocos2dx的工具集，创建项目也在里面。
+
+（14）剩下一些各平台的编译文件，创建文件，以及cocos2dx的更新说明，作者说明等等。
