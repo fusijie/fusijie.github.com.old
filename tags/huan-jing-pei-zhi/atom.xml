@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Tag: cocos2d-x | Jacky's Blog]]></title>
-  <link href="http://fusijie.github.io/tags/cocos2d-x/atom.xml" rel="self"/>
+  <title><![CDATA[Tag: 环境配置 | Jacky's Blog]]></title>
+  <link href="http://fusijie.github.io/tags/huan-jing-pei-zhi/atom.xml" rel="self"/>
   <link href="http://fusijie.github.io/"/>
   <updated>2013-11-01T17:26:21+08:00</updated>
   <id>http://fusijie.github.io/</id>
@@ -12,72 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之二】游戏和引擎构成]]></title>
-    <link href="http://fusijie.github.io/blog/2013/11/01/play-cocos2dx-02/"/>
-    <updated>2013-11-01T16:53:00+08:00</updated>
-    <id>http://fusijie.github.io/blog/2013/11/01/play-cocos2dx-02</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12432837">http://blog.csdn.net/jackystudio</a></p>
-
-<h3>1.游戏构成</h3>
-
-<p>我们以超级马里奥游戏作为蓝本来描述一下一个游戏的构成。</p>
-
-<p>1.首先我们需要一个容器来放置游戏元素，每一个关卡都是一个容器，这叫场景。</p>
-
-<p>2.蓝天白云，各种板砖水管，这些是布景，放置在关卡中，通过布景的叠加，构成了游戏的主要背景。</p>
-
-<p>3.主角马里奥兄弟和各种小怪兽，这些叫精灵。这是游戏互动的主要元素。</p>
-
-<!-- more -->
-
-
-<p>4.马里奥可以走路，可以跳跃，可以发射子弹。这些是精灵的动作。</p>
-
-<p>5.过关了，要进入下一关，这些需要幕后导演的控制。</p>
-
-<p>以上几个部分，在cocos2dx中，分别叫做<strong>CCScene</strong>，<strong>CCLayer</strong>，<strong>CCSprite</strong>，<strong>CCAction</strong>，<strong>CCDirector</strong>。而这五个部分是构成游戏的最基本元素。</p>
-
-<p>用一张图来看看它们的关系。</p>
-
-<p><img src="/images/blog/Play_cocos2dx_02/1.jpg" alt="游戏构成" /></p>
-
-<h3>2.引擎构成</h3>
-
-<p><img src="/images/blog/Play_cocos2dx_02/2.jpg" alt="引擎构成" /></p>
-
-<p>引擎目录的具体介绍如下：</p>
-
-<p>（1）<em>cocos2dx</em>，cocos2d-x游戏引擎核心部分，存放了引擎源码。</p>
-
-<p>（2）<em>CocosDenshion</em>，游戏声音引擎主要文件。</p>
-
-<p>（3）<em>Dwbug.win32</em>，Release.win32，win32下的项目debug/release目录。</p>
-
-<p>（4）<em>document</em>，帮助文档目录，可以用doxygen生成项目文档。</p>
-
-<p>（5）<em>extensions</em>，引擎扩展包，包含了一些本地存储类，网络传输类，GUI类等等。</p>
-
-<p>（6）<em>external</em>，存放了Box2D，chipmunk物理引擎源码等第三方库。</p>
-
-<p>（7）<em>licenses</em>，存放了一些许可文件。</p>
-
-<p>（8）<em>plugin</em>，插件工具集，还包含了一些广告，微博调用示例。</p>
-
-<p>（9）<em>projects</em>，开发者创建的项目。</p>
-
-<p>（10）<em>samples</em>，引擎自带示例，目前支持C++，js和Lua。</p>
-
-<p>（11）<em>scripting</em>，js和lua脚本的相关源文件。</p>
-
-<p>（12）<em>template</em>，C++，js和Lua的各平台模版。</p>
-
-<p>（13）<em>tools</em>，cocos2dx的工具集，创建项目也在里面。</p>
-
-<p>（14）剩下一些各平台的编译文件，创建文件，以及cocos2dx的更新说明，作者说明等等。</p>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之一】V2.2.0版本开发环境配置]]></title>
