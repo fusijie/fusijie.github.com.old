@@ -1,4 +1,17 @@
+/* the humans responsible & colophon */
+/* humanstxt.org */
+
+
+/* TEAM */
+  Owner: Adrian Artiles
+  Site: http://AdrianArtiles.com
+  Twitter: @AdrianArtiles
+
+  UX Designer: Adrian Artiles
+  Site: http://AdrianArtiles.com
+  Twitter: @AdrianArtiles
+
 /* SITE */
-  Octopress: v2.0
-  Language: traditional Chinese
-  Owner: Ching-Han Ho
+  Standards: HTML5, CSS3
+  Components: Modernizr, jQuery
+  Software: Vim
