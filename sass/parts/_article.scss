@@ -9,8 +9,7 @@ article{
 	@media screen and (max-width: 600px){
 		padding: 15px 0;
 	}
-	h2.title{
-		font-size: 1.8em;
+	h1.title{
 		font-weight: 300;
 		line-height: 35px;
 		margin-bottom: 20px;
@@ -32,11 +31,11 @@ article{
 			padding-left: 30px;
 			position: relative;
 			&:before{
-				content: "\f061";
-				font: 1.3em $font-icon;
-				line-height: 1.6em;
-				position: absolute;
-				left: 0;
+				// content: "\f061";
+				// font: 1.3em $font-icon;
+				// line-height: 1.6em;
+				// position: absolute;
+				// left: 0;
 			}
 		}
 		p, blockquote, ul, ol, dl, table, iframe, h1, h2, h3, h4, h5, h6, .video-container{
@@ -72,6 +71,7 @@ article{
 		img, video{
 			max-width: 100%;
 			height: auto;
+			@extend .basic-alignment;
 		}
 		blockquote{
 			background: $color-gray04;

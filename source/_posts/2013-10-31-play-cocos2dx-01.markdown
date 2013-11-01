@@ -5,22 +5,23 @@ date: 2013-10-31 16:18
 comments: true
 categories: 
 ---
-原创作品，转载请标明：[http://blog.csdn.net/jackystudio/article/details/12419387](http://blog.csdn.net/jackystudio/article/details/12419387)
+原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/12419387)
 
 现在cocos2d-x处在上升期，各个版本的变化还是比较大的，单从环境配置来看，从v2.0到v2.2就变化了不少。今天配置了一下V2.2.0环境，创建项目，并进行交叉编译，发现比之前麻烦了不少。这里稍微记录一下。
 3.0版本出来了，大概看了下目录和2.2的差不多，环境配置也基本一样。
 
 ###1.VS，VA，Cygwin，Java，Eclipse，ADT，SDK，NDK###
 
-这里就不重复啰嗦这些了，传送门：[http://blog.csdn.net/jackystudio/article/details/11516435](http://blog.csdn.net/jackystudio/article/details/11516435)。不过这里需要使用VS2010以上版本。
+这里就不重复啰嗦这些了，[传送门](http://blog.csdn.net/jackystudio/article/details/11516435)。不过这里需要使用VS2010以上版本。
 
 这里强烈建议NDK版本为r8c或者r9，试过r7，r8都编译不过。。。
 
+<!-- more -->
+
 ###2.安装cocos2d-x###
 
-这里使用的是V2.2.0版本，传送门：[http://www.cocos2d-x.org/download](http://www.cocos2d-x.org/download)，下载完解压即可，运行build-win32.bat进行编译。
+这里使用的是V2.2.0版本，[传送门](http://www.cocos2d-x.org/download)，下载完解压即可，运行build-win32.bat进行编译。
 
-<!-- more -->
 
 ###3.配置python###
 
@@ -41,7 +42,7 @@ categories:
 
 **3.2.安装python**
 
-我这里使用的是2.7.5版本，传送门：[http://www.python.org/download/releases/2.7.5/](http://www.python.org/download/releases/2.7.5/)， Windows X86 msi installer。不同的python版本可能会导致后面运行出错。所以建议使用此版本。
+我这里使用的是2.7.5版本，[传送门](http://www.python.org/download/releases/2.7.5/)， Windows X86 msi installer。不同的python版本可能会导致后面运行出错。所以建议使用此版本。
 
 **3.3.设置环境变量**
 
@@ -103,7 +104,7 @@ categories:
 
 **5.2.Cygwin编译**
 
-这个请参见[http://blog.csdn.net/jackystudio/article/details/11516435](http://blog.csdn.net/jackystudio/article/details/11516435)。编译完成后导入Eclipse即可。
+这个请参见[传送门](http://blog.csdn.net/jackystudio/article/details/11516435)。编译完成后导入Eclipse即可。
 
 ![CygWin编译](http://img.blog.csdn.net/20131009171350453?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 
