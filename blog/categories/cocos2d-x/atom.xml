@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://fusijie.github.io/blog/categories/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://fusijie.github.io/"/>
-  <updated>2013-11-01T15:27:46+08:00</updated>
+  <updated>2013-11-01T15:42:33+08:00</updated>
   <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -64,7 +64,8 @@ VC2010Express: C:\Program Files\Microsoft Visual Studio 10.0\VC\Express\VCProjec
 
 <p>我的电脑→右键→属性→高级→环境变量→系统变量→path→加入你的python安装目录。测试一下：进入cmd，输入python，不会提示“不是外部或内部命令balabala&hellip;”就OK。</p>
 
-<p><img src="http://img.blog.csdn.net/20131008101855281?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="设置环境变量" /></p>
+<center>![设置环境变量](http://img.blog.csdn.net/20131008101855281?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</center>
+
 
 <h3>4.创建项目</h3>
 
@@ -89,11 +90,13 @@ pause
 
 <p>双击运行它就可以了。效果如下：</p>
 
-<p><img src="http://img.blog.csdn.net/20131008103034703?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="创建项目" /></p>
+<center>![创建项目](http://img.blog.csdn.net/20131008103034703?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</center>
+
 
 <p>然后在cocos2d-x目录下的project就可以看到Test文件夹，里面包含了各个平台的项目。</p>
 
-<p><img src="http://img.blog.csdn.net/20131008111715671?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="各平台项目" /></p>
+<center>![各平台项目](http://img.blog.csdn.net/20131008111715671?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</center>
+
 
 <h3>5.导入eclipse，生成apk</h3>
 
@@ -107,21 +110,25 @@ pause
 
 <p>（3）修改项目属性C/C++ builder的build command和build directory。分别为NDK目录下的ndk-builder和当前项目文件夹。</p>
 
-<p><img src="http://img.blog.csdn.net/20131009101659609?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="设置C++ build" /></p>
+<center>![设置C++ build](http://img.blog.csdn.net/20131009101659609?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</center>
+
 
 <p>（4）添加C/C++→Builder→Environment→NDK_MODULE_PATH，值为cocos2dx目录和cocos2dx目录\cocos2dx\platform\third_party\android\prebuilt。</p>
 
-<p><img src="http://img.blog.csdn.net/20131009101947328?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="设置NDK_MODULE_PATH" /></p>
+<center>![设置NDK_MODULE_PATH](http://img.blog.csdn.net/20131009101947328?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</center>
+
 
 <p>（5）build project ，run as andorid app即可。如果出错，clean一下。不过运行的时候程序出现了Fatal signal 11 (SIGSEGV) at 0x00000000 (code=1)异常，原因还没找到。。。有知道的吱一声。。。（先用Cygwin编译一次再到Eclipse中编译就可以了。真心不知道差别在哪。）</p>
 
-<p><img src="http://img.blog.csdn.net/20131009102108562?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="Eclipse编译" /></p>
+<center>![Eclipse编译](http://img.blog.csdn.net/20131009102108562?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</center>
+
 
 <p><strong>5.2.Cygwin编译</strong></p>
 
 <p>这个请参见<a href="http://blog.csdn.net/jackystudio/article/details/11516435">传送门</a>。编译完成后导入Eclipse即可。</p>
 
-<p><img src="http://img.blog.csdn.net/20131009171350453?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="CygWin编译" /></p>
+<center>![CygWin编译](http://img.blog.csdn.net/20131009171350453?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)</center>
+
 
 <p>如果提示需要定义NDK_ROOT，那么在cygwin安装目录\home\username.bash_profile文件末尾添加：</p>
 
