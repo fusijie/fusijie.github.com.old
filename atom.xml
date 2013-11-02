@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://fusijie.github.io/atom.xml" rel="self"/>
   <link href="http://fusijie.github.io/"/>
-  <updated>2013-11-02T22:30:06+08:00</updated>
+  <updated>2013-11-02T22:31:44+08:00</updated>
   <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -147,6 +147,9 @@ pLayerMultiplex-&gt;switchToAndReleaseMe(item-&gt;getTag());
 <h3>1.概况</h3>
 
 <p><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_06/1.jpg" alt="CCNode" /></p>
+
+<!-- more -->
+
 
 <p>CCNode直接从CCObject继承而来，有如下几个特点：</p>
 
