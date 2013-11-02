@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>【玩转cocos2d-x之二】游戏和引擎构成 - Jacky's Blog</title>
+  <title>【玩转cocos2d-x之五】导演类CCDirector - Jacky's Blog</title>
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio 1.游戏构成 我们以超级马里奥游戏作为蓝本来描述一下一个游戏的构成。 1.首先我们需要一个容器来放置游戏元素，每一个关卡都是一个容器，这叫场景。 2.蓝天白云，各种板砖水管，这些是布景，放置在关卡中， &hellip;">
+  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio 既然cocos2d-x都帮我们封装好了，使得开发与平台无关，那接下来我们就单纯地开始好好玩游戏吧！这几篇是对cocos2d-x一些基本且重要的元素进行解释和API介绍，之前没有系统的看过API， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://fusijie.github.io/blog/2013/10/09/play-cocos2dx-02">
+  <link rel="canonical" href="http://fusijie.github.io/blog/2013/10/12/play-cocos2dx-05">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Jacky's Blog" type="application/atom+xml">
@@ -81,7 +81,7 @@
   
   <header>
     
-      <h1 class="entry-title">【玩转cocos2d-x之二】游戏和引擎构成</h1>
+      <h1 class="entry-title">【玩转cocos2d-x之五】导演类CCDirector</h1>
     
     
       <p class="meta">
@@ -97,71 +97,151 @@
   
 
 
-<time datetime="2013-10-09T16:53:00+08:00" pubdate data-updated="true">Oct 9<span>th</span>, 2013</time>
+<time datetime="2013-10-12T21:49:00+08:00" pubdate data-updated="true">Oct 12<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12432837">http://blog.csdn.net/jackystudio</a></p>
+<div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12646337">http://blog.csdn.net/jackystudio</a></p>
 
-<h3>1.游戏构成</h3>
+<p>既然cocos2d-x都帮我们封装好了，使得开发与平台无关，那接下来我们就单纯地开始好好玩游戏吧！这几篇是对cocos2d-x一些基本且重要的元素进行解释和API介绍，之前没有系统的看过API，有时候某些功能引擎都已经提供好了，不知道还是会自己去写。所以全面地了解一下是必须的。</p>
 
-<p>我们以超级马里奥游戏作为蓝本来描述一下一个游戏的构成。</p>
+<h3>1.概况</h3>
 
-<p>1.首先我们需要一个容器来放置游戏元素，每一个关卡都是一个容器，这叫场景。</p>
+<p><img src="/images/Blog/Play_cocos2dx_05/1.jpg" alt="CCDirector" /></p>
 
-<p>2.蓝天白云，各种板砖水管，这些是布景，放置在关卡中，通过布景的叠加，构成了游戏的主要背景。</p>
+<p>导演类CCDirector是cocos2d-x引擎中非常重要的一个类，它是一个抽象类（mainloop空实现），主要完成以下工作：</p>
 
-<p>3.主角马里奥兄弟和各种小怪兽，这些叫精灵。这是游戏互动的主要元素。</p>
+<p>（1）初始化游戏和销毁游戏</p>
+
+<p>（2）管理调度场景</p>
+
+<p>（3）调整设置openGL信息</p>
+
+<p>（4）获取、设置游戏的相关细节</p>
 
 <!-- more -->
 
 
-<p>4.马里奥可以走路，可以跳跃，可以发射子弹。这些是精灵的动作。</p>
+<p>CCDirector是单例类，直接从CCObject继承而来，它在cocos2d-x中的首次创建位置在上一篇已经介绍了。因此后面的CCDirector调用可采用如下方式：</p>
 
-<p>5.过关了，要进入下一关，这些需要幕后导演的控制。</p>
+<p><code>CCDirector::sharedDirector()-&gt;methodname;</code></p>
 
-<p>以上几个部分，在cocos2dx中，分别叫做<strong>CCScene</strong>，<strong>CCLayer</strong>，<strong>CCSprite</strong>，<strong>CCAction</strong>，<strong>CCDirector</strong>。而这五个部分是构成游戏的最基本元素。</p>
+<h3>2.常用接口</h3>
 
-<p>用一张图来看看它们的关系。</p>
+<p><strong>2.1.属性</strong></p>
 
-<p><img src="/images/Blog/Play_cocos2dx_02/1.jpg" alt="游戏构成" /></p>
+<pre><code>//获得当前运行场景，cocos2dx同时只能运行一个场景  
+CCScene* getRunningScene(void);  
 
-<h3>2.引擎构成</h3>
+//获取fps  
+double getAnimationInterval(void);  
+//设置fps  
+virtual void setAnimationInterval(double dValue);  
 
-<p><img src="/images/Blog/Play_cocos2dx_02/2.jpg" alt="引擎构成" /></p>
+//是否显示fps  
+bool isDisplayStats(void);  
+//设置是否显示fps  
+void setDisplayStats(bool bDisplayStats);  
 
-<p>引擎目录的具体介绍如下：</p>
+//每帧秒数  
+float getSecondsPerFrame();  
 
-<p>（1）<em>cocos2dx</em>，cocos2d-x游戏引擎核心部分，存放了引擎源码。</p>
+//获取openGLView  
+CCEGLView* getOpenGLView(void);  
+//设置openGLView  
+void setOpenGLView(CCEGLView *pobOpenGLView);  
 
-<p>（2）<em>CocosDenshion</em>，游戏声音引擎主要文件。</p>
+//释放暂停  
+bool isPaused(void);  
 
-<p>（3）<em>Debug.win32</em>，Release.win32，win32下的项目debug/release目录。</p>
+//获取调用到现在的所有帧数  
+unsigned int getTotalFrames(void);  
 
-<p>（4）<em>document</em>，帮助文档目录，可以用doxygen生成项目文档。</p>
+//是否接收到cleanup事件，replace会，而push不会  
+bool isSendCleanupToScene(void);  
+</code></pre>
 
-<p>（5）<em>extensions</em>，引擎扩展包，包含了一些本地存储类，网络传输类，GUI类等等。</p>
+<p><strong>2.2.窗口</strong></p>
 
-<p>（6）<em>external</em>，存放了Box2D，chipmunk物理引擎源码等第三方库。</p>
+<pre><code>//返回openGLView的大小，单位为点  
+CCSize getWinSize(void);  
 
-<p>（7）<em>licenses</em>，存放了一些许可文件。</p>
+//返回openGLView的大小，单位为像素  
+CCSize getWinSizeInPixels(void);  
 
-<p>（8）<em>plugin</em>，插件工具集，还包含了一些广告，微博调用示例。</p>
+//返回可见区域的大小，单位为点，如果没调用setDesignResolutionSize，就和getWinSize是一样的  
+CCSize getVisibleSize();  
 
-<p>（9）<em>projects</em>，开发者创建的项目。</p>
+//返回可见区域的原点  
+CCPoint getVisibleOrigin();  
 
-<p>（10）<em>samples</em>，引擎自带示例，目前支持C++，js和Lua。</p>
+//将UIKit坐标体系转换成OpenGL坐标体系  
+CCPoint convertToGL(const CCPoint&amp; obPoint);  
 
-<p>（11）<em>scripting</em>，js和lua脚本的相关源文件。</p>
+//将OpenGL坐标体系转换成UIKit坐标体系
+CCPoint convertToUI(const CCPoint&amp; obPoint);  
+</code></pre>
 
-<p>（12）<em>template</em>，C++，js和Lua的各平台模版。</p>
+<p><strong>2.3.场景管理</strong></p>
 
-<p>（13）<em>tools</em>，cocos2dx的工具集，创建项目也在里面。</p>
+<pre><code>//调用第一个场景，当前不能有场景运行  
+void runWithScene(CCScene *pScene);  
 
-<p>（14）剩下一些各平台的编译文件，创建文件，以及cocos2dx的更新说明，作者说明等等。</p>
+//场景入栈，当前必须有场景  
+void pushScene(CCScene *pScene);  
+
+//场景出栈，删除当前场景，当前必须有场景  
+void popScene(void);  
+
+//弹出所有场景，直至根场景  
+void popToRootScene(void);  
+
+//弹出至指定场景  
+void popToSceneStackLevel(int level);  
+
+//用新场景替代旧场景  
+void replaceScene(CCScene *pScene);  
+
+//结束运行，释放场景，必须手动调用  
+void end(void);  
+
+//暂停场景  
+void pause(void);  
+
+//恢复场景  
+void resume(void);  
+
+//暂停所有动画  
+virtual void stopAnimation(void);  
+
+//开始所有动画  
+virtual void startAnimation(void);  
+</code></pre>
+
+<p><strong>2.4.内存和OpenGL</strong></p>
+
+<pre><code>//移除所有cocos2dx缓冲数据  
+void purgeCachedData(void);  
+
+//设置默认值  
+void setDefaultValues(void);  
+
+//设置OpenGL默认值  
+void setGLDefaultValues(void);  
+
+//开关OpenGL alpha混合通道  
+void setAlphaBlending(bool bOn);  
+
+//设置景深测试  
+void setDepthTest(bool bOn);  
+</code></pre>
+
+<h3>3.CCDisplayLinkDirector</h3>
+
+<p>CCDisplayLinkDirector继承于CCDirector，它实现了mainloop函数，是一个以显示刷新速度同步定时器的Director，也就是可以自动刷新的导演类，它支持60，30，15三种帧数。我们平时使用的也就是它。</p>
 </div>
 
 
@@ -184,7 +264,7 @@
   
 
 
-<time datetime="2013-10-09T16:53:00+08:00" pubdate data-updated="true">Oct 9<span>th</span>, 2013</time>
+<time datetime="2013-10-12T21:49:00+08:00" pubdate data-updated="true">Oct 12<span>th</span>, 2013</time>
       
 
 <span class="categories">
@@ -226,11 +306,8 @@ var jiathis_config = {data_track_clickback:'true'};
     <p class="meta">
       
 	    <p></p>
-        <a class="basic-alignment left" href="/blog/2013/10/08/play-cocos2dx-01/" title="Previous Post: 【玩转cocos2d-x之一】V2.2.0版本开发环境配置">&laquo; 【玩转cocos2d-x之一】V2.2.0版本开发环境配置</a>
+        <a class="basic-alignment left" href="/blog/2013/10/11/play-cocos2dx-04/" title="Previous Post: 【玩转cocos2d-x之四】cocos2d-x怎么实现跨平台">&laquo; 【玩转cocos2d-x之四】cocos2d-x怎么实现跨平台</a>
       
-      
-	    <p></p>
-        <a class="basic-alignment right" href="/blog/2013/10/10/play-cocos2dx-03/" title="Next Post: 【玩转cocos2d-x之三】cocos2d-x游戏是怎么跑起来的">【玩转cocos2d-x之三】cocos2d-x游戏是怎么跑起来的 &raquo;</a>
       
     </p>
   </footer>
