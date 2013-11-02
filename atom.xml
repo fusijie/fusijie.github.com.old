@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://fusijie.github.io/atom.xml" rel="self"/>
   <link href="http://fusijie.github.io/"/>
-  <updated>2013-11-02T22:19:07+08:00</updated>
+  <updated>2013-11-02T22:30:06+08:00</updated>
   <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,128 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之七】场景类CCScene和布景类CCLayer]]></title>
+    <link href="http://fusijie.github.io/blog/2013/10/14/play-cocos2dx-07/"/>
+    <updated>2013-10-14T22:21:00+08:00</updated>
+    <id>http://fusijie.github.io/blog/2013/10/14/play-cocos2dx-07</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12708811">http://blog.csdn.net/jackystudio</a></p>
+
+<p>场景类CCScene和布景类CCLayer都是作为一个容器来使用，这里简单地看下它们的实现：</p>
+
+<h3>1.场景类：CCScene</h3>
+
+<p><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_07/1.jpg" alt="CCScene" /></p>
+
+<!-- more -->
+
+
+<p>CCScene类继承于CCNode，它的实现很简单，就是基本上没添加什么内容。。。它只是作为一个容器（父节点）的抽象概念存在。对比CCNode差别有：</p>
+
+<p>（1）构造函数中设置了不使用锚点定位，而是使用了坐标原点，即使设置了锚点也不起作用。</p>
+
+<p>m_bIgnoreAnchorPointForPosition是CCNode的属性，用于CCScene和CCLayer。</p>
+
+<pre><code>m_bIgnoreAnchorPointForPosition = true;  
+</code></pre>
+
+<p>（2）在init中设置场景的大小。节点的初始化大小为CCSizeZero，也就是没有大小。CCScene初始化时设置了场景的大小，即窗口大小。</p>
+
+<pre><code>this-&gt;setContentSize(pDirector-&gt;getWinSize());  
+</code></pre>
+
+<h3>2.布景类：CCLayer</h3>
+
+<p><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_07/2.jpg" alt="CCLayer" /></p>
+
+<p>CCLayer相对CCScene而言会比较麻烦一点，因为他不仅要作为容器使用，而且还要实现一些游戏功能，所以它继承了CCTouchDelegate，CCAccelerometerDelegate和CCKeypadDelegate，这三个类是用来处理触摸事件，重力感应事件和键盘事件的，默认初始化都是不可用，需要手动设置开启。</p>
+
+<p>（1）CCLayer和CCScene的初始化差不多，也是构造函数中设置不使用锚点定位，init函数中设置了层的大小，即窗口大小。</p>
+
+<p>（2）常用接口：</p>
+
+<pre><code>//初始化函数，添加精灵就在这里进行  
+virtual bool init();  
+
+//分配内存，标记autoRelease  
+static CCLayer *create(void);  
+
+//层进入回调  
+virtual void onEnter();  
+//层退出回调  
+virtual void onExit();  
+//如果层进入带效果，效果完成时回调  
+virtual void onEnterTransitionDidFinish();  
+
+//触摸事件(单点和多点)  
+virtual bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent);  
+virtual void ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent);  
+virtual void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent);  
+virtual void ccTouchCancelled(CCTouch *pTouch, CCEvent *pEvent);  
+virtual void ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent);  
+virtual void ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent);  
+virtual void ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent);  
+virtual void ccTouchesCancelled(CCSet *pTouches, CCEvent *pEvent);  
+
+//重力感应相关  
+virtual void didAccelerate(CCAcceleration* pAccelerationValue);  
+void registerScriptAccelerateHandler(int nHandler);  
+void unregisterScriptAccelerateHandler(void);  
+
+//注册触摸分发，默认是addStandardDelegate  
+virtual void registerWithTouchDispatcher(void);  
+
+//设置/获取释放触摸可用  
+virtual bool isTouchEnabled();  
+virtual void setTouchEnabled(bool value);  
+
+//设置/获取触摸模式  
+virtual void setTouchMode(ccTouchesMode mode);  
+virtual int getTouchMode();  
+
+//设置/获取触摸优先级，默认为0  
+virtual void setTouchPriority(int priority);  
+virtual int getTouchPriority();  
+
+//设置/获取是否接收重力感应事件  
+virtual bool isAccelerometerEnabled();  
+virtual void setAccelerometerEnabled(bool value);  
+virtual void setAccelerometerInterval(double interval);  
+
+//设置/获取是否接收键盘事件  
+virtual bool isKeypadEnabled();  
+virtual void setKeypadEnabled(bool value);  
+
+//返回键和菜单键的回调，需要设置接收键盘事件  
+virtual void keyBackClicked(void);  
+virtual void keyMenuClicked(void);  
+</code></pre>
+
+<h3>3.颜色布景层：CCLayerRGBA，CCLayerColor和CCLayerGradient</h3>
+
+<p><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_07/3.jpg" alt="颜色布景层" /></p>
+
+<p>（1）CCLayerRGBA和CCNodeRGBA差不多，也是用于设置RGB值和Blend值，同时可以传递到子节点。它的相关接口参见CCNodeRGBA。</p>
+
+<p>（2）CCLayerColor只是一个单纯的可以绘制颜色的层。可以带入长宽参数，绘制一个矩形的布景层。</p>
+
+<p>（3）CCLayerGradient继承于CClayerColor，是一个带有渐变效果的布景层。</p>
+
+<h3>4.多层布景层：CCLayerMultiplex</h3>
+
+<p><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_07/4.jpg" alt="CCLayerMultiplex" /></p>
+
+<p>CCLayerMultiplex继承与CCLayer，相当于一个层容器，他可以包含多个层，但是同一时间只能显示一个CCLayer。《我叫MT》的第一个界面菜单那一块就是这么处理的。CCLayerMultiplex最重要的函数就是：</p>
+
+<pre><code>//切换布景层  
+pLayerMultiplex-&gt;switchTo(item-&gt;getTag());  
+pLayerMultiplex-&gt;switchToAndReleaseMe(item-&gt;getTag());  
+</code></pre>
+
+<p>两者的差别在于是否释放当前处于活动的布景层。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之六】节点类CCNode]]></title>
