@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 常用接口 | Jacky's Blog]]></title>
   <link href="http://fusijie.github.io/tags/chang-yong-jie-kou/atom.xml" rel="self"/>
   <link href="http://fusijie.github.io/"/>
-  <updated>2013-11-02T22:03:47+08:00</updated>
+  <updated>2013-11-02T22:05:01+08:00</updated>
   <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -26,6 +26,9 @@
 
 <p><img src="/images/Blog/Play_cocos2dx_05/1.jpg" alt="CCDirector" /></p>
 
+<!-- more -->
+
+
 <p>导演类CCDirector是cocos2d-x引擎中非常重要的一个类，它是一个抽象类（mainloop空实现），主要完成以下工作：</p>
 
 <p>（1）初始化游戏和销毁游戏</p>
@@ -36,12 +39,10 @@
 
 <p>（4）获取、设置游戏的相关细节</p>
 
-<!-- more -->
-
-
 <p>CCDirector是单例类，直接从CCObject继承而来，它在cocos2d-x中的首次创建位置在上一篇已经介绍了。因此后面的CCDirector调用可采用如下方式：</p>
 
-<p><code>CCDirector::sharedDirector()-&gt;methodname;</code></p>
+<pre><code>CCDirector::sharedDirector()-&gt;methodname;
+</code></pre>
 
 <h3>2.常用接口</h3>
 
