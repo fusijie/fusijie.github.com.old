@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: CCApplication | Jacky's Blog]]></title>
+  <link href="http://fusijie.github.io/tags/ccapplication/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2013-11-02T10:22:46+08:00</updated>
+  <id>http://fusijie.github.io/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之三】cocos2d-x游戏是怎么跑起来的]]></title>
+    <link href="http://fusijie.github.io/blog/2013/11/02/play-cocos2dx-03/"/>
+    <updated>2013-11-02T10:01:00+08:00</updated>
+    <id>http://fusijie.github.io/blog/2013/11/02/play-cocos2dx-03</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12554167">http://blog.csdn.net/jackystudio</a></p>
+
+<p>虽然cocos2d-x v3.0 alpha版已经出来了，也改进了不少，有兴趣的可以去尝尝鲜。因为后面可能还会配合cocoStudio写一下博客，而现在v1.0.0.0版本需要配合cocos2d-x v2.2.0使用。所以这里选择了V2.2.0版的cocos2d-x。</p>
+
+<p>一个新的东西，从头开始吧！从HelloWorld出发看一下一个cocos2d-x游戏是怎么跑起来的。先看看它的结构。</p>
+
+<p><img src="/images/Blog/Play_cocos2dx_03/1.jpg" alt="结构" /></p>
+
+<!-- more -->
+
+
+<h3>1.main函数</h3>
+
+<p>还是原来配方还是熟悉的味道。。。霸气的main函数依然是程序的入口点：</p>
+
+<pre><code>//main.cpp  
+int APIENTRY _tWinMain(HINSTANCE hInstance,  
+   HINSTANCE hPrevInstance,  
+   LPTSTRlpCmdLine,  
+   int   nCmdShow)  
+{  
+UNREFERENCED_PARAMETER(hPrevInstance);//该宏用于通知编译器不用检测变量是否使用，如果你喜欢用LV4级的警告。  
+UNREFERENCED_PARAMETER(lpCmdLine);  
+
+// create the application instance  
+AppDelegate app;//创建AppDelegate实例  
+CCEGLView* eglView = CCEGLView::sharedOpenGLView();//获取CCEGLView的单一实例，因为还未创建，所以这里会进行创建  
+eglView-&gt;setViewName("HelloCpp");//设置eglView属性  
+eglView-&gt;setFrameSize(2048, 1536);  
+eglView-&gt;setFrameZoomFactor(0.4f);  
+return CCApplication::sharedApplication()-&gt;run();//调用run运行程序  
+} 
+</code></pre>
+
+<p>其中：</p>
+
+<p>（1）AppDelegate继承于CCApplication，是整个游戏的程序类，如果有用过MFC的就很清楚，类似于CxxxApp。</p>
+
+<p>（2）CCEGLView封装了使用openGL作为显示底层API的一个基本的Windows窗体的创建和控制。
+可以简单的认为，一个控制了程序的逻辑，而另一个负责游戏的显示。</p>
+
+<h3>2.CCEGLView类</h3>
+
+<p>我们先看看上一步的CCEGLView::sharedOpenGLView()做了什么。</p>
+
+<pre><code>CCEGLView* CCEGLView::sharedOpenGLView()  
+{
+    if (s_pEglView == NULL)//s_pEglView是一个CCEGLView指针，静态成员变量  
+    {  
+        s_pEglView = new CCEGLView();  
+        if(!s_pEglView-&gt;Create())//main中调用时，会执行这一步  
+        {
+            delete s_pEglView;  
+            s_pEglView = NULL;  
+        }
+    }
+return s_pEglView;  
+}  
+</code></pre>
+
+<p>再看看，create做了什么</p>
+
+<pre><code>//...  
+m_hWnd = CreateWindowEx(   // 创建窗体  
+WS_EX_APPWINDOW | WS_EX_WINDOWEDGE,// Extended Style For The Window  
+kWindowClassName,// Class Name  
+wszBuf,// Window Title  
+WS_CAPTION | WS_POPUPWINDOW | WS_MINIMIZEBOX,// Defined Window Style  
+0, 0,// Window Position  
+1000,   // Window Width  
+1000,   // Window Height  
+NULL,// No Parent Window  
+NULL,// No Menu  
+hInstance,// Instance  
+NULL );  
+</code></pre>
+
+<p>看到上面这一步了吧，使用Win32写过窗体的童鞋，就知道创建一个窗体需要哪些动作：</p>
+
+<p><em>（1）填充窗口类结构WNDCLASS</em></p>
+
+<p><em>（2）注册窗口</em></p>
+
+<p><em>（3）创建窗口</em></p>
+
+<p><em>（4）显示窗口</em>（这一步没有在CCEGLView中实现，而是在后面的CCApplication中实现，因为这里窗口的属性还没有进行设置）</p>
+
+<p>一样的，创建一个cocos2d-x的win32窗口也是要经过这些步骤。具体的就看源码吧，这里不逐句解释了。就是要注意有个WinProc函数，是用于处理主窗口消息。</p>
+
+<h3>3.CCApplication类</h3>
+
+<p>我们再看看CCApplication::sharedApplication()&ndash;>run()执行的又是什么东西。</p>
+
+<pre><code>int CCApplication::run()  
+{  
+    PVRFrameEnableControlWindow(false);  
+
+    // Main message loop:  
+    MSG msg;  
+    LARGE_INTEGER nFreq;  
+    LARGE_INTEGER nLast;  
+    LARGE_INTEGER nNow;  
+
+    QueryPerformanceFrequency(&amp;nFreq);//获取当前系统频率和计数  
+    QueryPerformanceCounter(&amp;nLast);  
+
+    // Initialize instance and cocos2d.  
+    if (!applicationDidFinishLaunching())//虚函数，调用子类的重载，这里也会设置一些显示窗口的属性  
+    {  
+        return 0;  
+    }  
+
+    CCEGLView* pMainWnd = CCEGLView::sharedOpenGLView();获取CCEGLView的单一实例  
+    pMainWnd-&gt;centerWindow();  
+    ShowWindow(pMainWnd-&gt;getHWnd(), SW_SHOW);//这里显示窗口  
+
+    while (1)//消息循环  
+    {  
+        if (! PeekMessage(&amp;msg, NULL, 0, 0, PM_REMOVE))  
+        {  
+            // 获取当前的计数  
+            QueryPerformanceCounter(&amp;nNow);  
+
+            // 判断时间流逝，是否该绘制下一帧  
+            if (nNow.QuadPart - nLast.QuadPart &gt; m_nAnimationInterval.QuadPart)  
+            {  
+                nLast.QuadPart = nNow.QuadPart;  
+                CCDirector::sharedDirector()-&gt;mainLoop();//渲染场景（清除显示设备，重绘场景）  
+            }  
+            else  
+            {  
+                Sleep(0);  
+            }  
+            continue;  
+        }  
+
+        if (WM_QUIT == msg.message)//获取退出消息，跳出循环  
+        {  
+            // Quit message loop.  
+            break;  
+        }  
+
+        // 处理Windows消息  
+        if (! m_hAccelTable || ! TranslateAccelerator(msg.hwnd, m_hAccelTable, &amp;msg))  
+        {  
+            TranslateMessage(&amp;msg);  
+            DispatchMessage(&amp;msg);  
+        }  
+    }
+    return (int) msg.wParam;  
+}  
+</code></pre>
+
+<p>好了，解释的应该算比较清楚了，虽然没有每一个函数都进去。。。这里再总结一下：</p>
+
+<p>（1）首先先获取当前系统的频率和计数。这是一个很大的值，所以用了一个LARGE_INTEGER型变量来存储。</p>
+
+<p>（2）调用子类的applicationDidFinishLaunching()，执行进入程序后的一些初始化工作。</p>
+
+<p>（3）获取CCEGLView单例，显示窗口。</p>
+
+<p>（4）进入循环While(1)，重绘每一帧的场景。</p>
+
+<p>好了，更多关于CCApplication的请看源码吧。</p>
+
+<h3>4.AppDelegate类</h3>
+
+<p>从上面的分析我们知道CCApplication::run()函数中会调用子类（AppDelegate）的applicationDidFinishLaunching函数，而这里也就是我们要设置窗口属性和运行游戏的地方了。</p>
+
+<pre><code>bool AppDelegate::applicationDidFinishLaunching() {  
+//第一次初始化导演，导演也是个单例类  
+CCDirector* pDirector = CCDirector::sharedDirector();  
+
+//获得CCEGLView单例，设置窗口属性和fps等等  
+CCEGLView* pEGLView = CCEGLView::sharedOpenGLView();  
+
+...  
+
+// 创建场景  
+CCScene *pScene = HelloWorld::scene();  
+
+// 进入场景  
+pDirector-&gt;runWithScene(pScene);  
+
+return true;  
+}  
+</code></pre>
+
+<p>好了，最后再总结成一张图，cocos2d-x游戏就是这么跑起来的~</p>
+
+<p><img src="/images/Blog/Play_cocos2dx_03/2.jpg" alt="结构" /></p>
+]]></content>
+  </entry>
+  
+</feed>
