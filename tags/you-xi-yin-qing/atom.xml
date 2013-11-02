@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 游戏引擎 | Jacky's Blog]]></title>
   <link href="http://fusijie.github.io/tags/you-xi-yin-qing/atom.xml" rel="self"/>
   <link href="http://fusijie.github.io/"/>
-  <updated>2013-11-02T17:26:38+08:00</updated>
+  <updated>2013-11-02T21:43:17+08:00</updated>
   <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二】游戏和引擎构成]]></title>
-    <link href="http://fusijie.github.io/blog/2013/11/01/play-cocos2dx-02/"/>
-    <updated>2013-11-01T16:53:00+08:00</updated>
-    <id>http://fusijie.github.io/blog/2013/11/01/play-cocos2dx-02</id>
+    <link href="http://fusijie.github.io/blog/2013/10/09/play-cocos2dx-02/"/>
+    <updated>2013-10-09T16:53:00+08:00</updated>
+    <id>http://fusijie.github.io/blog/2013/10/09/play-cocos2dx-02</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12432837">http://blog.csdn.net/jackystudio</a></p>
 
 <h3>1.游戏构成</h3>

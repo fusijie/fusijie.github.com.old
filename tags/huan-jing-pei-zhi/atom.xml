@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 环境配置 | Jacky's Blog]]></title>
   <link href="http://fusijie.github.io/tags/huan-jing-pei-zhi/atom.xml" rel="self"/>
   <link href="http://fusijie.github.io/"/>
-  <updated>2013-11-02T17:26:38+08:00</updated>
+  <updated>2013-11-02T21:43:17+08:00</updated>
   <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之一】V2.2.0版本开发环境配置]]></title>
-    <link href="http://fusijie.github.io/blog/2013/10/31/play-cocos2dx-01/"/>
-    <updated>2013-10-31T16:18:00+08:00</updated>
-    <id>http://fusijie.github.io/blog/2013/10/31/play-cocos2dx-01</id>
+    <link href="http://fusijie.github.io/blog/2013/10/08/play-cocos2dx-01/"/>
+    <updated>2013-10-08T16:18:00+08:00</updated>
+    <id>http://fusijie.github.io/blog/2013/10/08/play-cocos2dx-01</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12419387">http://blog.csdn.net/jackystudio</a></p>
 
 <p>现在cocos2d-x处在上升期，各个版本的变化还是比较大的，单从环境配置来看，从v2.0到v2.2就变化了不少。今天配置了一下V2.2.0环境，创建项目，并进行交叉编译，发现比之前麻烦了不少。这里稍微记录一下。
