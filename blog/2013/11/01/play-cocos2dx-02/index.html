@@ -1,0 +1,356 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>【玩转cocos2d-x之二】游戏和引擎构成 - Jacky's Blog</title>
+  <meta name="author" content="FuSijie">
+
+  
+  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio 1.游戏构成 我们以超级马里奥游戏作为蓝本来描述一下一个游戏的构成。 1.首先我们需要一个容器来放置游戏元素，每一个关卡都是一个容器，这叫场景。 2.蓝天白云，各种板砖水管，这些是布景，放置在关卡中， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fusijie.github.io/blog/2013/11/01/play-cocos2dx-02">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jacky's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '45386223']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jacky's Blog</a></h1>
+  
+    <h2>Stay Hungry,Stay Foolish!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:fusijie.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/projects">Projects</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">【玩转cocos2d-x之二】游戏和引擎构成</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-01T16:53:00+08:00" pubdate data-updated="true">Nov 1<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12432837">http://blog.csdn.net/jackystudio</a></p>
+
+<h3>1.游戏构成</h3>
+
+<p>我们以超级马里奥游戏作为蓝本来描述一下一个游戏的构成。</p>
+
+<p>1.首先我们需要一个容器来放置游戏元素，每一个关卡都是一个容器，这叫场景。</p>
+
+<p>2.蓝天白云，各种板砖水管，这些是布景，放置在关卡中，通过布景的叠加，构成了游戏的主要背景。</p>
+
+<p>3.主角马里奥兄弟和各种小怪兽，这些叫精灵。这是游戏互动的主要元素。</p>
+
+<!-- more -->
+
+
+<p>4.马里奥可以走路，可以跳跃，可以发射子弹。这些是精灵的动作。</p>
+
+<p>5.过关了，要进入下一关，这些需要幕后导演的控制。</p>
+
+<p>以上几个部分，在cocos2dx中，分别叫做<strong>CCScene</strong>，<strong>CCLayer</strong>，<strong>CCSprite</strong>，<strong>CCAction</strong>，<strong>CCDirector</strong>。而这五个部分是构成游戏的最基本元素。</p>
+
+<p>用一张图来看看它们的关系。</p>
+
+<p><img src="/images/Blog/Play_cocos2dx_02/1.jpg" alt="游戏构成" /></p>
+
+<h3>2.引擎构成</h3>
+
+<p><img src="/images/Blog/Play_cocos2dx_02/2.jpg" alt="引擎构成" /></p>
+
+<p>引擎目录的具体介绍如下：</p>
+
+<p>（1）<em>cocos2dx</em>，cocos2d-x游戏引擎核心部分，存放了引擎源码。</p>
+
+<p>（2）<em>CocosDenshion</em>，游戏声音引擎主要文件。</p>
+
+<p>（3）<em>Dwbug.win32</em>，Release.win32，win32下的项目debug/release目录。</p>
+
+<p>（4）<em>document</em>，帮助文档目录，可以用doxygen生成项目文档。</p>
+
+<p>（5）<em>extensions</em>，引擎扩展包，包含了一些本地存储类，网络传输类，GUI类等等。</p>
+
+<p>（6）<em>external</em>，存放了Box2D，chipmunk物理引擎源码等第三方库。</p>
+
+<p>（7）<em>licenses</em>，存放了一些许可文件。</p>
+
+<p>（8）<em>plugin</em>，插件工具集，还包含了一些广告，微博调用示例。</p>
+
+<p>（9）<em>projects</em>，开发者创建的项目。</p>
+
+<p>（10）<em>samples</em>，引擎自带示例，目前支持C++，js和Lua。</p>
+
+<p>（11）<em>scripting</em>，js和lua脚本的相关源文件。</p>
+
+<p>（12）<em>template</em>，C++，js和Lua的各平台模版。</p>
+
+<p>（13）<em>tools</em>，cocos2dx的工具集，创建项目也在里面。</p>
+
+<p>（14）剩下一些各平台的编译文件，创建文件，以及cocos2dx的更新说明，作者说明等等。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">FuSijie</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-01T16:53:00+08:00" pubdate data-updated="true">Nov 1<span>st</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cocos2d-x/'>cocos2d-x</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+      <!-- JiaThis Button BEGIN -->
+  <section>
+    <h1>Share</h1>
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share?uid=1859056" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1859056" charset="utf-8"></script>
+</section>
+<!-- JiaThis Button END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+	    <p></p>
+        <a class="basic-alignment left" href="/blog/2013/10/31/play-cocos2dx-01/" title="Previous Post: 【玩转cocos2d-x之一】V2.2.0版本开发环境配置">&laquo; 【玩转cocos2d-x之一】V2.2.0版本开发环境配置</a>
+      
+      
+	    <p></p>
+        <a class="basic-alignment right" href="/blog/2013/11/02/play-cocos2dx-03/" title="Next Post: 【玩转cocos2d-x之三】cocos2d-x游戏是怎么跑起来的">【玩转cocos2d-x之三】cocos2d-x游戏是怎么跑起来的 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+  <section>
+    <h1>Comments</h1>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"fusijie"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->  
+</section>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p></p>
+  <center><a href="http://blog.csdn.net/jackystudio" target="_self"><img src="/images/logo.jpg" alt="Logo" border="0" title="Logo" /></a></center>
+  <p></p>
+  <p>A Software Engineer born for the Technology, now concentrate on Mobile development.</p>
+</section><section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (3)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/11/02/play-cocos2dx-03/">【玩转cocos2d-x之三】cocos2d-x游戏是怎么跑起来的</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/01/play-cocos2dx-02/">【玩转cocos2d-x之二】游戏和引擎构成</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/31/play-cocos2dx-01/">【玩转cocos2d-x之一】V2.2.0版本开发环境配置</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section>
+  <h1>Tags Cloud</h1>
+  <ul class="tag-cloud">
+    <a style="font-size: 70%" href="/tags/ccapplication/">CCApplication</a>
+<a style="font-size: 70%" href="/tags/cceglview/">CCEGLView</a>
+<a style="font-size: 70%" href="/tags/applicationdidfinish/">applicationDidFinish</a>
+<a style="font-size: 180%" href="/tags/cocos2d-x/">cocos2d-x</a>
+<a style="font-size: 70%" href="/tags/you-xi-yin-qing/">游戏引擎</a>
+<a style="font-size: 70%" href="/tags/huan-jing-pei-zhi/">环境配置</a>
+
+  </ul>
+</section> 
+<section>
+  <h1>Sina Weibo</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="450" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=450&fansRow=0&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=0&uid=1307211523&verifier=3619ee9c">
+      </iframe>
+    </li>
+  </ul>
+</section>
+ 
+<section>
+<h1>Visitor</h1>
+<div>
+	<p></p>
+    <center>
+	<a href="http://info.flagcounter.com/3pF8"><img src="http://s08.flagcounter.com/count/3pF8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_12/viewers_3/labels_0/pageviews_1/flags_0/" alt="Flag Counter" border="0"></a>
+	</center>
+</div>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - FuSijie -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
