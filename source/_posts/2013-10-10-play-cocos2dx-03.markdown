@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "【玩转cocos2d-x之三】cocos2d-x游戏是怎么跑起来的"
-date: 2013-11-02 10:01
+date: 2013-10-10 10:01
 comments: true
 categories: cocos2d-x
 tags: [cocos2d-x, CCApplication, CCEGLView, applicationDidFinish]

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 【玩转cocos2d-x之二】游戏和引擎构成
-date: 2013-11-01 16:53
+date: 2013-10-09 16:53
 comments: true
 categories: cocos2d-x
 tags: [cocos2d-x, 游戏引擎]
@@ -40,7 +40,7 @@ tags: [cocos2d-x, 游戏引擎]
 
 （2）*CocosDenshion*，游戏声音引擎主要文件。
 
-（3）*Dwbug.win32*，Release.win32，win32下的项目debug/release目录。
+（3）*Debug.win32*，Release.win32，win32下的项目debug/release目录。
 
 （4）*document*，帮助文档目录，可以用doxygen生成项目文档。
 
