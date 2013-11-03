@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://fusijie.github.io/blog/categories/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://fusijie.github.io/"/>
-  <updated>2013-11-03T17:08:05+08:00</updated>
+  <updated>2013-11-03T17:28:20+08:00</updated>
   <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,186 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之八】精灵类CCSprite]]></title>
+    <link href="http://fusijie.github.io/blog/2013/10/15/play-cocos2dx-08/"/>
+    <updated>2013-10-15T17:17:00+08:00</updated>
+    <id>http://fusijie.github.io/blog/2013/10/15/play-cocos2dx-08</id>
+    <content type="html"><![CDATA[<p>精灵类CCSprite可以说是游戏的主角了，也是我们平时最常用到的类。</p>
+
+<h3>1.概况</h3>
+
+<p><img src="/images/Blog/Play_cocos2dx_08/1.jpg" alt="CCSprite" /></p>
+
+<!-- more -->
+
+
+<p>CCSprite本质上就是一个二维图片，是静态的。游戏中的动画只不过是让一张张静态图片快速更换达到的动态效果。CCSprite继承于CCNodeRGBA，并实现了CCTextureProtocol的接口。因此CCNodeRGBA所具有的RGB和透明值这些属性和接口CCSprite都有，而CCTextureProtocol是一个抽象类，定义了和纹理相关的两个标准接口：</p>
+
+<pre><code>//返回当前使用的纹理  
+virtual CCTexture2D* getTexture(void) = 0;  
+
+//设置一个新的纹理，它会被retain  
+virtual void setTexture(CCTexture2D *texture) = 0;  
+</code></pre>
+
+<h3>2.常用接口</h3>
+
+<p><strong>2.1.初始化</strong></p>
+
+<pre><code>//初始化函数  
+virtual bool init(void);  
+
+//用CCTexture2D纹理来初始化，精灵大小即是纹理大小  
+virtual bool initWithTexture(CCTexture2D *pTexture);  
+
+///用CCTexture2D纹理和大小来初始化  
+virtual bool initWithTexture(CCTexture2D *pTexture, const CCRect&amp; rect);  
+
+//用CCTexture2D纹理，大小，旋转来初始化  
+virtual bool initWithTexture(CCTexture2D *pTexture, const CCRect&amp; rect, bool rotated);  
+
+//用CCSpriteFrame精灵帧来初始化  
+virtual bool initWithSpriteFrame(CCSpriteFrame *pSpriteFrame);  
+
+//用CCSpriteFrame精灵帧名来初始化  
+virtual bool initWithSpriteFrameName(const char *pszSpriteFrameName);  
+
+//用外部文件初始化，外部文件会先被创建为纹理，再用纹理初始化精灵  
+virtual bool initWithFile(const char *pszFilename);  
+
+//用外部文件和大小来初始化  
+virtual bool initWithFile(const char *pszFilename, const CCRect&amp; rect);  
+</code></pre>
+
+<p><strong>2.2.继承自CCTextureProtocol</strong></p>
+
+<pre><code>//设置/获取纹理  
+virtual void setTexture(CCTexture2D *texture);  
+virtual CCTexture2D* getTexture(void);  
+
+//设置/获取颜色描绘时混合方案  
+void setBlendFunc(ccBlendFunc blendFunc);  
+ccBlendFunc getBlendFunc(void);  
+</code></pre>
+
+<p><strong>2.3.继承自CCNode</strong></p>
+
+<p>参见CCNode。</p>
+
+<pre><code>virtual void setScaleX(float fScaleX);  
+virtual void setScaleY(float fScaleY);  
+virtual void setPosition(const CCPoint&amp; pos);  
+virtual void setRotation(float fRotation);  
+virtual void setRotationX(float fRotationX);  
+virtual void setRotationY(float fRotationY);  
+virtual void setSkewX(float sx);  
+virtual void setSkewY(float sy);  
+virtual void removeChild(CCNode* pChild, bool bCleanup);  
+virtual void removeAllChildrenWithCleanup(bool bCleanup);  
+virtual void reorderChild(CCNode *pChild, int zOrder);  
+virtual void addChild(CCNode *pChild);  
+virtual void addChild(CCNode *pChild, int zOrder);  
+virtual void addChild(CCNode *pChild, int zOrder, int tag);  
+virtual void sortAllChildren();  
+virtual void setScale(float fScale);  
+virtual void setVertexZ(float fVertexZ);  
+virtual void setAnchorPoint(const CCPoint&amp; anchor);//默认(0.5,0.5)  
+virtual void ignoreAnchorPointForPosition(bool value);  
+virtual void setVisible(bool bVisible);  
+virtual void draw(void);  
+</code></pre>
+
+<p><strong>2.4.继承自CCNodeRGBA</strong></p>
+
+<pre><code>//设置颜色  
+virtual void setColor(const ccColor3B&amp; color3);  
+
+//传递颜色  
+virtual void updateDisplayedColor(const ccColor3B&amp; parentColor);  
+
+//设置透明度  
+virtual void setOpacity(GLubyte opacity);  
+
+//设置/返回透明度是否跟随颜色值变化而变化  
+virtual void setOpacityModifyRGB(bool modify);  
+virtual bool isOpacityModifyRGB(void);  
+
+//传递透明度  
+virtual void updateDisplayedOpacity(GLubyte parentOpacity);  
+</code></pre>
+
+<p><strong>2.5.批节点</strong></p>
+
+<pre><code>//更新4属性：x,y,rotation,scale  
+virtual void updateTransform(void);  
+
+//如果精灵是由批节点CCSpriteBatchNode渲染的，则返回批节点  
+virtual CCSpriteBatchNode* getBatchNode(void);  
+//设置批节点，不推荐使用  
+virtual void setBatchNode(CCSpriteBatchNode *pobSpriteBatchNode);  
+</code></pre>
+
+<p><strong>2.6.纹理</strong></p>
+
+<pre><code>//设置纹理区域  
+virtual void setTextureRect(const CCRect&amp; rect);  
+virtual void setTextureRect(const CCRect&amp; rect, bool rotated, const CCSize&amp; untrimmedSize);  
+virtual void setVertexRect(const CCRect&amp; rect);  
+</code></pre>
+
+<p><strong>2.7.精灵帧和动画</strong></p>
+
+<pre><code>//设置新的精灵帧  
+virtual void setDisplayFrame(CCSpriteFrame *pNewFrame);  
+
+//返回精灵帧是否在使用  
+virtual bool isFrameDisplayed(CCSpriteFrame *pFrame);  
+
+//返回当期使用精灵帧  
+virtual CCSpriteFrame* displayFrame(void);  
+
+//设置动画和显示索引  
+virtual void setDisplayFrameWithAnimationName(const char *animationName, int frameIndex);  
+</code></pre>
+
+<p><strong>2.8.Setter和Getter方法</strong></p>
+
+<p>设置/获取CCSprite属性。</p>
+
+<pre><code>//设置获取是否更新  
+virtual bool isDirty(void);  
+virtual void setDirty(bool bDirty);  
+
+//返回坐标、顶点、颜色信息  
+ccV3F_C4B_T2F_Quad getQuad(void);  
+
+//返回纹理旋转  
+bool isTextureRectRotated(void);  
+
+//返回/设置地图集索引  
+unsigned int getAtlasIndex(void);  
+void setAtlasIndex(unsigned int uAtlasIndex);  
+
+//返回精灵区域，单位为点  
+const CCRect&amp; getTextureRect(void);  
+
+//如果采用批渲染，返回/设置纹理地图集  
+CCTextureAtlas* getTextureAtlas(void);  
+inline void setTextureAtlas(CCTextureAtlas *pobTextureAtlas);  
+
+//获取偏移  
+const CCPoint&amp; getOffsetPosition(void);  
+
+//设置返回翻转  
+bool isFlipX(void);  
+void setFlipX(bool bFlipX);  
+bool isFlipY(void);  
+void setFlipY(bool bFlipY);  
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之七】场景类CCScene和布景类CCLayer]]></title>
@@ -708,205 +888,6 @@ static {
 <p><img src="/images/Blog/Play_cocos2dx_04/2.jpg" alt="Android调用流程" /></p>
 
 <p>好了，就这样吧。因为我对Android界面开发，特别是OpenGLView这块也不熟，所以只能大概推出是这样子了，有什么错误，还请指出。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之三】cocos2d-x游戏是怎么跑起来的]]></title>
-    <link href="http://fusijie.github.io/blog/2013/10/10/play-cocos2dx-03/"/>
-    <updated>2013-10-10T10:01:00+08:00</updated>
-    <id>http://fusijie.github.io/blog/2013/10/10/play-cocos2dx-03</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12554167">http://blog.csdn.net/jackystudio</a></p>
-
-<p>虽然cocos2d-x v3.0 alpha版已经出来了，也改进了不少，有兴趣的可以去尝尝鲜。因为后面可能还会配合cocoStudio写一下博客，而现在v1.0.0.0版本需要配合cocos2d-x v2.2.0使用。所以这里选择了V2.2.0版的cocos2d-x。</p>
-
-<p>一个新的东西，从头开始吧！从HelloWorld出发看一下一个cocos2d-x游戏是怎么跑起来的。先看看它的结构。</p>
-
-<p><img src="/images/Blog/Play_cocos2dx_03/1.jpg" alt="结构" /></p>
-
-<!-- more -->
-
-
-<h3>1.main函数</h3>
-
-<p>还是原来配方还是熟悉的味道。。。霸气的main函数依然是程序的入口点：</p>
-
-<pre><code>//main.cpp  
-int APIENTRY _tWinMain(HINSTANCE hInstance,  
-   HINSTANCE hPrevInstance,  
-   LPTSTRlpCmdLine,  
-   int   nCmdShow)  
-{  
-UNREFERENCED_PARAMETER(hPrevInstance);//该宏用于通知编译器不用检测变量是否使用，如果你喜欢用LV4级的警告。  
-UNREFERENCED_PARAMETER(lpCmdLine);  
-
-// create the application instance  
-AppDelegate app;//创建AppDelegate实例  
-CCEGLView* eglView = CCEGLView::sharedOpenGLView();//获取CCEGLView的单一实例，因为还未创建，所以这里会进行创建  
-eglView-&gt;setViewName("HelloCpp");//设置eglView属性  
-eglView-&gt;setFrameSize(2048, 1536);  
-eglView-&gt;setFrameZoomFactor(0.4f);  
-return CCApplication::sharedApplication()-&gt;run();//调用run运行程序  
-} 
-</code></pre>
-
-<p>其中：</p>
-
-<p>（1）AppDelegate继承于CCApplication，是整个游戏的程序类，如果有用过MFC的就很清楚，类似于CxxxApp。</p>
-
-<p>（2）CCEGLView封装了使用openGL作为显示底层API的一个基本的Windows窗体的创建和控制。
-可以简单的认为，一个控制了程序的逻辑，而另一个负责游戏的显示。</p>
-
-<h3>2.CCEGLView类</h3>
-
-<p>我们先看看上一步的CCEGLView::sharedOpenGLView()做了什么。</p>
-
-<pre><code>CCEGLView* CCEGLView::sharedOpenGLView()  
-{
-    if (s_pEglView == NULL)//s_pEglView是一个CCEGLView指针，静态成员变量  
-    {  
-        s_pEglView = new CCEGLView();  
-        if(!s_pEglView-&gt;Create())//main中调用时，会执行这一步  
-        {
-            delete s_pEglView;  
-            s_pEglView = NULL;  
-        }
-    }
-return s_pEglView;  
-}  
-</code></pre>
-
-<p>再看看，create做了什么</p>
-
-<pre><code>//...  
-m_hWnd = CreateWindowEx(   // 创建窗体  
-WS_EX_APPWINDOW | WS_EX_WINDOWEDGE,// Extended Style For The Window  
-kWindowClassName,// Class Name  
-wszBuf,// Window Title  
-WS_CAPTION | WS_POPUPWINDOW | WS_MINIMIZEBOX,// Defined Window Style  
-0, 0,// Window Position  
-1000,   // Window Width  
-1000,   // Window Height  
-NULL,// No Parent Window  
-NULL,// No Menu  
-hInstance,// Instance  
-NULL );  
-</code></pre>
-
-<p>看到上面这一步了吧，使用Win32写过窗体的童鞋，就知道创建一个窗体需要哪些动作：</p>
-
-<p><em>（1）填充窗口类结构WNDCLASS</em></p>
-
-<p><em>（2）注册窗口</em></p>
-
-<p><em>（3）创建窗口</em></p>
-
-<p><em>（4）显示窗口</em>（这一步没有在CCEGLView中实现，而是在后面的CCApplication中实现，因为这里窗口的属性还没有进行设置）</p>
-
-<p>一样的，创建一个cocos2d-x的win32窗口也是要经过这些步骤。具体的就看源码吧，这里不逐句解释了。就是要注意有个WinProc函数，是用于处理主窗口消息。</p>
-
-<h3>3.CCApplication类</h3>
-
-<p>我们再看看CCApplication::sharedApplication()&ndash;>run()执行的又是什么东西。</p>
-
-<pre><code>int CCApplication::run()  
-{  
-    PVRFrameEnableControlWindow(false);  
-
-    // Main message loop:  
-    MSG msg;  
-    LARGE_INTEGER nFreq;  
-    LARGE_INTEGER nLast;  
-    LARGE_INTEGER nNow;  
-
-    QueryPerformanceFrequency(&amp;nFreq);//获取当前系统频率和计数  
-    QueryPerformanceCounter(&amp;nLast);  
-
-    // Initialize instance and cocos2d.  
-    if (!applicationDidFinishLaunching())//虚函数，调用子类的重载，这里也会设置一些显示窗口的属性  
-    {  
-        return 0;  
-    }  
-
-    CCEGLView* pMainWnd = CCEGLView::sharedOpenGLView();获取CCEGLView的单一实例  
-    pMainWnd-&gt;centerWindow();  
-    ShowWindow(pMainWnd-&gt;getHWnd(), SW_SHOW);//这里显示窗口  
-
-    while (1)//消息循环  
-    {  
-        if (! PeekMessage(&amp;msg, NULL, 0, 0, PM_REMOVE))  
-        {  
-            // 获取当前的计数  
-            QueryPerformanceCounter(&amp;nNow);  
-
-            // 判断时间流逝，是否该绘制下一帧  
-            if (nNow.QuadPart - nLast.QuadPart &gt; m_nAnimationInterval.QuadPart)  
-            {  
-                nLast.QuadPart = nNow.QuadPart;  
-                CCDirector::sharedDirector()-&gt;mainLoop();//渲染场景（清除显示设备，重绘场景）  
-            }  
-            else  
-            {  
-                Sleep(0);  
-            }  
-            continue;  
-        }  
-
-        if (WM_QUIT == msg.message)//获取退出消息，跳出循环  
-        {  
-            // Quit message loop.  
-            break;  
-        }  
-
-        // 处理Windows消息  
-        if (! m_hAccelTable || ! TranslateAccelerator(msg.hwnd, m_hAccelTable, &amp;msg))  
-        {  
-            TranslateMessage(&amp;msg);  
-            DispatchMessage(&amp;msg);  
-        }  
-    }
-    return (int) msg.wParam;  
-}  
-</code></pre>
-
-<p>好了，解释的应该算比较清楚了，虽然没有每一个函数都进去。。。这里再总结一下：</p>
-
-<p>（1）首先先获取当前系统的频率和计数。这是一个很大的值，所以用了一个LARGE_INTEGER型变量来存储。</p>
-
-<p>（2）调用子类的applicationDidFinishLaunching()，执行进入程序后的一些初始化工作。</p>
-
-<p>（3）获取CCEGLView单例，显示窗口。</p>
-
-<p>（4）进入循环While(1)，重绘每一帧的场景。</p>
-
-<p>好了，更多关于CCApplication的请看源码吧。</p>
-
-<h3>4.AppDelegate类</h3>
-
-<p>从上面的分析我们知道CCApplication::run()函数中会调用子类（AppDelegate）的applicationDidFinishLaunching函数，而这里也就是我们要设置窗口属性和运行游戏的地方了。</p>
-
-<pre><code>bool AppDelegate::applicationDidFinishLaunching() {  
-//第一次初始化导演，导演也是个单例类  
-CCDirector* pDirector = CCDirector::sharedDirector();  
-
-//获得CCEGLView单例，设置窗口属性和fps等等  
-CCEGLView* pEGLView = CCEGLView::sharedOpenGLView();  
-
-...  
-
-// 创建场景  
-CCScene *pScene = HelloWorld::scene();  
-
-// 进入场景  
-pDirector-&gt;runWithScene(pScene);  
-
-return true;  
-}  
-</code></pre>
-
-<p>好了，最后再总结成一张图，cocos2d-x游戏就是这么跑起来的~</p>
-
-<p><img src="/images/Blog/Play_cocos2dx_03/2.jpg" alt="结构" /></p>
 ]]></content>
   </entry>
   
