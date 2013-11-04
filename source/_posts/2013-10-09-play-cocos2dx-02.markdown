@@ -28,11 +28,11 @@ tags: [cocos2d-x, 游戏引擎]
 
 用一张图来看看它们的关系。
 
-![游戏构成](/images/Blog/Play_cocos2dx_02/1.jpg)
+<div align="center"><img src="/images/Blog/Play_cocos2dx_02/1.jpg" alt="" border="0" title="游戏构成" /><br></br></div>
 
 ###2.引擎构成###
 
-![引擎构成](/images/Blog/Play_cocos2dx_02/2.jpg)
+<div align="center"><img src="/images/Blog/Play_cocos2dx_02/2.jpg" alt="" border="0" title="引擎构成" /><br></br></div>
 
 引擎目录的具体介绍如下：
 

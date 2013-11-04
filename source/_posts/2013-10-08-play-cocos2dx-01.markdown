@@ -51,7 +51,7 @@ tags: [cocos2d-x, 环境配置]
 
 我的电脑→右键→属性→高级→环境变量→系统变量→path→加入你的python安装目录。测试一下：进入cmd，输入python，不会提示“不是外部或内部命令balabala...”就OK。
 
-![设置环境变量](/images/Blog/Play_cocos2dx_01/1.jpg)
+<div align="center"><img src="/images/Blog/Play_cocos2dx_01/1.jpg" alt="" border="0" title="设置环境变量" /><br></br></div>
 
 ###4.创建项目###
 
@@ -75,11 +75,11 @@ tags: [cocos2d-x, 环境配置]
 
 双击运行它就可以了。效果如下：
 
-![创建项目](/images/Blog/Play_cocos2dx_01/2.jpg)
+<div align="center"><img src="/images/Blog/Play_cocos2dx_01/2.jpg" alt="" border="0" title="创建项目" /><br></br></div>
 
 然后在cocos2d-x目录下的project就可以看到Test文件夹，里面包含了各个平台的项目。
 
-![各平台项目](/images/Blog/Play_cocos2dx_01/3.jpg)
+<div align="center"><img src="/images/Blog/Play_cocos2dx_01/3.jpg" alt="" border="0" title="各平台项目" /><br></br></div>
 
 ###5.导入eclipse，生成apk###
 
@@ -93,21 +93,21 @@ tags: [cocos2d-x, 环境配置]
 
 （3）修改项目属性C/C++ builder的build command和build directory。分别为NDK目录下的ndk-builder和当前项目文件夹。
 
-![设置C++ build](/images/Blog/Play_cocos2dx_01/4.jpg)
+<div align="center"><img src="/images/Blog/Play_cocos2dx_01/4.jpg" alt="" border="0" title="设置C++ build" /><br></br></div>
 
 （4）添加C/C++→Builder→Environment→NDK_MODULE_PATH，值为cocos2dx目录和cocos2dx目录\cocos2dx\platform\third_party\android\prebuilt。
 
-![设置NDK_MODULE_PATH](/images/Blog/Play_cocos2dx_01/5.jpg)
+<div align="center"><img src="/images/Blog/Play_cocos2dx_01/5.jpg" alt="" border="0" title="设置NDK_MODULE_PATH" /><br></br></div>
 
 （5）build project ，run as andorid app即可。如果出错，clean一下。不过运行的时候程序出现了Fatal signal 11 (SIGSEGV) at 0x00000000 (code=1)异常，原因还没找到。。。有知道的吱一声。。。（先用Cygwin编译一次再到Eclipse中编译就可以了。真心不知道差别在哪。）
 
-![Eclipse编译](/images/Blog/Play_cocos2dx_01/6.jpg)
+<div align="center"><img src="/images/Blog/Play_cocos2dx_01/6.jpg" alt="" border="0" title="Eclipse编译" /><br></br></div>
 
 **5.2.Cygwin编译**
 
 这个请参见[传送门](http://blog.csdn.net/jackystudio/article/details/11516435)。编译完成后导入Eclipse即可。
 
-![CygWin编译](/images/Blog/Play_cocos2dx_01/7.jpg)
+<div align="center"><img src="/images/Blog/Play_cocos2dx_01/7.jpg" alt="" border="0" title="CygWin编译" /><br></br></div>
 
 如果提示需要定义NDK_ROOT，那么在cygwin安装目录\home\username\.bash_profile文件末尾添加：
 

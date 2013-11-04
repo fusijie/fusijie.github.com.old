@@ -11,7 +11,7 @@ tags: [CCNode, 属性, 常用接口, 特点]
 节点类CCNode可以说是游戏元素的祖宗了，基本上我们看得到的游戏元素都是以它为原型进行扩展的。像CCScene，CCLayer，CCSprite，CCMenu，CCSpriteBatchNode等等都是从CCNode继承而来。另外如果我们要自定义精灵，那么从CCNode继承也是一个很不错的选择。
 
 ###1.概况###
-![CCNode](/images/Blog/Play_cocos2dx_06/1.jpg)
+<div align="center"><img src="/images/Blog/Play_cocos2dx_06/1.jpg" alt="" border="0" title="CCNode" /><br></br></div>
 
 <!-- more -->
 
@@ -248,7 +248,7 @@ CCNode直接从CCObject继承而来，有如下几个特点：
 
 ###4.CCNodeRGBA###
 
-![CCNodeRGBA](/images/Blog/Play_cocos2dx_06/2.jpg)
+<div align="center"><img src="/images/Blog/Play_cocos2dx_06/2.jpg" alt="" border="0" title="CCNodeRGBA" /><br></br></div>
 
 CCNodeRGBA继承于CCNode，所以它拥有CCNode的所有特性，并且它也继承于CCRGBAProtocol。从名字看来我们就知道它是一个带有颜色和透明度的节点。
 
