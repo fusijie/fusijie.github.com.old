@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: CCLayer | Jacky's Blog]]></title>
   <link href="http://fusijie.github.io/tags/cclayer/atom.xml" rel="self"/>
   <link href="http://fusijie.github.io/"/>
-  <updated>2013-11-04T13:57:17+08:00</updated>
+  <updated>2013-11-04T14:06:14+08:00</updated>
   <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -23,8 +23,6 @@
 <p>场景类CCScene和布景类CCLayer都是作为一个容器来使用，这里简单地看下它们的实现：</p>
 
 <h3>1.场景类：CCScene</h3>
-
-<p><img src="/images/Blog/Play_cocos2dx_07/1.jpg" alt="CCScene" /></p>
 
 <div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_07/1.jpg" alt="" border="0" title="CCScene" /><br></br></div>
 
@@ -49,8 +47,6 @@
 </code></pre>
 
 <h3>2.布景类：CCLayer</h3>
-
-<p><img src="/images/Blog/Play_cocos2dx_07/2.jpg" alt="CCLayer" /></p>
 
 <div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_07/2.jpg" alt="" border="0" title="CCLayer" /><br></br></div>
 
@@ -120,8 +116,6 @@ virtual void keyMenuClicked(void);
 
 <h3>3.颜色布景层：CCLayerRGBA，CCLayerColor和CCLayerGradient</h3>
 
-<p><img src="/images/Blog/Play_cocos2dx_07/3.jpg" alt="颜色布景层" /></p>
-
 <div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_07/3.jpg" alt="" border="0" title="颜色布景层" /><br></br></div>
 
 
@@ -132,8 +126,6 @@ virtual void keyMenuClicked(void);
 <p>（3）CCLayerGradient继承于CClayerColor，是一个带有渐变效果的布景层。</p>
 
 <h3>4.多层布景层：CCLayerMultiplex</h3>
-
-<p><img src="/images/Blog/Play_cocos2dx_07/4.jpg" alt="CCLayerMultiplex" /></p>
 
 <div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_07/4.jpg" alt="" border="0" title="CCLayerMultiplex" /><br></br></div>
 
