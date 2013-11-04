@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: CCTextureProtocol | Jacky's Blog]]></title>
+  <link href="http://fusijie.github.io/tags/cctextureprotocol/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2013-11-04T14:15:04+08:00</updated>
+  <id>http://fusijie.github.io/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之八】精灵类CCSprite]]></title>
+    <link href="http://fusijie.github.io/blog/2013/10/15/play-cocos2dx-08/"/>
+    <updated>2013-10-15T17:17:00+08:00</updated>
+    <id>http://fusijie.github.io/blog/2013/10/15/play-cocos2dx-08</id>
+    <content type="html"><![CDATA[<p>精灵类CCSprite可以说是游戏的主角了，也是我们平时最常用到的类。</p>
+
+<h3>1.概况</h3>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_08/1.jpg" alt="" border="0" title="CCSprite" /><br></br></div>
+
+
+<!-- more -->
+
+
+<p>CCSprite本质上就是一个二维图片，是静态的。游戏中的动画只不过是让一张张静态图片快速更换达到的动态效果。CCSprite继承于CCNodeRGBA，并实现了CCTextureProtocol的接口。因此CCNodeRGBA所具有的RGB和透明值这些属性和接口CCSprite都有，而CCTextureProtocol是一个抽象类，定义了和纹理相关的两个标准接口：</p>
+
+<pre><code>//返回当前使用的纹理  
+virtual CCTexture2D* getTexture(void) = 0;  
+
+//设置一个新的纹理，它会被retain  
+virtual void setTexture(CCTexture2D *texture) = 0;  
+</code></pre>
+
+<h3>2.常用接口</h3>
+
+<p><strong>2.1.初始化</strong></p>
+
+<pre><code>//初始化函数  
+virtual bool init(void);  
+
+//用CCTexture2D纹理来初始化，精灵大小即是纹理大小  
+virtual bool initWithTexture(CCTexture2D *pTexture);  
+
+///用CCTexture2D纹理和大小来初始化  
+virtual bool initWithTexture(CCTexture2D *pTexture, const CCRect&amp; rect);  
+
+//用CCTexture2D纹理，大小，旋转来初始化  
+virtual bool initWithTexture(CCTexture2D *pTexture, const CCRect&amp; rect, bool rotated);  
+
+//用CCSpriteFrame精灵帧来初始化  
+virtual bool initWithSpriteFrame(CCSpriteFrame *pSpriteFrame);  
+
+//用CCSpriteFrame精灵帧名来初始化  
+virtual bool initWithSpriteFrameName(const char *pszSpriteFrameName);  
+
+//用外部文件初始化，外部文件会先被创建为纹理，再用纹理初始化精灵  
+virtual bool initWithFile(const char *pszFilename);  
+
+//用外部文件和大小来初始化  
+virtual bool initWithFile(const char *pszFilename, const CCRect&amp; rect);  
+</code></pre>
+
+<p><strong>2.2.继承自CCTextureProtocol</strong></p>
+
+<pre><code>//设置/获取纹理  
+virtual void setTexture(CCTexture2D *texture);  
+virtual CCTexture2D* getTexture(void);  
+
+//设置/获取颜色描绘时混合方案  
+void setBlendFunc(ccBlendFunc blendFunc);  
+ccBlendFunc getBlendFunc(void);  
+</code></pre>
+
+<p><strong>2.3.继承自CCNode</strong></p>
+
+<p>参见CCNode。</p>
+
+<pre><code>virtual void setScaleX(float fScaleX);  
+virtual void setScaleY(float fScaleY);  
+virtual void setPosition(const CCPoint&amp; pos);  
+virtual void setRotation(float fRotation);  
+virtual void setRotationX(float fRotationX);  
+virtual void setRotationY(float fRotationY);  
+virtual void setSkewX(float sx);  
+virtual void setSkewY(float sy);  
+virtual void removeChild(CCNode* pChild, bool bCleanup);  
+virtual void removeAllChildrenWithCleanup(bool bCleanup);  
+virtual void reorderChild(CCNode *pChild, int zOrder);  
+virtual void addChild(CCNode *pChild);  
+virtual void addChild(CCNode *pChild, int zOrder);  
+virtual void addChild(CCNode *pChild, int zOrder, int tag);  
+virtual void sortAllChildren();  
+virtual void setScale(float fScale);  
+virtual void setVertexZ(float fVertexZ);  
+virtual void setAnchorPoint(const CCPoint&amp; anchor);//默认(0.5,0.5)  
+virtual void ignoreAnchorPointForPosition(bool value);  
+virtual void setVisible(bool bVisible);  
+virtual void draw(void);  
+</code></pre>
+
+<p><strong>2.4.继承自CCNodeRGBA</strong></p>
+
+<pre><code>//设置颜色  
+virtual void setColor(const ccColor3B&amp; color3);  
+
+//传递颜色  
+virtual void updateDisplayedColor(const ccColor3B&amp; parentColor);  
+
+//设置透明度  
+virtual void setOpacity(GLubyte opacity);  
+
+//设置/返回透明度是否跟随颜色值变化而变化  
+virtual void setOpacityModifyRGB(bool modify);  
+virtual bool isOpacityModifyRGB(void);  
+
+//传递透明度  
+virtual void updateDisplayedOpacity(GLubyte parentOpacity);  
+</code></pre>
+
+<p><strong>2.5.批节点</strong></p>
+
+<pre><code>//更新4属性：x,y,rotation,scale  
+virtual void updateTransform(void);  
+
+//如果精灵是由批节点CCSpriteBatchNode渲染的，则返回批节点  
+virtual CCSpriteBatchNode* getBatchNode(void);  
+//设置批节点，不推荐使用  
+virtual void setBatchNode(CCSpriteBatchNode *pobSpriteBatchNode);  
+</code></pre>
+
+<p><strong>2.6.纹理</strong></p>
+
+<pre><code>//设置纹理区域  
+virtual void setTextureRect(const CCRect&amp; rect);  
+virtual void setTextureRect(const CCRect&amp; rect, bool rotated, const CCSize&amp; untrimmedSize);  
+virtual void setVertexRect(const CCRect&amp; rect);  
+</code></pre>
+
+<p><strong>2.7.精灵帧和动画</strong></p>
+
+<pre><code>//设置新的精灵帧  
+virtual void setDisplayFrame(CCSpriteFrame *pNewFrame);  
+
+//返回精灵帧是否在使用  
+virtual bool isFrameDisplayed(CCSpriteFrame *pFrame);  
+
+//返回当期使用精灵帧  
+virtual CCSpriteFrame* displayFrame(void);  
+
+//设置动画和显示索引  
+virtual void setDisplayFrameWithAnimationName(const char *animationName, int frameIndex);  
+</code></pre>
+
+<p><strong>2.8.Setter和Getter方法</strong></p>
+
+<p>设置/获取CCSprite属性。</p>
+
+<pre><code>//设置获取是否更新  
+virtual bool isDirty(void);  
+virtual void setDirty(bool bDirty);  
+
+//返回坐标、顶点、颜色信息  
+ccV3F_C4B_T2F_Quad getQuad(void);  
+
+//返回纹理旋转  
+bool isTextureRectRotated(void);  
+
+//返回/设置地图集索引  
+unsigned int getAtlasIndex(void);  
+void setAtlasIndex(unsigned int uAtlasIndex);  
+
+//返回精灵区域，单位为点  
+const CCRect&amp; getTextureRect(void);  
+
+//如果采用批渲染，返回/设置纹理地图集  
+CCTextureAtlas* getTextureAtlas(void);  
+inline void setTextureAtlas(CCTextureAtlas *pobTextureAtlas);  
+
+//获取偏移  
+const CCPoint&amp; getOffsetPosition(void);  
+
+//设置返回翻转  
+bool isFlipX(void);  
+void setFlipX(bool bFlipX);  
+bool isFlipY(void);  
+void setFlipY(bool bFlipY);  
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

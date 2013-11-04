@@ -1,0 +1,910 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: cocos2d-x | Jacky's Blog]]></title>
+  <link href="http://fusijie.github.io/blog/categories/cocos2d-x/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2013-11-04T14:15:04+08:00</updated>
+  <id>http://fusijie.github.io/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之八】精灵类CCSprite]]></title>
+    <link href="http://fusijie.github.io/blog/2013/10/15/play-cocos2dx-08/"/>
+    <updated>2013-10-15T17:17:00+08:00</updated>
+    <id>http://fusijie.github.io/blog/2013/10/15/play-cocos2dx-08</id>
+    <content type="html"><![CDATA[<p>精灵类CCSprite可以说是游戏的主角了，也是我们平时最常用到的类。</p>
+
+<h3>1.概况</h3>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_08/1.jpg" alt="" border="0" title="CCSprite" /><br></br></div>
+
+
+<!-- more -->
+
+
+<p>CCSprite本质上就是一个二维图片，是静态的。游戏中的动画只不过是让一张张静态图片快速更换达到的动态效果。CCSprite继承于CCNodeRGBA，并实现了CCTextureProtocol的接口。因此CCNodeRGBA所具有的RGB和透明值这些属性和接口CCSprite都有，而CCTextureProtocol是一个抽象类，定义了和纹理相关的两个标准接口：</p>
+
+<pre><code>//返回当前使用的纹理  
+virtual CCTexture2D* getTexture(void) = 0;  
+
+//设置一个新的纹理，它会被retain  
+virtual void setTexture(CCTexture2D *texture) = 0;  
+</code></pre>
+
+<h3>2.常用接口</h3>
+
+<p><strong>2.1.初始化</strong></p>
+
+<pre><code>//初始化函数  
+virtual bool init(void);  
+
+//用CCTexture2D纹理来初始化，精灵大小即是纹理大小  
+virtual bool initWithTexture(CCTexture2D *pTexture);  
+
+///用CCTexture2D纹理和大小来初始化  
+virtual bool initWithTexture(CCTexture2D *pTexture, const CCRect&amp; rect);  
+
+//用CCTexture2D纹理，大小，旋转来初始化  
+virtual bool initWithTexture(CCTexture2D *pTexture, const CCRect&amp; rect, bool rotated);  
+
+//用CCSpriteFrame精灵帧来初始化  
+virtual bool initWithSpriteFrame(CCSpriteFrame *pSpriteFrame);  
+
+//用CCSpriteFrame精灵帧名来初始化  
+virtual bool initWithSpriteFrameName(const char *pszSpriteFrameName);  
+
+//用外部文件初始化，外部文件会先被创建为纹理，再用纹理初始化精灵  
+virtual bool initWithFile(const char *pszFilename);  
+
+//用外部文件和大小来初始化  
+virtual bool initWithFile(const char *pszFilename, const CCRect&amp; rect);  
+</code></pre>
+
+<p><strong>2.2.继承自CCTextureProtocol</strong></p>
+
+<pre><code>//设置/获取纹理  
+virtual void setTexture(CCTexture2D *texture);  
+virtual CCTexture2D* getTexture(void);  
+
+//设置/获取颜色描绘时混合方案  
+void setBlendFunc(ccBlendFunc blendFunc);  
+ccBlendFunc getBlendFunc(void);  
+</code></pre>
+
+<p><strong>2.3.继承自CCNode</strong></p>
+
+<p>参见CCNode。</p>
+
+<pre><code>virtual void setScaleX(float fScaleX);  
+virtual void setScaleY(float fScaleY);  
+virtual void setPosition(const CCPoint&amp; pos);  
+virtual void setRotation(float fRotation);  
+virtual void setRotationX(float fRotationX);  
+virtual void setRotationY(float fRotationY);  
+virtual void setSkewX(float sx);  
+virtual void setSkewY(float sy);  
+virtual void removeChild(CCNode* pChild, bool bCleanup);  
+virtual void removeAllChildrenWithCleanup(bool bCleanup);  
+virtual void reorderChild(CCNode *pChild, int zOrder);  
+virtual void addChild(CCNode *pChild);  
+virtual void addChild(CCNode *pChild, int zOrder);  
+virtual void addChild(CCNode *pChild, int zOrder, int tag);  
+virtual void sortAllChildren();  
+virtual void setScale(float fScale);  
+virtual void setVertexZ(float fVertexZ);  
+virtual void setAnchorPoint(const CCPoint&amp; anchor);//默认(0.5,0.5)  
+virtual void ignoreAnchorPointForPosition(bool value);  
+virtual void setVisible(bool bVisible);  
+virtual void draw(void);  
+</code></pre>
+
+<p><strong>2.4.继承自CCNodeRGBA</strong></p>
+
+<pre><code>//设置颜色  
+virtual void setColor(const ccColor3B&amp; color3);  
+
+//传递颜色  
+virtual void updateDisplayedColor(const ccColor3B&amp; parentColor);  
+
+//设置透明度  
+virtual void setOpacity(GLubyte opacity);  
+
+//设置/返回透明度是否跟随颜色值变化而变化  
+virtual void setOpacityModifyRGB(bool modify);  
+virtual bool isOpacityModifyRGB(void);  
+
+//传递透明度  
+virtual void updateDisplayedOpacity(GLubyte parentOpacity);  
+</code></pre>
+
+<p><strong>2.5.批节点</strong></p>
+
+<pre><code>//更新4属性：x,y,rotation,scale  
+virtual void updateTransform(void);  
+
+//如果精灵是由批节点CCSpriteBatchNode渲染的，则返回批节点  
+virtual CCSpriteBatchNode* getBatchNode(void);  
+//设置批节点，不推荐使用  
+virtual void setBatchNode(CCSpriteBatchNode *pobSpriteBatchNode);  
+</code></pre>
+
+<p><strong>2.6.纹理</strong></p>
+
+<pre><code>//设置纹理区域  
+virtual void setTextureRect(const CCRect&amp; rect);  
+virtual void setTextureRect(const CCRect&amp; rect, bool rotated, const CCSize&amp; untrimmedSize);  
+virtual void setVertexRect(const CCRect&amp; rect);  
+</code></pre>
+
+<p><strong>2.7.精灵帧和动画</strong></p>
+
+<pre><code>//设置新的精灵帧  
+virtual void setDisplayFrame(CCSpriteFrame *pNewFrame);  
+
+//返回精灵帧是否在使用  
+virtual bool isFrameDisplayed(CCSpriteFrame *pFrame);  
+
+//返回当期使用精灵帧  
+virtual CCSpriteFrame* displayFrame(void);  
+
+//设置动画和显示索引  
+virtual void setDisplayFrameWithAnimationName(const char *animationName, int frameIndex);  
+</code></pre>
+
+<p><strong>2.8.Setter和Getter方法</strong></p>
+
+<p>设置/获取CCSprite属性。</p>
+
+<pre><code>//设置获取是否更新  
+virtual bool isDirty(void);  
+virtual void setDirty(bool bDirty);  
+
+//返回坐标、顶点、颜色信息  
+ccV3F_C4B_T2F_Quad getQuad(void);  
+
+//返回纹理旋转  
+bool isTextureRectRotated(void);  
+
+//返回/设置地图集索引  
+unsigned int getAtlasIndex(void);  
+void setAtlasIndex(unsigned int uAtlasIndex);  
+
+//返回精灵区域，单位为点  
+const CCRect&amp; getTextureRect(void);  
+
+//如果采用批渲染，返回/设置纹理地图集  
+CCTextureAtlas* getTextureAtlas(void);  
+inline void setTextureAtlas(CCTextureAtlas *pobTextureAtlas);  
+
+//获取偏移  
+const CCPoint&amp; getOffsetPosition(void);  
+
+//设置返回翻转  
+bool isFlipX(void);  
+void setFlipX(bool bFlipX);  
+bool isFlipY(void);  
+void setFlipY(bool bFlipY);  
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之七】场景类CCScene和布景类CCLayer]]></title>
+    <link href="http://fusijie.github.io/blog/2013/10/14/play-cocos2dx-07/"/>
+    <updated>2013-10-14T22:21:00+08:00</updated>
+    <id>http://fusijie.github.io/blog/2013/10/14/play-cocos2dx-07</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12708811">http://blog.csdn.net/jackystudio</a></p>
+
+<p>场景类CCScene和布景类CCLayer都是作为一个容器来使用，这里简单地看下它们的实现：</p>
+
+<h3>1.场景类：CCScene</h3>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_07/1.jpg" alt="" border="0" title="CCScene" /><br></br></div>
+
+
+
+
+<!-- more -->
+
+
+<p>CCScene类继承于CCNode，它的实现很简单，就是基本上没添加什么内容。。。它只是作为一个容器（父节点）的抽象概念存在。对比CCNode差别有：</p>
+
+<p>（1）构造函数中设置了不使用锚点定位，而是使用了坐标原点，即使设置了锚点也不起作用。</p>
+
+<p>m_bIgnoreAnchorPointForPosition是CCNode的属性，用于CCScene和CCLayer。</p>
+
+<pre><code>m_bIgnoreAnchorPointForPosition = true;  
+</code></pre>
+
+<p>（2）在init中设置场景的大小。节点的初始化大小为CCSizeZero，也就是没有大小。CCScene初始化时设置了场景的大小，即窗口大小。</p>
+
+<pre><code>this-&gt;setContentSize(pDirector-&gt;getWinSize());  
+</code></pre>
+
+<h3>2.布景类：CCLayer</h3>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_07/2.jpg" alt="" border="0" title="CCLayer" /><br></br></div>
+
+
+<p>CCLayer相对CCScene而言会比较麻烦一点，因为他不仅要作为容器使用，而且还要实现一些游戏功能，所以它继承了CCTouchDelegate，CCAccelerometerDelegate和CCKeypadDelegate，这三个类是用来处理触摸事件，重力感应事件和键盘事件的，默认初始化都是不可用，需要手动设置开启。</p>
+
+<p>（1）CCLayer和CCScene的初始化差不多，也是构造函数中设置不使用锚点定位，init函数中设置了层的大小，即窗口大小。</p>
+
+<p>（2）常用接口：</p>
+
+<pre><code>//初始化函数，添加精灵就在这里进行  
+virtual bool init();  
+
+//分配内存，标记autoRelease  
+static CCLayer *create(void);  
+
+//层进入回调  
+virtual void onEnter();  
+//层退出回调  
+virtual void onExit();  
+//如果层进入带效果，效果完成时回调  
+virtual void onEnterTransitionDidFinish();  
+
+//触摸事件(单点和多点)  
+virtual bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent);  
+virtual void ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent);  
+virtual void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent);  
+virtual void ccTouchCancelled(CCTouch *pTouch, CCEvent *pEvent);  
+virtual void ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent);  
+virtual void ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent);  
+virtual void ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent);  
+virtual void ccTouchesCancelled(CCSet *pTouches, CCEvent *pEvent);  
+
+//重力感应相关  
+virtual void didAccelerate(CCAcceleration* pAccelerationValue);  
+void registerScriptAccelerateHandler(int nHandler);  
+void unregisterScriptAccelerateHandler(void);  
+
+//注册触摸分发，默认是addStandardDelegate  
+virtual void registerWithTouchDispatcher(void);  
+
+//设置/获取释放触摸可用  
+virtual bool isTouchEnabled();  
+virtual void setTouchEnabled(bool value);  
+
+//设置/获取触摸模式  
+virtual void setTouchMode(ccTouchesMode mode);  
+virtual int getTouchMode();  
+
+//设置/获取触摸优先级，默认为0  
+virtual void setTouchPriority(int priority);  
+virtual int getTouchPriority();  
+
+//设置/获取是否接收重力感应事件  
+virtual bool isAccelerometerEnabled();  
+virtual void setAccelerometerEnabled(bool value);  
+virtual void setAccelerometerInterval(double interval);  
+
+//设置/获取是否接收键盘事件  
+virtual bool isKeypadEnabled();  
+virtual void setKeypadEnabled(bool value);  
+
+//返回键和菜单键的回调，需要设置接收键盘事件  
+virtual void keyBackClicked(void);  
+virtual void keyMenuClicked(void);  
+</code></pre>
+
+<h3>3.颜色布景层：CCLayerRGBA，CCLayerColor和CCLayerGradient</h3>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_07/3.jpg" alt="" border="0" title="颜色布景层" /><br></br></div>
+
+
+<p>（1）CCLayerRGBA和CCNodeRGBA差不多，也是用于设置RGB值和Blend值，同时可以传递到子节点。它的相关接口参见CCNodeRGBA。</p>
+
+<p>（2）CCLayerColor只是一个单纯的可以绘制颜色的层。可以带入长宽参数，绘制一个矩形的布景层。</p>
+
+<p>（3）CCLayerGradient继承于CClayerColor，是一个带有渐变效果的布景层。</p>
+
+<h3>4.多层布景层：CCLayerMultiplex</h3>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_07/4.jpg" alt="" border="0" title="CCLayerMultiplex" /><br></br></div>
+
+
+<p>CCLayerMultiplex继承与CCLayer，相当于一个层容器，他可以包含多个层，但是同一时间只能显示一个CCLayer。《我叫MT》的第一个界面菜单那一块就是这么处理的。CCLayerMultiplex最重要的函数就是：</p>
+
+<pre><code>//切换布景层  
+pLayerMultiplex-&gt;switchTo(item-&gt;getTag());  
+pLayerMultiplex-&gt;switchToAndReleaseMe(item-&gt;getTag());  
+</code></pre>
+
+<p>两者的差别在于是否释放当前处于活动的布景层。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之六】节点类CCNode]]></title>
+    <link href="http://fusijie.github.io/blog/2013/10/14/play-cocos2dx-06/"/>
+    <updated>2013-10-14T22:06:00+08:00</updated>
+    <id>http://fusijie.github.io/blog/2013/10/14/play-cocos2dx-06</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12703741">http://blog.csdn.net/jackystudio/</a></p>
+
+<p>节点类CCNode可以说是游戏元素的祖宗了，基本上我们看得到的游戏元素都是以它为原型进行扩展的。像CCScene，CCLayer，CCSprite，CCMenu，CCSpriteBatchNode等等都是从CCNode继承而来。另外如果我们要自定义精灵，那么从CCNode继承也是一个很不错的选择。</p>
+
+<h3>1.概况</h3>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_06/1.jpg" alt="" border="0" title="CCNode" /><br></br></div>
+
+
+
+
+<!-- more -->
+
+
+<p>CCNode直接从CCObject继承而来，有如下几个特点：</p>
+
+<p><em>（1）可以包含其他CCNode节点，可以进行添加/获取/删除子节点操作。</em></p>
+
+<p><em>（2）可以执行周期性的回调任务。</em></p>
+
+<p><em>（3）可以执行动作。</em></p>
+
+<p>一些子类化的节点提供了更为丰富的特性和功能。</p>
+
+<h3>2.属性</h3>
+
+<pre><code>Features of CCNode:  
+- position   //位置，默认(0,0)  
+- scale (x, y)   //缩放，默认(1,1)  
+- rotation (in degrees, clockwise)   //旋转，默认为0  
+- skew   //倾斜，默认为0  
+- CCCamera (an interface to gluLookAt )  //CCCamera，视点转换，每个节点都有，默认指向节点中心  
+- CCGridBase (to do mesh transformations)//CCGridBase，网类转变  
+- anchor point   //锚点，默认(0,0)  
+- size   //尺寸，默认(0,0)  
+- visible//可见  
+- z-order//z轴值  
+- openGL z position  //OpenGL z值  
+</code></pre>
+
+<h3>3.接口</h3>
+
+<p><strong>3.1.初始化</strong></p>
+
+<pre><code>//初始化函数，成功返回true  
+virtual bool init();  
+
+//分配内存空间，调用init并添加autoRelease标记  
+static CCNode * create(void);  
+
+//返回描述字符串  
+const char* description(void);  
+</code></pre>
+
+<p><strong>3.2.图形属性</strong></p>
+
+<pre><code>//设置/获取Z轴顺序，Z轴大的覆盖Z轴小的  
+virtual void setZOrder(int zOrder);  
+virtual void _setZOrder(int z);  
+virtual int getZOrder();  
+
+//设置/获取OpenGL Z轴顶点  
+virtual void setVertexZ(float vertexZ);  
+virtual float getVertexZ();  
+
+//设置/获取缩放值  
+virtual void setScaleX(float fScaleX);  
+virtual float getScaleX();  
+virtual void setScaleY(float fScaleY);  
+virtual float getScaleY();  
+virtual void setScale(float scale);  
+virtual float getScale();  
+virtual void setScale(float fScaleX,float fScaleY);  
+
+//设置/获取位置  
+virtual void setPosition(const CCPoint &amp;position);  
+virtual const CCPoint&amp; getPosition();  
+virtual void setPosition(float x, float y);  
+virtual void getPosition(float* x, float* y);  
+virtual void  setPositionX(float x);  
+virtual float getPositionX(void);  
+virtual void  setPositionY(float y);  
+virtual float getPositionY(void);  
+
+//设置/获取倾斜角度  
+virtual void setSkewX(float fSkewX);  
+virtual float getSkewX();  
+virtual void setSkewY(float fSkewY);  
+virtual float getSkewY();  
+
+//设置/获取锚点  
+virtual void setAnchorPoint(const CCPoint&amp; anchorPoint);  
+virtual const CCPoint&amp; getAnchorPoint();  
+virtual const CCPoint&amp; getAnchorPointInPoints();  
+
+//设置/获取大小  
+virtual void setContentSize(const CCSize&amp; contentSize);  
+virtual const CCSize&amp; getContentSize() const;  
+
+//设置/获取可见性  
+virtual void setVisible(bool visible);  
+virtual bool isVisible();  
+
+//设置/获取旋转角度  
+virtual void setRotation(float fRotation);  
+virtual float getRotation();  
+virtual void setRotationX(float fRotaionX);  
+virtual float getRotationX();  
+virtual void setRotationY(float fRotationY);  
+virtual float getRotationY();  
+</code></pre>
+
+<p><strong>3.3.节点操作</strong></p>
+
+<pre><code>//添加/获取子节点，可以带Z轴顺序（默认为0）和标签  
+virtual void addChild(CCNode * child);  
+virtual void addChild(CCNode * child, int zOrder);  
+virtual void addChild(CCNode* child, int zOrder, int tag);  
+CCNode * getChildByTag(int tag);  
+virtual CCArray* getChildren();  
+unsigned int getChildrenCount(void) const;  
+
+//设置/获取父节点  
+virtual void setParent(CCNode* parent);  
+virtual CCNode* getParent();  
+
+//从父节点中移除自身，默认cleanup为true  
+virtual void removeFromParent();  
+virtual void removeFromParentAndCleanup(bool cleanup);  
+
+//移除子节点  
+virtual void removeChild(CCNode* child);  
+virtual void removeChild(CCNode* child, bool cleanup);  
+virtual void removeChildByTag(int tag);  
+virtual void removeChildByTag(int tag, bool cleanup);  
+
+//移除所有节点  
+virtual void removeAllChildren();  
+virtual void removeAllChildrenWithCleanup(bool cleanup);  
+
+//重新设置节点顺序  
+virtual void reorderChild(CCNode * child, int zOrder);  
+</code></pre>
+
+<p><strong>3.4.标签和用户数据</strong></p>
+
+<pre><code>//设置/获取tag  
+virtual int getTag() const;  
+virtual void setTag(int nTag);  
+
+//设置/获取userdata，它是一个指针可以指向你想要的任意数据块，不过记得要释放  
+virtual void* getUserData();  
+virtual void setUserData(void *pUserData);  
+
+//设置/获取CCObject，和上面一样，只是数据换成了CCObject对象  
+virtual CCObject* getUserObject();  
+virtual void setUserObject(CCObject *pUserObject);  
+</code></pre>
+
+<p><strong>3.5.事件回调</strong></p>
+
+<pre><code>//事件回调
+//节点开始进入触发  
+virtual void onEnter();  
+//节点完成进入触发  
+virtual void onEnterTransitionDidFinish();  
+//节点退出触发  
+virtual void onExit();  
+//如果节点退出有过渡动画，动画开始时触发  
+virtual void onExitTransitionDidStart();  
+//停止动画和调度器  
+virtual void cleanup(void);  
+</code></pre>
+
+<p><strong>3.6.动作</strong></p>
+
+<pre><code>//获取/设置动作管理器
+virtual void setActionManager(CCActionManager* actionManager);  
+virtual CCActionManager* getActionManager();  
+
+//运行动作  
+CCAction* runAction(CCAction* action);  
+
+//停止动作  
+void stopAllActions(void);  
+void stopAction(CCAction* action);  
+void stopActionByTag(int tag);  
+CCAction* getActionByTag(int tag);  
+
+//获取正在运行动作数  
+unsigned int numberOfRunningActions(void);  
+</code></pre>
+
+<p><strong>3.7.调度器和定时器</strong></p>
+
+<pre><code>//获取/设置调度器  
+virtual void setScheduler(CCScheduler* scheduler);  
+virtual CCScheduler* getScheduler();  
+
+//检测某个调度器是否有在运行  
+bool isScheduled(SEL_SCHEDULE selector);  
+
+//开启update调度  
+void scheduleUpdate(void);  
+//设置调度优先级  
+void scheduleUpdateWithPriority(int priority);  
+//关闭update调度器  
+void unscheduleUpdate(void);  
+
+//开启/关闭/恢复/暂停调度器  
+void schedule(SEL_SCHEDULE selector, float interval, unsigned int repeat, float delay);  
+void schedule(SEL_SCHEDULE selector, float interval);  
+void scheduleOnce(SEL_SCHEDULE selector, float delay);  
+void schedule(SEL_SCHEDULE selector);  
+void unschedule(SEL_SCHEDULE selector);  
+void unscheduleAllSelectors(void);  
+void resumeSchedulerAndActions(void);  
+void pauseSchedulerAndActions(void);  
+
+//每帧调用函数  
+virtual void update(float delta);  
+</code></pre>
+
+<p><strong>3.8.坐标转换</strong></p>
+
+<pre><code>//坐标转换相关，这一部分后面再介绍  
+CCPoint convertToNodeSpace(const CCPoint&amp; worldPoint);  
+CCPoint convertToWorldSpace(const CCPoint&amp; nodePoint);  
+CCPoint convertToNodeSpaceAR(const CCPoint&amp; worldPoint);  
+CCPoint convertToWorldSpaceAR(const CCPoint&amp; nodePoint);  
+CCPoint convertTouchToNodeSpace(CCTouch * touch);  
+CCPoint convertTouchToNodeSpaceAR(CCTouch * touch);  
+</code></pre>
+
+<p><strong>3.9.其他</strong></p>
+
+<pre><code>//获取/设置着色程序  
+virtual CCGLProgram* getShaderProgram();  
+virtual void setShaderProgram(CCGLProgram *pShaderProgram);  
+
+//获取CCCamera对象  
+virtual CCCamera* getCamera();  
+
+//节点是否在运行  
+virtual bool isRunning();  
+
+//绘制节点  
+virtual void draw(void);  
+//递归访问节点  
+virtual void visit(void);  
+
+//返回所占矩形，节点坐标系  
+CCRect boundingBox(void);  
+</code></pre>
+
+<h3>4.CCNodeRGBA</h3>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_06/2.jpg" alt="" border="0" title="CCNodeRGBA" /><br></br></div>
+
+
+<p>CCNodeRGBA继承于CCNode，所以它拥有CCNode的所有特性，并且它也继承于CCRGBAProtocol。从名字看来我们就知道它是一个带有颜色和透明度的节点。</p>
+
+<p>所以它比起CCNode就多了2个特性，Opacity和RGB值。</p>
+
+<p>如果要给子节点传递透明度属性，那么需要设置setCascadeOpacityEnabled(true)，如果传递的过程中遇到了CCNode，那么传递会中断。颜色值的传递也是一样的道理。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之五】导演类CCDirector]]></title>
+    <link href="http://fusijie.github.io/blog/2013/10/12/play-cocos2dx-05/"/>
+    <updated>2013-10-12T21:49:00+08:00</updated>
+    <id>http://fusijie.github.io/blog/2013/10/12/play-cocos2dx-05</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12646337">http://blog.csdn.net/jackystudio</a></p>
+
+<p>既然cocos2d-x都帮我们封装好了，使得开发与平台无关，那接下来我们就单纯地开始好好玩游戏吧！这几篇是对cocos2d-x一些基本且重要的元素进行解释和API介绍，之前没有系统的看过API，有时候某些功能引擎都已经提供好了，不知道还是会自己去写。所以全面地了解一下是必须的。</p>
+
+<h3>1.概况</h3>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_05/1.jpg" alt="" border="0" title="CCDirector" /><br></br></div>
+
+
+
+
+<!-- more -->
+
+
+<p>导演类CCDirector是cocos2d-x引擎中非常重要的一个类，它是一个抽象类（mainloop空实现），主要完成以下工作：</p>
+
+<p>（1）初始化游戏和销毁游戏</p>
+
+<p>（2）管理调度场景</p>
+
+<p>（3）调整设置openGL信息</p>
+
+<p>（4）获取、设置游戏的相关细节</p>
+
+<p>CCDirector是单例类，直接从CCObject继承而来，它在cocos2d-x中的首次创建位置在上一篇已经介绍了。因此后面的CCDirector调用可采用如下方式：</p>
+
+<pre><code>CCDirector::sharedDirector()-&gt;methodname;
+</code></pre>
+
+<h3>2.常用接口</h3>
+
+<p><strong>2.1.属性</strong></p>
+
+<pre><code>//获得当前运行场景，cocos2dx同时只能运行一个场景  
+CCScene* getRunningScene(void);  
+
+//获取fps  
+double getAnimationInterval(void);  
+//设置fps  
+virtual void setAnimationInterval(double dValue);  
+
+//是否显示fps  
+bool isDisplayStats(void);  
+//设置是否显示fps  
+void setDisplayStats(bool bDisplayStats);  
+
+//每帧秒数  
+float getSecondsPerFrame();  
+
+//获取openGLView  
+CCEGLView* getOpenGLView(void);  
+//设置openGLView  
+void setOpenGLView(CCEGLView *pobOpenGLView);  
+
+//释放暂停  
+bool isPaused(void);  
+
+//获取调用到现在的所有帧数  
+unsigned int getTotalFrames(void);  
+
+//是否接收到cleanup事件，replace会，而push不会  
+bool isSendCleanupToScene(void);  
+</code></pre>
+
+<p><strong>2.2.窗口</strong></p>
+
+<pre><code>//返回openGLView的大小，单位为点  
+CCSize getWinSize(void);  
+
+//返回openGLView的大小，单位为像素  
+CCSize getWinSizeInPixels(void);  
+
+//返回可见区域的大小，单位为点，如果没调用setDesignResolutionSize，就和getWinSize是一样的  
+CCSize getVisibleSize();  
+
+//返回可见区域的原点  
+CCPoint getVisibleOrigin();  
+
+//将UIKit坐标体系转换成OpenGL坐标体系  
+CCPoint convertToGL(const CCPoint&amp; obPoint);  
+
+//将OpenGL坐标体系转换成UIKit坐标体系
+CCPoint convertToUI(const CCPoint&amp; obPoint);  
+</code></pre>
+
+<p><strong>2.3.场景管理</strong></p>
+
+<pre><code>//调用第一个场景，当前不能有场景运行  
+void runWithScene(CCScene *pScene);  
+
+//场景入栈，当前必须有场景  
+void pushScene(CCScene *pScene);  
+
+//场景出栈，删除当前场景，当前必须有场景  
+void popScene(void);  
+
+//弹出所有场景，直至根场景  
+void popToRootScene(void);  
+
+//弹出至指定场景  
+void popToSceneStackLevel(int level);  
+
+//用新场景替代旧场景  
+void replaceScene(CCScene *pScene);  
+
+//结束运行，释放场景，必须手动调用  
+void end(void);  
+
+//暂停场景  
+void pause(void);  
+
+//恢复场景  
+void resume(void);  
+
+//暂停所有动画  
+virtual void stopAnimation(void);  
+
+//开始所有动画  
+virtual void startAnimation(void);  
+</code></pre>
+
+<p><strong>2.4.内存和OpenGL</strong></p>
+
+<pre><code>//移除所有cocos2dx缓冲数据  
+void purgeCachedData(void);  
+
+//设置默认值  
+void setDefaultValues(void);  
+
+//设置OpenGL默认值  
+void setGLDefaultValues(void);  
+
+//开关OpenGL alpha混合通道  
+void setAlphaBlending(bool bOn);  
+
+//设置景深测试  
+void setDepthTest(bool bOn);  
+</code></pre>
+
+<h3>3.CCDisplayLinkDirector</h3>
+
+<p>CCDisplayLinkDirector继承于CCDirector，它实现了mainloop函数，是一个以显示刷新速度同步定时器的Director，也就是可以自动刷新的导演类，它支持60，30，15三种帧数。我们平时使用的也就是它。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之四】cocos2d-x怎么实现跨平台]]></title>
+    <link href="http://fusijie.github.io/blog/2013/10/11/play-cocos2dx-04/"/>
+    <updated>2013-10-11T21:23:00+08:00</updated>
+    <id>http://fusijie.github.io/blog/2013/10/11/play-cocos2dx-04</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12610287">http://blog.csdn.net/jackystudio</a></p>
+
+<p>cocos2d-x到底是怎样实现跨平台的呢？这里以Win32和Android为例。</p>
+
+<h3>1.跨平台项目目录结构</h3>
+
+<p>先看一下一个项目创建后的目录结构吧！这还是以HelloCpp为例。</p>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_04/1.jpg" alt="" border="0" title="跨平台项目目录结构" /><br></br></div>
+
+
+<!-- more -->
+
+
+<p>从左边目录可以看到，Classes和Resource已经平台无关了，而Classes中包含了AppDelegate类，因此我们可以认为AppDelegate是与平台最接近的类，在它以上就要区分平台了。</p>
+
+<h3>2.Win32下的实现</h3>
+
+<p>在前一篇就介绍了Win32怎么开始cocos2dx，Win32平台下main.cpp就是程序入口：</p>
+
+<pre><code>int APIENTRY _tWinMain(HINSTANCE hInstance,  
+   HINSTANCE hPrevInstance,  
+   LPTSTRlpCmdLine,  
+   int   nCmdShow)  
+{  
+    UNREFERENCED_PARAMETER(hPrevInstance);  
+    UNREFERENCED_PARAMETER(lpCmdLine);  
+
+    // create the application instance  
+    AppDelegate app;//创建应用实例  
+    CCEGLView* eglView = CCEGLView::sharedOpenGLView();  
+    eglView-&gt;setViewName("HelloCpp");  
+    eglView-&gt;setFrameSize(2048, 1536);  
+    eglView-&gt;setFrameZoomFactor(0.4f);  
+    return CCApplication::sharedApplication()-&gt;run();//运行程序  
+}  
+</code></pre>
+
+<p>Win32下的实现比较简单，就是正常的创建实例，运行就可以了。</p>
+
+<h3>3.Android下的实现</h3>
+
+<p><strong>3.1.cocos2d-x程序入口</strong></p>
+
+<p>我们先看一下Android下cocos2d-x程序入口点在哪，我们知道Android是采用Java编写的，而cocos2d-x是c++编写的，所以如果要在Java中调用c++代码，那就需要采用JNI技术，看起来好像高端大气上档次，其实程序就是函数调用，也就是输入→处理→输出，所以JNI实际上简单抽象出来就这么回事：</p>
+
+<p>java输入→Jni→c++输入→c++处理（API实现）→c++输出→Jni→java输出</p>
+
+<p>在\proj.android\jni\hellocpp文件夹下可以找到main.cpp，这就是cocos2d-x的入口：</p>
+
+<pre><code>jint JNI_OnLoad(JavaVM *vm, void *reserved)  
+{  
+    JniHelper::setJavaVM(vm);  
+
+    return JNI_VERSION_1_4;  
+}  
+
+void Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit(JNIEnv*  env, jobject thiz, jint w, jint h)  
+{  
+    if (!CCDirector::sharedDirector()-&gt;getOpenGLView())  
+    {  
+        CCEGLView *view = CCEGLView::sharedOpenGLView();  
+        view-&gt;setFrameSize(w, h);  
+
+        AppDelegate *pAppDelegate = new AppDelegate();  
+        CCApplication::sharedApplication()-&gt;run();  
+    }  
+    else  
+    {  
+        ccGLInvalidateStateCache();  
+        CCShaderCache::sharedShaderCache()-&gt;reloadDefaultShaders();  
+        ccDrawInit();  
+        CCTextureCache::reloadAllTextures();  
+        CCNotificationCenter::sharedNotificationCenter()-&gt;postNotification(EVENT_COME_TO_FOREGROUND, NULL);  
+        CCDirector::sharedDirector()-&gt;setGLDefaultValues();   
+    }  
+}
+</code></pre>
+
+<p>里面包含了2个函数，JNI_OnLoad和Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit。我们看一下功能而先不管它在哪里被调用。</p>
+
+<p><em>（1）JNI_OnLoad，</em>这个函数主要是用来高速Android VM当前使用的是什么版本是Jni，如果不提供此函数，则默认使用Jni1.1版本。</p>
+
+<p><em>（2）Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit，</em>这个函数很明显就是运行一个cocos2d-x的应用实例了，这和Win32是一样的，当然它多了一个openGlView的检测。一旦调用了它那么cocos2d-x游戏启动。
+接下来再看看它们是在哪里被调用的。</p>
+
+<p><strong>3.2.JNI_OnLoad的调用</strong></p>
+
+<p>在proj.android\src\org\cocos2dx\hellocpp目录下，可以看到Android的入口Activity，也就是HelloCpp，它继承自Cocos2dxActivity。</p>
+
+<pre><code>public class HelloCpp extends Cocos2dxActivity{  
+
+    protected void onCreate(Bundle savedInstanceState){  
+    super.onCreate(savedInstanceState);  
+    }  
+
+static {  
+     System.loadLibrary("hellocpp");  
+    }  
+}  
+</code></pre>
+
+<p>很简单的代码，因为功能都被封装到Cocos2dxActivity中了，所以OnCreate中调用了父类的OnCreate就把功能都实现了，而system.LoadLibrary就是载入编译出来的.so文件，此时就会执行JNI_OnLoad。</p>
+
+<p><strong>3.3.Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit的调用</strong></p>
+
+<p>那最重要的Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit是在哪调用呢？这就比较麻烦了，先大致了解一下Cocos2dxActivity做了一些什么事。</p>
+
+<p>直接进入Cocos2dxActivity的OnCreate函数，它调用了一个init初始化函数：</p>
+
+<pre><code>public void init() {  
+
+    // 设置布局，是一个FrameLayout  
+    ViewGroup.LayoutParams framelayout_params =  
+    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,  
+                                   ViewGroup.LayoutParams.FILL_PARENT);  
+    FrameLayout framelayout = new FrameLayout(this);  
+    framelayout.setLayoutParams(framelayout_params);  
+
+    // 设置Cocos2dxEditText布局，这一个跟GLSurfaceView兼容的edittext  
+    ViewGroup.LayoutParams edittext_layout_params =  
+    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,  
+                               ViewGroup.LayoutParams.WRAP_CONTENT);  
+    Cocos2dxEditText edittext = new Cocos2dxEditText(this);  
+    edittext.setLayoutParams(edittext_layout_params);  
+
+    // 添加到framelaout  
+    framelayout.addView(edittext);  
+
+    // 创建Cocos2dxGLSurfaceView  
+    this.mGLSurfaceView = this.onCreateView();  
+
+    // 添加到framelaout  
+    framelayout.addView(this.mGLSurfaceView);  
+
+    // Switch to supported OpenGL (ARGB888) mode on emulator  
+    if (isAndroidEmulator())  
+       this.mGLSurfaceView.setEGLConfigChooser(8 , 8, 8, 8, 16, 0);  
+
+    //设置Cocos2dxRenderer和Cocos2dxEditText  
+    this.mGLSurfaceView.setCocos2dxRenderer(new Cocos2dxRenderer());  
+    this.mGLSurfaceView.setCocos2dxEditText(edittext);  
+
+    // 设置framelayout作为内容视图  
+    setContentView(framelayout);  
+} 
+</code></pre>
+
+<p>在这里Cocos2dxActivity做的就是创建Cocos2dxGLSurfaceView，并设置了Cocos2dxRenderer和Cocos2dxEditText，然后添加到FramLayout。具体的各部分实现这里就不贴代码了，画了个图：</p>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_04/2.jpg" alt="" border="0" title="Android调用流程" /><br></br></div>
+
+
+<p>好了，就这样吧。因为我对Android界面开发，特别是OpenGLView这块也不熟，所以只能大概推出是这样子了，有什么错误，还请指出。</p>
+]]></content>
+  </entry>
+  
+</feed>

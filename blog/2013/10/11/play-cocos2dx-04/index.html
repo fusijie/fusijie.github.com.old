@@ -1,0 +1,469 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>【玩转cocos2d-x之四】cocos2d-x怎么实现跨平台 - Jacky's Blog</title>
+  <meta name="author" content="FuSijie">
+
+  
+  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio cocos2d-x到底是怎样实现跨平台的呢？这里以Win32和Android为例。 1.跨平台项目目录结构 先看一下一个项目创建后的目录结构吧！这还是以HelloCpp为例。 从左边目录可以看到， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://fusijie.github.io/blog/2013/10/11/play-cocos2dx-04">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jacky's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '45386223']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jacky's Blog</a></h1>
+  
+    <h2>Stay Hungry,Stay Foolish!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:fusijie.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/projects">Projects</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">【玩转cocos2d-x之四】cocos2d-x怎么实现跨平台</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-11T21:23:00+08:00" pubdate data-updated="true">Oct 11<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12610287">http://blog.csdn.net/jackystudio</a></p>
+
+<p>cocos2d-x到底是怎样实现跨平台的呢？这里以Win32和Android为例。</p>
+
+<h3>1.跨平台项目目录结构</h3>
+
+<p>先看一下一个项目创建后的目录结构吧！这还是以HelloCpp为例。</p>
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_04/1.jpg" alt="" border="0" title="跨平台项目目录结构" /><br></br></div>
+
+
+<!-- more -->
+
+
+<p>从左边目录可以看到，Classes和Resource已经平台无关了，而Classes中包含了AppDelegate类，因此我们可以认为AppDelegate是与平台最接近的类，在它以上就要区分平台了。</p>
+
+<h3>2.Win32下的实现</h3>
+
+<p>在前一篇就介绍了Win32怎么开始cocos2dx，Win32平台下main.cpp就是程序入口：</p>
+
+<pre><code>int APIENTRY _tWinMain(HINSTANCE hInstance,  
+   HINSTANCE hPrevInstance,  
+   LPTSTRlpCmdLine,  
+   int   nCmdShow)  
+{  
+    UNREFERENCED_PARAMETER(hPrevInstance);  
+    UNREFERENCED_PARAMETER(lpCmdLine);  
+
+    // create the application instance  
+    AppDelegate app;//创建应用实例  
+    CCEGLView* eglView = CCEGLView::sharedOpenGLView();  
+    eglView-&gt;setViewName("HelloCpp");  
+    eglView-&gt;setFrameSize(2048, 1536);  
+    eglView-&gt;setFrameZoomFactor(0.4f);  
+    return CCApplication::sharedApplication()-&gt;run();//运行程序  
+}  
+</code></pre>
+
+<p>Win32下的实现比较简单，就是正常的创建实例，运行就可以了。</p>
+
+<h3>3.Android下的实现</h3>
+
+<p><strong>3.1.cocos2d-x程序入口</strong></p>
+
+<p>我们先看一下Android下cocos2d-x程序入口点在哪，我们知道Android是采用Java编写的，而cocos2d-x是c++编写的，所以如果要在Java中调用c++代码，那就需要采用JNI技术，看起来好像高端大气上档次，其实程序就是函数调用，也就是输入→处理→输出，所以JNI实际上简单抽象出来就这么回事：</p>
+
+<p>java输入→Jni→c++输入→c++处理（API实现）→c++输出→Jni→java输出</p>
+
+<p>在\proj.android\jni\hellocpp文件夹下可以找到main.cpp，这就是cocos2d-x的入口：</p>
+
+<pre><code>jint JNI_OnLoad(JavaVM *vm, void *reserved)  
+{  
+    JniHelper::setJavaVM(vm);  
+
+    return JNI_VERSION_1_4;  
+}  
+
+void Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit(JNIEnv*  env, jobject thiz, jint w, jint h)  
+{  
+    if (!CCDirector::sharedDirector()-&gt;getOpenGLView())  
+    {  
+        CCEGLView *view = CCEGLView::sharedOpenGLView();  
+        view-&gt;setFrameSize(w, h);  
+
+        AppDelegate *pAppDelegate = new AppDelegate();  
+        CCApplication::sharedApplication()-&gt;run();  
+    }  
+    else  
+    {  
+        ccGLInvalidateStateCache();  
+        CCShaderCache::sharedShaderCache()-&gt;reloadDefaultShaders();  
+        ccDrawInit();  
+        CCTextureCache::reloadAllTextures();  
+        CCNotificationCenter::sharedNotificationCenter()-&gt;postNotification(EVENT_COME_TO_FOREGROUND, NULL);  
+        CCDirector::sharedDirector()-&gt;setGLDefaultValues();   
+    }  
+}
+</code></pre>
+
+<p>里面包含了2个函数，JNI_OnLoad和Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit。我们看一下功能而先不管它在哪里被调用。</p>
+
+<p><em>（1）JNI_OnLoad，</em>这个函数主要是用来高速Android VM当前使用的是什么版本是Jni，如果不提供此函数，则默认使用Jni1.1版本。</p>
+
+<p><em>（2）Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit，</em>这个函数很明显就是运行一个cocos2d-x的应用实例了，这和Win32是一样的，当然它多了一个openGlView的检测。一旦调用了它那么cocos2d-x游戏启动。
+接下来再看看它们是在哪里被调用的。</p>
+
+<p><strong>3.2.JNI_OnLoad的调用</strong></p>
+
+<p>在proj.android\src\org\cocos2dx\hellocpp目录下，可以看到Android的入口Activity，也就是HelloCpp，它继承自Cocos2dxActivity。</p>
+
+<pre><code>public class HelloCpp extends Cocos2dxActivity{  
+
+    protected void onCreate(Bundle savedInstanceState){  
+    super.onCreate(savedInstanceState);  
+    }  
+
+static {  
+     System.loadLibrary("hellocpp");  
+    }  
+}  
+</code></pre>
+
+<p>很简单的代码，因为功能都被封装到Cocos2dxActivity中了，所以OnCreate中调用了父类的OnCreate就把功能都实现了，而system.LoadLibrary就是载入编译出来的.so文件，此时就会执行JNI_OnLoad。</p>
+
+<p><strong>3.3.Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit的调用</strong></p>
+
+<p>那最重要的Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit是在哪调用呢？这就比较麻烦了，先大致了解一下Cocos2dxActivity做了一些什么事。</p>
+
+<p>直接进入Cocos2dxActivity的OnCreate函数，它调用了一个init初始化函数：</p>
+
+<pre><code>public void init() {  
+
+    // 设置布局，是一个FrameLayout  
+    ViewGroup.LayoutParams framelayout_params =  
+    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,  
+                                   ViewGroup.LayoutParams.FILL_PARENT);  
+    FrameLayout framelayout = new FrameLayout(this);  
+    framelayout.setLayoutParams(framelayout_params);  
+
+    // 设置Cocos2dxEditText布局，这一个跟GLSurfaceView兼容的edittext  
+    ViewGroup.LayoutParams edittext_layout_params =  
+    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,  
+                               ViewGroup.LayoutParams.WRAP_CONTENT);  
+    Cocos2dxEditText edittext = new Cocos2dxEditText(this);  
+    edittext.setLayoutParams(edittext_layout_params);  
+
+    // 添加到framelaout  
+    framelayout.addView(edittext);  
+
+    // 创建Cocos2dxGLSurfaceView  
+    this.mGLSurfaceView = this.onCreateView();  
+
+    // 添加到framelaout  
+    framelayout.addView(this.mGLSurfaceView);  
+
+    // Switch to supported OpenGL (ARGB888) mode on emulator  
+    if (isAndroidEmulator())  
+       this.mGLSurfaceView.setEGLConfigChooser(8 , 8, 8, 8, 16, 0);  
+
+    //设置Cocos2dxRenderer和Cocos2dxEditText  
+    this.mGLSurfaceView.setCocos2dxRenderer(new Cocos2dxRenderer());  
+    this.mGLSurfaceView.setCocos2dxEditText(edittext);  
+
+    // 设置framelayout作为内容视图  
+    setContentView(framelayout);  
+} 
+</code></pre>
+
+<p>在这里Cocos2dxActivity做的就是创建Cocos2dxGLSurfaceView，并设置了Cocos2dxRenderer和Cocos2dxEditText，然后添加到FramLayout。具体的各部分实现这里就不贴代码了，画了个图：</p>
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_04/2.jpg" alt="" border="0" title="Android调用流程" /><br></br></div>
+
+
+<p>好了，就这样吧。因为我对Android界面开发，特别是OpenGLView这块也不熟，所以只能大概推出是这样子了，有什么错误，还请指出。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">FuSijie</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-11T21:23:00+08:00" pubdate data-updated="true">Oct 11<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cocos2d-x/'>cocos2d-x</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+      <!-- JiaThis Button BEGIN -->
+  <section>
+    <h1>Share</h1>
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share?uid=1859056" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1859056" charset="utf-8"></script>
+</section>
+<!-- JiaThis Button END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+	    <p></p>
+        <a class="basic-alignment left" href="/blog/2013/10/10/play-cocos2dx-03/" title="Previous Post: 【玩转cocos2d-x之三】cocos2d-x游戏是怎么跑起来的">&laquo; 【玩转cocos2d-x之三】cocos2d-x游戏是怎么跑起来的</a>
+      
+      
+	    <p></p>
+        <a class="basic-alignment right" href="/blog/2013/10/12/play-cocos2dx-05/" title="Next Post: 【玩转cocos2d-x之五】导演类CCDirector">【玩转cocos2d-x之五】导演类CCDirector &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+  <section>
+    <h1>Comments</h1>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"fusijie"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->  
+</section>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p></p>
+  <center><a href="http://blog.csdn.net/jackystudio" target="_self"><img src="/images/logo.jpg" alt="Logo" border="0" title="Logo" /></a></center>
+  <p></p>
+  <p>A Software Engineer born for the Technology, now concentrate on Mobile development.</p>
+</section><section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (8)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/10/15/play-cocos2dx-08/">【玩转cocos2d-x之八】精灵类CCSprite</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/14/play-cocos2dx-07/">【玩转cocos2d-x之七】场景类CCScene和布景类CCLayer</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/14/play-cocos2dx-06/">【玩转cocos2d-x之六】节点类CCNode</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/12/play-cocos2dx-05/">【玩转cocos2d-x之五】导演类CCDirector</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/11/play-cocos2dx-04/">【玩转cocos2d-x之四】cocos2d-x怎么实现跨平台</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section>
+  <h1>Tags Cloud</h1>
+  <ul class="tag-cloud">
+    <a style="font-size: 70%" href="/tags/ccapplication/">CCApplication</a>
+<a style="font-size: 70%" href="/tags/ccdirector/">CCDirector</a>
+<a style="font-size: 70%" href="/tags/ccdisplaylinkdirecto/">CCDisplayLinkDirecto</a>
+<a style="font-size: 70%" href="/tags/cceglview/">CCEGLView</a>
+<a style="font-size: 70%" href="/tags/ccnode/">CCNode</a>
+<a style="font-size: 70%" href="/tags/android/">android</a>
+<a style="font-size: 70%" href="/tags/applicationdidfinish/">applicationDidFinish</a>
+<a style="font-size: 180%" href="/tags/cocos2d-x/">cocos2d-x</a>
+<a style="font-size: 70%" href="/tags/cocos2dx/">cocos2dx</a>
+<a style="font-size: 70%" href="/tags/win32/">win32</a>
+<a style="font-size: 70%" href="/tags/shu-xing/">属性</a>
+<a style="font-size: 125%" href="/tags/chang-yong-jie-kou/">常用接口</a>
+<a style="font-size: 70%" href="/tags/you-xi-yin-qing/">游戏引擎</a>
+<a style="font-size: 70%" href="/tags/huan-jing-pei-zhi/">环境配置</a>
+<a style="font-size: 70%" href="/tags/kua-ping-tai-shi-xian/">跨平台实现</a>
+
+  </ul>
+</section> 
+<section>
+  <h1>Sina Weibo</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="450" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=450&fansRow=0&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=0&uid=1307211523&verifier=3619ee9c">
+      </iframe>
+    </li>
+  </ul>
+</section>
+ 
+<section>
+<h1>Visitor</h1>
+<div>
+	<p></p>
+    <center>
+	<a href="http://info.flagcounter.com/3pF8"><img src="http://s08.flagcounter.com/count/3pF8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_12/viewers_3/labels_0/pageviews_1/flags_0/" alt="Flag Counter" border="0"></a>
+	</center>
+</div>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - FuSijie -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
