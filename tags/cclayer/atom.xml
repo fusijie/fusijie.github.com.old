@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: CCLayer | Jacky's Blog]]></title>
   <link href="http://fusijie.github.io/tags/cclayer/atom.xml" rel="self"/>
   <link href="http://fusijie.github.io/"/>
-  <updated>2013-11-04T08:30:05+08:00</updated>
+  <updated>2013-11-04T13:57:17+08:00</updated>
   <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -26,6 +26,11 @@
 
 <p><img src="/images/Blog/Play_cocos2dx_07/1.jpg" alt="CCScene" /></p>
 
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_07/1.jpg" alt="" border="0" title="CCScene" /><br></br></div>
+
+
+
+
 <!-- more -->
 
 
@@ -46,6 +51,9 @@
 <h3>2.布景类：CCLayer</h3>
 
 <p><img src="/images/Blog/Play_cocos2dx_07/2.jpg" alt="CCLayer" /></p>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_07/2.jpg" alt="" border="0" title="CCLayer" /><br></br></div>
+
 
 <p>CCLayer相对CCScene而言会比较麻烦一点，因为他不仅要作为容器使用，而且还要实现一些游戏功能，所以它继承了CCTouchDelegate，CCAccelerometerDelegate和CCKeypadDelegate，这三个类是用来处理触摸事件，重力感应事件和键盘事件的，默认初始化都是不可用，需要手动设置开启。</p>
 
@@ -114,6 +122,9 @@ virtual void keyMenuClicked(void);
 
 <p><img src="/images/Blog/Play_cocos2dx_07/3.jpg" alt="颜色布景层" /></p>
 
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_07/3.jpg" alt="" border="0" title="颜色布景层" /><br></br></div>
+
+
 <p>（1）CCLayerRGBA和CCNodeRGBA差不多，也是用于设置RGB值和Blend值，同时可以传递到子节点。它的相关接口参见CCNodeRGBA。</p>
 
 <p>（2）CCLayerColor只是一个单纯的可以绘制颜色的层。可以带入长宽参数，绘制一个矩形的布景层。</p>
@@ -123,6 +134,9 @@ virtual void keyMenuClicked(void);
 <h3>4.多层布景层：CCLayerMultiplex</h3>
 
 <p><img src="/images/Blog/Play_cocos2dx_07/4.jpg" alt="CCLayerMultiplex" /></p>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_07/4.jpg" alt="" border="0" title="CCLayerMultiplex" /><br></br></div>
+
 
 <p>CCLayerMultiplex继承与CCLayer，相当于一个层容器，他可以包含多个层，但是同一时间只能显示一个CCLayer。《我叫MT》的第一个界面菜单那一块就是这么处理的。CCLayerMultiplex最重要的函数就是：</p>
 
