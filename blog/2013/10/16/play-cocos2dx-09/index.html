@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Tag: CCApplication - Jacky's Blog</title>
+  <title>【玩转cocos2d-x之九】动作类CCAction - Jacky's Blog</title>
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="Tag: CCApplication">
+  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio 精灵也出来了，但是不会动的精灵是木有用的。。。CCAction就是负责来解决精灵运动的问题。 1.概况 CCAction直接从CCObject继承而来，注意它代表的是一个动作，是动词。精灵执行了这个动作， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://fusijie.github.iotags/ccapplication">
+  <link rel="canonical" href="http://fusijie.github.io/blog/2013/10/16/play-cocos2dx-09">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Jacky's Blog" type="application/atom+xml">
@@ -77,37 +77,197 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Tag: CCApplication</h1>
+    
+      <h1 class="entry-title">【玩转cocos2d-x之九】动作类CCAction</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-16T14:33:00+08:00" pubdate data-updated="true">Oct 16<span>th</span>, 2013</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="tag">
+
+
+<div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12770909">http://blog.csdn.net/jackystudio</a></p>
+
+<p>精灵也出来了，但是不会动的精灵是木有用的。。。CCAction就是负责来解决精灵运动的问题。</p>
+
+<h3>1.概况</h3>
+
+<p>CCAction直接从CCObject继承而来，注意它代表的是一个动作，是动词。精灵执行了这个动作，而不是名词。CCAction本身并没有什么功能，主要是定义了一些通用函数和虚函数让子类实现多态性。</p>
+
+<!-- more -->
 
 
 
-  
-  <h2>2013</h2>
 
-<article>
-  
-<h1><a href="/blog/2013/10/10/play-cocos2dx-03/">【玩转cocos2d-x之三】cocos2d-x游戏是怎么跑起来的</a></h1>
-<time datetime="2013-10-10T10:01:00+08:00" pubdate><span class='month'>Oct</span> <span class='day'>10</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/cocos2d-x/'>cocos2d-x</a></span>
-</footer>
+<div align="center"><img src="/images/Blog/Play_cocos2dx_09/1.jpg" alt="" border="0" title="CCAction" /><br></br></div>
 
 
-</article>
+<h3>2.接口</h3>
 
+<pre><code>//返回一个描述  
+const char* description();  
+
+//返回动作是否结束  
+virtual bool isDone(void);  
+
+//在动作开始前调用，需要设置目标精灵  
+virtual void startWithTarget(CCNode *pTarget);  
+
+//每帧调用，time在0~1之间，0代表动作刚开始，0.5代表动作执行一半，1代表动作结束  
+virtual void update(float time);  
+
+//返回/设置目标节点  
+CCNode* getTarget(void);  
+void setTarget(CCNode *pTarget);  
+
+//获取/设置上一个节点  
+CCNode* getOriginalTarget(void);  
+void setOriginalTarget(CCNode *pOriginalTarget);  
+
+//获取/设置标签  
+int getTag(void);  
+void setTag(int nTag);  
+
+//创建动作静态方法  
+static CCAction* create();  
+</code></pre>
+
+<h3>3.CCFollow</h3>
+
+<p>CCFollow跟随动作，继承于CCAction，可以实现节点跟随另一个节点动作。它内部封装了一个boundary，也就是跟随范围，初始为CCRectZero。</p>
+
+<pre><code>//创建一个CCFollow对象，create实际上调用了initWithTarget  
+static CCFollow* create(CCNode *pFollowedNode, const CCRect&amp; rect = CCRectZero);  
+bool initWithTarget(CCNode *pFollowedNode, const CCRect&amp; rect = CCRectZero);  
+</code></pre>
+
+<h3>4.CCSpeed</h3>
+
+<p>CCSpeed可调整速度动作类，内部封装了一个速度值，CCSpeed使用很简单，就是传入一个动作和速度，在内部重新copy一个新的动作返回。</p>
+
+<pre><code>//创建一个可变速度动作类，传入速度值  
+static CCSpeed* create(CCActionInterval* pAction, float fSpeed);  
+</code></pre>
+
+<h3>5.CCFiniteTimeAction</h3>
+
+<p>CCFiniteTimeAction有限次动作执行类，继承于CCAction，它有两个子类CCActionInstant和CCActionInterval，前者代表瞬时动作，也就是这个动作基本不需要时间马上就能完成，而后者代表延时，这个动作需要一段时间来运行。它的子类说明看上图吧。
+相比CCAction，它多了一个m_fDuration属性，表示持续时间。</p>
+
+<pre><code>//获取/设置动作持续时间  
+float getDuration(void);  
+void setDuration(float duration);  
+
+//反转动作，类似于倒带效果，返回一个新的动作  
+virtual CCFiniteTimeAction* reverse(void);  
+</code></pre>
+
+<p>好了，游戏的基本元素就写到这里，写API文档很蛋疼的说。。。</p>
 </div>
 
-  
-</article>
 
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">FuSijie</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-16T14:33:00+08:00" pubdate data-updated="true">Oct 16<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cocos2d-x/'>cocos2d-x</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+      <!-- JiaThis Button BEGIN -->
+  <section>
+    <h1>Share</h1>
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share?uid=1859056" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1859056" charset="utf-8"></script>
+</section>
+<!-- JiaThis Button END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+	    <p></p>
+        <a class="basic-alignment left" href="/blog/2013/10/15/play-cocos2dx-08/" title="Previous Post: 【玩转cocos2d-x之八】精灵类CCSprite">&laquo; 【玩转cocos2d-x之八】精灵类CCSprite</a>
+      
+      
+    </p>
+  </footer>
+</article>
+  <section>
+    <h1>Comments</h1>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"fusijie"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->  
+</section>
 </div>
 
 <aside class="sidebar">
