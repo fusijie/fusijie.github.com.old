@@ -4,7 +4,7 @@ title: "【玩转cocos2d-x之八】精灵类CCSprite"
 date: 2013-10-15 17:17
 comments: true
 categories: cocos2d-x
-tags: cocos2d-x, CCSprite, 常用方法, CCTextureProtocol
+tags: [CCSprite, 常用方法, CCTextureProtocol]
 ---
 精灵类CCSprite可以说是游戏的主角了，也是我们平时最常用到的类。
 

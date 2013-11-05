@@ -4,7 +4,7 @@ title: "【玩转cocos2d-x之五】导演类CCDirector"
 date: 2013-10-12 21:49
 comments: true
 categories: cocos2d-x
-tags: [cocos2dx, CCDirector, CCDisplayLinkDirecto, 常用接口]
+tags: [CCDirector, CCDisplayLinkDirecto, 常用接口]
 ---
 原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/12646337)
 
