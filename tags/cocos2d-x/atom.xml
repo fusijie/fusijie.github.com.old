@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Tag: cocos2d-x, | Jacky's Blog]]></title>
+  <title><![CDATA[Tag: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://fusijie.github.io/tags/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://fusijie.github.io/"/>
-  <updated>2013-11-05T14:50:37+08:00</updated>
+  <updated>2013-11-05T15:50:26+08:00</updated>
   <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -14,368 +14,578 @@
 
   
   <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之十】cocos2d-x坐标系]]></title>
-    <link href="http://fusijie.github.io/blog/2013/10/17/play-cocos2dx-10/"/>
-    <updated>2013-10-17T14:43:00+08:00</updated>
-    <id>http://fusijie.github.io/blog/2013/10/17/play-cocos2dx-10</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12830971">http://blog.csdn.net/jackystudio</a></p>
+    <title type="html"><![CDATA[【玩转cocos2d-x之四】cocos2d-x怎么实现跨平台]]></title>
+    <link href="http://fusijie.github.io/blog/2013/10/11/play-cocos2dx-04/"/>
+    <updated>2013-10-11T21:23:00+08:00</updated>
+    <id>http://fusijie.github.io/blog/2013/10/11/play-cocos2dx-04</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12610287">http://blog.csdn.net/jackystudio</a></p>
 
-<p>cocos2d-x采用的是笛卡尔平面坐标系，也就是平面上两条垂直线构成的坐标系，平面上任意一点都可以用（x，y）来表示。</p>
+<p>cocos2d-x到底是怎样实现跨平台的呢？这里以Win32和Android为例。</p>
 
-<p><em>（1）就坐标系方向而言，cocos2d-x分为屏幕坐标系和OpenGL坐标系。</em></p>
+<h3>1.跨平台项目目录结构</h3>
 
-<p><em>（2）就节点本身而言，cocos2d-x分为绝对坐标系和相对坐标系。</em></p>
+<p>先看一下一个项目创建后的目录结构吧！这还是以HelloCpp为例。</p>
 
-<h3>1.屏幕坐标系</h3>
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_04/1.jpg" alt="" border="0" title="跨平台项目目录结构" /><br></br></div>
 
-<p>屏幕坐标系，也叫UIKit坐标系，原点在屏幕左上，x轴向右，y轴向下。cocos2d-x的屏幕触摸事件传入的位置坐标就是采用了屏幕坐标系。以320*480的屏幕为例，如图坐标值为屏幕坐标系。</p>
 
 <!-- more -->
 
 
+<p>从左边目录可以看到，Classes和Resource已经平台无关了，而Classes中包含了AppDelegate类，因此我们可以认为AppDelegate是与平台最接近的类，在它以上就要区分平台了。</p>
 
+<h3>2.Win32下的实现</h3>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_10/1.jpg" alt="" border="0" title="屏幕坐标系" /><br></br></div>
+<p>在前一篇就介绍了Win32怎么开始cocos2dx，Win32平台下main.cpp就是程序入口：</p>
 
+<pre><code>int APIENTRY _tWinMain(HINSTANCE hInstance,  
+   HINSTANCE hPrevInstance,  
+   LPTSTRlpCmdLine,  
+   int   nCmdShow)  
+{  
+    UNREFERENCED_PARAMETER(hPrevInstance);  
+    UNREFERENCED_PARAMETER(lpCmdLine);  
 
-<h3>2.OpenGL坐标系</h3>
-
-<p>OpenGL坐标系原点在屏幕的左下，x轴向右，y轴向上。cocos2d-x的元素采用的就是OpenGL坐标系。同样的上例，如图坐标值为OpenGL坐标系。</p>
-
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_10/2.jpg" alt="" border="0" title="OpenGL坐标系" /><br></br></div>
-
-
-<h3>3.屏幕坐标系和OpenGL坐标系的转换</h3>
-
-<p>它们的转换导演类（CCDirector）已经封装好了两个函数供我们使用。</p>
-
-<pre><code>//UIKit To OpenGL  
-CCPoint convertToGL(const CCPoint&amp; obPoint);  
-//OpenGL To UIKit  
-CCPoint convertToUI(const CCPoint&amp; obPoint);  
+    // create the application instance  
+    AppDelegate app;//创建应用实例  
+    CCEGLView* eglView = CCEGLView::sharedOpenGLView();  
+    eglView-&gt;setViewName("HelloCpp");  
+    eglView-&gt;setFrameSize(2048, 1536);  
+    eglView-&gt;setFrameZoomFactor(0.4f);  
+    return CCApplication::sharedApplication()-&gt;run();//运行程序  
+}  
 </code></pre>
 
-<h3>4.绝对坐标系</h3>
+<p>Win32下的实现比较简单，就是正常的创建实例，运行就可以了。</p>
 
-<p>绝对坐标系也叫世界坐标系，从名字可以看来，绝对坐标系是一个恒坐标系，不参考也不依赖于其他坐标系。在cocos2d-x中它使用的是OpenGL坐标系。不过因为我们多在CCLayer上放置游戏元素，所以一般比较少直接用到绝对坐标系。</p>
+<h3>3.Android下的实现</h3>
 
-<h3>5.相对坐标系</h3>
+<p><strong>3.1.cocos2d-x程序入口</strong></p>
 
-<p>cocos2d-x元素是有层次关系的，节点使用的是相对父节点的位置坐标，也就是相对坐标系（也叫本地坐标系），屏幕绘制的时候，cocos2d-x会自动将相对坐标系转换为绝对坐标系，渲染到屏幕的绝对位置上。</p>
+<p>我们先看一下Android下cocos2d-x程序入口点在哪，我们知道Android是采用Java编写的，而cocos2d-x是c++编写的，所以如果要在Java中调用c++代码，那就需要采用JNI技术，看起来好像高端大气上档次，其实程序就是函数调用，也就是输入→处理→输出，所以JNI实际上简单抽象出来就这么回事：</p>
 
-<h3>6.锚点</h3>
+<p>java输入→Jni→c++输入→c++处理（API实现）→c++输出→Jni→java输出</p>
 
-<p>在举例之前有必要先了解一下锚点这个概念。锚点是对节点而言的，它是节点的一个属性，表明了节点位置的一个参考基准点，同样放置一个物体在(300,300)这个位置，不同的锚点会产生不同的效果。节点的默认锚点位置在(0.5,0.5)。锚点和节点的位置值没有关系，锚点只是影响了节点在屏幕上渲染的位置。如下图，虽然精灵的在屏幕上渲染的位置不一样，但是它们的position值是一样的，都是(300,300)。锚点只会影响它本身在父节点中的渲染位置，而不会影响其子节点的相对它本身的位置。</p>
+<p>在\proj.android\jni\hellocpp文件夹下可以找到main.cpp，这就是cocos2d-x的入口：</p>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_10/3.jpg" alt="" border="0" title="锚点" /><br></br></div>
+<pre><code>jint JNI_OnLoad(JavaVM *vm, void *reserved)  
+{  
+    JniHelper::setJavaVM(vm);  
 
+    return JNI_VERSION_1_4;  
+}  
 
-<h3>7.绝对坐标系和相对坐标系的关系</h3>
+void Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit(JNIEnv*  env, jobject thiz, jint w, jint h)  
+{  
+    if (!CCDirector::sharedDirector()-&gt;getOpenGLView())  
+    {  
+        CCEGLView *view = CCEGLView::sharedOpenGLView();  
+        view-&gt;setFrameSize(w, h);  
 
-<p>我们先看一个例子，为了方便演示，节点的锚点都设置为(0,0)。</p>
-
-<pre><code>CCSprite* big=CCSprite::create("big.png");  
-big-&gt;setAnchorPoint(ccp(0,0));  
-big-&gt;setPosition(ccp(50,50));//设置在相对父节点的(50,50)位置  
-this-&gt;addChild(big);//屏幕是父节点  
-CCSprite* little=CCSprite::create("little.png");  
-little-&gt;setAnchorPoint(ccp(0,0));  
-little-&gt;setPosition(ccp(50,50));//设置在相对父节点的(50,50)位置  
-big-&gt;addChild(little);//big是父节点  
+        AppDelegate *pAppDelegate = new AppDelegate();  
+        CCApplication::sharedApplication()-&gt;run();  
+    }  
+    else  
+    {  
+        ccGLInvalidateStateCache();  
+        CCShaderCache::sharedShaderCache()-&gt;reloadDefaultShaders();  
+        ccDrawInit();  
+        CCTextureCache::reloadAllTextures();  
+        CCNotificationCenter::sharedNotificationCenter()-&gt;postNotification(EVENT_COME_TO_FOREGROUND, NULL);  
+        CCDirector::sharedDirector()-&gt;setGLDefaultValues();   
+    }  
+}
 </code></pre>
 
-<p>效果如下：</p>
+<p>里面包含了2个函数，JNI_OnLoad和Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit。我们看一下功能而先不管它在哪里被调用。</p>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_10/4.jpg" alt="" border="0" title="绝对坐标系和相对坐标系的关系" /><br></br></div>
+<p><em>（1）JNI_OnLoad，</em>这个函数主要是用来高速Android VM当前使用的是什么版本是Jni，如果不提供此函数，则默认使用Jni1.1版本。</p>
 
+<p><em>（2）Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit，</em>这个函数很明显就是运行一个cocos2d-x的应用实例了，这和Win32是一样的，当然它多了一个openGlView的检测。一旦调用了它那么cocos2d-x游戏启动。
+接下来再看看它们是在哪里被调用的。</p>
 
-<h3>7.绝对坐标系和相对坐标系的转换</h3>
+<p><strong>3.2.JNI_OnLoad的调用</strong></p>
 
-<p>CCNode提供给我们相对坐标系和绝对坐标系的转换函数。</p>
+<p>在proj.android\src\org\cocos2dx\hellocpp目录下，可以看到Android的入口Activity，也就是HelloCpp，它继承自Cocos2dxActivity。</p>
 
-<pre><code>CCPoint convertToNodeSpace(const CCPoint&amp; worldPoint);  //将世界坐标转换为对象节点内坐标，忽略锚点，以当前父节点左下角坐标为标准  
-CCPoint convertToWorldSpace(const CCPoint&amp; nodePoint);  //将对象节点内坐标转换为事件坐标，忽略锚点，以当前父节点左下角坐标为标准  
-CCPoint convertToNodeSpaceAR(const CCPoint&amp; worldPoint);//将世界坐标转换为基于锚点的对象节点内坐标
-CCPoint convertToWorldSpaceAR(const CCPoint&amp; nodePoint);//将局域锚点的对象节点内坐标转换为世界坐标  
+<pre><code>public class HelloCpp extends Cocos2dxActivity{  
+
+    protected void onCreate(Bundle savedInstanceState){  
+    super.onCreate(savedInstanceState);  
+    }  
+
+static {  
+     System.loadLibrary("hellocpp");  
+    }  
+}  
 </code></pre>
 
-<p>如果要获取big和little的绝对坐标</p>
+<p>很简单的代码，因为功能都被封装到Cocos2dxActivity中了，所以OnCreate中调用了父类的OnCreate就把功能都实现了，而system.LoadLibrary就是载入编译出来的.so文件，此时就会执行JNI_OnLoad。</p>
 
-<pre><code>CCPoint wp1=this-&gt;convertToWorldSpace(big-&gt;getPosition());//wp1(50,50)  
-CCPoint wp2=big-&gt;convertToWorldSpace(little-&gt;getPosition());//wp2(100,100)  
+<p><strong>3.3.Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit的调用</strong></p>
+
+<p>那最重要的Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit是在哪调用呢？这就比较麻烦了，先大致了解一下Cocos2dxActivity做了一些什么事。</p>
+
+<p>直接进入Cocos2dxActivity的OnCreate函数，它调用了一个init初始化函数：</p>
+
+<pre><code>public void init() {  
+
+    // 设置布局，是一个FrameLayout  
+    ViewGroup.LayoutParams framelayout_params =  
+    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,  
+                                   ViewGroup.LayoutParams.FILL_PARENT);  
+    FrameLayout framelayout = new FrameLayout(this);  
+    framelayout.setLayoutParams(framelayout_params);  
+
+    // 设置Cocos2dxEditText布局，这一个跟GLSurfaceView兼容的edittext  
+    ViewGroup.LayoutParams edittext_layout_params =  
+    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,  
+                               ViewGroup.LayoutParams.WRAP_CONTENT);  
+    Cocos2dxEditText edittext = new Cocos2dxEditText(this);  
+    edittext.setLayoutParams(edittext_layout_params);  
+
+    // 添加到framelaout  
+    framelayout.addView(edittext);  
+
+    // 创建Cocos2dxGLSurfaceView  
+    this.mGLSurfaceView = this.onCreateView();  
+
+    // 添加到framelaout  
+    framelayout.addView(this.mGLSurfaceView);  
+
+    // Switch to supported OpenGL (ARGB888) mode on emulator  
+    if (isAndroidEmulator())  
+       this.mGLSurfaceView.setEGLConfigChooser(8 , 8, 8, 8, 16, 0);  
+
+    //设置Cocos2dxRenderer和Cocos2dxEditText  
+    this.mGLSurfaceView.setCocos2dxRenderer(new Cocos2dxRenderer());  
+    this.mGLSurfaceView.setCocos2dxEditText(edittext);  
+
+    // 设置framelayout作为内容视图  
+    setContentView(framelayout);  
+} 
 </code></pre>
 
-<p>如果要把绝对坐标转换为big和little的相对坐标</p>
+<p>在这里Cocos2dxActivity做的就是创建Cocos2dxGLSurfaceView，并设置了Cocos2dxRenderer和Cocos2dxEditText，然后添加到FramLayout。具体的各部分实现这里就不贴代码了，画了个图：</p>
 
-<pre><code>CCPoint np1=big-&gt;convertToNodeSpace(ccp(200,200));//np1(150,150)  
-CCPoint np2=little-&gt;convertToNodeSpace(ccp(200,200));//np2(100,100)
-</code></pre>
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_04/2.jpg" alt="" border="0" title="Android调用流程" /><br></br></div>
+
+
+<p>好了，就这样吧。因为我对Android界面开发，特别是OpenGLView这块也不熟，所以只能大概推出是这样子了，有什么错误，还请指出。</p>
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之九】动作类CCAction]]></title>
-    <link href="http://fusijie.github.io/blog/2013/10/16/play-cocos2dx-09/"/>
-    <updated>2013-10-16T14:33:00+08:00</updated>
-    <id>http://fusijie.github.io/blog/2013/10/16/play-cocos2dx-09</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12770909">http://blog.csdn.net/jackystudio</a></p>
+    <title type="html"><![CDATA[【玩转cocos2d-x之三】cocos2d-x游戏是怎么跑起来的]]></title>
+    <link href="http://fusijie.github.io/blog/2013/10/10/play-cocos2dx-03/"/>
+    <updated>2013-10-10T10:01:00+08:00</updated>
+    <id>http://fusijie.github.io/blog/2013/10/10/play-cocos2dx-03</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12554167">http://blog.csdn.net/jackystudio</a></p>
 
-<p>精灵也出来了，但是不会动的精灵是木有用的。。。CCAction就是负责来解决精灵运动的问题。</p>
+<p>虽然cocos2d-x v3.0 alpha版已经出来了，也改进了不少，有兴趣的可以去尝尝鲜。因为后面可能还会配合cocoStudio写一下博客，而现在v1.0.0.0版本需要配合cocos2d-x v2.2.0使用。所以这里选择了V2.2.0版的cocos2d-x。</p>
 
-<h3>1.概况</h3>
+<p>一个新的东西，从头开始吧！从HelloWorld出发看一下一个cocos2d-x游戏是怎么跑起来的。先看看它的结构。</p>
 
-<p>CCAction直接从CCObject继承而来，注意它代表的是一个动作，是动词。精灵执行了这个动作，而不是名词。CCAction本身并没有什么功能，主要是定义了一些通用函数和虚函数让子类实现多态性。</p>
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_03/1.jpg" alt="" border="0" title="结构" /><br></br></div>
+
+
+
 
 <!-- more -->
 
 
+<h3>1.main函数</h3>
 
+<p>还是原来配方还是熟悉的味道。。。霸气的main函数依然是程序的入口点：</p>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_09/1.jpg" alt="" border="0" title="CCAction" /><br></br></div>
+<pre><code>//main.cpp  
+int APIENTRY _tWinMain(HINSTANCE hInstance,  
+   HINSTANCE hPrevInstance,  
+   LPTSTRlpCmdLine,  
+   int   nCmdShow)  
+{  
+UNREFERENCED_PARAMETER(hPrevInstance);//该宏用于通知编译器不用检测变量是否使用，如果你喜欢用LV4级的警告。  
+UNREFERENCED_PARAMETER(lpCmdLine);  
 
-
-<h3>2.接口</h3>
-
-<pre><code>//返回一个描述  
-const char* description();  
-
-//返回动作是否结束  
-virtual bool isDone(void);  
-
-//在动作开始前调用，需要设置目标精灵  
-virtual void startWithTarget(CCNode *pTarget);  
-
-//每帧调用，time在0~1之间，0代表动作刚开始，0.5代表动作执行一半，1代表动作结束  
-virtual void update(float time);  
-
-//返回/设置目标节点  
-CCNode* getTarget(void);  
-void setTarget(CCNode *pTarget);  
-
-//获取/设置上一个节点  
-CCNode* getOriginalTarget(void);  
-void setOriginalTarget(CCNode *pOriginalTarget);  
-
-//获取/设置标签  
-int getTag(void);  
-void setTag(int nTag);  
-
-//创建动作静态方法  
-static CCAction* create();  
+// create the application instance  
+AppDelegate app;//创建AppDelegate实例  
+CCEGLView* eglView = CCEGLView::sharedOpenGLView();//获取CCEGLView的单一实例，因为还未创建，所以这里会进行创建  
+eglView-&gt;setViewName("HelloCpp");//设置eglView属性  
+eglView-&gt;setFrameSize(2048, 1536);  
+eglView-&gt;setFrameZoomFactor(0.4f);  
+return CCApplication::sharedApplication()-&gt;run();//调用run运行程序  
+} 
 </code></pre>
 
-<h3>3.CCFollow</h3>
+<p>其中：</p>
 
-<p>CCFollow跟随动作，继承于CCAction，可以实现节点跟随另一个节点动作。它内部封装了一个boundary，也就是跟随范围，初始为CCRectZero。</p>
+<p>（1）AppDelegate继承于CCApplication，是整个游戏的程序类，如果有用过MFC的就很清楚，类似于CxxxApp。</p>
 
-<pre><code>//创建一个CCFollow对象，create实际上调用了initWithTarget  
-static CCFollow* create(CCNode *pFollowedNode, const CCRect&amp; rect = CCRectZero);  
-bool initWithTarget(CCNode *pFollowedNode, const CCRect&amp; rect = CCRectZero);  
+<p>（2）CCEGLView封装了使用openGL作为显示底层API的一个基本的Windows窗体的创建和控制。
+可以简单的认为，一个控制了程序的逻辑，而另一个负责游戏的显示。</p>
+
+<h3>2.CCEGLView类</h3>
+
+<p>我们先看看上一步的CCEGLView::sharedOpenGLView()做了什么。</p>
+
+<pre><code>CCEGLView* CCEGLView::sharedOpenGLView()  
+{
+    if (s_pEglView == NULL)//s_pEglView是一个CCEGLView指针，静态成员变量  
+    {  
+        s_pEglView = new CCEGLView();  
+        if(!s_pEglView-&gt;Create())//main中调用时，会执行这一步  
+        {
+            delete s_pEglView;  
+            s_pEglView = NULL;  
+        }
+    }
+return s_pEglView;  
+}  
 </code></pre>
 
-<h3>4.CCSpeed</h3>
+<p>再看看，create做了什么</p>
 
-<p>CCSpeed可调整速度动作类，内部封装了一个速度值，CCSpeed使用很简单，就是传入一个动作和速度，在内部重新copy一个新的动作返回。</p>
-
-<pre><code>//创建一个可变速度动作类，传入速度值  
-static CCSpeed* create(CCActionInterval* pAction, float fSpeed);  
+<pre><code>//...  
+m_hWnd = CreateWindowEx(   // 创建窗体  
+WS_EX_APPWINDOW | WS_EX_WINDOWEDGE,// Extended Style For The Window  
+kWindowClassName,// Class Name  
+wszBuf,// Window Title  
+WS_CAPTION | WS_POPUPWINDOW | WS_MINIMIZEBOX,// Defined Window Style  
+0, 0,// Window Position  
+1000,   // Window Width  
+1000,   // Window Height  
+NULL,// No Parent Window  
+NULL,// No Menu  
+hInstance,// Instance  
+NULL );  
 </code></pre>
 
-<h3>5.CCFiniteTimeAction</h3>
+<p>看到上面这一步了吧，使用Win32写过窗体的童鞋，就知道创建一个窗体需要哪些动作：</p>
 
-<p>CCFiniteTimeAction有限次动作执行类，继承于CCAction，它有两个子类CCActionInstant和CCActionInterval，前者代表瞬时动作，也就是这个动作基本不需要时间马上就能完成，而后者代表延时，这个动作需要一段时间来运行。它的子类说明看上图吧。
-相比CCAction，它多了一个m_fDuration属性，表示持续时间。</p>
+<p><em>（1）填充窗口类结构WNDCLASS</em></p>
 
-<pre><code>//获取/设置动作持续时间  
-float getDuration(void);  
-void setDuration(float duration);  
+<p><em>（2）注册窗口</em></p>
 
-//反转动作，类似于倒带效果，返回一个新的动作  
-virtual CCFiniteTimeAction* reverse(void);  
+<p><em>（3）创建窗口</em></p>
+
+<p><em>（4）显示窗口</em>（这一步没有在CCEGLView中实现，而是在后面的CCApplication中实现，因为这里窗口的属性还没有进行设置）</p>
+
+<p>一样的，创建一个cocos2d-x的win32窗口也是要经过这些步骤。具体的就看源码吧，这里不逐句解释了。就是要注意有个WinProc函数，是用于处理主窗口消息。</p>
+
+<h3>3.CCApplication类</h3>
+
+<p>我们再看看CCApplication::sharedApplication()&ndash;>run()执行的又是什么东西。</p>
+
+<pre><code>int CCApplication::run()  
+{  
+    PVRFrameEnableControlWindow(false);  
+
+    // Main message loop:  
+    MSG msg;  
+    LARGE_INTEGER nFreq;  
+    LARGE_INTEGER nLast;  
+    LARGE_INTEGER nNow;  
+
+    QueryPerformanceFrequency(&amp;nFreq);//获取当前系统频率和计数  
+    QueryPerformanceCounter(&amp;nLast);  
+
+    // Initialize instance and cocos2d.  
+    if (!applicationDidFinishLaunching())//虚函数，调用子类的重载，这里也会设置一些显示窗口的属性  
+    {  
+        return 0;  
+    }  
+
+    CCEGLView* pMainWnd = CCEGLView::sharedOpenGLView();获取CCEGLView的单一实例  
+    pMainWnd-&gt;centerWindow();  
+    ShowWindow(pMainWnd-&gt;getHWnd(), SW_SHOW);//这里显示窗口  
+
+    while (1)//消息循环  
+    {  
+        if (! PeekMessage(&amp;msg, NULL, 0, 0, PM_REMOVE))  
+        {  
+            // 获取当前的计数  
+            QueryPerformanceCounter(&amp;nNow);  
+
+            // 判断时间流逝，是否该绘制下一帧  
+            if (nNow.QuadPart - nLast.QuadPart &gt; m_nAnimationInterval.QuadPart)  
+            {  
+                nLast.QuadPart = nNow.QuadPart;  
+                CCDirector::sharedDirector()-&gt;mainLoop();//渲染场景（清除显示设备，重绘场景）  
+            }  
+            else  
+            {  
+                Sleep(0);  
+            }  
+            continue;  
+        }  
+
+        if (WM_QUIT == msg.message)//获取退出消息，跳出循环  
+        {  
+            // Quit message loop.  
+            break;  
+        }  
+
+        // 处理Windows消息  
+        if (! m_hAccelTable || ! TranslateAccelerator(msg.hwnd, m_hAccelTable, &amp;msg))  
+        {  
+            TranslateMessage(&amp;msg);  
+            DispatchMessage(&amp;msg);  
+        }  
+    }
+    return (int) msg.wParam;  
+}  
 </code></pre>
 
-<p>好了，游戏的基本元素就写到这里，写API文档很蛋疼的说。。。</p>
+<p>好了，解释的应该算比较清楚了，虽然没有每一个函数都进去。。。这里再总结一下：</p>
+
+<p>（1）首先先获取当前系统的频率和计数。这是一个很大的值，所以用了一个LARGE_INTEGER型变量来存储。</p>
+
+<p>（2）调用子类的applicationDidFinishLaunching()，执行进入程序后的一些初始化工作。</p>
+
+<p>（3）获取CCEGLView单例，显示窗口。</p>
+
+<p>（4）进入循环While(1)，重绘每一帧的场景。</p>
+
+<p>好了，更多关于CCApplication的请看源码吧。</p>
+
+<h3>4.AppDelegate类</h3>
+
+<p>从上面的分析我们知道CCApplication::run()函数中会调用子类（AppDelegate）的applicationDidFinishLaunching函数，而这里也就是我们要设置窗口属性和运行游戏的地方了。</p>
+
+<pre><code>bool AppDelegate::applicationDidFinishLaunching() {  
+//第一次初始化导演，导演也是个单例类  
+CCDirector* pDirector = CCDirector::sharedDirector();  
+
+//获得CCEGLView单例，设置窗口属性和fps等等  
+CCEGLView* pEGLView = CCEGLView::sharedOpenGLView();  
+
+...  
+
+// 创建场景  
+CCScene *pScene = HelloWorld::scene();  
+
+// 进入场景  
+pDirector-&gt;runWithScene(pScene);  
+
+return true;  
+}  
+</code></pre>
+
+<p>好了，最后再总结成一张图，cocos2d-x游戏就是这么跑起来的~</p>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_03/2.jpg" alt="" border="0" title="结构" /><br></br></div>
+
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之八】精灵类CCSprite]]></title>
-    <link href="http://fusijie.github.io/blog/2013/10/15/play-cocos2dx-08/"/>
-    <updated>2013-10-15T17:17:00+08:00</updated>
-    <id>http://fusijie.github.io/blog/2013/10/15/play-cocos2dx-08</id>
-    <content type="html"><![CDATA[<p>精灵类CCSprite可以说是游戏的主角了，也是我们平时最常用到的类。</p>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二】游戏和引擎构成]]></title>
+    <link href="http://fusijie.github.io/blog/2013/10/09/play-cocos2dx-02/"/>
+    <updated>2013-10-09T16:53:00+08:00</updated>
+    <id>http://fusijie.github.io/blog/2013/10/09/play-cocos2dx-02</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12432837">http://blog.csdn.net/jackystudio</a></p>
 
-<h3>1.概况</h3>
+<h3>1.游戏构成</h3>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_08/1.jpg" alt="" border="0" title="CCSprite" /><br></br></div>
+<p>我们以超级马里奥游戏作为蓝本来描述一下一个游戏的构成。</p>
 
+<p>1.首先我们需要一个容器来放置游戏元素，每一个关卡都是一个容器，这叫场景。</p>
+
+<p>2.蓝天白云，各种板砖水管，这些是布景，放置在关卡中，通过布景的叠加，构成了游戏的主要背景。</p>
+
+<p>3.主角马里奥兄弟和各种小怪兽，这些叫精灵。这是游戏互动的主要元素。</p>
 
 <!-- more -->
 
 
-<p>CCSprite本质上就是一个二维图片，是静态的。游戏中的动画只不过是让一张张静态图片快速更换达到的动态效果。CCSprite继承于CCNodeRGBA，并实现了CCTextureProtocol的接口。因此CCNodeRGBA所具有的RGB和透明值这些属性和接口CCSprite都有，而CCTextureProtocol是一个抽象类，定义了和纹理相关的两个标准接口：</p>
+<p>4.马里奥可以走路，可以跳跃，可以发射子弹。这些是精灵的动作。</p>
 
-<pre><code>//返回当前使用的纹理  
-virtual CCTexture2D* getTexture(void) = 0;  
+<p>5.过关了，要进入下一关，这些需要幕后导演的控制。</p>
 
-//设置一个新的纹理，它会被retain  
-virtual void setTexture(CCTexture2D *texture) = 0;  
+<p>以上几个部分，在cocos2dx中，分别叫做<strong>CCScene</strong>，<strong>CCLayer</strong>，<strong>CCSprite</strong>，<strong>CCAction</strong>，<strong>CCDirector</strong>。而这五个部分是构成游戏的最基本元素。</p>
+
+<p>用一张图来看看它们的关系。</p>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_02/1.jpg" alt="" border="0" title="游戏构成" /><br></br></div>
+
+
+<h3>2.引擎构成</h3>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_02/2.jpg" alt="" border="0" title="引擎构成" /><br></br></div>
+
+
+<p>引擎目录的具体介绍如下：</p>
+
+<p>（1）<em>cocos2dx</em>，cocos2d-x游戏引擎核心部分，存放了引擎源码。</p>
+
+<p>（2）<em>CocosDenshion</em>，游戏声音引擎主要文件。</p>
+
+<p>（3）<em>Debug.win32</em>，Release.win32，win32下的项目debug/release目录。</p>
+
+<p>（4）<em>document</em>，帮助文档目录，可以用doxygen生成项目文档。</p>
+
+<p>（5）<em>extensions</em>，引擎扩展包，包含了一些本地存储类，网络传输类，GUI类等等。</p>
+
+<p>（6）<em>external</em>，存放了Box2D，chipmunk物理引擎源码等第三方库。</p>
+
+<p>（7）<em>licenses</em>，存放了一些许可文件。</p>
+
+<p>（8）<em>plugin</em>，插件工具集，还包含了一些广告，微博调用示例。</p>
+
+<p>（9）<em>projects</em>，开发者创建的项目。</p>
+
+<p>（10）<em>samples</em>，引擎自带示例，目前支持C++，js和Lua。</p>
+
+<p>（11）<em>scripting</em>，js和lua脚本的相关源文件。</p>
+
+<p>（12）<em>template</em>，C++，js和Lua的各平台模版。</p>
+
+<p>（13）<em>tools</em>，cocos2dx的工具集，创建项目也在里面。</p>
+
+<p>（14）剩下一些各平台的编译文件，创建文件，以及cocos2dx的更新说明，作者说明等等。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之一】V2.2.0版本开发环境配置]]></title>
+    <link href="http://fusijie.github.io/blog/2013/10/08/play-cocos2dx-01/"/>
+    <updated>2013-10-08T16:18:00+08:00</updated>
+    <id>http://fusijie.github.io/blog/2013/10/08/play-cocos2dx-01</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12419387">http://blog.csdn.net/jackystudio</a></p>
+
+<p>现在cocos2d-x处在上升期，各个版本的变化还是比较大的，单从环境配置来看，从v2.0到v2.2就变化了不少。今天配置了一下V2.2.0环境，创建项目，并进行交叉编译，发现比之前麻烦了不少。这里稍微记录一下。
+3.0版本出来了，大概看了下目录和2.2的差不多，环境配置也基本一样。</p>
+
+<h3>1.VS，VA，Cygwin，Java，Eclipse，ADT，SDK，NDK</h3>
+
+<p>这里就不重复啰嗦这些了，<a href="http://blog.csdn.net/jackystudio/article/details/11516435">传送门</a>。不过这里需要使用VS2010以上版本。</p>
+
+<p>这里强烈建议NDK版本为r8c或者r9，试过r7，r8都编译不过。。。</p>
+
+<!-- more -->
+
+
+<h3>2.安装cocos2d-x</h3>
+
+<p>这里使用的是V2.2.0版本，<a href="http://www.cocos2d-x.org/download">传送门</a>，下载完解压即可，运行build-win32.bat进行编译。</p>
+
+<h3>3.配置python</h3>
+
+<p>因为之前没用过python，而现在cocos2d-x的项目创建已经取消了VS模版，改用python创建，所以相比之前用起来还是比较坑爹的。</p>
+
+<p><strong>3.1.清除原有的VS模版</strong></p>
+
+<p>如果之前安装过其他cocos2d-x版本，有可能在VS上会创建cocos2d-x的模版，就会造成在VS中新建项目的时候会创建旧版本的cocos2d-x模版，而使用的却是新版本的cocos2d-x引擎，导致编译出错，没注意的话还真不好找原因。</p>
+
+<p>清除方法：</p>
+
+<p><em>（1）进入目录，VS2010安装路径：</em></p>
+
+<pre><code>VS2010: C:\Program Files\Microsoft Visual Studio 10.0\VC\vcprojects\  
+VC2010Express: C:\Program Files\Microsoft Visual Studio 10.0\VC\Express\VCProjects. 
 </code></pre>
 
-<h3>2.常用接口</h3>
+<p><em>（2）删除cocos2d-x文件夹，删除以CCAppWiz和CCXAppWiz开头的两个文件，删除cocos2d-x的图标</em></p>
 
-<p><strong>2.1.初始化</strong></p>
+<p><strong>3.2.安装python</strong></p>
 
-<pre><code>//初始化函数  
-virtual bool init(void);  
+<p>我这里使用的是2.7.5版本，<a href="http://www.python.org/download/releases/2.7.5/">传送门</a>， Windows X86 msi installer。不同的python版本可能会导致后面运行出错。所以建议使用此版本。</p>
 
-//用CCTexture2D纹理来初始化，精灵大小即是纹理大小  
-virtual bool initWithTexture(CCTexture2D *pTexture);  
+<p><strong>3.3.设置环境变量</strong></p>
 
-///用CCTexture2D纹理和大小来初始化  
-virtual bool initWithTexture(CCTexture2D *pTexture, const CCRect&amp; rect);  
+<p>用过Java的都应该很熟了吧。</p>
 
-//用CCTexture2D纹理，大小，旋转来初始化  
-virtual bool initWithTexture(CCTexture2D *pTexture, const CCRect&amp; rect, bool rotated);  
+<p>我的电脑→右键→属性→高级→环境变量→系统变量→path→加入你的python安装目录。测试一下：进入cmd，输入python，不会提示“不是外部或内部命令balabala&hellip;”就OK。</p>
 
-//用CCSpriteFrame精灵帧来初始化  
-virtual bool initWithSpriteFrame(CCSpriteFrame *pSpriteFrame);  
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_01/1.jpg" alt="" border="0" title="设置环境变量" /><br></br></div>
 
-//用CCSpriteFrame精灵帧名来初始化  
-virtual bool initWithSpriteFrameName(const char *pszSpriteFrameName);  
 
-//用外部文件初始化，外部文件会先被创建为纹理，再用纹理初始化精灵  
-virtual bool initWithFile(const char *pszFilename);  
+<h3>4.创建项目</h3>
 
-//用外部文件和大小来初始化  
-virtual bool initWithFile(const char *pszFilename, const CCRect&amp; rect);  
+<p>进入cocos2d-x-2.2.0\tools\project-creator目录，可以在cmd下执行：</p>
+
+<p><code>python create_project.py -project Test -package com.jacky.test -language cpp//其中Test为工程名称，com.jacky.test为包名</code></p>
+
+<p>也可以创建一个批处理文件.bat，放在project-creator目录下，内容为：</p>
+
+<pre><code>@echo off  
+set /p projectName=请输入项目名称：  
+if "%projectName%"=="" goto inputError  
+set /p packageName=请输入包标示名：  
+if "%packageName%"=="" goto inputError  
+create_project.py -project %projectName% -package %packageName% -language cpp  
+pause  
+exit  
+:inputError  
+@echo 项目名称或者包标示名不能为空！  
+pause  
 </code></pre>
 
-<p><strong>2.2.继承自CCTextureProtocol</strong></p>
+<p>双击运行它就可以了。效果如下：</p>
 
-<pre><code>//设置/获取纹理  
-virtual void setTexture(CCTexture2D *texture);  
-virtual CCTexture2D* getTexture(void);  
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_01/2.jpg" alt="" border="0" title="创建项目" /><br></br></div>
 
-//设置/获取颜色描绘时混合方案  
-void setBlendFunc(ccBlendFunc blendFunc);  
-ccBlendFunc getBlendFunc(void);  
+
+<p>然后在cocos2d-x目录下的project就可以看到Test文件夹，里面包含了各个平台的项目。</p>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_01/3.jpg" alt="" border="0" title="各平台项目" /><br></br></div>
+
+
+<h3>5.导入eclipse，生成apk</h3>
+
+<p><strong>5.1.使用Eclipse NDK交叉编译</strong></p>
+
+<p>这里可以直接采用Eclipse NDK来交叉编译，具体方法为：</p>
+
+<p>（1）导入proj.android项目。</p>
+
+<p>（2）拷贝cocos2dx目录\cocos2dx\platform\android\java\src目录下的org包到android项目的src下。</p>
+
+<p>（3）修改项目属性C/C++ builder的build command和build directory。分别为NDK目录下的ndk-builder和当前项目文件夹。</p>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_01/4.jpg" alt="" border="0" title="设置C++ build" /><br></br></div>
+
+
+<p>（4）添加C/C++→Builder→Environment→NDK_MODULE_PATH，值为cocos2dx目录和cocos2dx目录\cocos2dx\platform\third_party\android\prebuilt。</p>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_01/5.jpg" alt="" border="0" title="设置NDK_MODULE_PATH" /><br></br></div>
+
+
+<p>（5）build project ，run as andorid app即可。如果出错，clean一下。不过运行的时候程序出现了Fatal signal 11 (SIGSEGV) at 0x00000000 (code=1)异常，原因还没找到。。。有知道的吱一声。。。（先用Cygwin编译一次再到Eclipse中编译就可以了。真心不知道差别在哪。）</p>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_01/6.jpg" alt="" border="0" title="Eclipse编译" /><br></br></div>
+
+
+<p><strong>5.2.Cygwin编译</strong></p>
+
+<p>这个请参见<a href="http://blog.csdn.net/jackystudio/article/details/11516435">传送门</a>。编译完成后导入Eclipse即可。</p>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_01/7.jpg" alt="" border="0" title="CygWin编译" /><br></br></div>
+
+
+<p>如果提示需要定义NDK_ROOT，那么在cygwin安装目录\home\username.bash_profile文件末尾添加：</p>
+
+<pre><code>NDK_ROOT=/cygdrive/d/eclipse/android-ndk-r9  
+export NDK_ROOT   
 </code></pre>
 
-<p><strong>2.3.继承自CCNode</strong></p>
+<h3>6.本文环境</h3>
 
-<p>参见CCNode。</p>
+<p>（1）VS2010</p>
 
-<pre><code>virtual void setScaleX(float fScaleX);  
-virtual void setScaleY(float fScaleY);  
-virtual void setPosition(const CCPoint&amp; pos);  
-virtual void setRotation(float fRotation);  
-virtual void setRotationX(float fRotationX);  
-virtual void setRotationY(float fRotationY);  
-virtual void setSkewX(float sx);  
-virtual void setSkewY(float sy);  
-virtual void removeChild(CCNode* pChild, bool bCleanup);  
-virtual void removeAllChildrenWithCleanup(bool bCleanup);  
-virtual void reorderChild(CCNode *pChild, int zOrder);  
-virtual void addChild(CCNode *pChild);  
-virtual void addChild(CCNode *pChild, int zOrder);  
-virtual void addChild(CCNode *pChild, int zOrder, int tag);  
-virtual void sortAllChildren();  
-virtual void setScale(float fScale);  
-virtual void setVertexZ(float fVertexZ);  
-virtual void setAnchorPoint(const CCPoint&amp; anchor);//默认(0.5,0.5)  
-virtual void ignoreAnchorPointForPosition(bool value);  
-virtual void setVisible(bool bVisible);  
-virtual void draw(void);  
-</code></pre>
+<p>（2）VA_X</p>
 
-<p><strong>2.4.继承自CCNodeRGBA</strong></p>
+<p>（3）Cygwin</p>
 
-<pre><code>//设置颜色  
-virtual void setColor(const ccColor3B&amp; color3);  
+<p>（4）Jdk1.7.0_11</p>
 
-//传递颜色  
-virtual void updateDisplayedColor(const ccColor3B&amp; parentColor);  
+<p>（5）Eclipse Juno</p>
 
-//设置透明度  
-virtual void setOpacity(GLubyte opacity);  
+<p>（6）Andorid SDK2.2</p>
 
-//设置/返回透明度是否跟随颜色值变化而变化  
-virtual void setOpacityModifyRGB(bool modify);  
-virtual bool isOpacityModifyRGB(void);  
+<p>（7）Adroid-ndk-r9</p>
 
-//传递透明度  
-virtual void updateDisplayedOpacity(GLubyte parentOpacity);  
-</code></pre>
-
-<p><strong>2.5.批节点</strong></p>
-
-<pre><code>//更新4属性：x,y,rotation,scale  
-virtual void updateTransform(void);  
-
-//如果精灵是由批节点CCSpriteBatchNode渲染的，则返回批节点  
-virtual CCSpriteBatchNode* getBatchNode(void);  
-//设置批节点，不推荐使用  
-virtual void setBatchNode(CCSpriteBatchNode *pobSpriteBatchNode);  
-</code></pre>
-
-<p><strong>2.6.纹理</strong></p>
-
-<pre><code>//设置纹理区域  
-virtual void setTextureRect(const CCRect&amp; rect);  
-virtual void setTextureRect(const CCRect&amp; rect, bool rotated, const CCSize&amp; untrimmedSize);  
-virtual void setVertexRect(const CCRect&amp; rect);  
-</code></pre>
-
-<p><strong>2.7.精灵帧和动画</strong></p>
-
-<pre><code>//设置新的精灵帧  
-virtual void setDisplayFrame(CCSpriteFrame *pNewFrame);  
-
-//返回精灵帧是否在使用  
-virtual bool isFrameDisplayed(CCSpriteFrame *pFrame);  
-
-//返回当期使用精灵帧  
-virtual CCSpriteFrame* displayFrame(void);  
-
-//设置动画和显示索引  
-virtual void setDisplayFrameWithAnimationName(const char *animationName, int frameIndex);  
-</code></pre>
-
-<p><strong>2.8.Setter和Getter方法</strong></p>
-
-<p>设置/获取CCSprite属性。</p>
-
-<pre><code>//设置获取是否更新  
-virtual bool isDirty(void);  
-virtual void setDirty(bool bDirty);  
-
-//返回坐标、顶点、颜色信息  
-ccV3F_C4B_T2F_Quad getQuad(void);  
-
-//返回纹理旋转  
-bool isTextureRectRotated(void);  
-
-//返回/设置地图集索引  
-unsigned int getAtlasIndex(void);  
-void setAtlasIndex(unsigned int uAtlasIndex);  
-
-//返回精灵区域，单位为点  
-const CCRect&amp; getTextureRect(void);  
-
-//如果采用批渲染，返回/设置纹理地图集  
-CCTextureAtlas* getTextureAtlas(void);  
-inline void setTextureAtlas(CCTextureAtlas *pobTextureAtlas);  
-
-//获取偏移  
-const CCPoint&amp; getOffsetPosition(void);  
-
-//设置返回翻转  
-bool isFlipX(void);  
-void setFlipX(bool bFlipX);  
-bool isFlipY(void);  
-void setFlipY(bool bFlipY);  
-</code></pre>
+<p>（8）cocos2dx-2.2.0</p>
 ]]></content>
   </entry>
   
