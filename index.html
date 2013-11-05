@@ -9,7 +9,7 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio 精灵也出来了，但是不会动的精灵是木有用的。。。CCAction就是负责来解决精灵运动的问题。 1.概况 CCAction直接从CCObject继承而来，注意它代表的是一个动作，是动词。精灵执行了这个动作， &hellip;">
+  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio cocos2d-x采用的是笛卡尔平面坐标系，也就是平面上两条垂直线构成的坐标系，平面上任意一点都可以用（x，y）来表示。 （1）就坐标系方向而言，cocos2d-x分为屏幕坐标系和OpenGL坐标系。 （2） &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +78,57 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/17/play-cocos2dx-10/">【玩转cocos2d-x之十】cocos2d-x坐标系</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-17T14:43:00+08:00" pubdate data-updated="true">Oct 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12830971">http://blog.csdn.net/jackystudio</a></p>
+
+<p>cocos2d-x采用的是笛卡尔平面坐标系，也就是平面上两条垂直线构成的坐标系，平面上任意一点都可以用（x，y）来表示。</p>
+
+<p><em>（1）就坐标系方向而言，cocos2d-x分为屏幕坐标系和OpenGL坐标系。</em></p>
+
+<p><em>（2）就节点本身而言，cocos2d-x分为绝对坐标系和相对坐标系。</em></p>
+
+<h3>1.屏幕坐标系</h3>
+
+<p>屏幕坐标系，也叫UIKit坐标系，原点在屏幕左上，x轴向右，y轴向下。cocos2d-x的屏幕触摸事件传入的位置坐标就是采用了屏幕坐标系。以320*480的屏幕为例，如图坐标值为屏幕坐标系。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/17/play-cocos2dx-10/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -540,12 +591,16 @@
 </section><section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (9)</a></li>
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (10)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/10/17/play-cocos2dx-10/">【玩转cocos2d-x之十】cocos2d-x坐标系</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/10/16/play-cocos2dx-09/">【玩转cocos2d-x之九】动作类CCAction</a>
@@ -563,10 +618,6 @@
         <a href="/blog/2013/10/14/play-cocos2dx-06/">【玩转cocos2d-x之六】节点类CCNode</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2013/10/12/play-cocos2dx-05/">【玩转cocos2d-x之五】导演类CCDirector</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -576,20 +627,20 @@
 <section>
   <h1>Tags Cloud</h1>
   <ul class="tag-cloud">
-    <a style="font-size: 70%" href="/tags/ccapplication/">CCApplication</a>
-<a style="font-size: 70%" href="/tags/ccdirector/">CCDirector</a>
+    <a style="font-size: 70%" href="/tags/ccdirector/">CCDirector</a>
 <a style="font-size: 70%" href="/tags/ccdisplaylinkdirecto/">CCDisplayLinkDirecto</a>
 <a style="font-size: 70%" href="/tags/cceglview/">CCEGLView</a>
 <a style="font-size: 70%" href="/tags/ccnode/">CCNode</a>
 <a style="font-size: 70%" href="/tags/android/">android</a>
 <a style="font-size: 70%" href="/tags/applicationdidfinish/">applicationDidFinish</a>
 <a style="font-size: 180%" href="/tags/cocos2d-x/">cocos2d-x</a>
-<a style="font-size: 125%" href="/tags/cocos2d-x/">cocos2d-x,</a>
+<a style="font-size: 157%" href="/tags/cocos2d-x/">cocos2d-x,</a>
 <a style="font-size: 70%" href="/tags/cocos2dx/">cocos2dx</a>
 <a style="font-size: 70%" href="/tags/win32/">win32</a>
 <a style="font-size: 70%" href="/tags/shu-xing/">属性</a>
 <a style="font-size: 125%" href="/tags/chang-yong-jie-kou/">常用接口</a>
 <a style="font-size: 70%" href="/tags/you-xi-yin-qing/">游戏引擎</a>
+<a style="font-size: 70%" href="/tags/te-dian/">特点</a>
 <a style="font-size: 70%" href="/tags/kua-ping-tai-shi-xian/">跨平台实现</a>
 
   </ul>

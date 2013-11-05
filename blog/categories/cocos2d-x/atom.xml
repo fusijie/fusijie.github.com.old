@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://fusijie.github.io/blog/categories/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://fusijie.github.io/"/>
-  <updated>2013-11-05T14:40:37+08:00</updated>
+  <updated>2013-11-05T14:50:37+08:00</updated>
   <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,106 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十】cocos2d-x坐标系]]></title>
+    <link href="http://fusijie.github.io/blog/2013/10/17/play-cocos2dx-10/"/>
+    <updated>2013-10-17T14:43:00+08:00</updated>
+    <id>http://fusijie.github.io/blog/2013/10/17/play-cocos2dx-10</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12830971">http://blog.csdn.net/jackystudio</a></p>
+
+<p>cocos2d-x采用的是笛卡尔平面坐标系，也就是平面上两条垂直线构成的坐标系，平面上任意一点都可以用（x，y）来表示。</p>
+
+<p><em>（1）就坐标系方向而言，cocos2d-x分为屏幕坐标系和OpenGL坐标系。</em></p>
+
+<p><em>（2）就节点本身而言，cocos2d-x分为绝对坐标系和相对坐标系。</em></p>
+
+<h3>1.屏幕坐标系</h3>
+
+<p>屏幕坐标系，也叫UIKit坐标系，原点在屏幕左上，x轴向右，y轴向下。cocos2d-x的屏幕触摸事件传入的位置坐标就是采用了屏幕坐标系。以320*480的屏幕为例，如图坐标值为屏幕坐标系。</p>
+
+<!-- more -->
+
+
+
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_10/1.jpg" alt="" border="0" title="屏幕坐标系" /><br></br></div>
+
+
+<h3>2.OpenGL坐标系</h3>
+
+<p>OpenGL坐标系原点在屏幕的左下，x轴向右，y轴向上。cocos2d-x的元素采用的就是OpenGL坐标系。同样的上例，如图坐标值为OpenGL坐标系。</p>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_10/2.jpg" alt="" border="0" title="OpenGL坐标系" /><br></br></div>
+
+
+<h3>3.屏幕坐标系和OpenGL坐标系的转换</h3>
+
+<p>它们的转换导演类（CCDirector）已经封装好了两个函数供我们使用。</p>
+
+<pre><code>//UIKit To OpenGL  
+CCPoint convertToGL(const CCPoint&amp; obPoint);  
+//OpenGL To UIKit  
+CCPoint convertToUI(const CCPoint&amp; obPoint);  
+</code></pre>
+
+<h3>4.绝对坐标系</h3>
+
+<p>绝对坐标系也叫世界坐标系，从名字可以看来，绝对坐标系是一个恒坐标系，不参考也不依赖于其他坐标系。在cocos2d-x中它使用的是OpenGL坐标系。不过因为我们多在CCLayer上放置游戏元素，所以一般比较少直接用到绝对坐标系。</p>
+
+<h3>5.相对坐标系</h3>
+
+<p>cocos2d-x元素是有层次关系的，节点使用的是相对父节点的位置坐标，也就是相对坐标系（也叫本地坐标系），屏幕绘制的时候，cocos2d-x会自动将相对坐标系转换为绝对坐标系，渲染到屏幕的绝对位置上。</p>
+
+<h3>6.锚点</h3>
+
+<p>在举例之前有必要先了解一下锚点这个概念。锚点是对节点而言的，它是节点的一个属性，表明了节点位置的一个参考基准点，同样放置一个物体在(300,300)这个位置，不同的锚点会产生不同的效果。节点的默认锚点位置在(0.5,0.5)。锚点和节点的位置值没有关系，锚点只是影响了节点在屏幕上渲染的位置。如下图，虽然精灵的在屏幕上渲染的位置不一样，但是它们的position值是一样的，都是(300,300)。锚点只会影响它本身在父节点中的渲染位置，而不会影响其子节点的相对它本身的位置。</p>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_10/3.jpg" alt="" border="0" title="锚点" /><br></br></div>
+
+
+<h3>7.绝对坐标系和相对坐标系的关系</h3>
+
+<p>我们先看一个例子，为了方便演示，节点的锚点都设置为(0,0)。</p>
+
+<pre><code>CCSprite* big=CCSprite::create("big.png");  
+big-&gt;setAnchorPoint(ccp(0,0));  
+big-&gt;setPosition(ccp(50,50));//设置在相对父节点的(50,50)位置  
+this-&gt;addChild(big);//屏幕是父节点  
+CCSprite* little=CCSprite::create("little.png");  
+little-&gt;setAnchorPoint(ccp(0,0));  
+little-&gt;setPosition(ccp(50,50));//设置在相对父节点的(50,50)位置  
+big-&gt;addChild(little);//big是父节点  
+</code></pre>
+
+<p>效果如下：</p>
+
+<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_10/4.jpg" alt="" border="0" title="绝对坐标系和相对坐标系的关系" /><br></br></div>
+
+
+<h3>7.绝对坐标系和相对坐标系的转换</h3>
+
+<p>CCNode提供给我们相对坐标系和绝对坐标系的转换函数。</p>
+
+<pre><code>CCPoint convertToNodeSpace(const CCPoint&amp; worldPoint);  //将世界坐标转换为对象节点内坐标，忽略锚点，以当前父节点左下角坐标为标准  
+CCPoint convertToWorldSpace(const CCPoint&amp; nodePoint);  //将对象节点内坐标转换为事件坐标，忽略锚点，以当前父节点左下角坐标为标准  
+CCPoint convertToNodeSpaceAR(const CCPoint&amp; worldPoint);//将世界坐标转换为基于锚点的对象节点内坐标
+CCPoint convertToWorldSpaceAR(const CCPoint&amp; nodePoint);//将局域锚点的对象节点内坐标转换为世界坐标  
+</code></pre>
+
+<p>如果要获取big和little的绝对坐标</p>
+
+<pre><code>CCPoint wp1=this-&gt;convertToWorldSpace(big-&gt;getPosition());//wp1(50,50)  
+CCPoint wp2=big-&gt;convertToWorldSpace(little-&gt;getPosition());//wp2(100,100)  
+</code></pre>
+
+<p>如果要把绝对坐标转换为big和little的相对坐标</p>
+
+<pre><code>CCPoint np1=big-&gt;convertToNodeSpace(ccp(200,200));//np1(150,150)  
+CCPoint np2=little-&gt;convertToNodeSpace(ccp(200,200));//np2(100,100)
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之九】动作类CCAction]]></title>
@@ -677,156 +777,6 @@ CCRect boundingBox(void);
 <p>所以它比起CCNode就多了2个特性，Opacity和RGB值。</p>
 
 <p>如果要给子节点传递透明度属性，那么需要设置setCascadeOpacityEnabled(true)，如果传递的过程中遇到了CCNode，那么传递会中断。颜色值的传递也是一样的道理。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之五】导演类CCDirector]]></title>
-    <link href="http://fusijie.github.io/blog/2013/10/12/play-cocos2dx-05/"/>
-    <updated>2013-10-12T21:49:00+08:00</updated>
-    <id>http://fusijie.github.io/blog/2013/10/12/play-cocos2dx-05</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12646337">http://blog.csdn.net/jackystudio</a></p>
-
-<p>既然cocos2d-x都帮我们封装好了，使得开发与平台无关，那接下来我们就单纯地开始好好玩游戏吧！这几篇是对cocos2d-x一些基本且重要的元素进行解释和API介绍，之前没有系统的看过API，有时候某些功能引擎都已经提供好了，不知道还是会自己去写。所以全面地了解一下是必须的。</p>
-
-<h3>1.概况</h3>
-
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_05/1.jpg" alt="" border="0" title="CCDirector" /><br></br></div>
-
-
-
-
-<!-- more -->
-
-
-<p>导演类CCDirector是cocos2d-x引擎中非常重要的一个类，它是一个抽象类（mainloop空实现），主要完成以下工作：</p>
-
-<p>（1）初始化游戏和销毁游戏</p>
-
-<p>（2）管理调度场景</p>
-
-<p>（3）调整设置openGL信息</p>
-
-<p>（4）获取、设置游戏的相关细节</p>
-
-<p>CCDirector是单例类，直接从CCObject继承而来，它在cocos2d-x中的首次创建位置在上一篇已经介绍了。因此后面的CCDirector调用可采用如下方式：</p>
-
-<pre><code>CCDirector::sharedDirector()-&gt;methodname;
-</code></pre>
-
-<h3>2.常用接口</h3>
-
-<p><strong>2.1.属性</strong></p>
-
-<pre><code>//获得当前运行场景，cocos2dx同时只能运行一个场景  
-CCScene* getRunningScene(void);  
-
-//获取fps  
-double getAnimationInterval(void);  
-//设置fps  
-virtual void setAnimationInterval(double dValue);  
-
-//是否显示fps  
-bool isDisplayStats(void);  
-//设置是否显示fps  
-void setDisplayStats(bool bDisplayStats);  
-
-//每帧秒数  
-float getSecondsPerFrame();  
-
-//获取openGLView  
-CCEGLView* getOpenGLView(void);  
-//设置openGLView  
-void setOpenGLView(CCEGLView *pobOpenGLView);  
-
-//释放暂停  
-bool isPaused(void);  
-
-//获取调用到现在的所有帧数  
-unsigned int getTotalFrames(void);  
-
-//是否接收到cleanup事件，replace会，而push不会  
-bool isSendCleanupToScene(void);  
-</code></pre>
-
-<p><strong>2.2.窗口</strong></p>
-
-<pre><code>//返回openGLView的大小，单位为点  
-CCSize getWinSize(void);  
-
-//返回openGLView的大小，单位为像素  
-CCSize getWinSizeInPixels(void);  
-
-//返回可见区域的大小，单位为点，如果没调用setDesignResolutionSize，就和getWinSize是一样的  
-CCSize getVisibleSize();  
-
-//返回可见区域的原点  
-CCPoint getVisibleOrigin();  
-
-//将UIKit坐标体系转换成OpenGL坐标体系  
-CCPoint convertToGL(const CCPoint&amp; obPoint);  
-
-//将OpenGL坐标体系转换成UIKit坐标体系
-CCPoint convertToUI(const CCPoint&amp; obPoint);  
-</code></pre>
-
-<p><strong>2.3.场景管理</strong></p>
-
-<pre><code>//调用第一个场景，当前不能有场景运行  
-void runWithScene(CCScene *pScene);  
-
-//场景入栈，当前必须有场景  
-void pushScene(CCScene *pScene);  
-
-//场景出栈，删除当前场景，当前必须有场景  
-void popScene(void);  
-
-//弹出所有场景，直至根场景  
-void popToRootScene(void);  
-
-//弹出至指定场景  
-void popToSceneStackLevel(int level);  
-
-//用新场景替代旧场景  
-void replaceScene(CCScene *pScene);  
-
-//结束运行，释放场景，必须手动调用  
-void end(void);  
-
-//暂停场景  
-void pause(void);  
-
-//恢复场景  
-void resume(void);  
-
-//暂停所有动画  
-virtual void stopAnimation(void);  
-
-//开始所有动画  
-virtual void startAnimation(void);  
-</code></pre>
-
-<p><strong>2.4.内存和OpenGL</strong></p>
-
-<pre><code>//移除所有cocos2dx缓冲数据  
-void purgeCachedData(void);  
-
-//设置默认值  
-void setDefaultValues(void);  
-
-//设置OpenGL默认值  
-void setGLDefaultValues(void);  
-
-//开关OpenGL alpha混合通道  
-void setAlphaBlending(bool bOn);  
-
-//设置景深测试  
-void setDepthTest(bool bOn);  
-</code></pre>
-
-<h3>3.CCDisplayLinkDirector</h3>
-
-<p>CCDisplayLinkDirector继承于CCDirector，它实现了mainloop函数，是一个以显示刷新速度同步定时器的Director，也就是可以自动刷新的导演类，它支持60，30，15三种帧数。我们平时使用的也就是它。</p>
 ]]></content>
   </entry>
   
