@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: 游戏引擎 | Jacky's Blog]]></title>
-  <link href="http://fusijie.github.io/tags/you-xi-yin-qing/atom.xml" rel="self"/>
-  <link href="http://fusijie.github.io/"/>
-  <updated>2013-11-06T12:46:19+08:00</updated>
-  <id>http://fusijie.github.io/</id>
+  <link href="http://www.jacky.tk/tags/you-xi-yin-qing/atom.xml" rel="self"/>
+  <link href="http://www.jacky.tk/"/>
+  <updated>2013-11-06T14:00:36+08:00</updated>
+  <id>http://www.jacky.tk/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二】游戏和引擎构成]]></title>
-    <link href="http://fusijie.github.io/blog/2013/10/09/play-cocos2dx-02/"/>
+    <link href="http://www.jacky.tk/blog/2013/10/09/play-cocos2dx-02/"/>
     <updated>2013-10-09T16:53:00+08:00</updated>
-    <id>http://fusijie.github.io/blog/2013/10/09/play-cocos2dx-02</id>
+    <id>http://www.jacky.tk/blog/2013/10/09/play-cocos2dx-02</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12432837">http://blog.csdn.net/jackystudio</a></p>
 
 <h3>1.游戏构成</h3>
@@ -41,12 +41,12 @@
 
 <p>用一张图来看看它们的关系。</p>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_02/1.jpg" alt="" border="0" title="游戏构成" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_02/1.jpg" alt="" border="0" title="游戏构成" /><br></br></div>
 
 
 <h3>2.引擎构成</h3>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_02/2.jpg" alt="" border="0" title="引擎构成" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_02/2.jpg" alt="" border="0" title="引擎构成" /><br></br></div>
 
 
 <p>引擎目录的具体介绍如下：</p>

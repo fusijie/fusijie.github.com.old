@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: CCApplication | Jacky's Blog]]></title>
-  <link href="http://fusijie.github.io/tags/ccapplication/atom.xml" rel="self"/>
-  <link href="http://fusijie.github.io/"/>
-  <updated>2013-11-06T12:46:19+08:00</updated>
-  <id>http://fusijie.github.io/</id>
+  <link href="http://www.jacky.tk/tags/ccapplication/atom.xml" rel="self"/>
+  <link href="http://www.jacky.tk/"/>
+  <updated>2013-11-06T14:00:36+08:00</updated>
+  <id>http://www.jacky.tk/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,16 +15,16 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三】cocos2d-x游戏是怎么跑起来的]]></title>
-    <link href="http://fusijie.github.io/blog/2013/10/10/play-cocos2dx-03/"/>
+    <link href="http://www.jacky.tk/blog/2013/10/10/play-cocos2dx-03/"/>
     <updated>2013-10-10T10:01:00+08:00</updated>
-    <id>http://fusijie.github.io/blog/2013/10/10/play-cocos2dx-03</id>
+    <id>http://www.jacky.tk/blog/2013/10/10/play-cocos2dx-03</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12554167">http://blog.csdn.net/jackystudio</a></p>
 
 <p>虽然cocos2d-x v3.0 alpha版已经出来了，也改进了不少，有兴趣的可以去尝尝鲜。因为后面可能还会配合cocoStudio写一下博客，而现在v1.0.0.0版本需要配合cocos2d-x v2.2.0使用。所以这里选择了V2.2.0版的cocos2d-x。</p>
 
 <p>一个新的东西，从头开始吧！从HelloWorld出发看一下一个cocos2d-x游戏是怎么跑起来的。先看看它的结构。</p>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_03/1.jpg" alt="" border="0" title="结构" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_03/1.jpg" alt="" border="0" title="结构" /><br></br></div>
 
 
 
@@ -211,7 +211,7 @@ return true;
 
 <p>好了，最后再总结成一张图，cocos2d-x游戏就是这么跑起来的~</p>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_03/2.jpg" alt="" border="0" title="结构" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_03/2.jpg" alt="" border="0" title="结构" /><br></br></div>
 
 ]]></content>
   </entry>

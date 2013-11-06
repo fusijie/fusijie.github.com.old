@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Jacky's Blog]]></title>
-  <link href="http://fusijie.github.io/atom.xml" rel="self"/>
-  <link href="http://fusijie.github.io/"/>
-  <updated>2013-11-06T12:46:19+08:00</updated>
-  <id>http://fusijie.github.io/</id>
+  <link href="http://www.jacky.tk/atom.xml" rel="self"/>
+  <link href="http://www.jacky.tk/"/>
+  <updated>2013-11-06T14:00:36+08:00</updated>
+  <id>http://www.jacky.tk/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十】cocos2d-x坐标系]]></title>
-    <link href="http://fusijie.github.io/blog/2013/10/17/play-cocos2dx-10/"/>
+    <link href="http://www.jacky.tk/blog/2013/10/17/play-cocos2dx-10/"/>
     <updated>2013-10-17T14:43:00+08:00</updated>
-    <id>http://fusijie.github.io/blog/2013/10/17/play-cocos2dx-10</id>
+    <id>http://www.jacky.tk/blog/2013/10/17/play-cocos2dx-10</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12830971">http://blog.csdn.net/jackystudio</a></p>
 
 <p>cocos2d-x采用的是笛卡尔平面坐标系，也就是平面上两条垂直线构成的坐标系，平面上任意一点都可以用（x，y）来表示。</p>
@@ -35,14 +35,14 @@
 
 
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_10/1.jpg" alt="" border="0" title="屏幕坐标系" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_10/1.jpg" alt="" border="0" title="屏幕坐标系" /><br></br></div>
 
 
 <h3>2.OpenGL坐标系</h3>
 
 <p>OpenGL坐标系原点在屏幕的左下，x轴向右，y轴向上。cocos2d-x的元素采用的就是OpenGL坐标系。同样的上例，如图坐标值为OpenGL坐标系。</p>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_10/2.jpg" alt="" border="0" title="OpenGL坐标系" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_10/2.jpg" alt="" border="0" title="OpenGL坐标系" /><br></br></div>
 
 
 <h3>3.屏幕坐标系和OpenGL坐标系的转换</h3>
@@ -67,7 +67,7 @@ CCPoint convertToUI(const CCPoint&amp; obPoint);
 
 <p>在举例之前有必要先了解一下锚点这个概念。锚点是对节点而言的，它是节点的一个属性，表明了节点位置的一个参考基准点，同样放置一个物体在(300,300)这个位置，不同的锚点会产生不同的效果。节点的默认锚点位置在(0.5,0.5)。锚点和节点的位置值没有关系，锚点只是影响了节点在屏幕上渲染的位置。如下图，虽然精灵的在屏幕上渲染的位置不一样，但是它们的position值是一样的，都是(300,300)。锚点只会影响它本身在父节点中的渲染位置，而不会影响其子节点的相对它本身的位置。</p>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_10/3.jpg" alt="" border="0" title="锚点" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_10/3.jpg" alt="" border="0" title="锚点" /><br></br></div>
 
 
 <h3>7.绝对坐标系和相对坐标系的关系</h3>
@@ -86,7 +86,7 @@ big-&gt;addChild(little);//big是父节点
 
 <p>效果如下：</p>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_10/4.jpg" alt="" border="0" title="绝对坐标系和相对坐标系的关系" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_10/4.jpg" alt="" border="0" title="绝对坐标系和相对坐标系的关系" /><br></br></div>
 
 
 <h3>7.绝对坐标系和相对坐标系的转换</h3>
@@ -115,9 +115,9 @@ CCPoint np2=little-&gt;convertToNodeSpace(ccp(200,200));//np2(100,100)
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之九】动作类CCAction]]></title>
-    <link href="http://fusijie.github.io/blog/2013/10/16/play-cocos2dx-09/"/>
+    <link href="http://www.jacky.tk/blog/2013/10/16/play-cocos2dx-09/"/>
     <updated>2013-10-16T14:33:00+08:00</updated>
-    <id>http://fusijie.github.io/blog/2013/10/16/play-cocos2dx-09</id>
+    <id>http://www.jacky.tk/blog/2013/10/16/play-cocos2dx-09</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12770909">http://blog.csdn.net/jackystudio</a></p>
 
 <p>精灵也出来了，但是不会动的精灵是木有用的。。。CCAction就是负责来解决精灵运动的问题。</p>
@@ -131,7 +131,7 @@ CCPoint np2=little-&gt;convertToNodeSpace(ccp(200,200));//np2(100,100)
 
 
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_09/1.jpg" alt="" border="0" title="CCAction" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_09/1.jpg" alt="" border="0" title="CCAction" /><br></br></div>
 
 
 <h3>2.接口</h3>
@@ -200,14 +200,14 @@ virtual CCFiniteTimeAction* reverse(void);
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之八】精灵类CCSprite]]></title>
-    <link href="http://fusijie.github.io/blog/2013/10/15/play-cocos2dx-08/"/>
+    <link href="http://www.jacky.tk/blog/2013/10/15/play-cocos2dx-08/"/>
     <updated>2013-10-15T17:17:00+08:00</updated>
-    <id>http://fusijie.github.io/blog/2013/10/15/play-cocos2dx-08</id>
+    <id>http://www.jacky.tk/blog/2013/10/15/play-cocos2dx-08</id>
     <content type="html"><![CDATA[<p>精灵类CCSprite可以说是游戏的主角了，也是我们平时最常用到的类。</p>
 
 <h3>1.概况</h3>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_08/1.jpg" alt="" border="0" title="CCSprite" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_08/1.jpg" alt="" border="0" title="CCSprite" /><br></br></div>
 
 
 <!-- more -->
@@ -381,16 +381,16 @@ void setFlipY(bool bFlipY);
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之七】场景类CCScene和布景类CCLayer]]></title>
-    <link href="http://fusijie.github.io/blog/2013/10/14/play-cocos2dx-07/"/>
+    <link href="http://www.jacky.tk/blog/2013/10/14/play-cocos2dx-07/"/>
     <updated>2013-10-14T22:21:00+08:00</updated>
-    <id>http://fusijie.github.io/blog/2013/10/14/play-cocos2dx-07</id>
+    <id>http://www.jacky.tk/blog/2013/10/14/play-cocos2dx-07</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12708811">http://blog.csdn.net/jackystudio</a></p>
 
 <p>场景类CCScene和布景类CCLayer都是作为一个容器来使用，这里简单地看下它们的实现：</p>
 
 <h3>1.场景类：CCScene</h3>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_07/1.jpg" alt="" border="0" title="CCScene" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_07/1.jpg" alt="" border="0" title="CCScene" /><br></br></div>
 
 
 
@@ -414,7 +414,7 @@ void setFlipY(bool bFlipY);
 
 <h3>2.布景类：CCLayer</h3>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_07/2.jpg" alt="" border="0" title="CCLayer" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_07/2.jpg" alt="" border="0" title="CCLayer" /><br></br></div>
 
 
 <p>CCLayer相对CCScene而言会比较麻烦一点，因为他不仅要作为容器使用，而且还要实现一些游戏功能，所以它继承了CCTouchDelegate，CCAccelerometerDelegate和CCKeypadDelegate，这三个类是用来处理触摸事件，重力感应事件和键盘事件的，默认初始化都是不可用，需要手动设置开启。</p>
@@ -482,7 +482,7 @@ virtual void keyMenuClicked(void);
 
 <h3>3.颜色布景层：CCLayerRGBA，CCLayerColor和CCLayerGradient</h3>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_07/3.jpg" alt="" border="0" title="颜色布景层" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_07/3.jpg" alt="" border="0" title="颜色布景层" /><br></br></div>
 
 
 <p>（1）CCLayerRGBA和CCNodeRGBA差不多，也是用于设置RGB值和Blend值，同时可以传递到子节点。它的相关接口参见CCNodeRGBA。</p>
@@ -493,7 +493,7 @@ virtual void keyMenuClicked(void);
 
 <h3>4.多层布景层：CCLayerMultiplex</h3>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_07/4.jpg" alt="" border="0" title="CCLayerMultiplex" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_07/4.jpg" alt="" border="0" title="CCLayerMultiplex" /><br></br></div>
 
 
 <p>CCLayerMultiplex继承与CCLayer，相当于一个层容器，他可以包含多个层，但是同一时间只能显示一个CCLayer。《我叫MT》的第一个界面菜单那一块就是这么处理的。CCLayerMultiplex最重要的函数就是：</p>
@@ -509,16 +509,16 @@ pLayerMultiplex-&gt;switchToAndReleaseMe(item-&gt;getTag());
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之六】节点类CCNode]]></title>
-    <link href="http://fusijie.github.io/blog/2013/10/14/play-cocos2dx-06/"/>
+    <link href="http://www.jacky.tk/blog/2013/10/14/play-cocos2dx-06/"/>
     <updated>2013-10-14T22:06:00+08:00</updated>
-    <id>http://fusijie.github.io/blog/2013/10/14/play-cocos2dx-06</id>
+    <id>http://www.jacky.tk/blog/2013/10/14/play-cocos2dx-06</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12703741">http://blog.csdn.net/jackystudio/</a></p>
 
 <p>节点类CCNode可以说是游戏元素的祖宗了，基本上我们看得到的游戏元素都是以它为原型进行扩展的。像CCScene，CCLayer，CCSprite，CCMenu，CCSpriteBatchNode等等都是从CCNode继承而来。另外如果我们要自定义精灵，那么从CCNode继承也是一个很不错的选择。</p>
 
 <h3>1.概况</h3>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_06/1.jpg" alt="" border="0" title="CCNode" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_06/1.jpg" alt="" border="0" title="CCNode" /><br></br></div>
 
 
 
@@ -769,7 +769,7 @@ CCRect boundingBox(void);
 
 <h3>4.CCNodeRGBA</h3>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_06/2.jpg" alt="" border="0" title="CCNodeRGBA" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_06/2.jpg" alt="" border="0" title="CCNodeRGBA" /><br></br></div>
 
 
 <p>CCNodeRGBA继承于CCNode，所以它拥有CCNode的所有特性，并且它也继承于CCRGBAProtocol。从名字看来我们就知道它是一个带有颜色和透明度的节点。</p>
@@ -782,16 +782,16 @@ CCRect boundingBox(void);
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之五】导演类CCDirector]]></title>
-    <link href="http://fusijie.github.io/blog/2013/10/12/play-cocos2dx-05/"/>
+    <link href="http://www.jacky.tk/blog/2013/10/12/play-cocos2dx-05/"/>
     <updated>2013-10-12T21:49:00+08:00</updated>
-    <id>http://fusijie.github.io/blog/2013/10/12/play-cocos2dx-05</id>
+    <id>http://www.jacky.tk/blog/2013/10/12/play-cocos2dx-05</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12646337">http://blog.csdn.net/jackystudio</a></p>
 
 <p>既然cocos2d-x都帮我们封装好了，使得开发与平台无关，那接下来我们就单纯地开始好好玩游戏吧！这几篇是对cocos2d-x一些基本且重要的元素进行解释和API介绍，之前没有系统的看过API，有时候某些功能引擎都已经提供好了，不知道还是会自己去写。所以全面地了解一下是必须的。</p>
 
 <h3>1.概况</h3>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_05/1.jpg" alt="" border="0" title="CCDirector" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_05/1.jpg" alt="" border="0" title="CCDirector" /><br></br></div>
 
 
 
@@ -932,9 +932,9 @@ void setDepthTest(bool bOn);
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之四】cocos2d-x怎么实现跨平台]]></title>
-    <link href="http://fusijie.github.io/blog/2013/10/11/play-cocos2dx-04/"/>
+    <link href="http://www.jacky.tk/blog/2013/10/11/play-cocos2dx-04/"/>
     <updated>2013-10-11T21:23:00+08:00</updated>
-    <id>http://fusijie.github.io/blog/2013/10/11/play-cocos2dx-04</id>
+    <id>http://www.jacky.tk/blog/2013/10/11/play-cocos2dx-04</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12610287">http://blog.csdn.net/jackystudio</a></p>
 
 <p>cocos2d-x到底是怎样实现跨平台的呢？这里以Win32和Android为例。</p>
@@ -943,7 +943,7 @@ void setDepthTest(bool bOn);
 
 <p>先看一下一个项目创建后的目录结构吧！这还是以HelloCpp为例。</p>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_04/1.jpg" alt="" border="0" title="跨平台项目目录结构" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_04/1.jpg" alt="" border="0" title="跨平台项目目录结构" /><br></br></div>
 
 
 <!-- more -->
@@ -1085,7 +1085,7 @@ static {
 
 <p>在这里Cocos2dxActivity做的就是创建Cocos2dxGLSurfaceView，并设置了Cocos2dxRenderer和Cocos2dxEditText，然后添加到FramLayout。具体的各部分实现这里就不贴代码了，画了个图：</p>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_04/2.jpg" alt="" border="0" title="Android调用流程" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_04/2.jpg" alt="" border="0" title="Android调用流程" /><br></br></div>
 
 
 <p>好了，就这样吧。因为我对Android界面开发，特别是OpenGLView这块也不熟，所以只能大概推出是这样子了，有什么错误，还请指出。</p>
@@ -1094,16 +1094,16 @@ static {
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三】cocos2d-x游戏是怎么跑起来的]]></title>
-    <link href="http://fusijie.github.io/blog/2013/10/10/play-cocos2dx-03/"/>
+    <link href="http://www.jacky.tk/blog/2013/10/10/play-cocos2dx-03/"/>
     <updated>2013-10-10T10:01:00+08:00</updated>
-    <id>http://fusijie.github.io/blog/2013/10/10/play-cocos2dx-03</id>
+    <id>http://www.jacky.tk/blog/2013/10/10/play-cocos2dx-03</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12554167">http://blog.csdn.net/jackystudio</a></p>
 
 <p>虽然cocos2d-x v3.0 alpha版已经出来了，也改进了不少，有兴趣的可以去尝尝鲜。因为后面可能还会配合cocoStudio写一下博客，而现在v1.0.0.0版本需要配合cocos2d-x v2.2.0使用。所以这里选择了V2.2.0版的cocos2d-x。</p>
 
 <p>一个新的东西，从头开始吧！从HelloWorld出发看一下一个cocos2d-x游戏是怎么跑起来的。先看看它的结构。</p>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_03/1.jpg" alt="" border="0" title="结构" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_03/1.jpg" alt="" border="0" title="结构" /><br></br></div>
 
 
 
@@ -1290,16 +1290,16 @@ return true;
 
 <p>好了，最后再总结成一张图，cocos2d-x游戏就是这么跑起来的~</p>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_03/2.jpg" alt="" border="0" title="结构" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_03/2.jpg" alt="" border="0" title="结构" /><br></br></div>
 
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二】游戏和引擎构成]]></title>
-    <link href="http://fusijie.github.io/blog/2013/10/09/play-cocos2dx-02/"/>
+    <link href="http://www.jacky.tk/blog/2013/10/09/play-cocos2dx-02/"/>
     <updated>2013-10-09T16:53:00+08:00</updated>
-    <id>http://fusijie.github.io/blog/2013/10/09/play-cocos2dx-02</id>
+    <id>http://www.jacky.tk/blog/2013/10/09/play-cocos2dx-02</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12432837">http://blog.csdn.net/jackystudio</a></p>
 
 <h3>1.游戏构成</h3>
@@ -1323,12 +1323,12 @@ return true;
 
 <p>用一张图来看看它们的关系。</p>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_02/1.jpg" alt="" border="0" title="游戏构成" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_02/1.jpg" alt="" border="0" title="游戏构成" /><br></br></div>
 
 
 <h3>2.引擎构成</h3>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_02/2.jpg" alt="" border="0" title="引擎构成" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_02/2.jpg" alt="" border="0" title="引擎构成" /><br></br></div>
 
 
 <p>引擎目录的具体介绍如下：</p>
@@ -1365,9 +1365,9 @@ return true;
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之一】V2.2.0版本开发环境配置]]></title>
-    <link href="http://fusijie.github.io/blog/2013/10/08/play-cocos2dx-01/"/>
+    <link href="http://www.jacky.tk/blog/2013/10/08/play-cocos2dx-01/"/>
     <updated>2013-10-08T16:18:00+08:00</updated>
-    <id>http://fusijie.github.io/blog/2013/10/08/play-cocos2dx-01</id>
+    <id>http://www.jacky.tk/blog/2013/10/08/play-cocos2dx-01</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12419387">http://blog.csdn.net/jackystudio</a></p>
 
 <p>现在cocos2d-x处在上升期，各个版本的变化还是比较大的，单从环境配置来看，从v2.0到v2.2就变化了不少。今天配置了一下V2.2.0环境，创建项目，并进行交叉编译，发现比之前麻烦了不少。这里稍微记录一下。
@@ -1414,7 +1414,7 @@ VC2010Express: C:\Program Files\Microsoft Visual Studio 10.0\VC\Express\VCProjec
 
 <p>我的电脑→右键→属性→高级→环境变量→系统变量→path→加入你的python安装目录。测试一下：进入cmd，输入python，不会提示“不是外部或内部命令balabala&hellip;”就OK。</p>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_01/1.jpg" alt="" border="0" title="设置环境变量" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_01/1.jpg" alt="" border="0" title="设置环境变量" /><br></br></div>
 
 
 <h3>4.创建项目</h3>
@@ -1440,12 +1440,12 @@ pause
 
 <p>双击运行它就可以了。效果如下：</p>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_01/2.jpg" alt="" border="0" title="创建项目" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_01/2.jpg" alt="" border="0" title="创建项目" /><br></br></div>
 
 
 <p>然后在cocos2d-x目录下的project就可以看到Test文件夹，里面包含了各个平台的项目。</p>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_01/3.jpg" alt="" border="0" title="各平台项目" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_01/3.jpg" alt="" border="0" title="各平台项目" /><br></br></div>
 
 
 <h3>5.导入eclipse，生成apk</h3>
@@ -1460,24 +1460,24 @@ pause
 
 <p>（3）修改项目属性C/C++ builder的build command和build directory。分别为NDK目录下的ndk-builder和当前项目文件夹。</p>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_01/4.jpg" alt="" border="0" title="设置C++ build" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_01/4.jpg" alt="" border="0" title="设置C++ build" /><br></br></div>
 
 
 <p>（4）添加C/C++→Builder→Environment→NDK_MODULE_PATH，值为cocos2dx目录和cocos2dx目录\cocos2dx\platform\third_party\android\prebuilt。</p>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_01/5.jpg" alt="" border="0" title="设置NDK_MODULE_PATH" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_01/5.jpg" alt="" border="0" title="设置NDK_MODULE_PATH" /><br></br></div>
 
 
 <p>（5）build project ，run as andorid app即可。如果出错，clean一下。不过运行的时候程序出现了Fatal signal 11 (SIGSEGV) at 0x00000000 (code=1)异常，原因还没找到。。。有知道的吱一声。。。（先用Cygwin编译一次再到Eclipse中编译就可以了。真心不知道差别在哪。）</p>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_01/6.jpg" alt="" border="0" title="Eclipse编译" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_01/6.jpg" alt="" border="0" title="Eclipse编译" /><br></br></div>
 
 
 <p><strong>5.2.Cygwin编译</strong></p>
 
 <p>这个请参见<a href="http://blog.csdn.net/jackystudio/article/details/11516435">传送门</a>。编译完成后导入Eclipse即可。</p>
 
-<div align="center"><img src="http://fusijie.github.io/images/Blog/Play_cocos2dx_01/7.jpg" alt="" border="0" title="CygWin编译" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_01/7.jpg" alt="" border="0" title="CygWin编译" /><br></br></div>
 
 
 <p>如果提示需要定义NDK_ROOT，那么在cygwin安装目录\home\username.bash_profile文件末尾添加：</p>
