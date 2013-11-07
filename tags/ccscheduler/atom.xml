@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: CCScheduler | Jacky's Blog]]></title>
   <link href="http://www.jacky.tk/tags/ccscheduler/atom.xml" rel="self"/>
   <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-07T08:21:41+08:00</updated>
+  <updated>2013-11-07T08:53:47+08:00</updated>
   <id>http://www.jacky.tk/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -18,7 +18,7 @@
     <link href="http://www.jacky.tk/blog/2013/10/18/play-cocos2dx-11/"/>
     <updated>2013-10-18T08:08:00+08:00</updated>
     <id>http://www.jacky.tk/blog/2013/10/18/play-cocos2dx-11</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12848473">http://blog.csdn.net/jackystudio/article/details/12848473</a></p>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12848473">http://blog.csdn.net/jackystudio</a></p>
 
 <p>如果我们想定时执行一个动作怎么办？CCScheduler帮了我们一个大忙。</p>
 
