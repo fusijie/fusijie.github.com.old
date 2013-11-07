@@ -1,0 +1,114 @@
+---
+layout: post
+title: "【玩转cocos2d-x之十一】定时器schedule"
+date: 2013-10-18 08:08
+comments: true
+categories: cocos2d-x
+tags: [CCScheduler, 定时器, 函数指针, 回调函数]
+---
+原创作品，转载请标明：http://blog.csdn.net/jackystudio/article/details/12848473
+
+如果我们想定时执行一个动作怎么办？CCScheduler帮了我们一个大忙。
+
+###1.概况###
+CCNode内部封装了一个
+
+	CCScheduler *m_pScheduler;  
+正是通过它我们可以很轻松地完成一些定时功能，所以定时器是节点所具备的功能。
+
+定时器分为2种，一种是更新定时器，执行的频率是每帧执行一次，另一种则是自定义回调函数的定时器（最小值是一帧），关于回调函数和函数指针的相关基础可参见[这里](http://blog.csdn.net/jackystudio/article/details/11720325)。
+
+<!-- more -->
+
+###2.API###
+
+	//更新定时器，每帧调用1次。每个节点只能有1个被调度的update函数  
+	void scheduleUpdate(void);  
+	//卸载更新定时器  
+	void unscheduleUpdate(void);  
+  
+	//自定义定时器，如果重复调用，那调用间隔会更新，而不会再次调用  
+	//interval，调用时间间隔，如果为0，建议使用scheduleUpdate  
+	//repeat，回调函数会被执行repeat+1次，kCCRepeatForever是无限次调用  
+	//delay，第一次执行前的延时  
+	void schedule(SEL_SCHEDULE selector, float interval, unsigned int repeat, float delay);  
+	void schedule(SEL_SCHEDULE selector, float interval);  
+	void scheduleOnce(SEL_SCHEDULE selector, float delay);  
+	void schedule(SEL_SCHEDULE selector);  
+	//卸载自定义定时器  
+	void unschedule(SEL_SCHEDULE selector);  
+	void unscheduleAllSelectors(void);  
+  
+	//恢复所有定时器和动作，OnEnter调用  
+	void resumeSchedulerAndActions(void);  
+	//暂停所有定时器和动作，OnExit调用  
+	void pauseSchedulerAndActions(void);  
+  
+	//scheduleUpdate每帧调用  
+	virtual void update(float delta);  
+
+###3.示例###
+**3.1.更新定时器**
+
+	//开启定时器  
+	this->scheduleUpdate();  
+  
+	//虚函数update  
+	void HelloWorld::update(float delta)  
+	{  
+    	CCLog("%f",delta);  
+	}  
+  
+	//输出，这里设置了60fps，调用间隔1/60s  
+	0.016667  
+	0.016676  
+	0.016657  
+	0.016669  
+
+**3.2.自定义定时器**
+ 
+	//开启定时器，延时2s执行，执行3+1次，执行间隔1s  
+	this->schedule(schedule_selector(HelloWorld::log),1,3,2);  
+  
+	//回调函数  
+	void HelloWorld::log(float dt)  
+	{  
+    	CCLog("schedule");  
+	}  
+  
+	//输出  
+	2.004532  
+	1.005827  
+	1.000238  
+	1.001019  
+
+###4.schedule_selector和SEL_SCHEDULE###
+看到上面的schedule_selector了吧，这又是个什么玩意？看看它的宏定义。
+ 
+	#define schedule_selector(_SELECTOR) (SEL_SCHEDULE)(&_SELECTOR)  
+原来是把函数指针转化为SEL_SCHEDULE型指针，那SEL_SCHEDULE又是什么？
+
+	typedef void (CCObject::*SEL_SCHEDULE)(float);  
+也没啥，就是定义了一个带有float参数函数指针。所以我们在使用自定义Schedule的时候，回调函数一定要记得带上一个float参数，它记录了两次执行的间隔。如果忘了，可是会出现类型转换错误的异常。这种方式在callfunc_selector，menu_selector等也以同样的方式出现。
+
+###5.谁来调用回调函数###
+但是有没有发现，如果这个回调函数是个全局函数或者static函数也就算了，偏偏它是个成员函数，成员函数需要实例来调用，可是从调用方法来看，好像没传入调用对象？
+ 
+	this->schedule(schedule_selector(HelloWorld::log),1,3,2);  
+是的，还记得一开头说的CCNode内部封装的m_pScheduler吗？
+ 
+	CCScheduler *m_pScheduler;  
+原来CCNode帮我们实现了：
+ 
+	void CCNode::schedule(SEL_SCHEDULE selector, float interval, unsigned int repeat, float delay)  
+	{  
+    	CCAssert( selector, "Argument must be non-nil");  
+    	CCAssert( interval >=0, "Argument must be positive");  
+  
+    	m_pScheduler->scheduleSelector(selector, this, interval , repeat, delay, !m_bRunning);  
+	}  
+原来this这个时候被传入了，同时传入的参数还有m_bRunning，m_bRunning表示节点是否在运行中（是否在舞台上），OnEnter的时候赋值true，OnExit的时候赋值false，所以在执行定时器的时候还必须确保节点有在运行。
+
+这样确实用起来怪怪的，所以在cocos2d-x v3.0版本中，参数和函数指针用一个宏打包起来了~
+
+至于CCSchedule内部是怎么实现的，以及CCTimer的触发回调，有兴趣的就自己看看源码吧，我也写不来，源码有点长啊。

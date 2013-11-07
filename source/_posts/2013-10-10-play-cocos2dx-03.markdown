@@ -12,9 +12,9 @@ tags: [cocos2d-x, CCApplication, CCEGLView, applicationDidFinish]
 
 一个新的东西，从头开始吧！从HelloWorld出发看一下一个cocos2d-x游戏是怎么跑起来的。先看看它的结构。
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_03/1.jpg" alt="" border="0" title="结构" /><br></br></div>
-
 <!-- more -->
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_03/1.jpg" alt="" border="0" title="结构" /><br></br></div>
 
 ###1.main函数###
 
