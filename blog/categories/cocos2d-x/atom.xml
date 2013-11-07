@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://www.jacky.tk/blog/categories/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-06T21:01:46+08:00</updated>
+  <updated>2013-11-07T08:21:41+08:00</updated>
   <id>http://www.jacky.tk/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,140 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十一】定时器schedule]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/18/play-cocos2dx-11/"/>
+    <updated>2013-10-18T08:08:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/18/play-cocos2dx-11</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12848473">http://blog.csdn.net/jackystudio/article/details/12848473</a></p>
+
+<p>如果我们想定时执行一个动作怎么办？CCScheduler帮了我们一个大忙。</p>
+
+<h3>1.概况</h3>
+
+<p>CCNode内部封装了一个</p>
+
+<pre><code>CCScheduler *m_pScheduler;  
+</code></pre>
+
+<p>正是通过它我们可以很轻松地完成一些定时功能，所以定时器是节点所具备的功能。</p>
+
+<p>定时器分为2种，一种是更新定时器，执行的频率是每帧执行一次，另一种则是自定义回调函数的定时器（最小值是一帧），关于回调函数和函数指针的相关基础可参见<a href="http://blog.csdn.net/jackystudio/article/details/11720325">这里</a>。</p>
+
+<!-- more -->
+
+
+<h3>2.API</h3>
+
+<pre><code>//更新定时器，每帧调用1次。每个节点只能有1个被调度的update函数  
+void scheduleUpdate(void);  
+//卸载更新定时器  
+void unscheduleUpdate(void);  
+
+//自定义定时器，如果重复调用，那调用间隔会更新，而不会再次调用  
+//interval，调用时间间隔，如果为0，建议使用scheduleUpdate  
+//repeat，回调函数会被执行repeat+1次，kCCRepeatForever是无限次调用  
+//delay，第一次执行前的延时  
+void schedule(SEL_SCHEDULE selector, float interval, unsigned int repeat, float delay);  
+void schedule(SEL_SCHEDULE selector, float interval);  
+void scheduleOnce(SEL_SCHEDULE selector, float delay);  
+void schedule(SEL_SCHEDULE selector);  
+//卸载自定义定时器  
+void unschedule(SEL_SCHEDULE selector);  
+void unscheduleAllSelectors(void);  
+
+//恢复所有定时器和动作，OnEnter调用  
+void resumeSchedulerAndActions(void);  
+//暂停所有定时器和动作，OnExit调用  
+void pauseSchedulerAndActions(void);  
+
+//scheduleUpdate每帧调用  
+virtual void update(float delta);  
+</code></pre>
+
+<h3>3.示例</h3>
+
+<p><strong>3.1.更新定时器</strong></p>
+
+<pre><code>//开启定时器  
+this-&gt;scheduleUpdate();  
+
+//虚函数update  
+void HelloWorld::update(float delta)  
+{  
+    CCLog("%f",delta);  
+}  
+
+//输出，这里设置了60fps，调用间隔1/60s  
+0.016667  
+0.016676  
+0.016657  
+0.016669  
+</code></pre>
+
+<p><strong>3.2.自定义定时器</strong></p>
+
+<pre><code>//开启定时器，延时2s执行，执行3+1次，执行间隔1s  
+this-&gt;schedule(schedule_selector(HelloWorld::log),1,3,2);  
+
+//回调函数  
+void HelloWorld::log(float dt)  
+{  
+    CCLog("schedule");  
+}  
+
+//输出  
+2.004532  
+1.005827  
+1.000238  
+1.001019  
+</code></pre>
+
+<h3>4.schedule_selector和SEL_SCHEDULE</h3>
+
+<p>看到上面的schedule_selector了吧，这又是个什么玩意？看看它的宏定义。</p>
+
+<pre><code>#define schedule_selector(_SELECTOR) (SEL_SCHEDULE)(&amp;_SELECTOR)  
+</code></pre>
+
+<p>原来是把函数指针转化为SEL_SCHEDULE型指针，那SEL_SCHEDULE又是什么？</p>
+
+<pre><code>typedef void (CCObject::*SEL_SCHEDULE)(float);  
+</code></pre>
+
+<p>也没啥，就是定义了一个带有float参数函数指针。所以我们在使用自定义Schedule的时候，回调函数一定要记得带上一个float参数，它记录了两次执行的间隔。如果忘了，可是会出现类型转换错误的异常。这种方式在callfunc_selector，menu_selector等也以同样的方式出现。</p>
+
+<h3>5.谁来调用回调函数</h3>
+
+<p>但是有没有发现，如果这个回调函数是个全局函数或者static函数也就算了，偏偏它是个成员函数，成员函数需要实例来调用，可是从调用方法来看，好像没传入调用对象？</p>
+
+<pre><code>this-&gt;schedule(schedule_selector(HelloWorld::log),1,3,2);  
+</code></pre>
+
+<p>是的，还记得一开头说的CCNode内部封装的m_pScheduler吗？</p>
+
+<pre><code>CCScheduler *m_pScheduler;  
+</code></pre>
+
+<p>原来CCNode帮我们实现了：</p>
+
+<pre><code>void CCNode::schedule(SEL_SCHEDULE selector, float interval, unsigned int repeat, float delay)  
+{  
+    CCAssert( selector, "Argument must be non-nil");  
+    CCAssert( interval &gt;=0, "Argument must be positive");  
+
+    m_pScheduler-&gt;scheduleSelector(selector, this, interval , repeat, delay, !m_bRunning);  
+}  
+</code></pre>
+
+<p>原来this这个时候被传入了，同时传入的参数还有m_bRunning，m_bRunning表示节点是否在运行中（是否在舞台上），OnEnter的时候赋值true，OnExit的时候赋值false，所以在执行定时器的时候还必须确保节点有在运行。</p>
+
+<p>这样确实用起来怪怪的，所以在cocos2d-x v3.0版本中，参数和函数指针用一个宏打包起来了~</p>
+
+<p>至于CCSchedule内部是怎么实现的，以及CCTimer的触发回调，有兴趣的就自己看看源码吧，我也写不来，源码有点长啊。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十】cocos2d-x坐标系]]></title>
@@ -504,279 +638,6 @@ pLayerMultiplex-&gt;switchToAndReleaseMe(item-&gt;getTag());
 </code></pre>
 
 <p>两者的差别在于是否释放当前处于活动的布景层。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之六】节点类CCNode]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/14/play-cocos2dx-06/"/>
-    <updated>2013-10-14T22:06:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/14/play-cocos2dx-06</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12703741">http://blog.csdn.net/jackystudio/</a></p>
-
-<p>节点类CCNode可以说是游戏元素的祖宗了，基本上我们看得到的游戏元素都是以它为原型进行扩展的。像CCScene，CCLayer，CCSprite，CCMenu，CCSpriteBatchNode等等都是从CCNode继承而来。另外如果我们要自定义精灵，那么从CCNode继承也是一个很不错的选择。</p>
-
-<h3>1.概况</h3>
-
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_06/1.jpg" alt="" border="0" title="CCNode" /><br></br></div>
-
-
-
-
-<!-- more -->
-
-
-<p>CCNode直接从CCObject继承而来，有如下几个特点：</p>
-
-<p><em>（1）可以包含其他CCNode节点，可以进行添加/获取/删除子节点操作。</em></p>
-
-<p><em>（2）可以执行周期性的回调任务。</em></p>
-
-<p><em>（3）可以执行动作。</em></p>
-
-<p>一些子类化的节点提供了更为丰富的特性和功能。</p>
-
-<h3>2.属性</h3>
-
-<pre><code>Features of CCNode:  
-- position   //位置，默认(0,0)  
-- scale (x, y)   //缩放，默认(1,1)  
-- rotation (in degrees, clockwise)   //旋转，默认为0  
-- skew   //倾斜，默认为0  
-- CCCamera (an interface to gluLookAt )  //CCCamera，视点转换，每个节点都有，默认指向节点中心  
-- CCGridBase (to do mesh transformations)//CCGridBase，网类转变  
-- anchor point   //锚点，默认(0,0)  
-- size   //尺寸，默认(0,0)  
-- visible//可见  
-- z-order//z轴值  
-- openGL z position  //OpenGL z值  
-</code></pre>
-
-<h3>3.接口</h3>
-
-<p><strong>3.1.初始化</strong></p>
-
-<pre><code>//初始化函数，成功返回true  
-virtual bool init();  
-
-//分配内存空间，调用init并添加autoRelease标记  
-static CCNode * create(void);  
-
-//返回描述字符串  
-const char* description(void);  
-</code></pre>
-
-<p><strong>3.2.图形属性</strong></p>
-
-<pre><code>//设置/获取Z轴顺序，Z轴大的覆盖Z轴小的  
-virtual void setZOrder(int zOrder);  
-virtual void _setZOrder(int z);  
-virtual int getZOrder();  
-
-//设置/获取OpenGL Z轴顶点  
-virtual void setVertexZ(float vertexZ);  
-virtual float getVertexZ();  
-
-//设置/获取缩放值  
-virtual void setScaleX(float fScaleX);  
-virtual float getScaleX();  
-virtual void setScaleY(float fScaleY);  
-virtual float getScaleY();  
-virtual void setScale(float scale);  
-virtual float getScale();  
-virtual void setScale(float fScaleX,float fScaleY);  
-
-//设置/获取位置  
-virtual void setPosition(const CCPoint &amp;position);  
-virtual const CCPoint&amp; getPosition();  
-virtual void setPosition(float x, float y);  
-virtual void getPosition(float* x, float* y);  
-virtual void  setPositionX(float x);  
-virtual float getPositionX(void);  
-virtual void  setPositionY(float y);  
-virtual float getPositionY(void);  
-
-//设置/获取倾斜角度  
-virtual void setSkewX(float fSkewX);  
-virtual float getSkewX();  
-virtual void setSkewY(float fSkewY);  
-virtual float getSkewY();  
-
-//设置/获取锚点  
-virtual void setAnchorPoint(const CCPoint&amp; anchorPoint);  
-virtual const CCPoint&amp; getAnchorPoint();  
-virtual const CCPoint&amp; getAnchorPointInPoints();  
-
-//设置/获取大小  
-virtual void setContentSize(const CCSize&amp; contentSize);  
-virtual const CCSize&amp; getContentSize() const;  
-
-//设置/获取可见性  
-virtual void setVisible(bool visible);  
-virtual bool isVisible();  
-
-//设置/获取旋转角度  
-virtual void setRotation(float fRotation);  
-virtual float getRotation();  
-virtual void setRotationX(float fRotaionX);  
-virtual float getRotationX();  
-virtual void setRotationY(float fRotationY);  
-virtual float getRotationY();  
-</code></pre>
-
-<p><strong>3.3.节点操作</strong></p>
-
-<pre><code>//添加/获取子节点，可以带Z轴顺序（默认为0）和标签  
-virtual void addChild(CCNode * child);  
-virtual void addChild(CCNode * child, int zOrder);  
-virtual void addChild(CCNode* child, int zOrder, int tag);  
-CCNode * getChildByTag(int tag);  
-virtual CCArray* getChildren();  
-unsigned int getChildrenCount(void) const;  
-
-//设置/获取父节点  
-virtual void setParent(CCNode* parent);  
-virtual CCNode* getParent();  
-
-//从父节点中移除自身，默认cleanup为true  
-virtual void removeFromParent();  
-virtual void removeFromParentAndCleanup(bool cleanup);  
-
-//移除子节点  
-virtual void removeChild(CCNode* child);  
-virtual void removeChild(CCNode* child, bool cleanup);  
-virtual void removeChildByTag(int tag);  
-virtual void removeChildByTag(int tag, bool cleanup);  
-
-//移除所有节点  
-virtual void removeAllChildren();  
-virtual void removeAllChildrenWithCleanup(bool cleanup);  
-
-//重新设置节点顺序  
-virtual void reorderChild(CCNode * child, int zOrder);  
-</code></pre>
-
-<p><strong>3.4.标签和用户数据</strong></p>
-
-<pre><code>//设置/获取tag  
-virtual int getTag() const;  
-virtual void setTag(int nTag);  
-
-//设置/获取userdata，它是一个指针可以指向你想要的任意数据块，不过记得要释放  
-virtual void* getUserData();  
-virtual void setUserData(void *pUserData);  
-
-//设置/获取CCObject，和上面一样，只是数据换成了CCObject对象  
-virtual CCObject* getUserObject();  
-virtual void setUserObject(CCObject *pUserObject);  
-</code></pre>
-
-<p><strong>3.5.事件回调</strong></p>
-
-<pre><code>//事件回调
-//节点开始进入触发  
-virtual void onEnter();  
-//节点完成进入触发  
-virtual void onEnterTransitionDidFinish();  
-//节点退出触发  
-virtual void onExit();  
-//如果节点退出有过渡动画，动画开始时触发  
-virtual void onExitTransitionDidStart();  
-//停止动画和调度器  
-virtual void cleanup(void);  
-</code></pre>
-
-<p><strong>3.6.动作</strong></p>
-
-<pre><code>//获取/设置动作管理器
-virtual void setActionManager(CCActionManager* actionManager);  
-virtual CCActionManager* getActionManager();  
-
-//运行动作  
-CCAction* runAction(CCAction* action);  
-
-//停止动作  
-void stopAllActions(void);  
-void stopAction(CCAction* action);  
-void stopActionByTag(int tag);  
-CCAction* getActionByTag(int tag);  
-
-//获取正在运行动作数  
-unsigned int numberOfRunningActions(void);  
-</code></pre>
-
-<p><strong>3.7.调度器和定时器</strong></p>
-
-<pre><code>//获取/设置调度器  
-virtual void setScheduler(CCScheduler* scheduler);  
-virtual CCScheduler* getScheduler();  
-
-//检测某个调度器是否有在运行  
-bool isScheduled(SEL_SCHEDULE selector);  
-
-//开启update调度  
-void scheduleUpdate(void);  
-//设置调度优先级  
-void scheduleUpdateWithPriority(int priority);  
-//关闭update调度器  
-void unscheduleUpdate(void);  
-
-//开启/关闭/恢复/暂停调度器  
-void schedule(SEL_SCHEDULE selector, float interval, unsigned int repeat, float delay);  
-void schedule(SEL_SCHEDULE selector, float interval);  
-void scheduleOnce(SEL_SCHEDULE selector, float delay);  
-void schedule(SEL_SCHEDULE selector);  
-void unschedule(SEL_SCHEDULE selector);  
-void unscheduleAllSelectors(void);  
-void resumeSchedulerAndActions(void);  
-void pauseSchedulerAndActions(void);  
-
-//每帧调用函数  
-virtual void update(float delta);  
-</code></pre>
-
-<p><strong>3.8.坐标转换</strong></p>
-
-<pre><code>//坐标转换相关，这一部分后面再介绍  
-CCPoint convertToNodeSpace(const CCPoint&amp; worldPoint);  
-CCPoint convertToWorldSpace(const CCPoint&amp; nodePoint);  
-CCPoint convertToNodeSpaceAR(const CCPoint&amp; worldPoint);  
-CCPoint convertToWorldSpaceAR(const CCPoint&amp; nodePoint);  
-CCPoint convertTouchToNodeSpace(CCTouch * touch);  
-CCPoint convertTouchToNodeSpaceAR(CCTouch * touch);  
-</code></pre>
-
-<p><strong>3.9.其他</strong></p>
-
-<pre><code>//获取/设置着色程序  
-virtual CCGLProgram* getShaderProgram();  
-virtual void setShaderProgram(CCGLProgram *pShaderProgram);  
-
-//获取CCCamera对象  
-virtual CCCamera* getCamera();  
-
-//节点是否在运行  
-virtual bool isRunning();  
-
-//绘制节点  
-virtual void draw(void);  
-//递归访问节点  
-virtual void visit(void);  
-
-//返回所占矩形，节点坐标系  
-CCRect boundingBox(void);  
-</code></pre>
-
-<h3>4.CCNodeRGBA</h3>
-
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_06/2.jpg" alt="" border="0" title="CCNodeRGBA" /><br></br></div>
-
-
-<p>CCNodeRGBA继承于CCNode，所以它拥有CCNode的所有特性，并且它也继承于CCRGBAProtocol。从名字看来我们就知道它是一个带有颜色和透明度的节点。</p>
-
-<p>所以它比起CCNode就多了2个特性，Opacity和RGB值。</p>
-
-<p>如果要给子节点传递透明度属性，那么需要设置setCascadeOpacityEnabled(true)，如果传递的过程中遇到了CCNode，那么传递会中断。颜色值的传递也是一样的道理。</p>
 ]]></content>
   </entry>
   
