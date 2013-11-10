@@ -1,0 +1,531 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>【玩转cocos2d-x之十二】plist解析工具：Anti_TexturePacker - Jacky's Blog</title>
+  <meta name="author" content="FuSijie">
+
+  
+  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio 之前拿了一些别人的图片素材，是用TexturePacker打包合成的，结果写程序的时候不知道每个合成前小png图的名字是什么，只能一个一个从plist文件中找，然后猜测对应的名字，再进行显示，如果不对， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.jacky.tk/blog/2013/10/19/play-cocos2dx-12">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jacky's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '45386223']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jacky's Blog</a></h1>
+  
+    <h2>Stay Hungry,Stay Foolish!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.jacky.tk" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/projects">Projects</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">【玩转cocos2d-x之十二】plist解析工具：Anti_TexturePacker</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-19T09:49:00+08:00" pubdate data-updated="true">Oct 19<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12867863">http://blog.csdn.net/jackystudio</a></p>
+
+<p>之前拿了一些别人的图片素材，是用TexturePacker打包合成的，结果写程序的时候不知道每个合成前小png图的名字是什么，只能一个一个从plist文件中找，然后猜测对应的名字，再进行显示，如果不对，还要继续猜。。。坑爹啊，效率大大降低了，时间都耗在找图片名字上了。后来决定动手写一个解析plist的软件，就叫它Anti_TexturePacker吧。</p>
+
+<p>Anti_TexurePacker软件基于VS 2008 MFC Dialog。</p>
+
+<h3>1.PNG图的显示</h3>
+
+<p>这个还好，VS2008提供了GDI+，所以可以直接用它显示。关键是屏幕尺寸有限，如果打包后的PNG图很大的话，不能直接显示，又懒得做滚动条，所以直接采用缩放的方式了。缩放比例较大的话，可能会出现捕获点计算不精确，不过效果还是不错的，没有尺寸限制。</p>
+
+<!-- more -->
+
+
+<pre><code>CDC* pDC =GetDC();  
+Graphics graphics( pDC-&gt;m_hDC);  
+Image image(m_PNGFileName.GetString(), FALSE);  
+graphics.DrawImage(&amp;image,ORIGIN_DRAW_X,ORIGIN_DRAW_Y,(int)(m_RealWidth*m_ScaleRatio),(int)(m_RealHeight*m_ScaleRatio)); 
+</code></pre>
+
+<p>要注意PNG图的显示要放在OnPaint中执行，这样窗口进行重绘的时候才会保证PNG图的正常显示。</p>
+
+<h3>2.plist文件的读取</h3>
+
+<p>看一下plist的格式：</p>
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_12/7.jpg" alt="" border="0" title="xml" /><br></br></div>
+
+
+<p>这样一看，就知道了标准的plist文件中，我们需要的是第7，10，14，20，23，27&hellip;行。抓出规律，读取到CStringArray。</p>
+
+<pre><code>    int i=1;
+    int needName=7;
+    int needConfig=10;
+    int needrotate=14;
+    if(!bFileExist)//如果文件存在且可读
+    {
+        return FALSE;
+    }
+    CString strline;
+    FileContainer.RemoveAll();
+    //将PlistFile文件数据读到FileContainer
+    while(PlistFile.ReadString(strline))
+    {
+        if (i==needName)
+        {
+            FileContainer.Add(strline);
+            needName+=13;
+        }
+        if (i==needConfig)
+        {
+            FileContainer.Add(strline);
+            needConfig+=13;
+        }
+        if (i==needrotate)
+        {
+            FileContainer.Add(strline);
+            needrotate+=13;
+        }
+        i++;
+    }
+    PlistFile.Close();
+</code></pre>
+
+<p>然后再解析出CCStringArray中的名字和对应的坐标，尺寸，是否旋转赋值到一个结构体（包含Name，Width，Height，OriginX，OriginY，isRotate）。创建一个CList来储存这些结构体。</p>
+
+<pre><code>while(i&lt;iFileLines)
+{
+    strline = FileContainer.GetAt(i++);
+    strline.TrimLeft();//删除左边的空格
+    if (i%3==1)//第1行，储存名字
+    {
+        str=strline.Mid(5,strline.GetLength()-11);
+        t_pngcfg.strName=str;
+    }
+    else if(i%3==2)//第2行，储存坐标和尺寸
+    {
+        CString strTemp;
+        str=strline.Mid(10,strline.GetLength()-21);
+        AfxExtractSubString(strTemp,str,0,',');
+        t_pngcfg.originX=_ttoi(strTemp);
+        AfxExtractSubString(strTemp,str,1,',');
+        strTemp=strTemp.Left(strTemp.GetLength()-1);
+        t_pngcfg.originY=_ttoi(strTemp);
+        AfxExtractSubString(strTemp,str,2,',');
+        strTemp=strTemp.Right(strTemp.GetLength()-1);
+        t_pngcfg.width=_ttoi(strTemp);
+        AfxExtractSubString(strTemp,str,3,',');
+        t_pngcfg.height=_ttoi(strTemp);
+    }
+    else //第3行，存储旋转属性
+    {
+        str=strline.Mid(1,strline.GetLength()-3);
+        if (str=="true")
+        {
+            t_pngcfg.isRotate=true;
+        }
+        else if (str=="false")
+        {
+            t_pngcfg.isRotate=false;
+        }
+        m_list.AddTail(t_pngcfg);
+    }
+}
+</code></pre>
+
+<p>因为plist文件最后还有一个metadata字段，所以后面进行遍历的时候减掉这一个。</p>
+
+<h3>3.随鼠标移动的PNG图片名字的获取</h3>
+
+<p>在OnMouseMove中进行处理显示。</p>
+
+<pre><code>CPoint ptInPNG;  
+ptInPNG.x=(point.x-ORIGIN_DRAW_X)/m_ScaleRatio;  
+ptInPNG.y=(point.y-ORIGIN_DRAW_Y)/m_ScaleRatio;  
+
+int count=m_plistFile.m_list.GetCount();  
+for (int i=0;i&lt;count-1;i++)  
+{  
+    PNGCfg t_pngcfg=m_plistFile.m_list.GetAt(m_plistFile.m_list.FindIndex(i));  
+    if (isPtInRect(ptInPNG,t_pngcfg))  
+    {  
+        showStastus(t_pngcfg.strName);  
+    }  
+}  
+</code></pre>
+
+<h3>4.单击PNG图拷贝名字到剪切板</h3>
+
+<p>在OnLButtonDown中进行处理拷贝。</p>
+
+<pre><code>if(OpenClipboard()) //首先打开一个剪切板，如果成功则返回非0值  
+{
+    HANDLE hClip;//声明一个句柄  
+    char *pBuf;  
+    EmptyClipboard();//置空这个剪切板，且得到剪切板的所有权  
+    hClip=GlobalAlloc(GMEM_MOVEABLE,t_pngcfg.strName.GetLength()+1);  
+    //申请锁定一块存放数据的内存区域  
+    pBuf=(char *)GlobalLock(hClip);//得到指向内存区域的第一个字节指针  
+    strcpy(pBuf,(char*)_bstr_t(t_pngcfg.strName.GetBuffer()));//将文本框的值拷贝到内存中  
+    GlobalUnlock(hClip);//解除内存锁定  
+    SetClipboardData(CF_TEXT,hClip);//设置数据到剪切板中  
+    CloseClipboard();//关闭剪切板  
+}  
+</code></pre>
+
+<h3>5.效果图</h3>
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_12/1.jpg" alt="" border="0" title="1" /><br></br></div>
+
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_12/2.jpg" alt="" border="0" title="2" /><br></br></div>
+
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_12/3.jpg" alt="" border="0" title="3" /><br></br></div>
+
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_12/4.jpg" alt="" border="0" title="4" /><br></br></div>
+
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_12/5.jpg" alt="" border="0" title="5" /><br></br></div>
+
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_12/6.jpg" alt="" border="0" title="6" /><br></br></div>
+
+
+<h3>6.下载地址</h3>
+
+<p>v.1.2版</p>
+
+<p>更新说明：</p>
+
+<p><em>1.增加PNG剪裁为小PNG功能</em></p>
+
+<p><em>2.修正列表显示</em></p>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6440769">下载地址</a></p>
+
+<p>v1.1版</p>
+
+<p>更新说明：</p>
+
+<p><em>1.修复旋转属性显示错误bug</em></p>
+
+<p><em>2.修复png相对路径无法显示bug</em></p>
+
+<p><em>3.增加双击列表显示红框功能</em></p>
+
+<p><em>4.简化操作</em></p>
+
+<p><em>5.修改icon</em></p>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6429297">下载地址</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">FuSijie</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-19T09:49:00+08:00" pubdate data-updated="true">Oct 19<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cocos2d-x/'>cocos2d-x</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+      <!-- JiaThis Button BEGIN -->
+  <section>
+    <h1>Share</h1>
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share?uid=1859056" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1859056" charset="utf-8"></script>
+</section>
+<!-- JiaThis Button END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+	    <p></p>
+        <a class="basic-alignment left" href="/blog/2013/10/18/play-cocos2dx-11/" title="Previous Post: 【玩转cocos2d-x之十一】定时器schedule">&laquo; 【玩转cocos2d-x之十一】定时器schedule</a>
+      
+      
+    </p>
+  </footer>
+</article>
+  <section>
+    <h1>Comments</h1>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"fusijie"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->  
+</section>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p></p>
+  <center><a href="http://blog.csdn.net/jackystudio" target="_self"><img src="/images/logo.jpg" alt="Logo" border="0" title="Logo" /></a></center>
+  <p></p>
+  <p>A Software Engineer born for the Technology, now concentrate on Mobile development.</p>
+  <p></p>
+  <p>Contact Me:
+		<br><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=754505629&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:754505629:13" alt="Say Hi to me!" title="Say Hi to me!"/></a>
+		<a href="mailto:fusijie@vip.qq.com" ><img src="\images\mailtome.gif" border=0></img></a>
+		</br>
+  </p>
+</section><section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (12)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/10/19/play-cocos2dx-12/">【玩转cocos2d-x之十二】plist解析工具：Anti_TexturePacker</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/18/play-cocos2dx-11/">【玩转cocos2d-x之十一】定时器schedule</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/17/play-cocos2dx-10/">【玩转cocos2d-x之十】cocos2d-x坐标系</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/16/play-cocos2dx-09/">【玩转cocos2d-x之九】动作类CCAction</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/15/play-cocos2dx-08/">【玩转cocos2d-x之八】精灵类CCSprite</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section>
+  <h1>Tags Cloud</h1>
+  <ul class="tag-cloud">
+    <a style="font-size: 70%" href="/tags/ccaction/">CCAction</a>
+<a style="font-size: 70%" href="/tags/ccapplication/">CCApplication</a>
+<a style="font-size: 70%" href="/tags/ccdirector/">CCDirector</a>
+<a style="font-size: 70%" href="/tags/ccdisplaylinkdirecto/">CCDisplayLinkDirecto</a>
+<a style="font-size: 70%" href="/tags/cceglview/">CCEGLView</a>
+<a style="font-size: 70%" href="/tags/ccfinitetimeaction/">CCFiniteTimeAction</a>
+<a style="font-size: 70%" href="/tags/ccfollowccspeed/">CCFollowCCSpeed</a>
+<a style="font-size: 70%" href="/tags/cclayer/">CCLayer</a>
+<a style="font-size: 70%" href="/tags/cclayermultiplex/">CCLayerMultiplex</a>
+<a style="font-size: 70%" href="/tags/ccnode/">CCNode</a>
+<a style="font-size: 70%" href="/tags/ccscene/">CCScene</a>
+<a style="font-size: 70%" href="/tags/ccscheduler/">CCScheduler</a>
+<a style="font-size: 70%" href="/tags/ccsprite/">CCSprite</a>
+<a style="font-size: 70%" href="/tags/cctextureprotocol/">CCTextureProtocol</a>
+<a style="font-size: 70%" href="/tags/openglzuo-biao-xi/">OpenGL坐标系</a>
+<a style="font-size: 70%" href="/tags/texturepacket/">TexturePacket</a>
+<a style="font-size: 70%" href="/tags/android/">android</a>
+<a style="font-size: 70%" href="/tags/applicationdidfinish/">applicationDidFinish</a>
+<a style="font-size: 180%" href="/tags/cocos2d-x/">cocos2d-x</a>
+<a style="font-size: 70%" href="/tags/plist/">plist</a>
+<a style="font-size: 70%" href="/tags/win32/">win32</a>
+<a style="font-size: 70%" href="/tags/han-shu-zhi-zhen/">函数指针</a>
+<a style="font-size: 70%" href="/tags/hui-diao-han-shu/">回调函数</a>
+<a style="font-size: 70%" href="/tags/ding-shi-qi/">定时器</a>
+<a style="font-size: 70%" href="/tags/ping-mu-zuo-biao-xi/">屏幕坐标系</a>
+<a style="font-size: 70%" href="/tags/shu-xing/">属性</a>
+<a style="font-size: 70%" href="/tags/dai-yan-se-de-layer/">带颜色的Layer</a>
+<a style="font-size: 117%" href="/tags/chang-yong-jie-kou/">常用接口</a>
+<a style="font-size: 70%" href="/tags/chang-yong-fang-fa/">常用方法</a>
+<a style="font-size: 70%" href="/tags/you-xi-yin-qing/">游戏引擎</a>
+<a style="font-size: 70%" href="/tags/te-dian/">特点</a>
+<a style="font-size: 70%" href="/tags/huan-jing-pei-zhi/">环境配置</a>
+<a style="font-size: 70%" href="/tags/xiang-dui-zuo-biao-xi/">相对坐标系</a>
+<a style="font-size: 70%" href="/tags/jue-dui-zuo-biao-xi/">绝对坐标系</a>
+<a style="font-size: 70%" href="/tags/jie-xi/">解析</a>
+<a style="font-size: 70%" href="/tags/kua-ping-tai-shi-xian/">跨平台实现</a>
+
+  </ul>
+</section> 
+<section>
+  <h1>Sina Weibo</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="450" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=450&fansRow=0&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=0&uid=1307211523&verifier=3619ee9c">
+      </iframe>
+    </li>
+  </ul>
+</section>
+ 
+<section>
+<h1>Visitor</h1>
+<div>
+	<p></p>
+    <center>
+	<a href="http://info.flagcounter.com/3pF8"><img src="http://s08.flagcounter.com/count/3pF8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_12/viewers_3/labels_0/pageviews_1/flags_0/" alt="Flag Counter" border="0"></a>
+	</center>
+</div>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - FuSijie -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
