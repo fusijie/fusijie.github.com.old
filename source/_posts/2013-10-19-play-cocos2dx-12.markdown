@@ -1,0 +1,178 @@
+---
+layout: post
+title: "【玩转cocos2d-x之十二】plist解析工具：Anti_TexturePacker"
+date: 2013-10-19 09:49
+comments: true
+categories: cocos2d-x
+tags: [cocos2d-x, plist, TexturePacket, 解析]
+---
+原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/12867863)
+
+之前拿了一些别人的图片素材，是用TexturePacker打包合成的，结果写程序的时候不知道每个合成前小png图的名字是什么，只能一个一个从plist文件中找，然后猜测对应的名字，再进行显示，如果不对，还要继续猜。。。坑爹啊，效率大大降低了，时间都耗在找图片名字上了。后来决定动手写一个解析plist的软件，就叫它Anti_TexturePacker吧。
+
+Anti_TexurePacker软件基于VS 2008 MFC Dialog。
+
+###1.PNG图的显示###
+这个还好，VS2008提供了GDI+，所以可以直接用它显示。关键是屏幕尺寸有限，如果打包后的PNG图很大的话，不能直接显示，又懒得做滚动条，所以直接采用缩放的方式了。缩放比例较大的话，可能会出现捕获点计算不精确，不过效果还是不错的，没有尺寸限制。
+
+<!-- more -->
+
+	CDC* pDC =GetDC();  
+	Graphics graphics( pDC->m_hDC);  
+	Image image(m_PNGFileName.GetString(), FALSE);  
+	graphics.DrawImage(&image,ORIGIN_DRAW_X,ORIGIN_DRAW_Y,(int)(m_RealWidth*m_ScaleRatio),(int)(m_RealHeight*m_ScaleRatio)); 
+ 
+要注意PNG图的显示要放在OnPaint中执行，这样窗口进行重绘的时候才会保证PNG图的正常显示。
+
+###2.plist文件的读取###
+看一下plist的格式：
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_12/7.jpg" alt="" border="0" title="xml" /><br></br></div>
+
+这样一看，就知道了标准的plist文件中，我们需要的是第7，10，14，20，23，27...行。抓出规律，读取到CStringArray。
+
+    	int i=1;
+    	int needName=7;
+    	int needConfig=10;
+    	int needrotate=14;
+    	if(!bFileExist)//如果文件存在且可读
+    	{
+    		return FALSE;
+    	}
+    	CString strline;
+    	FileContainer.RemoveAll();
+    	//将PlistFile文件数据读到FileContainer
+    	while(PlistFile.ReadString(strline))
+    	{
+    		if (i==needName)
+    		{
+    			FileContainer.Add(strline);
+    			needName+=13;
+    		}
+    		if (i==needConfig)
+    		{
+    			FileContainer.Add(strline);
+    			needConfig+=13;
+    		}
+    		if (i==needrotate)
+    		{
+    			FileContainer.Add(strline);
+    			needrotate+=13;
+    		}
+    		i++;
+    	}
+    	PlistFile.Close();
+
+然后再解析出CCStringArray中的名字和对应的坐标，尺寸，是否旋转赋值到一个结构体（包含Name，Width，Height，OriginX，OriginY，isRotate）。创建一个CList来储存这些结构体。
+
+	while(i<iFileLines)
+	{
+		strline = FileContainer.GetAt(i++);
+		strline.TrimLeft();//删除左边的空格
+		if (i%3==1)//第1行，储存名字
+		{
+			str=strline.Mid(5,strline.GetLength()-11);
+			t_pngcfg.strName=str;
+		}
+		else if(i%3==2)//第2行，储存坐标和尺寸
+		{
+			CString strTemp;
+			str=strline.Mid(10,strline.GetLength()-21);
+			AfxExtractSubString(strTemp,str,0,',');
+			t_pngcfg.originX=_ttoi(strTemp);
+			AfxExtractSubString(strTemp,str,1,',');
+			strTemp=strTemp.Left(strTemp.GetLength()-1);
+			t_pngcfg.originY=_ttoi(strTemp);
+			AfxExtractSubString(strTemp,str,2,',');
+			strTemp=strTemp.Right(strTemp.GetLength()-1);
+			t_pngcfg.width=_ttoi(strTemp);
+			AfxExtractSubString(strTemp,str,3,',');
+			t_pngcfg.height=_ttoi(strTemp);
+		}
+		else //第3行，存储旋转属性
+		{
+			str=strline.Mid(1,strline.GetLength()-3);
+			if (str=="true")
+			{
+				t_pngcfg.isRotate=true;
+			}
+			else if (str=="false")
+			{
+				t_pngcfg.isRotate=false;
+			}
+			m_list.AddTail(t_pngcfg);
+		}
+	}
+
+因为plist文件最后还有一个metadata字段，所以后面进行遍历的时候减掉这一个。
+
+###3.随鼠标移动的PNG图片名字的获取###
+在OnMouseMove中进行处理显示。
+
+	CPoint ptInPNG;  
+	ptInPNG.x=(point.x-ORIGIN_DRAW_X)/m_ScaleRatio;  
+	ptInPNG.y=(point.y-ORIGIN_DRAW_Y)/m_ScaleRatio;  
+  
+	int count=m_plistFile.m_list.GetCount();  
+	for (int i=0;i<count-1;i++)  
+	{  
+	    PNGCfg t_pngcfg=m_plistFile.m_list.GetAt(m_plistFile.m_list.FindIndex(i));  
+	    if (isPtInRect(ptInPNG,t_pngcfg))  
+	    {  
+	        showStastus(t_pngcfg.strName);  
+	    }  
+	}  
+
+###4.单击PNG图拷贝名字到剪切板###
+在OnLButtonDown中进行处理拷贝。
+
+    if(OpenClipboard()) //首先打开一个剪切板，如果成功则返回非0值  
+    {
+    	HANDLE hClip;//声明一个句柄  
+    	char *pBuf;  
+    	EmptyClipboard();//置空这个剪切板，且得到剪切板的所有权  
+    	hClip=GlobalAlloc(GMEM_MOVEABLE,t_pngcfg.strName.GetLength()+1);  
+    	//申请锁定一块存放数据的内存区域  
+    	pBuf=(char *)GlobalLock(hClip);//得到指向内存区域的第一个字节指针  
+    	strcpy(pBuf,(char*)_bstr_t(t_pngcfg.strName.GetBuffer()));//将文本框的值拷贝到内存中  
+    	GlobalUnlock(hClip);//解除内存锁定  
+    	SetClipboardData(CF_TEXT,hClip);//设置数据到剪切板中  
+    	CloseClipboard();//关闭剪切板  
+    }  
+
+###5.效果图###
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_12/1.jpg" alt="" border="0" title="1" /><br></br></div>
+<div align="center"><img src="/images/Blog/Play_cocos2dx_12/2.jpg" alt="" border="0" title="2" /><br></br></div>
+<div align="center"><img src="/images/Blog/Play_cocos2dx_12/3.jpg" alt="" border="0" title="3" /><br></br></div>
+<div align="center"><img src="/images/Blog/Play_cocos2dx_12/4.jpg" alt="" border="0" title="4" /><br></br></div>
+<div align="center"><img src="/images/Blog/Play_cocos2dx_12/5.jpg" alt="" border="0" title="5" /><br></br></div>
+<div align="center"><img src="/images/Blog/Play_cocos2dx_12/6.jpg" alt="" border="0" title="6" /><br></br></div>
+
+###6.下载地址###
+
+v.1.2版
+
+更新说明：
+
+*1.增加PNG剪裁为小PNG功能*
+
+*2.修正列表显示*
+
+[下载地址](http://download.csdn.net/detail/jackyvincefu/6440769)
+
+v1.1版
+
+更新说明：
+
+*1.修复旋转属性显示错误bug*
+
+*2.修复png相对路径无法显示bug*
+
+*3.增加双击列表显示红框功能*
+
+*4.简化操作*
+
+*5.修改icon*
+
+[下载地址](http://download.csdn.net/detail/jackyvincefu/6429297)
