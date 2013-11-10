@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://www.jacky.tk/blog/categories/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-10T10:31:55+08:00</updated>
+  <updated>2013-11-10T10:42:11+08:00</updated>
   <id>http://www.jacky.tk/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,102 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十四】菜单选项卡的实现]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/22/play-cocos2dx-14/"/>
+    <updated>2013-10-22T10:34:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/22/play-cocos2dx-14</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12940733">http://blog.csdn.net/jackystudio</a></p>
+
+<p>有时候，我们希望实现一个选项卡功能，就是切换tab选项，场景中的内容会跟着改变，但是tab选项卡不动。这是用切换场景的方式没办法做到的。
+这里我们就可以使用CCLayerMultiplex来实现这个功能。</p>
+
+<h3>1.创建布景</h3>
+
+<p>这里创建3个布景来做示范。分别是Laye1，Layer2和Layer3。代码就不贴了，布景内容可以直接使用HelloWorld的代码。</p>
+
+<!-- more -->
+
+
+<h3>2.创建主场景</h3>
+
+<p>主场景的初始化函数如下：</p>
+
+<pre><code>bool CCMainScene::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCScene::init());  
+
+        _layer1=CCLayer1::create();//创建3个层的实例  
+        _layer2=CCLayer2::create();  
+        _layer3=CCLayer3::create();  
+
+        _layerMuticomplex=CCLayerMultiplex::create(_layer1,_layer2,_layer3,NULL);//创建多层布景层  
+        this-&gt;addChild(_layerMuticomplex);//添加到场景，默认显示第一个布景  
+
+        CCSize visibleSize = CCDirector::sharedDirector()-&gt;getVisibleSize();  
+        CCPoint origin = CCDirector::sharedDirector()-&gt;getVisibleOrigin();  
+
+        CCMenuItemImage *pCloseItem1 = CCMenuItemImage::create(//创建3个tab菜单，用于切换布景  
+            "w_b.png",  
+            "w_b.png",  
+            this,  
+            menu_selector(CCMainScene::menuCallback));  
+
+        CCMenuItemImage *pCloseItem2 = CCMenuItemImage::create(  
+            "r_b.png",  
+            "r_b.png",  
+            this,  
+            menu_selector(CCMainScene::menuCallback));  
+
+        CCMenuItemImage *pCloseItem3 = CCMenuItemImage::create(  
+            "g_b.png",  
+            "g_b.png",  
+            this,  
+            menu_selector(CCMainScene::menuCallback));  
+
+        // create menu, it's an autorelease object  
+        pCloseItem1-&gt;setTag(0);//给tab按钮设置tag，方便回调函数中的获取  
+        pCloseItem2-&gt;setTag(1);  
+        pCloseItem3-&gt;setTag(2);  
+        CCMenu* pMenu = CCMenu::create(pCloseItem1, pCloseItem2, pCloseItem3, NULL);//创建菜单  
+        pMenu-&gt;alignItemsHorizontallyWithPadding(-1);//设置菜单项间隔  
+        pMenu-&gt;setPosition(visibleSize.width/2,25);  
+        this-&gt;addChild(pMenu, 1);//注意哦，菜单要在场景中添加而不是在布景中了！而且z轴要高于多层布景，保证可见。  
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+</code></pre>
+
+<p>回调函数如下：</p>
+
+<pre><code>void CCMainScene::menuCallback(CCObject* pSender)  
+{  
+    int item=((CCMenuItemImage*)pSender)-&gt;getTag();//获取选择项  
+    if (item!=curLayerPos)  
+    {  
+        _layerMuticomplex-&gt;switchTo(item);//切换布景，如果使用switchToAndReleaseMe会释放掉当前布景  
+        curLayerPos=item;  
+    }  
+}  
+</code></pre>
+
+<h3>3.效果</h3>
+
+<p>为了让效果明显一点，我让3个布景稍微有点区别。当然菜单是可以做normal，pressed，disable三态的，这里略去。点击不同的选项卡就可以切换到不同的布景层。当然CCLayerMultiplex还可以嵌套使用。</p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_14/1.jpg" alt="" border="0" title="效果" /><br></br></div>
+
+
+<h3>4.源码下载地址</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6421801">下载地址</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十三】CCMenu的布局]]></title>
@@ -547,91 +643,6 @@ CCPoint wp2=big-&gt;convertToWorldSpace(little-&gt;getPosition());//wp2(100,100)
 <pre><code>CCPoint np1=big-&gt;convertToNodeSpace(ccp(200,200));//np1(150,150)  
 CCPoint np2=little-&gt;convertToNodeSpace(ccp(200,200));//np2(100,100)
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之九】动作类CCAction]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/16/play-cocos2dx-09/"/>
-    <updated>2013-10-16T14:33:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/16/play-cocos2dx-09</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12770909">http://blog.csdn.net/jackystudio</a></p>
-
-<p>精灵也出来了，但是不会动的精灵是木有用的。。。CCAction就是负责来解决精灵运动的问题。</p>
-
-<h3>1.概况</h3>
-
-<p>CCAction直接从CCObject继承而来，注意它代表的是一个动作，是动词。精灵执行了这个动作，而不是名词。CCAction本身并没有什么功能，主要是定义了一些通用函数和虚函数让子类实现多态性。</p>
-
-<!-- more -->
-
-
-
-
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_09/1.jpg" alt="" border="0" title="CCAction" /><br></br></div>
-
-
-<h3>2.接口</h3>
-
-<pre><code>//返回一个描述  
-const char* description();  
-
-//返回动作是否结束  
-virtual bool isDone(void);  
-
-//在动作开始前调用，需要设置目标精灵  
-virtual void startWithTarget(CCNode *pTarget);  
-
-//每帧调用，time在0~1之间，0代表动作刚开始，0.5代表动作执行一半，1代表动作结束  
-virtual void update(float time);  
-
-//返回/设置目标节点  
-CCNode* getTarget(void);  
-void setTarget(CCNode *pTarget);  
-
-//获取/设置上一个节点  
-CCNode* getOriginalTarget(void);  
-void setOriginalTarget(CCNode *pOriginalTarget);  
-
-//获取/设置标签  
-int getTag(void);  
-void setTag(int nTag);  
-
-//创建动作静态方法  
-static CCAction* create();  
-</code></pre>
-
-<h3>3.CCFollow</h3>
-
-<p>CCFollow跟随动作，继承于CCAction，可以实现节点跟随另一个节点动作。它内部封装了一个boundary，也就是跟随范围，初始为CCRectZero。</p>
-
-<pre><code>//创建一个CCFollow对象，create实际上调用了initWithTarget  
-static CCFollow* create(CCNode *pFollowedNode, const CCRect&amp; rect = CCRectZero);  
-bool initWithTarget(CCNode *pFollowedNode, const CCRect&amp; rect = CCRectZero);  
-</code></pre>
-
-<h3>4.CCSpeed</h3>
-
-<p>CCSpeed可调整速度动作类，内部封装了一个速度值，CCSpeed使用很简单，就是传入一个动作和速度，在内部重新copy一个新的动作返回。</p>
-
-<pre><code>//创建一个可变速度动作类，传入速度值  
-static CCSpeed* create(CCActionInterval* pAction, float fSpeed);  
-</code></pre>
-
-<h3>5.CCFiniteTimeAction</h3>
-
-<p>CCFiniteTimeAction有限次动作执行类，继承于CCAction，它有两个子类CCActionInstant和CCActionInterval，前者代表瞬时动作，也就是这个动作基本不需要时间马上就能完成，而后者代表延时，这个动作需要一段时间来运行。它的子类说明看上图吧。
-相比CCAction，它多了一个m_fDuration属性，表示持续时间。</p>
-
-<pre><code>//获取/设置动作持续时间  
-float getDuration(void);  
-void setDuration(float duration);  
-
-//反转动作，类似于倒带效果，返回一个新的动作  
-virtual CCFiniteTimeAction* reverse(void);  
-</code></pre>
-
-<p>好了，游戏的基本元素就写到这里，写API文档很蛋疼的说。。。</p>
 ]]></content>
   </entry>
   

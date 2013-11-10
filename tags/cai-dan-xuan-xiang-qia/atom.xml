@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: 菜单选项卡 | Jacky's Blog]]></title>
+  <link href="http://www.jacky.tk/tags/cai-dan-xuan-xiang-qia/atom.xml" rel="self"/>
+  <link href="http://www.jacky.tk/"/>
+  <updated>2013-11-10T10:42:11+08:00</updated>
+  <id>http://www.jacky.tk/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十四】菜单选项卡的实现]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/22/play-cocos2dx-14/"/>
+    <updated>2013-10-22T10:34:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/22/play-cocos2dx-14</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12940733">http://blog.csdn.net/jackystudio</a></p>
+
+<p>有时候，我们希望实现一个选项卡功能，就是切换tab选项，场景中的内容会跟着改变，但是tab选项卡不动。这是用切换场景的方式没办法做到的。
+这里我们就可以使用CCLayerMultiplex来实现这个功能。</p>
+
+<h3>1.创建布景</h3>
+
+<p>这里创建3个布景来做示范。分别是Laye1，Layer2和Layer3。代码就不贴了，布景内容可以直接使用HelloWorld的代码。</p>
+
+<!-- more -->
+
+
+<h3>2.创建主场景</h3>
+
+<p>主场景的初始化函数如下：</p>
+
+<pre><code>bool CCMainScene::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCScene::init());  
+
+        _layer1=CCLayer1::create();//创建3个层的实例  
+        _layer2=CCLayer2::create();  
+        _layer3=CCLayer3::create();  
+
+        _layerMuticomplex=CCLayerMultiplex::create(_layer1,_layer2,_layer3,NULL);//创建多层布景层  
+        this-&gt;addChild(_layerMuticomplex);//添加到场景，默认显示第一个布景  
+
+        CCSize visibleSize = CCDirector::sharedDirector()-&gt;getVisibleSize();  
+        CCPoint origin = CCDirector::sharedDirector()-&gt;getVisibleOrigin();  
+
+        CCMenuItemImage *pCloseItem1 = CCMenuItemImage::create(//创建3个tab菜单，用于切换布景  
+            "w_b.png",  
+            "w_b.png",  
+            this,  
+            menu_selector(CCMainScene::menuCallback));  
+
+        CCMenuItemImage *pCloseItem2 = CCMenuItemImage::create(  
+            "r_b.png",  
+            "r_b.png",  
+            this,  
+            menu_selector(CCMainScene::menuCallback));  
+
+        CCMenuItemImage *pCloseItem3 = CCMenuItemImage::create(  
+            "g_b.png",  
+            "g_b.png",  
+            this,  
+            menu_selector(CCMainScene::menuCallback));  
+
+        // create menu, it's an autorelease object  
+        pCloseItem1-&gt;setTag(0);//给tab按钮设置tag，方便回调函数中的获取  
+        pCloseItem2-&gt;setTag(1);  
+        pCloseItem3-&gt;setTag(2);  
+        CCMenu* pMenu = CCMenu::create(pCloseItem1, pCloseItem2, pCloseItem3, NULL);//创建菜单  
+        pMenu-&gt;alignItemsHorizontallyWithPadding(-1);//设置菜单项间隔  
+        pMenu-&gt;setPosition(visibleSize.width/2,25);  
+        this-&gt;addChild(pMenu, 1);//注意哦，菜单要在场景中添加而不是在布景中了！而且z轴要高于多层布景，保证可见。  
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+</code></pre>
+
+<p>回调函数如下：</p>
+
+<pre><code>void CCMainScene::menuCallback(CCObject* pSender)  
+{  
+    int item=((CCMenuItemImage*)pSender)-&gt;getTag();//获取选择项  
+    if (item!=curLayerPos)  
+    {  
+        _layerMuticomplex-&gt;switchTo(item);//切换布景，如果使用switchToAndReleaseMe会释放掉当前布景  
+        curLayerPos=item;  
+    }  
+}  
+</code></pre>
+
+<h3>3.效果</h3>
+
+<p>为了让效果明显一点，我让3个布景稍微有点区别。当然菜单是可以做normal，pressed，disable三态的，这里略去。点击不同的选项卡就可以切换到不同的布景层。当然CCLayerMultiplex还可以嵌套使用。</p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_14/1.jpg" alt="" border="0" title="效果" /><br></br></div>
+
+
+<h3>4.源码下载地址</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6421801">下载地址</a></p>
+]]></content>
+  </entry>
+  
+</feed>
