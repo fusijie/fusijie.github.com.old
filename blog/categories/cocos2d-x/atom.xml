@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://www.jacky.tk/blog/categories/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-11T16:35:02+08:00</updated>
+  <updated>2013-11-11T16:47:57+08:00</updated>
   <id>http://www.jacky.tk/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,108 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十六】滚动字幕和公告]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/24/play-cocos2dx-16/"/>
+    <updated>2013-10-24T16:38:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/24/play-cocos2dx-16</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12991977">http://blog.csdn.net/jackystudio</a></p>
+
+<p>滚动字幕和公告是游戏中经常使用到的元素，本文大致写一下实现方法，至于例子中具体的坐标值，请不要纠结。。。这和美工关系还是蛮大的。我PS技术太搓了。。。</p>
+
+<h3>1.原理</h3>
+
+<p>其实它们的实现都是简单的通过调用update来更新位置达到的移动效果，和背景滚动有点类似，一旦滚动结束就重置为起点，开始新的滚动。只是为了达到在某个区域内滚动而不至于超出这个区域，有时候会用一些前景图来做遮盖，所以这个时候其实字幕或者公告是有在后面滚动的，但是被遮住了，因此看起来就像是只在某个区域内滚动。以垂直字幕滚动为例说明，如下图。</p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_16/1.jpg" alt="" border="0" title="原理" /><br></br></div>
+
+
+<h3>2.实现</h3>
+
+<p>不要纠结以下各精灵的坐标位置：）</p>
+
+<pre><code>bool CTestLayer::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCLayer::init());  
+
+        CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+        CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;addSpriteFramesWithFile("ui_serverlist.plist");  
+
+        //垂直滚动字幕  
+        CCSprite* listbase=CCSprite::createWithSpriteFrame(CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;spriteFrameByName("login_listbase.png"));//bottom底图  
+        listbase-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2+10));  
+        this-&gt;addChild(listbase);  
+        text1=CCLabelTTF::create("1.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n2.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n3.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n4.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!","Arial",12);//middle文本  
+        text1-&gt;setHorizontalAlignment(kCCTextAlignmentLeft);//左对齐  
+        text1-&gt;setAnchorPoint(ccp(0.5,1));  
+        text1-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2-55));  
+        this-&gt;addChild(text1);  
+        CCSprite* fg=CCSprite::create("fg.png");//top前景  
+        fg-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
+        this-&gt;addChild(fg);  
+
+        //水平滚动公告  
+        CCSprite* textbase=CCSprite::createWithSpriteFrame(CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;spriteFrameByName("login_textbase.png"));  
+        textbase-&gt;setPosition(ccp(visibleSize.width/2,50));  
+        textbase-&gt;setScaleX(2.5f);  
+        this-&gt;addChild(textbase);  
+        text2=CCLabelTTF::create("Hi! Welcome to JackyStudio,My Blog is blog.csdn.net/jackystudio!","Arial",12);  
+        text2-&gt;setPosition(ccp(visibleSize.width+text2-&gt;getContentSize().width/2,50));  
+        text2-&gt;setColor(ccc3(255,0,0));//红色字体  
+        this-&gt;addChild(text2);  
+
+        this-&gt;scheduleUpdate();//执行更新  
+
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+
+void CTestLayer::update(float delta)  
+{  
+    CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+
+    int newY=text1-&gt;getPositionY()+1;  
+    if (newY==500)//如果滚动到这个位置，重置  
+    {  
+        newY=visibleSize.height/2-55;  
+    }  
+    text1-&gt;setPositionY(newY);  
+
+    int newX=text2-&gt;getPositionX()-1;  
+    if (newX&lt;=-text2-&gt;getContentSize().width/2)//如果滚动到这个位置，重置  
+    {  
+        newX=visibleSize.width+text2-&gt;getContentSize().width/2;  
+    }  
+    text2-&gt;setPositionX(newX);  
+}  
+</code></pre>
+
+<h3>3.效果</h3>
+
+<p>这个效果有点小bug，就是文字覆盖到边框上了，这是因为没有把边框做在top层上导致的，实际使用注意这个问题即可。</p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_16/2.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_16/3.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_16/4.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_16/5.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
+
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6434549">源码下载</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十五】关卡选择的设计]]></title>
@@ -127,13 +229,13 @@ tableView-&gt;reloadData();
 
 <h3>4.效果图</h3>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_15/1.jpg" alt="" border="0" title="选项1" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_15/1.jpg" alt="" border="0" title="关卡1" /><br></br></div>
 
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_15/2.jpg" alt="" border="0" title="选项2" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_15/2.jpg" alt="" border="0" title="关卡2" /><br></br></div>
 
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_15/3.jpg" alt="" border="0" title="选项3" /><br></br></div>
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_15/3.jpg" alt="" border="0" title="关卡3" /><br></br></div>
 
 
 <h3>5.源码下载地址</h3>
@@ -575,140 +677,6 @@ delete pWrapBitmap;
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6429297">下载地址</a></p>
 
 <p>源码：<a href="https://github.com/fusijie/Anti_TexturePaker.git">https://github.com/fusijie/Anti_TexturePaker.git</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之十一】定时器schedule]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/18/play-cocos2dx-11/"/>
-    <updated>2013-10-18T08:08:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/18/play-cocos2dx-11</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12848473">http://blog.csdn.net/jackystudio</a></p>
-
-<p>如果我们想定时执行一个动作怎么办？CCScheduler帮了我们一个大忙。</p>
-
-<h3>1.概况</h3>
-
-<p>CCNode内部封装了一个</p>
-
-<pre><code>CCScheduler *m_pScheduler;  
-</code></pre>
-
-<p>正是通过它我们可以很轻松地完成一些定时功能，所以定时器是节点所具备的功能。</p>
-
-<p>定时器分为2种，一种是更新定时器，执行的频率是每帧执行一次，另一种则是自定义回调函数的定时器（最小值是一帧），关于回调函数和函数指针的相关基础可参见<a href="http://blog.csdn.net/jackystudio/article/details/11720325">这里</a>。</p>
-
-<!-- more -->
-
-
-<h3>2.API</h3>
-
-<pre><code>//更新定时器，每帧调用1次。每个节点只能有1个被调度的update函数  
-void scheduleUpdate(void);  
-//卸载更新定时器  
-void unscheduleUpdate(void);  
-
-//自定义定时器，如果重复调用，那调用间隔会更新，而不会再次调用  
-//interval，调用时间间隔，如果为0，建议使用scheduleUpdate  
-//repeat，回调函数会被执行repeat+1次，kCCRepeatForever是无限次调用  
-//delay，第一次执行前的延时  
-void schedule(SEL_SCHEDULE selector, float interval, unsigned int repeat, float delay);  
-void schedule(SEL_SCHEDULE selector, float interval);  
-void scheduleOnce(SEL_SCHEDULE selector, float delay);  
-void schedule(SEL_SCHEDULE selector);  
-//卸载自定义定时器  
-void unschedule(SEL_SCHEDULE selector);  
-void unscheduleAllSelectors(void);  
-
-//恢复所有定时器和动作，OnEnter调用  
-void resumeSchedulerAndActions(void);  
-//暂停所有定时器和动作，OnExit调用  
-void pauseSchedulerAndActions(void);  
-
-//scheduleUpdate每帧调用  
-virtual void update(float delta);  
-</code></pre>
-
-<h3>3.示例</h3>
-
-<p><strong>3.1.更新定时器</strong></p>
-
-<pre><code>//开启定时器  
-this-&gt;scheduleUpdate();  
-
-//虚函数update  
-void HelloWorld::update(float delta)  
-{  
-    CCLog("%f",delta);  
-}  
-
-//输出，这里设置了60fps，调用间隔1/60s  
-0.016667  
-0.016676  
-0.016657  
-0.016669  
-</code></pre>
-
-<p><strong>3.2.自定义定时器</strong></p>
-
-<pre><code>//开启定时器，延时2s执行，执行3+1次，执行间隔1s  
-this-&gt;schedule(schedule_selector(HelloWorld::log),1,3,2);  
-
-//回调函数  
-void HelloWorld::log(float dt)  
-{  
-    CCLog("schedule");  
-}  
-
-//输出  
-2.004532  
-1.005827  
-1.000238  
-1.001019  
-</code></pre>
-
-<h3>4.schedule_selector和SEL_SCHEDULE</h3>
-
-<p>看到上面的schedule_selector了吧，这又是个什么玩意？看看它的宏定义。</p>
-
-<pre><code>#define schedule_selector(_SELECTOR) (SEL_SCHEDULE)(&amp;_SELECTOR)  
-</code></pre>
-
-<p>原来是把函数指针转化为SEL_SCHEDULE型指针，那SEL_SCHEDULE又是什么？</p>
-
-<pre><code>typedef void (CCObject::*SEL_SCHEDULE)(float);  
-</code></pre>
-
-<p>也没啥，就是定义了一个带有float参数函数指针。所以我们在使用自定义Schedule的时候，回调函数一定要记得带上一个float参数，它记录了两次执行的间隔。如果忘了，可是会出现类型转换错误的异常。这种方式在callfunc_selector，menu_selector等也以同样的方式出现。</p>
-
-<h3>5.谁来调用回调函数</h3>
-
-<p>但是有没有发现，如果这个回调函数是个全局函数或者static函数也就算了，偏偏它是个成员函数，成员函数需要实例来调用，可是从调用方法来看，好像没传入调用对象？</p>
-
-<pre><code>this-&gt;schedule(schedule_selector(HelloWorld::log),1,3,2);  
-</code></pre>
-
-<p>是的，还记得一开头说的CCNode内部封装的m_pScheduler吗？</p>
-
-<pre><code>CCScheduler *m_pScheduler;  
-</code></pre>
-
-<p>原来CCNode帮我们实现了：</p>
-
-<pre><code>void CCNode::schedule(SEL_SCHEDULE selector, float interval, unsigned int repeat, float delay)  
-{  
-    CCAssert( selector, "Argument must be non-nil");  
-    CCAssert( interval &gt;=0, "Argument must be positive");  
-
-    m_pScheduler-&gt;scheduleSelector(selector, this, interval , repeat, delay, !m_bRunning);  
-}  
-</code></pre>
-
-<p>原来this这个时候被传入了，同时传入的参数还有m_bRunning，m_bRunning表示节点是否在运行中（是否在舞台上），OnEnter的时候赋值true，OnExit的时候赋值false，所以在执行定时器的时候还必须确保节点有在运行。</p>
-
-<p>这样确实用起来怪怪的，所以在cocos2d-x v3.0版本中，参数和函数指针用一个宏打包起来了~</p>
-
-<p>至于CCSchedule内部是怎么实现的，以及CCTimer的触发回调，有兴趣的就自己看看源码吧，我也写不来，源码有点长啊。</p>
 ]]></content>
   </entry>
   

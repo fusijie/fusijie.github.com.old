@@ -1,0 +1,444 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>【玩转cocos2d-x之十六】滚动字幕和公告 - Jacky's Blog</title>
+  <meta name="author" content="FuSijie">
+
+  
+  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio 滚动字幕和公告是游戏中经常使用到的元素，本文大致写一下实现方法，至于例子中具体的坐标值，请不要纠结。。。这和美工关系还是蛮大的。我PS技术太搓了。。。 1.原理 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.jacky.tk/blog/2013/10/24/play-cocos2dx-16">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jacky's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '45386223']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jacky's Blog</a></h1>
+  
+    <h2>Stay Hungry,Stay Foolish!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.jacky.tk" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/projects">Projects</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">【玩转cocos2d-x之十六】滚动字幕和公告</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-24T16:38:00+08:00" pubdate data-updated="true">Oct 24<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12991977">http://blog.csdn.net/jackystudio</a></p>
+
+<p>滚动字幕和公告是游戏中经常使用到的元素，本文大致写一下实现方法，至于例子中具体的坐标值，请不要纠结。。。这和美工关系还是蛮大的。我PS技术太搓了。。。</p>
+
+<h3>1.原理</h3>
+
+<p>其实它们的实现都是简单的通过调用update来更新位置达到的移动效果，和背景滚动有点类似，一旦滚动结束就重置为起点，开始新的滚动。只是为了达到在某个区域内滚动而不至于超出这个区域，有时候会用一些前景图来做遮盖，所以这个时候其实字幕或者公告是有在后面滚动的，但是被遮住了，因此看起来就像是只在某个区域内滚动。以垂直字幕滚动为例说明，如下图。</p>
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_16/1.jpg" alt="" border="0" title="原理" /><br></br></div>
+
+
+<h3>2.实现</h3>
+
+<p>不要纠结以下各精灵的坐标位置：）</p>
+
+<pre><code>bool CTestLayer::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCLayer::init());  
+
+        CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+        CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;addSpriteFramesWithFile("ui_serverlist.plist");  
+
+        //垂直滚动字幕  
+        CCSprite* listbase=CCSprite::createWithSpriteFrame(CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;spriteFrameByName("login_listbase.png"));//bottom底图  
+        listbase-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2+10));  
+        this-&gt;addChild(listbase);  
+        text1=CCLabelTTF::create("1.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n2.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n3.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n4.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!","Arial",12);//middle文本  
+        text1-&gt;setHorizontalAlignment(kCCTextAlignmentLeft);//左对齐  
+        text1-&gt;setAnchorPoint(ccp(0.5,1));  
+        text1-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2-55));  
+        this-&gt;addChild(text1);  
+        CCSprite* fg=CCSprite::create("fg.png");//top前景  
+        fg-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
+        this-&gt;addChild(fg);  
+
+        //水平滚动公告  
+        CCSprite* textbase=CCSprite::createWithSpriteFrame(CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;spriteFrameByName("login_textbase.png"));  
+        textbase-&gt;setPosition(ccp(visibleSize.width/2,50));  
+        textbase-&gt;setScaleX(2.5f);  
+        this-&gt;addChild(textbase);  
+        text2=CCLabelTTF::create("Hi! Welcome to JackyStudio,My Blog is blog.csdn.net/jackystudio!","Arial",12);  
+        text2-&gt;setPosition(ccp(visibleSize.width+text2-&gt;getContentSize().width/2,50));  
+        text2-&gt;setColor(ccc3(255,0,0));//红色字体  
+        this-&gt;addChild(text2);  
+
+        this-&gt;scheduleUpdate();//执行更新  
+
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+
+void CTestLayer::update(float delta)  
+{  
+    CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+
+    int newY=text1-&gt;getPositionY()+1;  
+    if (newY==500)//如果滚动到这个位置，重置  
+    {  
+        newY=visibleSize.height/2-55;  
+    }  
+    text1-&gt;setPositionY(newY);  
+
+    int newX=text2-&gt;getPositionX()-1;  
+    if (newX&lt;=-text2-&gt;getContentSize().width/2)//如果滚动到这个位置，重置  
+    {  
+        newX=visibleSize.width+text2-&gt;getContentSize().width/2;  
+    }  
+    text2-&gt;setPositionX(newX);  
+}  
+</code></pre>
+
+<h3>3.效果</h3>
+
+<p>这个效果有点小bug，就是文字覆盖到边框上了，这是因为没有把边框做在top层上导致的，实际使用注意这个问题即可。</p>
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_16/2.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
+
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_16/3.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
+
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_16/4.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
+
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_16/5.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
+
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6434549">源码下载</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">FuSijie</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-24T16:38:00+08:00" pubdate data-updated="true">Oct 24<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cocos2d-x/'>cocos2d-x</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+      <!-- JiaThis Button BEGIN -->
+  <section>
+    <h1>Share</h1>
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share?uid=1859056" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1859056" charset="utf-8"></script>
+</section>
+<!-- JiaThis Button END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+	    <p></p>
+        <a class="basic-alignment left" href="/blog/2013/10/23/play-cocos2dx-15/" title="Previous Post: 【玩转cocos2d-x之十五】关卡选择的设计">&laquo; 【玩转cocos2d-x之十五】关卡选择的设计</a>
+      
+      
+    </p>
+  </footer>
+</article>
+  <section>
+    <h1>Comments</h1>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"fusijie"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->  
+</section>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p></p>
+  <center><a href="http://blog.csdn.net/jackystudio" target="_self"><img src="/images/logo.jpg" alt="Logo" border="0" title="Logo" /></a></center>
+  <p></p>
+  <p>A Software Engineer born for the Technology, now concentrate on Mobile development.</p>
+  <p></p>
+  <p>Contact Me:
+		<br><a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=754505629&site=qq&menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=2:754505629:13" alt="Say Hi to me!" title="Say Hi to me!"/></a>
+		<a href="mailto:fusijie@vip.qq.com" ><img src="\images\mailtome.gif" border=0></img></a>
+		</br>
+  </p>
+</section><section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (16)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/10/24/play-cocos2dx-16/">【玩转cocos2d-x之十六】滚动字幕和公告</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/23/play-cocos2dx-15/">【玩转cocos2d-x之十五】关卡选择的设计</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/22/play-cocos2dx-14/">【玩转cocos2d-x之十四】菜单选项卡的实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/21/play-cocos2dx-13/">【玩转cocos2d-x之十三】CCMenu的布局</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/19/play-cocos2dx-12/">【玩转cocos2d-x之十二】plist解析工具：Anti_TexturePacker</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section>
+  <h1>Tags Cloud</h1>
+  <ul class="tag-cloud">
+    <a style="font-size: 70%" href="/tags/ccaction/">CCAction</a>
+<a style="font-size: 70%" href="/tags/ccapplication/">CCApplication</a>
+<a style="font-size: 70%" href="/tags/ccdirector/">CCDirector</a>
+<a style="font-size: 70%" href="/tags/ccdisplaylinkdirecto/">CCDisplayLinkDirecto</a>
+<a style="font-size: 70%" href="/tags/cceglview/">CCEGLView</a>
+<a style="font-size: 70%" href="/tags/ccfinitetimeaction/">CCFiniteTimeAction</a>
+<a style="font-size: 70%" href="/tags/ccfollowccspeed/">CCFollowCCSpeed</a>
+<a style="font-size: 70%" href="/tags/cclayer/">CCLayer</a>
+<a style="font-size: 117%" href="/tags/cclayermultiplex/">CCLayerMultiplex</a>
+<a style="font-size: 117%" href="/tags/ccmenu/">CCMenu</a>
+<a style="font-size: 70%" href="/tags/ccnode/">CCNode</a>
+<a style="font-size: 70%" href="/tags/ccscene/">CCScene</a>
+<a style="font-size: 70%" href="/tags/ccscheduler/">CCScheduler</a>
+<a style="font-size: 70%" href="/tags/ccsprite/">CCSprite</a>
+<a style="font-size: 70%" href="/tags/cctableview/">CCTableView</a>
+<a style="font-size: 70%" href="/tags/cctextureprotocol/">CCTextureProtocol</a>
+<a style="font-size: 70%" href="/tags/item/">Item</a>
+<a style="font-size: 70%" href="/tags/openglzuo-biao-xi/">OpenGL坐标系</a>
+<a style="font-size: 70%" href="/tags/texturepacket/">TexturePacket</a>
+<a style="font-size: 70%" href="/tags/android/">android</a>
+<a style="font-size: 70%" href="/tags/applicationdidfinish/">applicationDidFinish</a>
+<a style="font-size: 180%" href="/tags/cocos2d-x/">cocos2d-x</a>
+<a style="font-size: 70%" href="/tags/plist/">plist</a>
+<a style="font-size: 70%" href="/tags/update/">update</a>
+<a style="font-size: 70%" href="/tags/win32/">win32</a>
+<a style="font-size: 70%" href="/tags/guan-qia-xuan-ze/">关卡选择</a>
+<a style="font-size: 70%" href="/tags/han-shu-zhi-zhen/">函数指针</a>
+<a style="font-size: 70%" href="/tags/hui-diao-han-shu/">回调函数</a>
+<a style="font-size: 70%" href="/tags/ding-shi-qi/">定时器</a>
+<a style="font-size: 70%" href="/tags/ping-mu-zuo-biao-xi/">屏幕坐标系</a>
+<a style="font-size: 70%" href="/tags/shu-xing/">属性</a>
+<a style="font-size: 70%" href="/tags/dai-yan-se-de-layer/">带颜色的Layer</a>
+<a style="font-size: 117%" href="/tags/chang-yong-jie-kou/">常用接口</a>
+<a style="font-size: 70%" href="/tags/chang-yong-fang-fa/">常用方法</a>
+<a style="font-size: 70%" href="/tags/shu-ju-yuan/">数据源</a>
+<a style="font-size: 70%" href="/tags/you-xi-yin-qing/">游戏引擎</a>
+<a style="font-size: 70%" href="/tags/gun-dong/">滚动</a>
+<a style="font-size: 70%" href="/tags/gun-dong-gong-gao/">滚动公告</a>
+<a style="font-size: 70%" href="/tags/gun-dong-zi-mu/">滚动字幕</a>
+<a style="font-size: 70%" href="/tags/te-dian/">特点</a>
+<a style="font-size: 70%" href="/tags/huan-jing-pei-zhi/">环境配置</a>
+<a style="font-size: 70%" href="/tags/xiang-dui-zuo-biao-xi/">相对坐标系</a>
+<a style="font-size: 70%" href="/tags/jue-dui-zuo-biao-xi/">绝对坐标系</a>
+<a style="font-size: 70%" href="/tags/cai-dan-xuan-xiang-qia/">菜单选项卡</a>
+<a style="font-size: 70%" href="/tags/jie-xi/">解析</a>
+<a style="font-size: 70%" href="/tags/kua-ping-tai-shi-xian/">跨平台实现</a>
+<a style="font-size: 70%" href="/tags/mao-dian-pai-lie/">锚点排列</a>
+
+  </ul>
+</section> 
+<section>
+  <h1>Sina Weibo</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="450" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=450&fansRow=0&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=0&uid=1307211523&verifier=3619ee9c">
+      </iframe>
+    </li>
+  </ul>
+</section>
+ 
+<section>
+<h1>Visitor</h1>
+<div>
+	<p></p>
+    <center>
+	<a href="http://info.flagcounter.com/3pF8"><img src="http://s08.flagcounter.com/count/3pF8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_12/viewers_3/labels_0/pageviews_1/flags_0/" alt="Flag Counter" border="0"></a>
+	</center>
+</div>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - FuSijie -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

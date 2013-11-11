@@ -9,7 +9,7 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio 这节介绍一下游戏中帮助界面和关卡选择的设计，其实都是一样的，关键在于美工。这里采用自定义TableView层来实现。 1.导入头文件和设定空间 因为TableView相关的类是在扩展包里面，所以必须先声明 # &hellip;">
+  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio 滚动字幕和公告是游戏中经常使用到的元素，本文大致写一下实现方法，至于例子中具体的坐标值，请不要纠结。。。这和美工关系还是蛮大的。我PS技术太搓了。。。 1.原理 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +78,135 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/24/play-cocos2dx-16/">【玩转cocos2d-x之十六】滚动字幕和公告</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-24T16:38:00+08:00" pubdate data-updated="true">Oct 24<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12991977">http://blog.csdn.net/jackystudio</a></p>
+
+<p>滚动字幕和公告是游戏中经常使用到的元素，本文大致写一下实现方法，至于例子中具体的坐标值，请不要纠结。。。这和美工关系还是蛮大的。我PS技术太搓了。。。</p>
+
+<h3>1.原理</h3>
+
+<p>其实它们的实现都是简单的通过调用update来更新位置达到的移动效果，和背景滚动有点类似，一旦滚动结束就重置为起点，开始新的滚动。只是为了达到在某个区域内滚动而不至于超出这个区域，有时候会用一些前景图来做遮盖，所以这个时候其实字幕或者公告是有在后面滚动的，但是被遮住了，因此看起来就像是只在某个区域内滚动。以垂直字幕滚动为例说明，如下图。</p>
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_16/1.jpg" alt="" border="0" title="原理" /><br></br></div>
+
+
+<h3>2.实现</h3>
+
+<p>不要纠结以下各精灵的坐标位置：）</p>
+
+<pre><code>bool CTestLayer::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCLayer::init());  
+
+        CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+        CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;addSpriteFramesWithFile("ui_serverlist.plist");  
+
+        //垂直滚动字幕  
+        CCSprite* listbase=CCSprite::createWithSpriteFrame(CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;spriteFrameByName("login_listbase.png"));//bottom底图  
+        listbase-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2+10));  
+        this-&gt;addChild(listbase);  
+        text1=CCLabelTTF::create("1.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n2.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n3.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n4.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!","Arial",12);//middle文本  
+        text1-&gt;setHorizontalAlignment(kCCTextAlignmentLeft);//左对齐  
+        text1-&gt;setAnchorPoint(ccp(0.5,1));  
+        text1-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2-55));  
+        this-&gt;addChild(text1);  
+        CCSprite* fg=CCSprite::create("fg.png");//top前景  
+        fg-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
+        this-&gt;addChild(fg);  
+
+        //水平滚动公告  
+        CCSprite* textbase=CCSprite::createWithSpriteFrame(CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;spriteFrameByName("login_textbase.png"));  
+        textbase-&gt;setPosition(ccp(visibleSize.width/2,50));  
+        textbase-&gt;setScaleX(2.5f);  
+        this-&gt;addChild(textbase);  
+        text2=CCLabelTTF::create("Hi! Welcome to JackyStudio,My Blog is blog.csdn.net/jackystudio!","Arial",12);  
+        text2-&gt;setPosition(ccp(visibleSize.width+text2-&gt;getContentSize().width/2,50));  
+        text2-&gt;setColor(ccc3(255,0,0));//红色字体  
+        this-&gt;addChild(text2);  
+
+        this-&gt;scheduleUpdate();//执行更新  
+
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+
+void CTestLayer::update(float delta)  
+{  
+    CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+
+    int newY=text1-&gt;getPositionY()+1;  
+    if (newY==500)//如果滚动到这个位置，重置  
+    {  
+        newY=visibleSize.height/2-55;  
+    }  
+    text1-&gt;setPositionY(newY);  
+
+    int newX=text2-&gt;getPositionX()-1;  
+    if (newX&lt;=-text2-&gt;getContentSize().width/2)//如果滚动到这个位置，重置  
+    {  
+        newX=visibleSize.width+text2-&gt;getContentSize().width/2;  
+    }  
+    text2-&gt;setPositionX(newX);  
+}  
+</code></pre>
+
+<h3>3.效果</h3>
+
+<p>这个效果有点小bug，就是文字覆盖到边框上了，这是因为没有把边框做在top层上导致的，实际使用注意这个问题即可。</p>
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_16/2.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
+
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_16/3.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
+
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_16/4.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
+
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_16/5.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
+
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6434549">源码下载</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -524,56 +653,6 @@ USING_NS_CC_EXT;
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/10/14/play-cocos2dx-06/">【玩转cocos2d-x之六】节点类CCNode</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-14T22:06:00+08:00" pubdate data-updated="true">Oct 14<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12703741">http://blog.csdn.net/jackystudio/</a></p>
-
-<p>节点类CCNode可以说是游戏元素的祖宗了，基本上我们看得到的游戏元素都是以它为原型进行扩展的。像CCScene，CCLayer，CCSprite，CCMenu，CCSpriteBatchNode等等都是从CCNode继承而来。另外如果我们要自定义精灵，那么从CCNode继承也是一个很不错的选择。</p>
-
-<h3>1.概况</h3>
-
-<div align="center"><img src="/images/Blog/Play_cocos2dx_06/1.jpg" alt="" border="0" title="CCNode" /><br></br></div>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/10/14/play-cocos2dx-06/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -599,12 +678,16 @@ USING_NS_CC_EXT;
 </section><section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (15)</a></li>
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (16)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/10/24/play-cocos2dx-16/">【玩转cocos2d-x之十六】滚动字幕和公告</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/10/23/play-cocos2dx-15/">【玩转cocos2d-x之十五】关卡选择的设计</a>
@@ -620,10 +703,6 @@ USING_NS_CC_EXT;
     
       <li class="post">
         <a href="/blog/2013/10/19/play-cocos2dx-12/">【玩转cocos2d-x之十二】plist解析工具：Anti_TexturePacker</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/10/18/play-cocos2dx-11/">【玩转cocos2d-x之十一】定时器schedule</a>
       </li>
     
   </ul>
@@ -658,6 +737,7 @@ USING_NS_CC_EXT;
 <a style="font-size: 70%" href="/tags/applicationdidfinish/">applicationDidFinish</a>
 <a style="font-size: 180%" href="/tags/cocos2d-x/">cocos2d-x</a>
 <a style="font-size: 70%" href="/tags/plist/">plist</a>
+<a style="font-size: 70%" href="/tags/update/">update</a>
 <a style="font-size: 70%" href="/tags/win32/">win32</a>
 <a style="font-size: 70%" href="/tags/guan-qia-xuan-ze/">关卡选择</a>
 <a style="font-size: 70%" href="/tags/han-shu-zhi-zhen/">函数指针</a>
@@ -671,6 +751,8 @@ USING_NS_CC_EXT;
 <a style="font-size: 70%" href="/tags/shu-ju-yuan/">数据源</a>
 <a style="font-size: 70%" href="/tags/you-xi-yin-qing/">游戏引擎</a>
 <a style="font-size: 70%" href="/tags/gun-dong/">滚动</a>
+<a style="font-size: 70%" href="/tags/gun-dong-gong-gao/">滚动公告</a>
+<a style="font-size: 70%" href="/tags/gun-dong-zi-mu/">滚动字幕</a>
 <a style="font-size: 70%" href="/tags/te-dian/">特点</a>
 <a style="font-size: 70%" href="/tags/huan-jing-pei-zhi/">环境配置</a>
 <a style="font-size: 70%" href="/tags/xiang-dui-zuo-biao-xi/">相对坐标系</a>
