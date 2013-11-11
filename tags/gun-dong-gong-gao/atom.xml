@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 滚动公告 | Jacky's Blog]]></title>
   <link href="http://www.jacky.tk/tags/gun-dong-gong-gao/atom.xml" rel="self"/>
   <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-11T16:47:57+08:00</updated>
+  <updated>2013-11-11T17:31:23+08:00</updated>
   <id>http://www.jacky.tk/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -25,6 +25,11 @@
 <h3>1.原理</h3>
 
 <p>其实它们的实现都是简单的通过调用update来更新位置达到的移动效果，和背景滚动有点类似，一旦滚动结束就重置为起点，开始新的滚动。只是为了达到在某个区域内滚动而不至于超出这个区域，有时候会用一些前景图来做遮盖，所以这个时候其实字幕或者公告是有在后面滚动的，但是被遮住了，因此看起来就像是只在某个区域内滚动。以垂直字幕滚动为例说明，如下图。</p>
+
+<!-- more -->
+
+
+
 
 <div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_16/1.jpg" alt="" border="0" title="原理" /><br></br></div>
 

@@ -9,7 +9,7 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio 滚动字幕和公告是游戏中经常使用到的元素，本文大致写一下实现方法，至于例子中具体的坐标值，请不要纠结。。。这和美工关系还是蛮大的。我PS技术太搓了。。。 1.原理 &hellip;">
+  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio cocos2d-x的中文显示其实就是一个UTF-8编码在作怪而已，一种简单的方法就是把文本保存为UTF-8编码即可（注意不是UTF-8 + BOM），建议使用UE，Sublime &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -84,6 +84,49 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2013/10/25/play-cocos2dx-17/">【玩转cocos2d-x之十七】cocos2d-x中文显示</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-25T16:53:00+08:00" pubdate data-updated="true">Oct 25<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13014883">http://blog.csdn.net/jackystudio</a></p>
+
+<p>cocos2d-x的中文显示其实就是一个UTF-8编码在作怪而已，一种简单的方法就是把文本保存为UTF-8编码即可（注意不是UTF-8 + BOM），建议使用UE，Sublime Text或者EditPlus之类的本文编辑器。这里介绍另一种方法：通过读取xml文件显示中文，这种方法更利于软件的国际化，demo顺便实现了中英文切换。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/25/play-cocos2dx-17/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2013/10/24/play-cocos2dx-16/">【玩转cocos2d-x之十六】滚动字幕和公告</a></h1>
     
     
@@ -115,94 +158,12 @@
 
 <p>其实它们的实现都是简单的通过调用update来更新位置达到的移动效果，和背景滚动有点类似，一旦滚动结束就重置为起点，开始新的滚动。只是为了达到在某个区域内滚动而不至于超出这个区域，有时候会用一些前景图来做遮盖，所以这个时候其实字幕或者公告是有在后面滚动的，但是被遮住了，因此看起来就像是只在某个区域内滚动。以垂直字幕滚动为例说明，如下图。</p>
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_16/1.jpg" alt="" border="0" title="原理" /><br></br></div>
-
-
-<h3>2.实现</h3>
-
-<p>不要纠结以下各精灵的坐标位置：）</p>
-
-<pre><code>bool CTestLayer::init()  
-{  
-    bool bRet=false;  
-    do   
-    {  
-        CC_BREAK_IF(!CCLayer::init());  
-
-        CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
-        CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;addSpriteFramesWithFile("ui_serverlist.plist");  
-
-        //垂直滚动字幕  
-        CCSprite* listbase=CCSprite::createWithSpriteFrame(CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;spriteFrameByName("login_listbase.png"));//bottom底图  
-        listbase-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2+10));  
-        this-&gt;addChild(listbase);  
-        text1=CCLabelTTF::create("1.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n2.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n3.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n4.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!","Arial",12);//middle文本  
-        text1-&gt;setHorizontalAlignment(kCCTextAlignmentLeft);//左对齐  
-        text1-&gt;setAnchorPoint(ccp(0.5,1));  
-        text1-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2-55));  
-        this-&gt;addChild(text1);  
-        CCSprite* fg=CCSprite::create("fg.png");//top前景  
-        fg-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
-        this-&gt;addChild(fg);  
-
-        //水平滚动公告  
-        CCSprite* textbase=CCSprite::createWithSpriteFrame(CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;spriteFrameByName("login_textbase.png"));  
-        textbase-&gt;setPosition(ccp(visibleSize.width/2,50));  
-        textbase-&gt;setScaleX(2.5f);  
-        this-&gt;addChild(textbase);  
-        text2=CCLabelTTF::create("Hi! Welcome to JackyStudio,My Blog is blog.csdn.net/jackystudio!","Arial",12);  
-        text2-&gt;setPosition(ccp(visibleSize.width+text2-&gt;getContentSize().width/2,50));  
-        text2-&gt;setColor(ccc3(255,0,0));//红色字体  
-        this-&gt;addChild(text2);  
-
-        this-&gt;scheduleUpdate();//执行更新  
-
-        bRet=true;  
-    } while (0);  
-    return bRet;  
-}  
-
-void CTestLayer::update(float delta)  
-{  
-    CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
-
-    int newY=text1-&gt;getPositionY()+1;  
-    if (newY==500)//如果滚动到这个位置，重置  
-    {  
-        newY=visibleSize.height/2-55;  
-    }  
-    text1-&gt;setPositionY(newY);  
-
-    int newX=text2-&gt;getPositionX()-1;  
-    if (newX&lt;=-text2-&gt;getContentSize().width/2)//如果滚动到这个位置，重置  
-    {  
-        newX=visibleSize.width+text2-&gt;getContentSize().width/2;  
-    }  
-    text2-&gt;setPositionX(newX);  
-}  
-</code></pre>
-
-<h3>3.效果</h3>
-
-<p>这个效果有点小bug，就是文字覆盖到边框上了，这是因为没有把边框做在top层上导致的，实际使用注意这个问题即可。</p>
-
-<div align="center"><img src="/images/Blog/Play_cocos2dx_16/2.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
-
-
-<div align="center"><img src="/images/Blog/Play_cocos2dx_16/3.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
-
-
-<div align="center"><img src="/images/Blog/Play_cocos2dx_16/4.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
-
-
-<div align="center"><img src="/images/Blog/Play_cocos2dx_16/5.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
-
-
-<h3>4.源码下载</h3>
-
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6434549">源码下载</a></p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/24/play-cocos2dx-16/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -603,56 +564,6 @@ USING_NS_CC_EXT;
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/10/14/play-cocos2dx-07/">【玩转cocos2d-x之七】场景类CCScene和布景类CCLayer</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-14T22:21:00+08:00" pubdate data-updated="true">Oct 14<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12708811">http://blog.csdn.net/jackystudio</a></p>
-
-<p>场景类CCScene和布景类CCLayer都是作为一个容器来使用，这里简单地看下它们的实现：</p>
-
-<h3>1.场景类：CCScene</h3>
-
-<div align="center"><img src="/images/Blog/Play_cocos2dx_07/1.jpg" alt="" border="0" title="CCScene" /><br></br></div>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/10/14/play-cocos2dx-07/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -678,12 +589,16 @@ USING_NS_CC_EXT;
 </section><section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (16)</a></li>
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (17)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/10/25/play-cocos2dx-17/">【玩转cocos2d-x之十七】cocos2d-x中文显示</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/10/24/play-cocos2dx-16/">【玩转cocos2d-x之十六】滚动字幕和公告</a>
@@ -701,10 +616,6 @@ USING_NS_CC_EXT;
         <a href="/blog/2013/10/21/play-cocos2dx-13/">【玩转cocos2d-x之十三】CCMenu的布局</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2013/10/19/play-cocos2dx-12/">【玩转cocos2d-x之十二】plist解析工具：Anti_TexturePacker</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -716,6 +627,7 @@ USING_NS_CC_EXT;
   <ul class="tag-cloud">
     <a style="font-size: 70%" href="/tags/ccaction/">CCAction</a>
 <a style="font-size: 70%" href="/tags/ccapplication/">CCApplication</a>
+<a style="font-size: 70%" href="/tags/ccdictionary/">CCDictionary</a>
 <a style="font-size: 70%" href="/tags/ccdirector/">CCDirector</a>
 <a style="font-size: 70%" href="/tags/ccdisplaylinkdirecto/">CCDisplayLinkDirecto</a>
 <a style="font-size: 70%" href="/tags/cceglview/">CCEGLView</a>
@@ -739,6 +651,9 @@ USING_NS_CC_EXT;
 <a style="font-size: 70%" href="/tags/plist/">plist</a>
 <a style="font-size: 70%" href="/tags/update/">update</a>
 <a style="font-size: 70%" href="/tags/win32/">win32</a>
+<a style="font-size: 70%" href="/tags/xml/">xml</a>
+<a style="font-size: 70%" href="/tags/zhong-wen-xian-shi/">中文显示</a>
+<a style="font-size: 70%" href="/tags/zhong-ying-wen-qie-huan/">中英文切换</a>
 <a style="font-size: 70%" href="/tags/guan-qia-xuan-ze/">关卡选择</a>
 <a style="font-size: 70%" href="/tags/han-shu-zhi-zhen/">函数指针</a>
 <a style="font-size: 70%" href="/tags/hui-diao-han-shu/">回调函数</a>
