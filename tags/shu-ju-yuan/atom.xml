@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: 数据源 | Jacky's Blog]]></title>
+  <link href="http://www.jacky.tk/tags/shu-ju-yuan/atom.xml" rel="self"/>
+  <link href="http://www.jacky.tk/"/>
+  <updated>2013-11-11T16:35:02+08:00</updated>
+  <id>http://www.jacky.tk/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十五】关卡选择的设计]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/23/play-cocos2dx-15/"/>
+    <updated>2013-10-23T16:26:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/23/play-cocos2dx-15</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12966993">http://blog.csdn.net/jackystudio</a></p>
+
+<p>这节介绍一下游戏中帮助界面和关卡选择的设计，其实都是一样的，关键在于美工。这里采用自定义TableView层来实现。</p>
+
+<h3>1.导入头文件和设定空间</h3>
+
+<p>因为TableView相关的类是在扩展包里面，所以必须先声明</p>
+
+<pre><code>#include "cocos-ext.h"  
+USING_NS_CC_EXT;  
+</code></pre>
+
+<!-- more -->
+
+
+<h3>2.继承的实现</h3>
+
+<p>自定义TableView继承于CCLayer，因此可以捕获触摸，同时继承于扩展包的CCTableViewDataSource和CCTableViewDelegate。前者是TableView的数据源，包含了一系列和TableView数据单元相关的操作，后者则是继承于CCScrollViewDelegate抽象类，声明了一些和滚动，放大，触摸回调之类的接口，然后在内部包含了一个CCTableView，这用起来有点像Android的Adapter。当然分别继承几个类使用也是一样的。</p>
+
+<p>先看一下要实现的接口吧。</p>
+
+<pre><code>class TableViewTestLayer : public cocos2d::CCLayer, public cocos2d::extension::CCTableViewDataSource, public cocos2d::extension::CCTableViewDelegate  
+{  
+    public:  
+    virtual bool init();    
+
+    CREATE_FUNC(TableViewTestLayer);  
+
+    virtual void scrollViewDidScroll(cocos2d::extension::CCScrollView* view){}//滚动时调用，空实现，因为继承了抽象类所以必须重写  
+    virtual void scrollViewDidZoom(cocos2d::extension::CCScrollView* view){}//缩放时调用，空实现，同上  
+    virtual void tableCellTouched(cocos2d::extension::CCTableView* table, cocos2d::extension::CCTableViewCell* cell);//触摸单元时回调  
+    virtual cocos2d::CCSize tableCellSizeForIndex(cocos2d::extension::CCTableView *table, unsigned int idx);//设定单元所占大小  
+    virtual cocos2d::extension::CCTableViewCell* tableCellAtIndex(cocos2d::extension::CCTableView *table, unsigned int idx);//设定单元内容  
+    virtual unsigned int numberOfCellsInTableView(cocos2d::extension::CCTableView *table);//返回单元数  
+};  
+</code></pre>
+
+<p>当然还有一些其他功能，如高亮，循环，看情况重载。</p>
+
+<h3>3.自定义TabView层各模块的实现</h3>
+
+<p><strong>3.1.初始化函数init</strong></p>
+
+<pre><code>CCSize winSize = CCDirector::sharedDirector()-&gt;getWinSize();  
+CCTableView* tableView = CCTableView::create(this, winSize);//创建一个CCTableView  
+tableView-&gt;setDirection(kCCScrollViewDirectionHorizontal);//设置方向  
+tableView-&gt;setPosition(ccp(0,winSize.height/2-50));  
+tableView-&gt;setDelegate(this);//这句话很重要，把taleView和当前类绑到一起，所以后面的调用主体都是tableView  
+this-&gt;addChild(tableView);  
+tableView-&gt;reloadData();  
+</code></pre>
+
+<p><strong>3.2.触摸回调tableCellTouched</strong></p>
+
+<pre><code>void TableViewTestLayer::tableCellTouched(CCTableView* table, CCTableViewCell* cell)  
+{  
+    CCLOG("cell touched at index: %i", cell-&gt;getIdx());//cell为当前选择单元  
+}  
+</code></pre>
+
+<p><strong>3.3.单元大小tableCellSizeForIndex</strong></p>
+
+<pre><code>CCSize TableViewTestLayer::tableCellSizeForIndex(CCTableView *table, unsigned int idx)  
+{  
+    //if (idx == 2) {  
+    //    return CCSizeMake(100, 100);//第2个大小为100，100  
+    //}  
+    return CCSizeMake(120, 120);其余为120，120  
+}  
+</code></pre>
+
+<p><strong>3.4.设置数据源tableCellAtIndex</strong></p>
+
+<pre><code>CCTableViewCell* TableViewTestLayer::tableCellAtIndex(CCTableView *table, unsigned int idx)  
+{  
+    CCString *string = CCString::createWithFormat("%d", idx);  
+    CCTableViewCell *cell = table-&gt;dequeueCell();  
+    if (!cell) {  
+        cell = new CCTableViewCell();//创建单元，如果要自定义单元效果，需继承CCTableViewCell，并重载draw函数  
+        cell-&gt;autorelease();  
+        CCSprite *sprite = CCSprite::create("HelloWorld.png");  
+        sprite-&gt;setScale(0.2f);  
+        sprite-&gt;setPosition(ccp(60, 60));  
+        sprite-&gt;setTag(123);  
+        cell-&gt;addChild(sprite);//添加到cell  
+        CCLabelTTF *label = CCLabelTTF::create(string-&gt;getCString(), "Helvetica", 20.0);  
+        label-&gt;setPosition(ccp(60,10));  
+        label-&gt;setTag(456);  
+        cell-&gt;addChild(label);//添加到cell  
+    }  
+    else  
+    {  
+        CCLabelTTF *label = (CCLabelTTF*)cell-&gt;getChildByTag(456);  
+        label-&gt;setString(string-&gt;getCString());  
+    }  
+    return cell;  
+}  
+</code></pre>
+
+<p><strong>3.5.单元数numberOfCellsInTableView</strong></p>
+
+<pre><code>unsigned int TableViewTestLayer::numberOfCellsInTableView(CCTableView *table)  
+{  
+    return 20;//直接返回设定单元数  
+}  
+</code></pre>
+
+<h3>4.效果图</h3>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_15/1.jpg" alt="" border="0" title="选项1" /><br></br></div>
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_15/2.jpg" alt="" border="0" title="选项2" /><br></br></div>
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_15/3.jpg" alt="" border="0" title="选项3" /><br></br></div>
+
+
+<h3>5.源码下载地址</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6422401">下载地址</a></p>
+]]></content>
+  </entry>
+  
+</feed>

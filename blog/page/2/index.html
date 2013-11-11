@@ -9,7 +9,7 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio cocos2d-x到底是怎样实现跨平台的呢？这里以Win32和Android为例。 1.跨平台项目目录结构 先看一下一个项目创建后的目录结构吧！这还是以HelloCpp为例。 ">
+  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio 既然cocos2d-x都帮我们封装好了，使得开发与平台无关，那接下来我们就单纯地开始好好玩游戏吧！这几篇是对cocos2d-x一些基本且重要的元素进行解释和API介绍，之前没有系统的看过API， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +78,56 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/12/play-cocos2dx-05/">【玩转cocos2d-x之五】导演类CCDirector</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-12T21:49:00+08:00" pubdate data-updated="true">Oct 12<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12646337">http://blog.csdn.net/jackystudio</a></p>
+
+<p>既然cocos2d-x都帮我们封装好了，使得开发与平台无关，那接下来我们就单纯地开始好好玩游戏吧！这几篇是对cocos2d-x一些基本且重要的元素进行解释和API介绍，之前没有系统的看过API，有时候某些功能引擎都已经提供好了，不知道还是会自己去写。所以全面地了解一下是必须的。</p>
+
+<h3>1.概况</h3>
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_05/1.jpg" alt="" border="0" title="CCDirector" /><br></br></div>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/12/play-cocos2dx-05/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -300,12 +350,16 @@
 </section><section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (14)</a></li>
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (15)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/10/23/play-cocos2dx-15/">【玩转cocos2d-x之十五】关卡选择的设计</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/10/22/play-cocos2dx-14/">【玩转cocos2d-x之十四】菜单选项卡的实现</a>
@@ -321,10 +375,6 @@
     
       <li class="post">
         <a href="/blog/2013/10/18/play-cocos2dx-11/">【玩转cocos2d-x之十一】定时器schedule</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/10/17/play-cocos2dx-10/">【玩转cocos2d-x之十】cocos2d-x坐标系</a>
       </li>
     
   </ul>
@@ -350,6 +400,7 @@
 <a style="font-size: 70%" href="/tags/ccscene/">CCScene</a>
 <a style="font-size: 70%" href="/tags/ccscheduler/">CCScheduler</a>
 <a style="font-size: 70%" href="/tags/ccsprite/">CCSprite</a>
+<a style="font-size: 70%" href="/tags/cctableview/">CCTableView</a>
 <a style="font-size: 70%" href="/tags/cctextureprotocol/">CCTextureProtocol</a>
 <a style="font-size: 70%" href="/tags/item/">Item</a>
 <a style="font-size: 70%" href="/tags/openglzuo-biao-xi/">OpenGL坐标系</a>
@@ -359,6 +410,7 @@
 <a style="font-size: 180%" href="/tags/cocos2d-x/">cocos2d-x</a>
 <a style="font-size: 70%" href="/tags/plist/">plist</a>
 <a style="font-size: 70%" href="/tags/win32/">win32</a>
+<a style="font-size: 70%" href="/tags/guan-qia-xuan-ze/">关卡选择</a>
 <a style="font-size: 70%" href="/tags/han-shu-zhi-zhen/">函数指针</a>
 <a style="font-size: 70%" href="/tags/hui-diao-han-shu/">回调函数</a>
 <a style="font-size: 70%" href="/tags/ding-shi-qi/">定时器</a>
@@ -367,7 +419,9 @@
 <a style="font-size: 70%" href="/tags/dai-yan-se-de-layer/">带颜色的Layer</a>
 <a style="font-size: 117%" href="/tags/chang-yong-jie-kou/">常用接口</a>
 <a style="font-size: 70%" href="/tags/chang-yong-fang-fa/">常用方法</a>
+<a style="font-size: 70%" href="/tags/shu-ju-yuan/">数据源</a>
 <a style="font-size: 70%" href="/tags/you-xi-yin-qing/">游戏引擎</a>
+<a style="font-size: 70%" href="/tags/gun-dong/">滚动</a>
 <a style="font-size: 70%" href="/tags/te-dian/">特点</a>
 <a style="font-size: 70%" href="/tags/huan-jing-pei-zhi/">环境配置</a>
 <a style="font-size: 70%" href="/tags/xiang-dui-zuo-biao-xi/">相对坐标系</a>

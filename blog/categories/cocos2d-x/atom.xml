@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://www.jacky.tk/blog/categories/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-11T16:22:32+08:00</updated>
+  <updated>2013-11-11T16:35:02+08:00</updated>
   <id>http://www.jacky.tk/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,135 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十五】关卡选择的设计]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/23/play-cocos2dx-15/"/>
+    <updated>2013-10-23T16:26:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/23/play-cocos2dx-15</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12966993">http://blog.csdn.net/jackystudio</a></p>
+
+<p>这节介绍一下游戏中帮助界面和关卡选择的设计，其实都是一样的，关键在于美工。这里采用自定义TableView层来实现。</p>
+
+<h3>1.导入头文件和设定空间</h3>
+
+<p>因为TableView相关的类是在扩展包里面，所以必须先声明</p>
+
+<pre><code>#include "cocos-ext.h"  
+USING_NS_CC_EXT;  
+</code></pre>
+
+<!-- more -->
+
+
+<h3>2.继承的实现</h3>
+
+<p>自定义TableView继承于CCLayer，因此可以捕获触摸，同时继承于扩展包的CCTableViewDataSource和CCTableViewDelegate。前者是TableView的数据源，包含了一系列和TableView数据单元相关的操作，后者则是继承于CCScrollViewDelegate抽象类，声明了一些和滚动，放大，触摸回调之类的接口，然后在内部包含了一个CCTableView，这用起来有点像Android的Adapter。当然分别继承几个类使用也是一样的。</p>
+
+<p>先看一下要实现的接口吧。</p>
+
+<pre><code>class TableViewTestLayer : public cocos2d::CCLayer, public cocos2d::extension::CCTableViewDataSource, public cocos2d::extension::CCTableViewDelegate  
+{  
+    public:  
+    virtual bool init();    
+
+    CREATE_FUNC(TableViewTestLayer);  
+
+    virtual void scrollViewDidScroll(cocos2d::extension::CCScrollView* view){}//滚动时调用，空实现，因为继承了抽象类所以必须重写  
+    virtual void scrollViewDidZoom(cocos2d::extension::CCScrollView* view){}//缩放时调用，空实现，同上  
+    virtual void tableCellTouched(cocos2d::extension::CCTableView* table, cocos2d::extension::CCTableViewCell* cell);//触摸单元时回调  
+    virtual cocos2d::CCSize tableCellSizeForIndex(cocos2d::extension::CCTableView *table, unsigned int idx);//设定单元所占大小  
+    virtual cocos2d::extension::CCTableViewCell* tableCellAtIndex(cocos2d::extension::CCTableView *table, unsigned int idx);//设定单元内容  
+    virtual unsigned int numberOfCellsInTableView(cocos2d::extension::CCTableView *table);//返回单元数  
+};  
+</code></pre>
+
+<p>当然还有一些其他功能，如高亮，循环，看情况重载。</p>
+
+<h3>3.自定义TabView层各模块的实现</h3>
+
+<p><strong>3.1.初始化函数init</strong></p>
+
+<pre><code>CCSize winSize = CCDirector::sharedDirector()-&gt;getWinSize();  
+CCTableView* tableView = CCTableView::create(this, winSize);//创建一个CCTableView  
+tableView-&gt;setDirection(kCCScrollViewDirectionHorizontal);//设置方向  
+tableView-&gt;setPosition(ccp(0,winSize.height/2-50));  
+tableView-&gt;setDelegate(this);//这句话很重要，把taleView和当前类绑到一起，所以后面的调用主体都是tableView  
+this-&gt;addChild(tableView);  
+tableView-&gt;reloadData();  
+</code></pre>
+
+<p><strong>3.2.触摸回调tableCellTouched</strong></p>
+
+<pre><code>void TableViewTestLayer::tableCellTouched(CCTableView* table, CCTableViewCell* cell)  
+{  
+    CCLOG("cell touched at index: %i", cell-&gt;getIdx());//cell为当前选择单元  
+}  
+</code></pre>
+
+<p><strong>3.3.单元大小tableCellSizeForIndex</strong></p>
+
+<pre><code>CCSize TableViewTestLayer::tableCellSizeForIndex(CCTableView *table, unsigned int idx)  
+{  
+    //if (idx == 2) {  
+    //    return CCSizeMake(100, 100);//第2个大小为100，100  
+    //}  
+    return CCSizeMake(120, 120);其余为120，120  
+}  
+</code></pre>
+
+<p><strong>3.4.设置数据源tableCellAtIndex</strong></p>
+
+<pre><code>CCTableViewCell* TableViewTestLayer::tableCellAtIndex(CCTableView *table, unsigned int idx)  
+{  
+    CCString *string = CCString::createWithFormat("%d", idx);  
+    CCTableViewCell *cell = table-&gt;dequeueCell();  
+    if (!cell) {  
+        cell = new CCTableViewCell();//创建单元，如果要自定义单元效果，需继承CCTableViewCell，并重载draw函数  
+        cell-&gt;autorelease();  
+        CCSprite *sprite = CCSprite::create("HelloWorld.png");  
+        sprite-&gt;setScale(0.2f);  
+        sprite-&gt;setPosition(ccp(60, 60));  
+        sprite-&gt;setTag(123);  
+        cell-&gt;addChild(sprite);//添加到cell  
+        CCLabelTTF *label = CCLabelTTF::create(string-&gt;getCString(), "Helvetica", 20.0);  
+        label-&gt;setPosition(ccp(60,10));  
+        label-&gt;setTag(456);  
+        cell-&gt;addChild(label);//添加到cell  
+    }  
+    else  
+    {  
+        CCLabelTTF *label = (CCLabelTTF*)cell-&gt;getChildByTag(456);  
+        label-&gt;setString(string-&gt;getCString());  
+    }  
+    return cell;  
+}  
+</code></pre>
+
+<p><strong>3.5.单元数numberOfCellsInTableView</strong></p>
+
+<pre><code>unsigned int TableViewTestLayer::numberOfCellsInTableView(CCTableView *table)  
+{  
+    return 20;//直接返回设定单元数  
+}  
+</code></pre>
+
+<h3>4.效果图</h3>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_15/1.jpg" alt="" border="0" title="选项1" /><br></br></div>
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_15/2.jpg" alt="" border="0" title="选项2" /><br></br></div>
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_15/3.jpg" alt="" border="0" title="选项3" /><br></br></div>
+
+
+<h3>5.源码下载地址</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6422401">下载地址</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十四】菜单选项卡的实现]]></title>
@@ -580,106 +709,6 @@ void HelloWorld::log(float dt)
 <p>这样确实用起来怪怪的，所以在cocos2d-x v3.0版本中，参数和函数指针用一个宏打包起来了~</p>
 
 <p>至于CCSchedule内部是怎么实现的，以及CCTimer的触发回调，有兴趣的就自己看看源码吧，我也写不来，源码有点长啊。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之十】cocos2d-x坐标系]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/17/play-cocos2dx-10/"/>
-    <updated>2013-10-17T14:43:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/17/play-cocos2dx-10</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12830971">http://blog.csdn.net/jackystudio</a></p>
-
-<p>cocos2d-x采用的是笛卡尔平面坐标系，也就是平面上两条垂直线构成的坐标系，平面上任意一点都可以用（x，y）来表示。</p>
-
-<p><em>（1）就坐标系方向而言，cocos2d-x分为屏幕坐标系和OpenGL坐标系。</em></p>
-
-<p><em>（2）就节点本身而言，cocos2d-x分为绝对坐标系和相对坐标系。</em></p>
-
-<h3>1.屏幕坐标系</h3>
-
-<p>屏幕坐标系，也叫UIKit坐标系，原点在屏幕左上，x轴向右，y轴向下。cocos2d-x的屏幕触摸事件传入的位置坐标就是采用了屏幕坐标系。以320*480的屏幕为例，如图坐标值为屏幕坐标系。</p>
-
-<!-- more -->
-
-
-
-
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_10/1.jpg" alt="" border="0" title="屏幕坐标系" /><br></br></div>
-
-
-<h3>2.OpenGL坐标系</h3>
-
-<p>OpenGL坐标系原点在屏幕的左下，x轴向右，y轴向上。cocos2d-x的元素采用的就是OpenGL坐标系。同样的上例，如图坐标值为OpenGL坐标系。</p>
-
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_10/2.jpg" alt="" border="0" title="OpenGL坐标系" /><br></br></div>
-
-
-<h3>3.屏幕坐标系和OpenGL坐标系的转换</h3>
-
-<p>它们的转换导演类（CCDirector）已经封装好了两个函数供我们使用。</p>
-
-<pre><code>//UIKit To OpenGL  
-CCPoint convertToGL(const CCPoint&amp; obPoint);  
-//OpenGL To UIKit  
-CCPoint convertToUI(const CCPoint&amp; obPoint);  
-</code></pre>
-
-<h3>4.绝对坐标系</h3>
-
-<p>绝对坐标系也叫世界坐标系，从名字可以看来，绝对坐标系是一个恒坐标系，不参考也不依赖于其他坐标系。在cocos2d-x中它使用的是OpenGL坐标系。不过因为我们多在CCLayer上放置游戏元素，所以一般比较少直接用到绝对坐标系。</p>
-
-<h3>5.相对坐标系</h3>
-
-<p>cocos2d-x元素是有层次关系的，节点使用的是相对父节点的位置坐标，也就是相对坐标系（也叫本地坐标系），屏幕绘制的时候，cocos2d-x会自动将相对坐标系转换为绝对坐标系，渲染到屏幕的绝对位置上。</p>
-
-<h3>6.锚点</h3>
-
-<p>在举例之前有必要先了解一下锚点这个概念。锚点是对节点而言的，它是节点的一个属性，表明了节点位置的一个参考基准点，同样放置一个物体在(300,300)这个位置，不同的锚点会产生不同的效果。节点的默认锚点位置在(0.5,0.5)。锚点和节点的位置值没有关系，锚点只是影响了节点在屏幕上渲染的位置。如下图，虽然精灵的在屏幕上渲染的位置不一样，但是它们的position值是一样的，都是(300,300)。锚点只会影响它本身在父节点中的渲染位置，而不会影响其子节点的相对它本身的位置。</p>
-
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_10/3.jpg" alt="" border="0" title="锚点" /><br></br></div>
-
-
-<h3>7.绝对坐标系和相对坐标系的关系</h3>
-
-<p>我们先看一个例子，为了方便演示，节点的锚点都设置为(0,0)。</p>
-
-<pre><code>CCSprite* big=CCSprite::create("big.png");  
-big-&gt;setAnchorPoint(ccp(0,0));  
-big-&gt;setPosition(ccp(50,50));//设置在相对父节点的(50,50)位置  
-this-&gt;addChild(big);//屏幕是父节点  
-CCSprite* little=CCSprite::create("little.png");  
-little-&gt;setAnchorPoint(ccp(0,0));  
-little-&gt;setPosition(ccp(50,50));//设置在相对父节点的(50,50)位置  
-big-&gt;addChild(little);//big是父节点  
-</code></pre>
-
-<p>效果如下：</p>
-
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_10/4.jpg" alt="" border="0" title="绝对坐标系和相对坐标系的关系" /><br></br></div>
-
-
-<h3>7.绝对坐标系和相对坐标系的转换</h3>
-
-<p>CCNode提供给我们相对坐标系和绝对坐标系的转换函数。</p>
-
-<pre><code>CCPoint convertToNodeSpace(const CCPoint&amp; worldPoint);  //将世界坐标转换为对象节点内坐标，忽略锚点，以当前父节点左下角坐标为标准  
-CCPoint convertToWorldSpace(const CCPoint&amp; nodePoint);  //将对象节点内坐标转换为事件坐标，忽略锚点，以当前父节点左下角坐标为标准  
-CCPoint convertToNodeSpaceAR(const CCPoint&amp; worldPoint);//将世界坐标转换为基于锚点的对象节点内坐标
-CCPoint convertToWorldSpaceAR(const CCPoint&amp; nodePoint);//将局域锚点的对象节点内坐标转换为世界坐标  
-</code></pre>
-
-<p>如果要获取big和little的绝对坐标</p>
-
-<pre><code>CCPoint wp1=this-&gt;convertToWorldSpace(big-&gt;getPosition());//wp1(50,50)  
-CCPoint wp2=big-&gt;convertToWorldSpace(little-&gt;getPosition());//wp2(100,100)  
-</code></pre>
-
-<p>如果要把绝对坐标转换为big和little的相对坐标</p>
-
-<pre><code>CCPoint np1=big-&gt;convertToNodeSpace(ccp(200,200));//np1(150,150)  
-CCPoint np2=little-&gt;convertToNodeSpace(ccp(200,200));//np2(100,100)
-</code></pre>
 ]]></content>
   </entry>
   
