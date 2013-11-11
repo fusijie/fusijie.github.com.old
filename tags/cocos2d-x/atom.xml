@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://www.jacky.tk/tags/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-10T10:42:11+08:00</updated>
+  <updated>2013-11-11T16:22:32+08:00</updated>
   <id>http://www.jacky.tk/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -46,7 +46,7 @@ graphics.DrawImage(&amp;image,ORIGIN_DRAW_X,ORIGIN_DRAW_Y,(int)(m_RealWidth*m_Sc
 <div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_12/7.jpg" alt="" border="0" title="xml" /><br></br></div>
 
 
-<p>这样一看，就知道了标准的plist文件中，我们需要的是第7，10，14，20，23，27&hellip;行。抓出规律，读取到CStringArray。</p>
+<p>这样一看，就知道了标准的plist文件中，我们需要的是第7，10，14，20，23，27&hellip;行。抓出规律，读取到CStringArray。我没有采用xml的解析库，而是直接无耻的这么做了，用起来倒是没什么问题，但是不要学啊。。。</p>
 
 <pre><code>    int i=1;
     int needName=7;
@@ -123,7 +123,7 @@ graphics.DrawImage(&amp;image,ORIGIN_DRAW_X,ORIGIN_DRAW_Y,(int)(m_RealWidth*m_Sc
 }
 </code></pre>
 
-<p>因为plist文件最后还有一个metadata字段，所以后面进行遍历的时候减掉这一个。</p>
+<p>因为plist文件最后还有一个metadata字段，所以后面进行遍历的时候要对CCList的个数减1。</p>
 
 <h3>3.随鼠标移动的PNG图片名字的获取</h3>
 
@@ -163,27 +163,62 @@ for (int i=0;i&lt;count-1;i++)
 }  
 </code></pre>
 
-<h3>5.效果图</h3>
+<h3>5.PNG图的裁剪和保存</h3>
+
+<p>创建一个新的GDI+Bitmap对象，传入图像数据和大小，进行保存即可。</p>
+
+<pre><code>Gdiplus::Rect rcImage(x, y, width, height);  
+pWrapBitmap-&gt;LockBits(&amp;rcImage, Gdiplus::ImageLockModeRead, pWrapBitmap-&gt;GetPixelFormat(), &amp;bitmapData);  
+pBitmap = new Gdiplus::Bitmap(bitmapData.Width, bitmapData.Height, bitmapData.Stride, PixelFormat32bppARGB, (BYTE*)bitmapData.Scan0);  
+pWrapBitmap-&gt;UnlockBits(&amp;bitmapData);  
+if (pngcfg.isRotate)  
+{  
+    pBitmap-&gt;RotateFlip(Rotate270FlipNone);  
+}  
+
+CLSID pngClsid;   
+GetEncoderClsid(L"image/png", &amp;pngClsid);   
+CString strpathName=strClipDir;  
+strpathName+="\\";  
+strpathName+=pngcfg.strName;  
+pBitmap-&gt;Save(strpathName, &amp;pngClsid, NULL);  
+delete pBitmap;  
+delete pWrapBitmap;  
+</code></pre>
+
+<h3>6.效果图</h3>
+
+<p>（1）鼠标移动到小图上，右上角显示当前位置所在的PNG名。单击小图，PNG名自动复制到剪切板。</p>
 
 <div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_12/1.jpg" alt="" border="0" title="1" /><br></br></div>
 
 
+<p>（2）在列表中选择小图名字，软件自动显示红框。包裹该小图。</p>
+
 <div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_12/2.jpg" alt="" border="0" title="2" /><br></br></div>
 
+
+<p>（3）点击裁剪PNG，弹出保存路径，选择保存路径确定。</p>
 
 <div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_12/3.jpg" alt="" border="0" title="3" /><br></br></div>
 
 
+<p>（4）工作线程中处理PNG图的裁剪。</p>
+
 <div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_12/4.jpg" alt="" border="0" title="4" /><br></br></div>
 
+
+<p>（5）PNG图裁剪成功。</p>
 
 <div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_12/5.jpg" alt="" border="0" title="5" /><br></br></div>
 
 
+<p>（6）目录下可以看到裁剪后的小图，按照原来名字命名。</p>
+
 <div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_12/6.jpg" alt="" border="0" title="6" /><br></br></div>
 
 
-<h3>6.下载地址</h3>
+<h3>7.下载地址</h3>
 
 <p>v.1.2版</p>
 
@@ -210,6 +245,8 @@ for (int i=0;i&lt;count-1;i++)
 <p><em>5.修改icon</em></p>
 
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6429297">下载地址</a></p>
+
+<p>源码：<a href="https://github.com/fusijie/Anti_TexturePaker.git">https://github.com/fusijie/Anti_TexturePaker.git</a></p>
 ]]></content>
   </entry>
   
