@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://www.jacky.tk/blog/categories/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-11T17:31:23+08:00</updated>
+  <updated>2013-11-11T18:18:35+08:00</updated>
   <id>http://www.jacky.tk/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,391 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十】从CCObject看cocos2d-x的内存管理机制]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/31/play-cocos2dx-20/"/>
+    <updated>2013-10-31T18:13:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/31/play-cocos2dx-20</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13765639">http://blog.csdn.net/jackystudio</a></p>
+
+<p>再看CCObject，剔除上节的拷贝相关，以及Lua脚本相关的属性和方法后，CCObject还剩下什么？</p>
+
+<h3>1.剩下什么？</h3>
+
+<p>可以看到整个CCObject就是围绕着m_uReference和m_uAutoReleaseCount在转。这两个变量的解释如下。所以CCObject剩下的其实就是对内存的管理。</p>
+
+<!-- more -->
+
+
+<pre><code>CCObject::CCObject(void)//构造函数  
+: m_nLuaID(0)  
+, m_uReference(1) //引用计数，初始为1，当引用计数=0，自动释放该对象  
+, m_uAutoReleaseCount(0)//自动释放对象计数，如果是手动new的，则为0，如果autoRelease的，则在AutoreleasePool会+1  
+                    //这里是保护成员，所以CCAutoreleasePool被声明为友元类  
+{  
+    static unsigned int uObjectCount = 0;//静态成员，对象的计数，只增不减，用于标识唯一一个对象实例  
+    m_uID = ++uObjectCount;                
+}  
+
+CCObject::~CCObject(void)  
+{  
+    if (m_uAutoReleaseCount &gt; 0)//如果是自动管理，则在PoolManager中删除  
+    {  
+        CCPoolManager::sharedPoolManager()-&gt;removeObject(this);  
+    }  
+
+    // if the object is referenced by Lua engine, remove it  
+    if (m_nLuaID)  
+    {  
+        CCScriptEngineManager::sharedManager()-&gt;getScriptEngine()-&gt;removeScriptObjectByCCObject(this);  
+    }  
+    else  
+    {  
+        CCScriptEngineProtocol* pEngine = CCScriptEngineManager::sharedManager()-&gt;getScriptEngine();  
+        if (pEngine != NULL &amp;&amp; pEngine-&gt;getScriptType() == kScriptTypeJavascript)  
+        {  
+            pEngine-&gt;removeScriptObjectByCCObject(this);  
+        }  
+    }  
+}  
+
+void CCObject::release(void)//引用计数-1，如果引用计数=0，释放对象  
+{  
+    CCAssert(m_uReference &gt; 0, "reference count should greater than 0");  
+    --m_uReference;  
+
+    if (m_uReference == 0)  
+    {  
+        delete this;  
+    }  
+}  
+
+void CCObject::retain(void)//引用计数+1,防止被对象释放  
+{  
+    CCAssert(m_uReference &gt; 0, "reference count should greater than 0");  
+
+    ++m_uReference;  
+}  
+
+CCObject* CCObject::autorelease(void)//对象加入PoolManager，自动管理  
+{  
+    CCPoolManager::sharedPoolManager()-&gt;addObject(this);  
+    return this;  
+}  
+
+bool CCObject::isSingleReference(void) const //返回是否唯一引用  
+{  
+    return m_uReference == 1;  
+}  
+
+unsigned int CCObject::retainCount(void) const  //返回引用计数  
+{  
+    return m_uReference;  
+}  
+
+bool CCObject::isEqual(const CCObject *pObject) //判断对象是否相等  
+{  
+    return this == pObject;  
+}  
+
+void CCObject::acceptVisitor(CCDataVisitor &amp;visitor) //辅助对象执行动作  
+{  
+    visitor.visitObject(this);  
+}  
+</code></pre>
+
+<h3>2.内存管理</h3>
+
+<p>从CCObject可以看出，内存的管理方式有两种：手动管理和自动管理。</p>
+
+<p><strong>2.1.手动内存管理</strong></p>
+
+<p>想必从Java转到C++的朋友可能很受不了C++再申请完内存后还要手动释放，就像我从C++转Java时也同样很不习惯竟然不用管理内存，老是害怕会不小心让系统给销毁了。CCObject的成员变量m_uAutoReleaseCount标识了是手动管理还是自动管理。如果执行以下操作：</p>
+
+<pre><code>CCObject* obj=new CCObject();//m_uAutoReleaseCount=0,m_uReference=1  
+</code></pre>
+
+<p>从析构函数可以看到，析构函数是不对所有手动进行申请的变量进行内存释放（必须m_uAutoReleaseCount>0）。那么这时得手动释放：</p>
+
+<pre><code>obj-&gt;release();//m_uReference-1后为0，执行delete this;  
+</code></pre>
+
+<p>所以，new和release是好基友！而手动内存管理一般不再使用retain。</p>
+
+<p><strong>2.2.自动内存管理</strong>
+如果需要进行内存的自动管理，那要怎么做呢？</p>
+
+<pre><code>CCObject* obj=new CCObject();//m_uAutoReleaseCount=0,m_uReference=1  
+obj-&gt;autorelease();//m_uAutoReleaseCount=1,m_uReference=1  
+</code></pre>
+
+<p>好了，什么都不用做，obj自生自灭了。
+如果我们需要随时用到obj，而不愿意让它在我们不知情的情况下被释放，那么使用：</p>
+
+<pre><code>obj-&gt;retain();//m_uAutoReleaseCount=1,m_uReference=2  
+</code></pre>
+
+<p>当不再需要它的时候，使用：</p>
+
+<pre><code>obj-&gt;release();//m_uAutoReleaseCount=1,m_uReference=1  
+</code></pre>
+
+<p>又恢复回去了，所以，retain和release是好基友，一般在自动内存管理使用。</p>
+
+<p>这里只是大概写一下如何使用new，autorelease，retain和release，至于内存管理的实现网上的代码解析很多，发现自己没办法深入浅出地写出来，所以还是放弃再写一回注释了，原理可以这么理解：Cocos2d-x提供了一个内存管理器类CCPoolManager，它包含了一个CCArray容器m_pReleasePoolStack，这个容器用来存放一些容器管理类CCAutoreleasePool的实例对象。需要自动进行内存释放的CCObject实例对象会把其指针存放在容器管理类CCAutoreleasePool的实例对象中的m_pManagedObjectArray容器里。所有存在其中的CCObject实例对象在进行释放操作时通过使用计数器来进行判断在何时真正释放内存，游戏在每一帧结束时都会对autorelease对象进行释放。</p>
+
+<p><strong>2.3.一个疑问</strong>
+平时我们可能会这么用：</p>
+
+<pre><code>//CTestLayer.h  
+class CTestLayer : public cocos2d::CCLayer  
+{  
+public:  
+    virtual bool init();  
+
+    CREATE_FUNC(CTestLayer);  
+
+    virtual void update(float delta);  
+
+private:  
+    CCSprite* background;  
+};  
+
+//CTestLayer.cpp  
+bool CTestLayer::init()  
+{  
+    if ( !CCLayer::init() )  
+    {  
+        return false;  
+    }  
+    background=CCSprite::create("background.png");  
+    this-&gt;addChild(background);  
+    this-&gt;scheduleUpdate();  
+    return true;  
+}  
+
+void update(float delta)  
+{  
+    background-&gt;setPositionY(background-&gt;getPositionY()-0.1);  
+}  
+</code></pre>
+
+<p>background是create出来的，可以知道它是调用了autorelease，属于自动管理对象，而且我们又没有进行retain操作，按道理在执行update的时候background已经是要被销毁的，但是实际并没有。问题就出在这一句：</p>
+
+<pre><code>this-&gt;addChild(background);  
+</code></pre>
+
+<p>至于为什么，大家翻一下addChild实现源码就知道啦~</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十九】从CCObject看cocos2d-x的拷贝机制]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/30/play-cocos2dx-19/"/>
+    <updated>2013-10-30T18:08:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/30/play-cocos2dx-19</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13295505">http://blog.csdn.net/jackystudio</a></p>
+
+<p>CCObject在之前的文章中出现了N次，它扮演了一个老祖宗的角色，但是它到底是做什么的？先从它看看cocos2d-x的拷贝机制吧。</p>
+
+<h3>1.CCCopying</h3>
+
+<p>CCObject从CCCopying继承而来，而CCCopying拥有唯一的一个成员虚函数copyWithZone，这个函数可以认为是拷贝的一个协议，所有继承了CCObject并且需要实现拷贝功能的子类都可以通过它来实现，它的源码很简单，就是一个未实现的断言。CCZone是神马？只是封装了一个CCObject对象指针而已。</p>
+
+<!-- more -->
+
+
+<pre><code>CCObject* CCCopying::copyWithZone(CCZone *pZone)  
+{  
+    CC_UNUSED_PARAM(pZone);  
+    CCAssert(0, "not implement");  
+    return 0;  
+}  
+</code></pre>
+
+<h3>2.CCObject的子类拷贝问题</h3>
+
+<p>再看看CCObject中copy的实现，是的，直接调用了copyWithZone，所以子类在处理拷贝问题时只需要对copyWithZone进行实现，使用时调用copy即可。</p>
+
+<pre><code>CCObject* CCObject::copy()  
+{  
+    return copyWithZone(0);  
+}  
+</code></pre>
+
+<h3>3.CCArray示例</h3>
+
+<p>这里以CCArray的拷贝为例，CCArray继承于CCObject，如上所说，我们只需要实现copyWithZone，然后在拷贝时调用copy即可实现CCArray的拷贝。</p>
+
+<p><strong>3.1.CCArray拷贝时调用copy</strong></p>
+
+<pre><code>CCArray* CCArray::createWithArray(CCArray* otherArray)  
+{  
+    CCArray* pRet = (CCArray*)otherArray-&gt;copy();//copy调用了copyWithZone  
+    pRet-&gt;autorelease();  
+    return pRet;  
+}  
+</code></pre>
+
+<p><strong>3.2.copyWithZone的实现</strong></p>
+
+<p>可以看出CCArray采用的是深拷贝的方式。</p>
+
+<pre><code>CCObject* CCArray::copyWithZone(CCZone* pZone)  
+{  
+    CCAssert(pZone == NULL, "CCArray should not be inherited.");  
+    CCArray* pArray = new CCArray();  //new一个存放拷贝的空间  
+    pArray-&gt;initWithCapacity(this-&gt;data-&gt;num &gt; 0 ? this-&gt;data-&gt;num : 1);//初始化一样的长度  
+
+    CCObject* pObj = NULL;  
+    CCObject* pTmpObj = NULL;  
+    CCARRAY_FOREACH(this, pObj)//遍历CCArray成员  
+    {  
+        pTmpObj = pObj-&gt;copy();//逐个拷贝  
+        pArray-&gt;addObject(pTmpObj);//添加到新拷贝pArray中  
+        pTmpObj-&gt;release();  
+    }  
+    return pArray;//返回拷贝  
+}  
+</code></pre>
+
+<h3>4.深拷贝和浅拷贝</h3>
+
+<p>其实不单是CCArray，cocos2d-x采用的都是深拷贝的方式，深拷贝和浅拷贝的概念和详解请移步<a href="http://blog.csdn.net/jackystudio/article/details/11553117">这里</a>。它们的区别在于当前对象是否包含了对其他资源的引用。在拷贝机制上采用深拷贝的方式，大大方便了我们对内存的管理，避免因资源的释放导致引用异常。这对于平时在进行一些自定义子类的拷贝处理上还是很有指导意义的。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十八】仿《中国好学霸》文字拖拽和定位]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/28/play-cocos2dx-18/"/>
+    <updated>2013-10-28T18:00:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/28/play-cocos2dx-18</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13287519">http://blog.csdn.net/jackystudio</a></p>
+
+<p>现在各种猜成语猜歌名好学霸之类的游戏火的一塌糊涂。本节就介绍下文字的拖拽和定位。</p>
+
+<h3>1.基本原理</h3>
+
+<p>其实这只是精灵的简单拖拽和坐标的识别而已。当触摸点在精灵的范围内，精灵可以感应拖动，当触摸结束进行位置判断，如果在有效范围内就进行自动定位。</p>
+
+<!-- more -->
+
+
+<h3>2.实现</h3>
+
+<p><strong>2.1.背景加入和文字精灵的加入</strong>
+这里是采用<a href="http://blog.csdn.net/jackystudio/article/details/13014883">这一节</a>所述方式添加中文。</p>
+
+<pre><code>bool AutoSet::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCLayer::init());  
+        CCSize visiableSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+
+        CCSprite* background=CCSprite::create("AutoSetBk.jpg");  
+        background-&gt;setPosition(ccp(visiableSize.width/2,visiableSize.height/2));  
+        this-&gt;addChild(background);//添加背景  
+
+        //利用CCDictionary来读取xml  
+        CCDictionary* chnStrings = CCDictionary::createWithContentsOfFile("CHN_Strings.xml");  
+        const char *hao = ((CCString*)chnStrings-&gt;objectForKey("hao"))-&gt;m_sString.c_str();   
+
+        text=CCLabelTTF::create(hao,"Arial",50);  
+        text-&gt;setPosition(ccp(120,160));  
+        text-&gt;setColor(ccc3(0,0,0));  
+        this-&gt;addChild(text);//添加文本  
+
+        this-&gt;setTouchEnabled(true);//设置触摸可用  
+
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+</code></pre>
+
+<p><strong>2.2.触摸的实现和拖拽的定位</strong></p>
+
+<p>因为3.0版本cocos2d-x的触摸实现已经变更了，所以这里不再赘述，3.0之前的触摸的原理和实现具体可以参见<a href="http://blog.csdn.net/jackystudio/article/details/11860007">这一节</a>。</p>
+
+<p><strong>2.2.1注册触摸事件</strong></p>
+
+<pre><code>void AutoSet::registerWithTouchDispatcher(void)  
+{  
+    CCDirector *pDirector=CCDirector::sharedDirector();    
+    pDirector-&gt;getTouchDispatcher()-&gt;addTargetedDelegate(this,0,true);//单点触摸  
+}  
+</code></pre>
+
+<p><strong>2.2.2.触摸开始</strong></p>
+
+<pre><code>bool AutoSet::ccTouchBegan(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent)  
+{  
+    return true;//返回true表示接收触摸事件  
+}  
+</code></pre>
+
+<p><strong>2.2.3.触摸过程</strong></p>
+
+<pre><code>void AutoSet::ccTouchMoved(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent)  
+{  
+    CCPoint beginPoint = pTouch-&gt;getLocationInView();  //获取触摸位置  
+    beginPoint = CCDirector::sharedDirector()-&gt;convertToGL(beginPoint);//坐标转换  
+    CCPoint pt=text-&gt;getPosition();  
+    CCRect rect=CCRectMake(pt.x-30,pt.y-30,60,60);  
+    if (rect.containsPoint(beginPoint))//判断触摸点是否在文字上  
+    {  
+        CCPoint endPoint=pTouch-&gt;getPreviousLocationInView();//获取触摸的前一个位置    
+        endPoint=CCDirector::sharedDirector()-&gt;convertToGL(endPoint);     
+
+        CCPoint offSet =ccpSub(beginPoint,endPoint);//获取offset    
+        CCPoint toPoint=ccpAdd(text-&gt;getPosition(),offSet); //获取真正移动位置  
+        text-&gt;setPosition(toPoint);//移动文字  
+    }  
+}  
+</code></pre>
+
+<p><strong>2.2.4.触摸结束</strong></p>
+
+<pre><code>void AutoSet::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)  
+{  
+    CCPoint lastPoint = pTouch-&gt;getLocationInView();//获取触摸结束点位置  
+    lastPoint = CCDirector::sharedDirector()-&gt;convertToGL(lastPoint);  
+    CCRect rect=CCRectMake(330,130,60,60);  
+    CCMoveTo* moveto;  
+    if (!rect.containsPoint(lastPoint))//如果未在指定区域，还原到初始位置  
+    {  
+        moveto=CCMoveTo::create(0.1f,ccp(120,160));  
+    }  
+    else//如果在指定区域，移动到该区域中心  
+    {  
+        moveto=CCMoveTo::create(0.1f,ccp(360,160));  
+    }  
+    text-&gt;runAction(moveto);  
+}  
+</code></pre>
+
+<h3>3.效果图</h3>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_18/1.jpg" alt="" border="0" title="1" /><br></br></div>
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_18/2.jpg" alt="" border="0" title="2" /><br></br></div>
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_18/3.jpg" alt="" border="0" title="3" /><br></br></div>
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_18/4.jpg" alt="" border="0" title="4" /><br></br></div>
+
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6463261">源码下载</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十七】cocos2d-x中文显示]]></title>
@@ -179,334 +564,6 @@ void CTestLayer::update(float delta)
 <h3>4.源码下载</h3>
 
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6434549">源码下载</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之十五】关卡选择的设计]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/23/play-cocos2dx-15/"/>
-    <updated>2013-10-23T16:26:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/23/play-cocos2dx-15</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12966993">http://blog.csdn.net/jackystudio</a></p>
-
-<p>这节介绍一下游戏中帮助界面和关卡选择的设计，其实都是一样的，关键在于美工。这里采用自定义TableView层来实现。</p>
-
-<h3>1.导入头文件和设定空间</h3>
-
-<p>因为TableView相关的类是在扩展包里面，所以必须先声明</p>
-
-<pre><code>#include "cocos-ext.h"  
-USING_NS_CC_EXT;  
-</code></pre>
-
-<!-- more -->
-
-
-<h3>2.继承的实现</h3>
-
-<p>自定义TableView继承于CCLayer，因此可以捕获触摸，同时继承于扩展包的CCTableViewDataSource和CCTableViewDelegate。前者是TableView的数据源，包含了一系列和TableView数据单元相关的操作，后者则是继承于CCScrollViewDelegate抽象类，声明了一些和滚动，放大，触摸回调之类的接口，然后在内部包含了一个CCTableView，这用起来有点像Android的Adapter。当然分别继承几个类使用也是一样的。</p>
-
-<p>先看一下要实现的接口吧。</p>
-
-<pre><code>class TableViewTestLayer : public cocos2d::CCLayer, public cocos2d::extension::CCTableViewDataSource, public cocos2d::extension::CCTableViewDelegate  
-{  
-    public:  
-    virtual bool init();    
-
-    CREATE_FUNC(TableViewTestLayer);  
-
-    virtual void scrollViewDidScroll(cocos2d::extension::CCScrollView* view){}//滚动时调用，空实现，因为继承了抽象类所以必须重写  
-    virtual void scrollViewDidZoom(cocos2d::extension::CCScrollView* view){}//缩放时调用，空实现，同上  
-    virtual void tableCellTouched(cocos2d::extension::CCTableView* table, cocos2d::extension::CCTableViewCell* cell);//触摸单元时回调  
-    virtual cocos2d::CCSize tableCellSizeForIndex(cocos2d::extension::CCTableView *table, unsigned int idx);//设定单元所占大小  
-    virtual cocos2d::extension::CCTableViewCell* tableCellAtIndex(cocos2d::extension::CCTableView *table, unsigned int idx);//设定单元内容  
-    virtual unsigned int numberOfCellsInTableView(cocos2d::extension::CCTableView *table);//返回单元数  
-};  
-</code></pre>
-
-<p>当然还有一些其他功能，如高亮，循环，看情况重载。</p>
-
-<h3>3.自定义TabView层各模块的实现</h3>
-
-<p><strong>3.1.初始化函数init</strong></p>
-
-<pre><code>CCSize winSize = CCDirector::sharedDirector()-&gt;getWinSize();  
-CCTableView* tableView = CCTableView::create(this, winSize);//创建一个CCTableView  
-tableView-&gt;setDirection(kCCScrollViewDirectionHorizontal);//设置方向  
-tableView-&gt;setPosition(ccp(0,winSize.height/2-50));  
-tableView-&gt;setDelegate(this);//这句话很重要，把taleView和当前类绑到一起，所以后面的调用主体都是tableView  
-this-&gt;addChild(tableView);  
-tableView-&gt;reloadData();  
-</code></pre>
-
-<p><strong>3.2.触摸回调tableCellTouched</strong></p>
-
-<pre><code>void TableViewTestLayer::tableCellTouched(CCTableView* table, CCTableViewCell* cell)  
-{  
-    CCLOG("cell touched at index: %i", cell-&gt;getIdx());//cell为当前选择单元  
-}  
-</code></pre>
-
-<p><strong>3.3.单元大小tableCellSizeForIndex</strong></p>
-
-<pre><code>CCSize TableViewTestLayer::tableCellSizeForIndex(CCTableView *table, unsigned int idx)  
-{  
-    //if (idx == 2) {  
-    //    return CCSizeMake(100, 100);//第2个大小为100，100  
-    //}  
-    return CCSizeMake(120, 120);其余为120，120  
-}  
-</code></pre>
-
-<p><strong>3.4.设置数据源tableCellAtIndex</strong></p>
-
-<pre><code>CCTableViewCell* TableViewTestLayer::tableCellAtIndex(CCTableView *table, unsigned int idx)  
-{  
-    CCString *string = CCString::createWithFormat("%d", idx);  
-    CCTableViewCell *cell = table-&gt;dequeueCell();  
-    if (!cell) {  
-        cell = new CCTableViewCell();//创建单元，如果要自定义单元效果，需继承CCTableViewCell，并重载draw函数  
-        cell-&gt;autorelease();  
-        CCSprite *sprite = CCSprite::create("HelloWorld.png");  
-        sprite-&gt;setScale(0.2f);  
-        sprite-&gt;setPosition(ccp(60, 60));  
-        sprite-&gt;setTag(123);  
-        cell-&gt;addChild(sprite);//添加到cell  
-        CCLabelTTF *label = CCLabelTTF::create(string-&gt;getCString(), "Helvetica", 20.0);  
-        label-&gt;setPosition(ccp(60,10));  
-        label-&gt;setTag(456);  
-        cell-&gt;addChild(label);//添加到cell  
-    }  
-    else  
-    {  
-        CCLabelTTF *label = (CCLabelTTF*)cell-&gt;getChildByTag(456);  
-        label-&gt;setString(string-&gt;getCString());  
-    }  
-    return cell;  
-}  
-</code></pre>
-
-<p><strong>3.5.单元数numberOfCellsInTableView</strong></p>
-
-<pre><code>unsigned int TableViewTestLayer::numberOfCellsInTableView(CCTableView *table)  
-{  
-    return 20;//直接返回设定单元数  
-}  
-</code></pre>
-
-<h3>4.效果图</h3>
-
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_15/1.jpg" alt="" border="0" title="关卡1" /><br></br></div>
-
-
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_15/2.jpg" alt="" border="0" title="关卡2" /><br></br></div>
-
-
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_15/3.jpg" alt="" border="0" title="关卡3" /><br></br></div>
-
-
-<h3>5.源码下载地址</h3>
-
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6422401">下载地址</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之十四】菜单选项卡的实现]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/22/play-cocos2dx-14/"/>
-    <updated>2013-10-22T10:34:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/22/play-cocos2dx-14</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12940733">http://blog.csdn.net/jackystudio</a></p>
-
-<p>有时候，我们希望实现一个选项卡功能，就是切换tab选项，场景中的内容会跟着改变，但是tab选项卡不动。这是用切换场景的方式没办法做到的。
-这里我们就可以使用CCLayerMultiplex来实现这个功能。</p>
-
-<h3>1.创建布景</h3>
-
-<p>这里创建3个布景来做示范。分别是Laye1，Layer2和Layer3。代码就不贴了，布景内容可以直接使用HelloWorld的代码。</p>
-
-<!-- more -->
-
-
-<h3>2.创建主场景</h3>
-
-<p>主场景的初始化函数如下：</p>
-
-<pre><code>bool CCMainScene::init()  
-{  
-    bool bRet=false;  
-    do   
-    {  
-        CC_BREAK_IF(!CCScene::init());  
-
-        _layer1=CCLayer1::create();//创建3个层的实例  
-        _layer2=CCLayer2::create();  
-        _layer3=CCLayer3::create();  
-
-        _layerMuticomplex=CCLayerMultiplex::create(_layer1,_layer2,_layer3,NULL);//创建多层布景层  
-        this-&gt;addChild(_layerMuticomplex);//添加到场景，默认显示第一个布景  
-
-        CCSize visibleSize = CCDirector::sharedDirector()-&gt;getVisibleSize();  
-        CCPoint origin = CCDirector::sharedDirector()-&gt;getVisibleOrigin();  
-
-        CCMenuItemImage *pCloseItem1 = CCMenuItemImage::create(//创建3个tab菜单，用于切换布景  
-            "w_b.png",  
-            "w_b.png",  
-            this,  
-            menu_selector(CCMainScene::menuCallback));  
-
-        CCMenuItemImage *pCloseItem2 = CCMenuItemImage::create(  
-            "r_b.png",  
-            "r_b.png",  
-            this,  
-            menu_selector(CCMainScene::menuCallback));  
-
-        CCMenuItemImage *pCloseItem3 = CCMenuItemImage::create(  
-            "g_b.png",  
-            "g_b.png",  
-            this,  
-            menu_selector(CCMainScene::menuCallback));  
-
-        // create menu, it's an autorelease object  
-        pCloseItem1-&gt;setTag(0);//给tab按钮设置tag，方便回调函数中的获取  
-        pCloseItem2-&gt;setTag(1);  
-        pCloseItem3-&gt;setTag(2);  
-        CCMenu* pMenu = CCMenu::create(pCloseItem1, pCloseItem2, pCloseItem3, NULL);//创建菜单  
-        pMenu-&gt;alignItemsHorizontallyWithPadding(-1);//设置菜单项间隔  
-        pMenu-&gt;setPosition(visibleSize.width/2,25);  
-        this-&gt;addChild(pMenu, 1);//注意哦，菜单要在场景中添加而不是在布景中了！而且z轴要高于多层布景，保证可见。  
-        bRet=true;  
-    } while (0);  
-    return bRet;  
-}  
-</code></pre>
-
-<p>回调函数如下：</p>
-
-<pre><code>void CCMainScene::menuCallback(CCObject* pSender)  
-{  
-    int item=((CCMenuItemImage*)pSender)-&gt;getTag();//获取选择项  
-    if (item!=curLayerPos)  
-    {  
-        _layerMuticomplex-&gt;switchTo(item);//切换布景，如果使用switchToAndReleaseMe会释放掉当前布景  
-        curLayerPos=item;  
-    }  
-}  
-</code></pre>
-
-<h3>3.效果</h3>
-
-<p>为了让效果明显一点，我让3个布景稍微有点区别。当然菜单是可以做normal，pressed，disable三态的，这里略去。点击不同的选项卡就可以切换到不同的布景层。当然CCLayerMultiplex还可以嵌套使用。</p>
-
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_14/1.jpg" alt="" border="0" title="效果" /><br></br></div>
-
-
-<h3>4.源码下载地址</h3>
-
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6421801">下载地址</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之十三】CCMenu的布局]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/21/play-cocos2dx-13/"/>
-    <updated>2013-10-21T10:23:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/21/play-cocos2dx-13</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12904705">http://blog.csdn.net/jackystudio</a></p>
-
-<p>前两天写个游戏，发现CCMenu的布局还是比较有意思的，这里总结一下，以便后用。</p>
-
-<h3>1.概况</h3>
-
-<p>CCMenu是cocos2d-x的菜单类，但它本身并不具备菜单具体属性，而是作为一个父节点，将一些具体类型的菜单添加进去来达到菜单目的的。我们正常会这么使用它：先创建子菜单项CCMenuItem，然后将子菜单项CCMenuItem加入菜单CCMenu，最后把CCMenu加入当前层CCLayer。</p>
-
-<p>如果直接在层中添加CCMenuItem会怎样？其实显示也是会正常，但是无法响应回调，因为CCMenu是继承至CCLayer，也就继承了触摸的相关事件，而CCMenuItem只是从CCNode继承而来，并不响应触摸，因此无法调用回调函数。</p>
-
-<!-- more -->
-
-
-<h3>2.菜单CCMenu</h3>
-
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_13/1.jpg" alt="" border="0" title="CCMenu" /><br></br></div>
-
-
-<h3>3.子菜单项CCMenuItem</h3>
-
-<p>子菜单项可以是用精灵，图片，标签文本，或者开关都可以，这里不具体解释。请看：</p>
-
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_13/2.jpg" alt="" border="0" title="CCMenuItem" /><br></br></div>
-
-
-<h3>4.锚点</h3>
-
-<p>CCMenu继承于CCLayer，所以它具有忽略锚点的属性。而CCMenuItem的锚点是正常的(0.5,0.5)。</p>
-
-<p>（1）看一下自带的HelloCpp这个工程，在添加退出按钮的时候，是不是有这么一句：</p>
-
-<pre><code>pMenu-&gt;setPosition(CCPointZero);
-</code></pre>
-
-<p>这句话的作用就是把Menu放在原点的位置，假设Menu有大小，那就是下图1。</p>
-
-<p>（2）现在再做点改变，把MenuItem指定的位置去掉，也就是让它默认在(0,0)位置上。</p>
-
-<pre><code>//pCloseItem-&gt;setPosition(ccp(origin.x + visibleSize.width - pCloseItem-&gt;getContentSize().width/2 ,origin.y + pCloseItem-&gt;getContentSize().height/2));  
-</code></pre>
-
-<p>那么再看一下效果，如图2，抽象出来就是图3，因为CCMenuItem的锚点是(0.5,0.5)。</p>
-
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_13/3.jpg" alt="" border="0" title="" /><br></br></div>
-
-
-<p>（3）所以现在可以理解HelloCpp中为什么定义的是CCMenuItem的位置，而不是定义CCMenu的位置了吧。CCMenu包含了多个子菜单项，每个子菜单的位置都不一样，如果定义了CCMenu的位置，那它作为父节点会影响到所有的子菜单的位置，因此我们一般把它设置在原点处，然后通过设置子菜单的位置（也就是相对父节点的偏移量）来定位整个菜单。</p>
-
-<h3>5.多子菜单的排列</h3>
-
-<p><em>（1）横向排列，纵向排列，可以指定间隔</em></p>
-
-<pre><code>CCMenuItemImage *pCloseItem1 = CCMenuItemImage::create(  
-    "CloseNormal.png",  
-    "CloseSelected.png",  
-    this,  
-    menu_selector(HelloWorld::menuCloseCallback));  
-CCMenuItemImage *pCloseItem2 = CCMenuItemImage::create(  
-    "CloseNormal.png",  
-    "CloseSelected.png",  
-    this,  
-    menu_selector(HelloWorld::menuCloseCallback));  
-
-CCMenu* pMenu = CCMenu::create(pCloseItem1,pCloseItem2,NULL);  
-pMenu-&gt;alignItemsHorizontally();//默认间隔是kDefaultPadding=5  
-//pMenu-&gt;alignItemsHorizontallyWithPadding(20);//指定间隔  
-//pMenu-&gt;alignItemsVertically();//默认间隔也是kDefaultPadding=5  
-//pMenu-&gt;alignItemsVerticallyWithPadding(20);//指定间隔  
-this-&gt;addChild(pMenu, 1);  
-</code></pre>
-
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_13/4.jpg" alt="" border="0" title="" /><br></br></div>
-
-
-<p><em>（2）按行排列，按列排列，不能指定间隔，只能自己实现。希望下一版本有这个功能。</em></p>
-
-<pre><code>CCMenuItemImage *pCloseItem1 = CCMenuItemImage::create(  
-    "CloseNormal.png",  
-    "CloseSelected.png",  
-    this,  
-    menu_selector(HelloWorld::menuCloseCallback));  
-...  
-CCMenuItemImage *pCloseItem6 = CCMenuItemImage::create(  
-    "CloseNormal.png",  
-    "CloseSelected.png",  
-    this,  
-    menu_selector(HelloWorld::menuCloseCallback));  
-CCMenu* pMenu = CCMenu::create(pCloseItem1,pCloseItem2,pCloseItem3,pCloseItem4,pCloseItem5,pCloseItem6,NULL);  
-pMenu-&gt;alignItemsInRows(3,2,1,NULL);  
-//pMenu-&gt;alignItemsInColumns(3,2,1,NULL);  
-this-&gt;addChild(pMenu, 1);  
-</code></pre>
-
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_13/5.jpg" alt="" border="0" title="" /><br></br></div>
-
 ]]></content>
   </entry>
   

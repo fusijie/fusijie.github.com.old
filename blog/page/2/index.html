@@ -9,7 +9,7 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio 场景类CCScene和布景类CCLayer都是作为一个容器来使用，这里简单地看下它们的实现： 1.场景类：CCScene ">
+  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio cocos2d-x采用的是笛卡尔平面坐标系，也就是平面上两条垂直线构成的坐标系，平面上任意一点都可以用（x，y）来表示。 （1）就坐标系方向而言，cocos2d-x分为屏幕坐标系和OpenGL坐标系。 （2） &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -78,6 +78,150 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/17/play-cocos2dx-10/">【玩转cocos2d-x之十】cocos2d-x坐标系</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-17T14:43:00+08:00" pubdate data-updated="true">Oct 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12830971">http://blog.csdn.net/jackystudio</a></p>
+
+<p>cocos2d-x采用的是笛卡尔平面坐标系，也就是平面上两条垂直线构成的坐标系，平面上任意一点都可以用（x，y）来表示。</p>
+
+<p><em>（1）就坐标系方向而言，cocos2d-x分为屏幕坐标系和OpenGL坐标系。</em></p>
+
+<p><em>（2）就节点本身而言，cocos2d-x分为绝对坐标系和相对坐标系。</em></p>
+
+<h3>1.屏幕坐标系</h3>
+
+<p>屏幕坐标系，也叫UIKit坐标系，原点在屏幕左上，x轴向右，y轴向下。cocos2d-x的屏幕触摸事件传入的位置坐标就是采用了屏幕坐标系。以320*480的屏幕为例，如图坐标值为屏幕坐标系。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/17/play-cocos2dx-10/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/16/play-cocos2dx-09/">【玩转cocos2d-x之九】动作类CCAction</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-16T14:33:00+08:00" pubdate data-updated="true">Oct 16<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12770909">http://blog.csdn.net/jackystudio</a></p>
+
+<p>精灵也出来了，但是不会动的精灵是木有用的。。。CCAction就是负责来解决精灵运动的问题。</p>
+
+<h3>1.概况</h3>
+
+<p>CCAction直接从CCObject继承而来，注意它代表的是一个动作，是动词。精灵执行了这个动作，而不是名词。CCAction本身并没有什么功能，主要是定义了一些通用函数和虚函数让子类实现多态性。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/16/play-cocos2dx-09/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/15/play-cocos2dx-08/">【玩转cocos2d-x之八】精灵类CCSprite</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-15T17:17:00+08:00" pubdate data-updated="true">Oct 15<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>精灵类CCSprite可以说是游戏的主角了，也是我们平时最常用到的类。</p>
+
+<h3>1.概况</h3>
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_08/1.jpg" alt="" border="0" title="CCSprite" /><br></br></div>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/15/play-cocos2dx-08/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -450,7 +594,7 @@
 </section><section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (17)</a></li>
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (20)</a></li>
 
   </ul>
 </section><section>
@@ -458,23 +602,23 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/10/31/play-cocos2dx-20/">【玩转cocos2d-x之二十】从CCObject看cocos2d-x的内存管理机制</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/30/play-cocos2dx-19/">【玩转cocos2d-x之十九】从CCObject看cocos2d-x的拷贝机制</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/10/28/play-cocos2dx-18/">【玩转cocos2d-x之十八】仿《中国好学霸》文字拖拽和定位</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/10/25/play-cocos2dx-17/">【玩转cocos2d-x之十七】cocos2d-x中文显示</a>
       </li>
     
       <li class="post">
         <a href="/blog/2013/10/24/play-cocos2dx-16/">【玩转cocos2d-x之十六】滚动字幕和公告</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/10/23/play-cocos2dx-15/">【玩转cocos2d-x之十五】关卡选择的设计</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/10/22/play-cocos2dx-14/">【玩转cocos2d-x之十四】菜单选项卡的实现</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/10/21/play-cocos2dx-13/">【玩转cocos2d-x之十三】CCMenu的布局</a>
       </li>
     
   </ul>
@@ -488,6 +632,7 @@
   <ul class="tag-cloud">
     <a style="font-size: 70%" href="/tags/ccaction/">CCAction</a>
 <a style="font-size: 70%" href="/tags/ccapplication/">CCApplication</a>
+<a style="font-size: 70%" href="/tags/cccopying/">CCCopying</a>
 <a style="font-size: 70%" href="/tags/ccdictionary/">CCDictionary</a>
 <a style="font-size: 70%" href="/tags/ccdirector/">CCDirector</a>
 <a style="font-size: 70%" href="/tags/ccdisplaylinkdirecto/">CCDisplayLinkDirecto</a>
@@ -498,6 +643,7 @@
 <a style="font-size: 117%" href="/tags/cclayermultiplex/">CCLayerMultiplex</a>
 <a style="font-size: 117%" href="/tags/ccmenu/">CCMenu</a>
 <a style="font-size: 70%" href="/tags/ccnode/">CCNode</a>
+<a style="font-size: 70%" href="/tags/ccobject/">CCObject</a>
 <a style="font-size: 70%" href="/tags/ccscene/">CCScene</a>
 <a style="font-size: 70%" href="/tags/ccscheduler/">CCScheduler</a>
 <a style="font-size: 70%" href="/tags/ccsprite/">CCSprite</a>
@@ -506,16 +652,20 @@
 <a style="font-size: 70%" href="/tags/item/">Item</a>
 <a style="font-size: 70%" href="/tags/openglzuo-biao-xi/">OpenGL坐标系</a>
 <a style="font-size: 70%" href="/tags/texturepacket/">TexturePacket</a>
+<a style="font-size: 70%" href="/tags/addchild/">addChild</a>
 <a style="font-size: 70%" href="/tags/android/">android</a>
 <a style="font-size: 70%" href="/tags/applicationdidfinish/">applicationDidFinish</a>
 <a style="font-size: 180%" href="/tags/cocos2d-x/">cocos2d-x</a>
+<a style="font-size: 70%" href="/tags/copywithzone/">copyWithZone</a>
 <a style="font-size: 70%" href="/tags/plist/">plist</a>
 <a style="font-size: 70%" href="/tags/update/">update</a>
 <a style="font-size: 70%" href="/tags/win32/">win32</a>
 <a style="font-size: 70%" href="/tags/xml/">xml</a>
+<a style="font-size: 70%" href="/tags/zhong-guo-hao-xue-ba/">中国好学霸</a>
 <a style="font-size: 70%" href="/tags/zhong-wen-xian-shi/">中文显示</a>
 <a style="font-size: 70%" href="/tags/zhong-ying-wen-qie-huan/">中英文切换</a>
 <a style="font-size: 70%" href="/tags/guan-qia-xuan-ze/">关卡选择</a>
+<a style="font-size: 70%" href="/tags/nei-cun-guan-li/">内存管理</a>
 <a style="font-size: 70%" href="/tags/han-shu-zhi-zhen/">函数指针</a>
 <a style="font-size: 70%" href="/tags/hui-diao-han-shu/">回调函数</a>
 <a style="font-size: 70%" href="/tags/ding-shi-qi/">定时器</a>
@@ -524,6 +674,8 @@
 <a style="font-size: 70%" href="/tags/dai-yan-se-de-layer/">带颜色的Layer</a>
 <a style="font-size: 117%" href="/tags/chang-yong-jie-kou/">常用接口</a>
 <a style="font-size: 70%" href="/tags/chang-yong-fang-fa/">常用方法</a>
+<a style="font-size: 70%" href="/tags/shou-dong-nei-cun-guan-li/">手动内存管理</a>
+<a style="font-size: 70%" href="/tags/kao-bei-ji-zhi/">拷贝机制</a>
 <a style="font-size: 70%" href="/tags/shu-ju-yuan/">数据源</a>
 <a style="font-size: 70%" href="/tags/you-xi-yin-qing/">游戏引擎</a>
 <a style="font-size: 70%" href="/tags/gun-dong/">滚动</a>
@@ -531,8 +683,11 @@
 <a style="font-size: 70%" href="/tags/gun-dong-zi-mu/">滚动字幕</a>
 <a style="font-size: 70%" href="/tags/te-dian/">特点</a>
 <a style="font-size: 70%" href="/tags/huan-jing-pei-zhi/">环境配置</a>
+<a style="font-size: 70%" href="/tags/feng-kuang-cai-cheng-yu/">疯狂猜成语</a>
 <a style="font-size: 70%" href="/tags/xiang-dui-zuo-biao-xi/">相对坐标系</a>
+<a style="font-size: 70%" href="/tags/jing-ling-tuo-zhuai/">精灵拖拽</a>
 <a style="font-size: 70%" href="/tags/jue-dui-zuo-biao-xi/">绝对坐标系</a>
+<a style="font-size: 70%" href="/tags/zi-dong-nei-cun-guan-li/">自动内存管理</a>
 <a style="font-size: 70%" href="/tags/cai-dan-xuan-xiang-qia/">菜单选项卡</a>
 <a style="font-size: 70%" href="/tags/jie-xi/">解析</a>
 <a style="font-size: 70%" href="/tags/kua-ping-tai-shi-xian/">跨平台实现</a>
