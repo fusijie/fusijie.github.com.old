@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 中英文切换 | Jacky's Blog]]></title>
   <link href="http://www.jacky.tk/tags/zhong-ying-wen-qie-huan/atom.xml" rel="self"/>
   <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-11T18:18:35+08:00</updated>
+  <updated>2013-11-11T18:25:50+08:00</updated>
   <id>http://www.jacky.tk/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -43,9 +43,10 @@
 
 <p>CCDictionary是利用哈希表算法来进行CCObject管理的一个类。这里不再对它的API及内部实现进行说明了。</p>
 
-<p><strong>2.1.创建词典类实例</strong>
-[cpp] view plaincopy
-CCDictionary *chnStrings = CCDictionary::createWithContentsOfFile(&ldquo;CHN_Strings.xml&rdquo;);</p>
+<p><strong>2.1.创建词典类实例</strong></p>
+
+<pre><code>CCDictionary *chnStrings = CCDictionary::createWithContentsOfFile("CHN_Strings.xml");  
+</code></pre>
 
 <p><strong>2.2.通过键（key）获取值（value）</strong></p>
 

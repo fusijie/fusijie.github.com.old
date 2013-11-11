@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 属性 | Jacky's Blog]]></title>
   <link href="http://www.jacky.tk/tags/shu-xing/atom.xml" rel="self"/>
   <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-11T18:18:35+08:00</updated>
+  <updated>2013-11-11T18:25:50+08:00</updated>
   <id>http://www.jacky.tk/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -22,14 +22,12 @@
 
 <p>节点类CCNode可以说是游戏元素的祖宗了，基本上我们看得到的游戏元素都是以它为原型进行扩展的。像CCScene，CCLayer，CCSprite，CCMenu，CCSpriteBatchNode等等都是从CCNode继承而来。另外如果我们要自定义精灵，那么从CCNode继承也是一个很不错的选择。</p>
 
+<!-- more -->
+
+
 <h3>1.概况</h3>
 
 <div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_06/1.jpg" alt="" border="0" title="CCNode" /><br></br></div>
-
-
-
-
-<!-- more -->
 
 
 <p>CCNode直接从CCObject继承而来，有如下几个特点：</p>

@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://www.jacky.tk/tags/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-11T18:18:35+08:00</updated>
+  <updated>2013-11-11T18:25:50+08:00</updated>
   <id>http://www.jacky.tk/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -263,10 +263,12 @@ delete pWrapBitmap;
 
 <p>先看一下一个项目创建后的目录结构吧！这还是以HelloCpp为例。</p>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_04/1.jpg" alt="" border="0" title="跨平台项目目录结构" /><br></br></div>
-
-
 <!-- more -->
+
+
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_04/1.jpg" alt="" border="0" title="跨平台项目目录结构" /><br></br></div>
 
 
 <p>从左边目录可以看到，Classes和Resource已经平台无关了，而Classes中包含了AppDelegate类，因此我们可以认为AppDelegate是与平台最接近的类，在它以上就要区分平台了。</p>

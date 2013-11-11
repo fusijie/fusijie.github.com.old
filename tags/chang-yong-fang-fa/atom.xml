@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 常用方法 | Jacky's Blog]]></title>
   <link href="http://www.jacky.tk/tags/chang-yong-fang-fa/atom.xml" rel="self"/>
   <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-11T18:18:35+08:00</updated>
+  <updated>2013-11-11T18:25:50+08:00</updated>
   <id>http://www.jacky.tk/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -22,10 +22,12 @@
 
 <h3>1.概况</h3>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_08/1.jpg" alt="" border="0" title="CCSprite" /><br></br></div>
-
-
 <!-- more -->
+
+
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_08/1.jpg" alt="" border="0" title="CCSprite" /><br></br></div>
 
 
 <p>CCSprite本质上就是一个二维图片，是静态的。游戏中的动画只不过是让一张张静态图片快速更换达到的动态效果。CCSprite继承于CCNodeRGBA，并实现了CCTextureProtocol的接口。因此CCNodeRGBA所具有的RGB和透明值这些属性和接口CCSprite都有，而CCTextureProtocol是一个抽象类，定义了和纹理相关的两个标准接口：</p>

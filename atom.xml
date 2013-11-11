@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://www.jacky.tk/atom.xml" rel="self"/>
   <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-11T18:18:35+08:00</updated>
+  <updated>2013-11-11T18:25:50+08:00</updated>
   <id>http://www.jacky.tk/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -124,8 +124,9 @@ void CCObject::acceptVisitor(CCDataVisitor &amp;visitor) //辅助对象执行动
 
 <p>所以，new和release是好基友！而手动内存管理一般不再使用retain。</p>
 
-<p><strong>2.2.自动内存管理</strong>
-如果需要进行内存的自动管理，那要怎么做呢？</p>
+<p><strong>2.2.自动内存管理</strong></p>
+
+<p>如果需要进行内存的自动管理，那要怎么做呢？</p>
 
 <pre><code>CCObject* obj=new CCObject();//m_uAutoReleaseCount=0,m_uReference=1  
 obj-&gt;autorelease();//m_uAutoReleaseCount=1,m_uReference=1  
@@ -146,8 +147,9 @@ obj-&gt;autorelease();//m_uAutoReleaseCount=1,m_uReference=1
 
 <p>这里只是大概写一下如何使用new，autorelease，retain和release，至于内存管理的实现网上的代码解析很多，发现自己没办法深入浅出地写出来，所以还是放弃再写一回注释了，原理可以这么理解：Cocos2d-x提供了一个内存管理器类CCPoolManager，它包含了一个CCArray容器m_pReleasePoolStack，这个容器用来存放一些容器管理类CCAutoreleasePool的实例对象。需要自动进行内存释放的CCObject实例对象会把其指针存放在容器管理类CCAutoreleasePool的实例对象中的m_pManagedObjectArray容器里。所有存在其中的CCObject实例对象在进行释放操作时通过使用计数器来进行判断在何时真正释放内存，游戏在每一帧结束时都会对autorelease对象进行释放。</p>
 
-<p><strong>2.3.一个疑问</strong>
-平时我们可能会这么用：</p>
+<p><strong>2.3.一个疑问</strong></p>
+
+<p>平时我们可能会这么用：</p>
 
 <pre><code>//CTestLayer.h  
 class CTestLayer : public cocos2d::CCLayer  
@@ -428,9 +430,10 @@ void update(float delta)
 
 <p>CCDictionary是利用哈希表算法来进行CCObject管理的一个类。这里不再对它的API及内部实现进行说明了。</p>
 
-<p><strong>2.1.创建词典类实例</strong>
-[cpp] view plaincopy
-CCDictionary *chnStrings = CCDictionary::createWithContentsOfFile(&ldquo;CHN_Strings.xml&rdquo;);</p>
+<p><strong>2.1.创建词典类实例</strong></p>
+
+<pre><code>CCDictionary *chnStrings = CCDictionary::createWithContentsOfFile("CHN_Strings.xml");  
+</code></pre>
 
 <p><strong>2.2.通过键（key）获取值（value）</strong></p>
 
@@ -1460,10 +1463,12 @@ virtual CCFiniteTimeAction* reverse(void);
 
 <h3>1.概况</h3>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_08/1.jpg" alt="" border="0" title="CCSprite" /><br></br></div>
-
-
 <!-- more -->
+
+
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_08/1.jpg" alt="" border="0" title="CCSprite" /><br></br></div>
 
 
 <p>CCSprite本质上就是一个二维图片，是静态的。游戏中的动画只不过是让一张张静态图片快速更换达到的动态效果。CCSprite继承于CCNodeRGBA，并实现了CCTextureProtocol的接口。因此CCNodeRGBA所具有的RGB和透明值这些属性和接口CCSprite都有，而CCTextureProtocol是一个抽象类，定义了和纹理相关的两个标准接口：</p>
@@ -1643,12 +1648,12 @@ void setFlipY(bool bFlipY);
 
 <h3>1.场景类：CCScene</h3>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_07/1.jpg" alt="" border="0" title="CCScene" /><br></br></div>
-
-
-
-
 <!-- more -->
+
+
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_07/1.jpg" alt="" border="0" title="CCScene" /><br></br></div>
 
 
 <p>CCScene类继承于CCNode，它的实现很简单，就是基本上没添加什么内容。。。它只是作为一个容器（父节点）的抽象概念存在。对比CCNode差别有：</p>
@@ -1769,14 +1774,12 @@ pLayerMultiplex-&gt;switchToAndReleaseMe(item-&gt;getTag());
 
 <p>节点类CCNode可以说是游戏元素的祖宗了，基本上我们看得到的游戏元素都是以它为原型进行扩展的。像CCScene，CCLayer，CCSprite，CCMenu，CCSpriteBatchNode等等都是从CCNode继承而来。另外如果我们要自定义精灵，那么从CCNode继承也是一个很不错的选择。</p>
 
+<!-- more -->
+
+
 <h3>1.概况</h3>
 
 <div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_06/1.jpg" alt="" border="0" title="CCNode" /><br></br></div>
-
-
-
-
-<!-- more -->
 
 
 <p>CCNode直接从CCObject继承而来，有如下几个特点：</p>
@@ -2042,14 +2045,12 @@ CCRect boundingBox(void);
 
 <p>既然cocos2d-x都帮我们封装好了，使得开发与平台无关，那接下来我们就单纯地开始好好玩游戏吧！这几篇是对cocos2d-x一些基本且重要的元素进行解释和API介绍，之前没有系统的看过API，有时候某些功能引擎都已经提供好了，不知道还是会自己去写。所以全面地了解一下是必须的。</p>
 
+<!-- more -->
+
+
 <h3>1.概况</h3>
 
 <div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_05/1.jpg" alt="" border="0" title="CCDirector" /><br></br></div>
-
-
-
-
-<!-- more -->
 
 
 <p>导演类CCDirector是cocos2d-x引擎中非常重要的一个类，它是一个抽象类（mainloop空实现），主要完成以下工作：</p>
@@ -2196,10 +2197,12 @@ void setDepthTest(bool bOn);
 
 <p>先看一下一个项目创建后的目录结构吧！这还是以HelloCpp为例。</p>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_04/1.jpg" alt="" border="0" title="跨平台项目目录结构" /><br></br></div>
-
-
 <!-- more -->
+
+
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_04/1.jpg" alt="" border="0" title="跨平台项目目录结构" /><br></br></div>
 
 
 <p>从左边目录可以看到，Classes和Resource已经平台无关了，而Classes中包含了AppDelegate类，因此我们可以认为AppDelegate是与平台最接近的类，在它以上就要区分平台了。</p>

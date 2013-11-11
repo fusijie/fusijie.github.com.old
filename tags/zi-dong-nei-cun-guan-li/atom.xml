@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 自动内存管理 | Jacky's Blog]]></title>
   <link href="http://www.jacky.tk/tags/zi-dong-nei-cun-guan-li/atom.xml" rel="self"/>
   <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-11T18:18:35+08:00</updated>
+  <updated>2013-11-11T18:25:50+08:00</updated>
   <id>http://www.jacky.tk/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -124,8 +124,9 @@ void CCObject::acceptVisitor(CCDataVisitor &amp;visitor) //辅助对象执行动
 
 <p>所以，new和release是好基友！而手动内存管理一般不再使用retain。</p>
 
-<p><strong>2.2.自动内存管理</strong>
-如果需要进行内存的自动管理，那要怎么做呢？</p>
+<p><strong>2.2.自动内存管理</strong></p>
+
+<p>如果需要进行内存的自动管理，那要怎么做呢？</p>
 
 <pre><code>CCObject* obj=new CCObject();//m_uAutoReleaseCount=0,m_uReference=1  
 obj-&gt;autorelease();//m_uAutoReleaseCount=1,m_uReference=1  
@@ -146,8 +147,9 @@ obj-&gt;autorelease();//m_uAutoReleaseCount=1,m_uReference=1
 
 <p>这里只是大概写一下如何使用new，autorelease，retain和release，至于内存管理的实现网上的代码解析很多，发现自己没办法深入浅出地写出来，所以还是放弃再写一回注释了，原理可以这么理解：Cocos2d-x提供了一个内存管理器类CCPoolManager，它包含了一个CCArray容器m_pReleasePoolStack，这个容器用来存放一些容器管理类CCAutoreleasePool的实例对象。需要自动进行内存释放的CCObject实例对象会把其指针存放在容器管理类CCAutoreleasePool的实例对象中的m_pManagedObjectArray容器里。所有存在其中的CCObject实例对象在进行释放操作时通过使用计数器来进行判断在何时真正释放内存，游戏在每一帧结束时都会对autorelease对象进行释放。</p>
 
-<p><strong>2.3.一个疑问</strong>
-平时我们可能会这么用：</p>
+<p><strong>2.3.一个疑问</strong></p>
+
+<p>平时我们可能会这么用：</p>
 
 <pre><code>//CTestLayer.h  
 class CTestLayer : public cocos2d::CCLayer  
