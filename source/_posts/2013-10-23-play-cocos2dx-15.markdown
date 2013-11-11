@@ -1,0 +1,112 @@
+---
+layout: post
+title: "【玩转cocos2d-x之十五】关卡选择的设计"
+date: 2013-10-23 16:26
+comments: true
+categories: cocos2d-x
+tags: [CCTableView, 关卡选择, 数据源, 滚动]
+---
+原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/12966993)
+
+这节介绍一下游戏中帮助界面和关卡选择的设计，其实都是一样的，关键在于美工。这里采用自定义TableView层来实现。
+
+###1.导入头文件和设定空间###
+因为TableView相关的类是在扩展包里面，所以必须先声明
+
+	#include "cocos-ext.h"  
+	USING_NS_CC_EXT;  
+
+<!-- more -->
+
+###2.继承的实现###
+自定义TableView继承于CCLayer，因此可以捕获触摸，同时继承于扩展包的CCTableViewDataSource和CCTableViewDelegate。前者是TableView的数据源，包含了一系列和TableView数据单元相关的操作，后者则是继承于CCScrollViewDelegate抽象类，声明了一些和滚动，放大，触摸回调之类的接口，然后在内部包含了一个CCTableView，这用起来有点像Android的Adapter。当然分别继承几个类使用也是一样的。
+
+先看一下要实现的接口吧。
+
+	class TableViewTestLayer : public cocos2d::CCLayer, public cocos2d::extension::CCTableViewDataSource, public cocos2d::extension::CCTableViewDelegate  
+	{  
+		public:  
+    	virtual bool init();    
+  
+    	CREATE_FUNC(TableViewTestLayer);  
+      
+    	virtual void scrollViewDidScroll(cocos2d::extension::CCScrollView* view){}//滚动时调用，空实现，因为继承了抽象类所以必须重写  
+    	virtual void scrollViewDidZoom(cocos2d::extension::CCScrollView* view){}//缩放时调用，空实现，同上  
+    	virtual void tableCellTouched(cocos2d::extension::CCTableView* table, cocos2d::extension::CCTableViewCell* cell);//触摸单元时回调  
+    	virtual cocos2d::CCSize tableCellSizeForIndex(cocos2d::extension::CCTableView *table, unsigned int idx);//设定单元所占大小  
+    	virtual cocos2d::extension::CCTableViewCell* tableCellAtIndex(cocos2d::extension::CCTableView *table, unsigned int idx);//设定单元内容  
+    	virtual unsigned int numberOfCellsInTableView(cocos2d::extension::CCTableView *table);//返回单元数  
+	};  
+当然还有一些其他功能，如高亮，循环，看情况重载。
+
+###3.自定义TabView层各模块的实现###
+
+**3.1.初始化函数init**
+
+	CCSize winSize = CCDirector::sharedDirector()->getWinSize();  
+	CCTableView* tableView = CCTableView::create(this, winSize);//创建一个CCTableView  
+	tableView->setDirection(kCCScrollViewDirectionHorizontal);//设置方向  
+	tableView->setPosition(ccp(0,winSize.height/2-50));  
+	tableView->setDelegate(this);//这句话很重要，把taleView和当前类绑到一起，所以后面的调用主体都是tableView  
+	this->addChild(tableView);  
+	tableView->reloadData();  
+
+**3.2.触摸回调tableCellTouched**
+
+	void TableViewTestLayer::tableCellTouched(CCTableView* table, CCTableViewCell* cell)  
+	{  
+    	CCLOG("cell touched at index: %i", cell->getIdx());//cell为当前选择单元  
+	}  
+
+**3.3.单元大小tableCellSizeForIndex**
+
+	CCSize TableViewTestLayer::tableCellSizeForIndex(CCTableView *table, unsigned int idx)  
+	{  
+    	//if (idx == 2) {  
+    	//    return CCSizeMake(100, 100);//第2个大小为100，100  
+    	//}  
+    	return CCSizeMake(120, 120);其余为120，120  
+	}  
+
+**3.4.设置数据源tableCellAtIndex**
+
+	CCTableViewCell* TableViewTestLayer::tableCellAtIndex(CCTableView *table, unsigned int idx)  
+	{  
+    	CCString *string = CCString::createWithFormat("%d", idx);  
+    	CCTableViewCell *cell = table->dequeueCell();  
+    	if (!cell) {  
+        	cell = new CCTableViewCell();//创建单元，如果要自定义单元效果，需继承CCTableViewCell，并重载draw函数  
+        	cell->autorelease();  
+        	CCSprite *sprite = CCSprite::create("HelloWorld.png");  
+        	sprite->setScale(0.2f);  
+        	sprite->setPosition(ccp(60, 60));  
+        	sprite->setTag(123);  
+        	cell->addChild(sprite);//添加到cell  
+        	CCLabelTTF *label = CCLabelTTF::create(string->getCString(), "Helvetica", 20.0);  
+        	label->setPosition(ccp(60,10));  
+        	label->setTag(456);  
+        	cell->addChild(label);//添加到cell  
+    	}  
+    	else  
+    	{  
+        	CCLabelTTF *label = (CCLabelTTF*)cell->getChildByTag(456);  
+        	label->setString(string->getCString());  
+    	}  
+    	return cell;  
+	}  
+
+**3.5.单元数numberOfCellsInTableView**
+
+	unsigned int TableViewTestLayer::numberOfCellsInTableView(CCTableView *table)  
+	{  
+    	return 20;//直接返回设定单元数  
+	}  
+
+
+###4.效果图###
+<div align="center"><img src="/images/Blog/Play_cocos2dx_15/1.jpg" alt="" border="0" title="关卡1" /><br></br></div>
+<div align="center"><img src="/images/Blog/Play_cocos2dx_15/2.jpg" alt="" border="0" title="关卡2" /><br></br></div>
+<div align="center"><img src="/images/Blog/Play_cocos2dx_15/3.jpg" alt="" border="0" title="关卡3" /><br></br></div>
+
+###5.源码下载地址###
+[下载地址](http://download.csdn.net/detail/jackyvincefu/6422401)

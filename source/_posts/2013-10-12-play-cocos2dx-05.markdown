@@ -10,11 +10,12 @@ tags: [CCDirector, CCDisplayLinkDirecto, 常用接口]
 
 既然cocos2d-x都帮我们封装好了，使得开发与平台无关，那接下来我们就单纯地开始好好玩游戏吧！这几篇是对cocos2d-x一些基本且重要的元素进行解释和API介绍，之前没有系统的看过API，有时候某些功能引擎都已经提供好了，不知道还是会自己去写。所以全面地了解一下是必须的。
 
+<!-- more -->
+
 ###1.概况###
 
 <div align="center"><img src="/images/Blog/Play_cocos2dx_05/1.jpg" alt="" border="0" title="CCDirector" /><br></br></div>
 
-<!-- more -->
 
 导演类CCDirector是cocos2d-x引擎中非常重要的一个类，它是一个抽象类（mainloop空实现），主要完成以下工作：
 

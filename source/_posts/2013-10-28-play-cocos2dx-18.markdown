@@ -1,0 +1,113 @@
+---
+layout: post
+title: "【玩转cocos2d-x之十八】仿《中国好学霸》文字拖拽和定位"
+date: 2013-10-28 18:00
+comments: true
+categories: cocos2d-x
+tags: [精灵拖拽, 中国好学霸, 疯狂猜成语]
+---
+原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/13287519)
+
+现在各种猜成语猜歌名好学霸之类的游戏火的一塌糊涂。本节就介绍下文字的拖拽和定位。
+
+###1.基本原理###
+其实这只是精灵的简单拖拽和坐标的识别而已。当触摸点在精灵的范围内，精灵可以感应拖动，当触摸结束进行位置判断，如果在有效范围内就进行自动定位。
+
+<!-- more -->
+
+###2.实现###
+**2.1.背景加入和文字精灵的加入**
+这里是采用[这一节](http://blog.csdn.net/jackystudio/article/details/13014883)所述方式添加中文。
+
+	bool AutoSet::init()  
+	{  
+    	bool bRet=false;  
+    	do   
+    	{  
+        	CC_BREAK_IF(!CCLayer::init());  
+        	CCSize visiableSize=CCDirector::sharedDirector()->getVisibleSize();  
+  
+        	CCSprite* background=CCSprite::create("AutoSetBk.jpg");  
+        	background->setPosition(ccp(visiableSize.width/2,visiableSize.height/2));  
+        	this->addChild(background);//添加背景  
+  
+        	//利用CCDictionary来读取xml  
+        	CCDictionary* chnStrings = CCDictionary::createWithContentsOfFile("CHN_Strings.xml");  
+        	const char *hao = ((CCString*)chnStrings->objectForKey("hao"))->m_sString.c_str();   
+  
+        	text=CCLabelTTF::create(hao,"Arial",50);  
+        	text->setPosition(ccp(120,160));  
+        	text->setColor(ccc3(0,0,0));  
+        	this->addChild(text);//添加文本  
+  
+        	this->setTouchEnabled(true);//设置触摸可用  
+  
+        	bRet=true;  
+    	} while (0);  
+    	return bRet;  
+	}  
+
+**2.2.触摸的实现和拖拽的定位**
+
+因为3.0版本cocos2d-x的触摸实现已经变更了，所以这里不再赘述，3.0之前的触摸的原理和实现具体可以参见[这一节](http://blog.csdn.net/jackystudio/article/details/11860007)。
+
+**2.2.1注册触摸事件**
+
+	void AutoSet::registerWithTouchDispatcher(void)  
+	{  
+    	CCDirector *pDirector=CCDirector::sharedDirector();    
+    	pDirector->getTouchDispatcher()->addTargetedDelegate(this,0,true);//单点触摸  
+	}  
+
+**2.2.2.触摸开始**
+
+	bool AutoSet::ccTouchBegan(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent)  
+	{  
+    	return true;//返回true表示接收触摸事件  
+	}  
+
+**2.2.3.触摸过程**
+
+	void AutoSet::ccTouchMoved(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent)  
+	{  
+    	CCPoint beginPoint = pTouch->getLocationInView();  //获取触摸位置  
+    	beginPoint = CCDirector::sharedDirector()->convertToGL(beginPoint);//坐标转换  
+    	CCPoint pt=text->getPosition();  
+    	CCRect rect=CCRectMake(pt.x-30,pt.y-30,60,60);  
+    	if (rect.containsPoint(beginPoint))//判断触摸点是否在文字上  
+    	{  
+        	CCPoint endPoint=pTouch->getPreviousLocationInView();//获取触摸的前一个位置    
+        	endPoint=CCDirector::sharedDirector()->convertToGL(endPoint);     
+  
+        	CCPoint offSet =ccpSub(beginPoint,endPoint);//获取offset    
+        	CCPoint toPoint=ccpAdd(text->getPosition(),offSet); //获取真正移动位置  
+        	text->setPosition(toPoint);//移动文字  
+    	}  
+	}  
+
+**2.2.4.触摸结束**
+
+	void AutoSet::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)  
+	{  
+    	CCPoint lastPoint = pTouch->getLocationInView();//获取触摸结束点位置  
+    	lastPoint = CCDirector::sharedDirector()->convertToGL(lastPoint);  
+    	CCRect rect=CCRectMake(330,130,60,60);  
+    	CCMoveTo* moveto;  
+    	if (!rect.containsPoint(lastPoint))//如果未在指定区域，还原到初始位置  
+    	{  
+        	moveto=CCMoveTo::create(0.1f,ccp(120,160));  
+    	}  
+    	else//如果在指定区域，移动到该区域中心  
+    	{  
+        	moveto=CCMoveTo::create(0.1f,ccp(360,160));  
+    	}  
+    	text->runAction(moveto);  
+	}  
+
+###3.效果图###
+<div align="center"><img src="/images/Blog/Play_cocos2dx_18/1.jpg" alt="" border="0" title="1" /><br></br></div>
+<div align="center"><img src="/images/Blog/Play_cocos2dx_18/2.jpg" alt="" border="0" title="2" /><br></br></div>
+<div align="center"><img src="/images/Blog/Play_cocos2dx_18/3.jpg" alt="" border="0" title="3" /><br></br></div>
+<div align="center"><img src="/images/Blog/Play_cocos2dx_18/4.jpg" alt="" border="0" title="4" /><br></br></div>
+###4.源码下载###
+[源码下载](http://download.csdn.net/detail/jackyvincefu/6463261)

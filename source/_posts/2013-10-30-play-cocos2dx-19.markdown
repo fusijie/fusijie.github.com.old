@@ -1,0 +1,67 @@
+---
+layout: post
+title: "【玩转cocos2d-x之十九】从CCObject看cocos2d-x的拷贝机制"
+date: 2013-10-30 18:08
+comments: true
+categories: cocos2d-x
+tags: [CCObject, CCCopying, 拷贝机制, copyWithZone]
+---
+原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/13295505)
+
+CCObject在之前的文章中出现了N次，它扮演了一个老祖宗的角色，但是它到底是做什么的？先从它看看cocos2d-x的拷贝机制吧。
+
+###1.CCCopying###
+CCObject从CCCopying继承而来，而CCCopying拥有唯一的一个成员虚函数copyWithZone，这个函数可以认为是拷贝的一个协议，所有继承了CCObject并且需要实现拷贝功能的子类都可以通过它来实现，它的源码很简单，就是一个未实现的断言。CCZone是神马？只是封装了一个CCObject对象指针而已。
+
+<!-- more -->
+
+	CCObject* CCCopying::copyWithZone(CCZone *pZone)  
+	{  
+    	CC_UNUSED_PARAM(pZone);  
+    	CCAssert(0, "not implement");  
+    	return 0;  
+	}  
+
+###2.CCObject的子类拷贝问题###
+再看看CCObject中copy的实现，是的，直接调用了copyWithZone，所以子类在处理拷贝问题时只需要对copyWithZone进行实现，使用时调用copy即可。
+
+	CCObject* CCObject::copy()  
+	{  
+    	return copyWithZone(0);  
+	}  
+
+###3.CCArray示例###
+这里以CCArray的拷贝为例，CCArray继承于CCObject，如上所说，我们只需要实现copyWithZone，然后在拷贝时调用copy即可实现CCArray的拷贝。
+
+**3.1.CCArray拷贝时调用copy**
+
+	CCArray* CCArray::createWithArray(CCArray* otherArray)  
+	{  
+    	CCArray* pRet = (CCArray*)otherArray->copy();//copy调用了copyWithZone  
+    	pRet->autorelease();  
+    	return pRet;  
+	}  
+
+**3.2.copyWithZone的实现**
+
+可以看出CCArray采用的是深拷贝的方式。
+
+	CCObject* CCArray::copyWithZone(CCZone* pZone)  
+	{  
+    	CCAssert(pZone == NULL, "CCArray should not be inherited.");  
+    	CCArray* pArray = new CCArray();  //new一个存放拷贝的空间  
+    	pArray->initWithCapacity(this->data->num > 0 ? this->data->num : 1);//初始化一样的长度  
+  
+    	CCObject* pObj = NULL;  
+    	CCObject* pTmpObj = NULL;  
+    	CCARRAY_FOREACH(this, pObj)//遍历CCArray成员  
+    	{  
+        	pTmpObj = pObj->copy();//逐个拷贝  
+        	pArray->addObject(pTmpObj);//添加到新拷贝pArray中  
+        	pTmpObj->release();  
+    	}  
+    	return pArray;//返回拷贝  
+	}  
+
+###4.深拷贝和浅拷贝###
+其实不单是CCArray，cocos2d-x采用的都是深拷贝的方式，深拷贝和浅拷贝的概念和详解请移步[这里](http://blog.csdn.net/jackystudio/article/details/11553117)。它们的区别在于当前对象是否包含了对其他资源的引用。在拷贝机制上采用深拷贝的方式，大大方便了我们对内存的管理，避免因资源的释放导致引用异常。这对于平时在进行一些自定义子类的拷贝处理上还是很有指导意义的。

@@ -1,0 +1,89 @@
+---
+layout: post
+title: "【玩转cocos2d-x之十六】滚动字幕和公告"
+date: 2013-10-24 16:38
+comments: true
+categories: cocos2d-x
+tags: [滚动字幕, 滚动公告, update]
+---
+原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/12991977)
+
+滚动字幕和公告是游戏中经常使用到的元素，本文大致写一下实现方法，至于例子中具体的坐标值，请不要纠结。。。这和美工关系还是蛮大的。我PS技术太搓了。。。
+
+###1.原理###
+其实它们的实现都是简单的通过调用update来更新位置达到的移动效果，和背景滚动有点类似，一旦滚动结束就重置为起点，开始新的滚动。只是为了达到在某个区域内滚动而不至于超出这个区域，有时候会用一些前景图来做遮盖，所以这个时候其实字幕或者公告是有在后面滚动的，但是被遮住了，因此看起来就像是只在某个区域内滚动。以垂直字幕滚动为例说明，如下图。
+
+<!-- more -->
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_16/1.jpg" alt="" border="0" title="原理" /><br></br></div>
+
+###2.实现###
+不要纠结以下各精灵的坐标位置：）
+
+	bool CTestLayer::init()  
+	{  
+    	bool bRet=false;  
+    	do   
+    	{  
+        	CC_BREAK_IF(!CCLayer::init());  
+  
+        	CCSize visibleSize=CCDirector::sharedDirector()->getVisibleSize();  
+        	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("ui_serverlist.plist");  
+  
+        	//垂直滚动字幕  
+        	CCSprite* listbase=CCSprite::createWithSpriteFrame(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("login_listbase.png"));//bottom底图  
+        	listbase->setPosition(ccp(visibleSize.width/2,visibleSize.height/2+10));  
+        	this->addChild(listbase);  
+        	text1=CCLabelTTF::create("1.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n2.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n3.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n4.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!","Arial",12);//middle文本  
+        	text1->setHorizontalAlignment(kCCTextAlignmentLeft);//左对齐  
+        	text1->setAnchorPoint(ccp(0.5,1));  
+        	text1->setPosition(ccp(visibleSize.width/2,visibleSize.height/2-55));  
+        	this->addChild(text1);  
+        	CCSprite* fg=CCSprite::create("fg.png");//top前景  
+        	fg->setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
+        	this->addChild(fg);  
+  
+        	//水平滚动公告  
+        	CCSprite* textbase=CCSprite::createWithSpriteFrame(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName("login_textbase.png"));  
+        	textbase->setPosition(ccp(visibleSize.width/2,50));  
+        	textbase->setScaleX(2.5f);  
+        	this->addChild(textbase);  
+        	text2=CCLabelTTF::create("Hi! Welcome to JackyStudio,My Blog is blog.csdn.net/jackystudio!","Arial",12);  
+        	text2->setPosition(ccp(visibleSize.width+text2->getContentSize().width/2,50));  
+        	text2->setColor(ccc3(255,0,0));//红色字体  
+        	this->addChild(text2);  
+  
+        	this->scheduleUpdate();//执行更新  
+  
+        	bRet=true;  
+    	} while (0);  
+    	return bRet;  
+	}  
+  
+	void CTestLayer::update(float delta)  
+	{  
+    	CCSize visibleSize=CCDirector::sharedDirector()->getVisibleSize();  
+  
+    	int newY=text1->getPositionY()+1;  
+    	if (newY==500)//如果滚动到这个位置，重置  
+    	{  
+        	newY=visibleSize.height/2-55;  
+    	}  
+    	text1->setPositionY(newY);  
+  	
+    	int newX=text2->getPositionX()-1;  
+    	if (newX<=-text2->getContentSize().width/2)//如果滚动到这个位置，重置  
+    	{  
+        	newX=visibleSize.width+text2->getContentSize().width/2;  
+    	}  
+    	text2->setPositionX(newX);  
+	}  
+
+###3.效果###
+这个效果有点小bug，就是文字覆盖到边框上了，这是因为没有把边框做在top层上导致的，实际使用注意这个问题即可。
+<div align="center"><img src="/images/Blog/Play_cocos2dx_16/2.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
+<div align="center"><img src="/images/Blog/Play_cocos2dx_16/3.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
+<div align="center"><img src="/images/Blog/Play_cocos2dx_16/4.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
+<div align="center"><img src="/images/Blog/Play_cocos2dx_16/5.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
+###4.源码下载###
+[源码下载](http://download.csdn.net/detail/jackyvincefu/6434549)

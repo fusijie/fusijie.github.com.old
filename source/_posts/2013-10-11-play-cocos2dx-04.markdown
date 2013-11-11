@@ -15,8 +15,9 @@ cocos2d-x到底是怎样实现跨平台的呢？这里以Win32和Android为例�
 
 先看一下一个项目创建后的目录结构吧！这还是以HelloCpp为例。
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_04/1.jpg" alt="" border="0" title="跨平台项目目录结构" /><br></br></div>
 <!-- more -->
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_04/1.jpg" alt="" border="0" title="跨平台项目目录结构" /><br></br></div>
 
 从左边目录可以看到，Classes和Resource已经平台无关了，而Classes中包含了AppDelegate类，因此我们可以认为AppDelegate是与平台最接近的类，在它以上就要区分平台了。
 

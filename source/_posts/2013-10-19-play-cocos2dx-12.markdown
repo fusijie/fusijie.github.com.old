@@ -6,6 +6,7 @@ comments: true
 categories: cocos2d-x
 tags: [cocos2d-x, plist, TexturePacket, 解析]
 ---
+
 原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/12867863)
 
 之前拿了一些别人的图片素材，是用TexturePacker打包合成的，结果写程序的时候不知道每个合成前小png图的名字是什么，只能一个一个从plist文件中找，然后猜测对应的名字，再进行显示，如果不对，还要继续猜。。。坑爹啊，效率大大降低了，时间都耗在找图片名字上了。后来决定动手写一个解析plist的软件，就叫它Anti_TexturePacker吧。
@@ -29,7 +30,7 @@ Anti_TexurePacker软件基于VS 2008 MFC Dialog。
 
 <div align="center"><img src="/images/Blog/Play_cocos2dx_12/7.jpg" alt="" border="0" title="xml" /><br></br></div>
 
-这样一看，就知道了标准的plist文件中，我们需要的是第7，10，14，20，23，27...行。抓出规律，读取到CStringArray。
+这样一看，就知道了标准的plist文件中，我们需要的是第7，10，14，20，23，27...行。抓出规律，读取到CStringArray。我没有采用xml的解析库，而是直接无耻的这么做了，用起来倒是没什么问题，但是不要学啊。。。
 
     	int i=1;
     	int needName=7;
@@ -104,7 +105,7 @@ Anti_TexurePacker软件基于VS 2008 MFC Dialog。
 		}
 	}
 
-因为plist文件最后还有一个metadata字段，所以后面进行遍历的时候减掉这一个。
+因为plist文件最后还有一个metadata字段，所以后面进行遍历的时候要对CCList的个数减1。
 
 ###3.随鼠标移动的PNG图片名字的获取###
 在OnMouseMove中进行处理显示。
@@ -140,16 +141,42 @@ Anti_TexurePacker软件基于VS 2008 MFC Dialog。
     	CloseClipboard();//关闭剪切板  
     }  
 
-###5.效果图###
+###5.PNG图的裁剪和保存###
+创建一个新的GDI+Bitmap对象，传入图像数据和大小，进行保存即可。
 
+	Gdiplus::Rect rcImage(x, y, width, height);  
+	pWrapBitmap->LockBits(&rcImage, Gdiplus::ImageLockModeRead, pWrapBitmap->GetPixelFormat(), &bitmapData);  
+	pBitmap = new Gdiplus::Bitmap(bitmapData.Width, bitmapData.Height, bitmapData.Stride, PixelFormat32bppARGB, (BYTE*)bitmapData.Scan0);  
+	pWrapBitmap->UnlockBits(&bitmapData);  
+	if (pngcfg.isRotate)  
+	{  
+    	pBitmap->RotateFlip(Rotate270FlipNone);  
+	}  
+  
+	CLSID pngClsid;   
+	GetEncoderClsid(L"image/png", &pngClsid);   
+	CString strpathName=strClipDir;  
+	strpathName+="\\";  
+	strpathName+=pngcfg.strName;  
+	pBitmap->Save(strpathName, &pngClsid, NULL);  
+	delete pBitmap;  
+	delete pWrapBitmap;  
+
+###6.效果图###
+（1）鼠标移动到小图上，右上角显示当前位置所在的PNG名。单击小图，PNG名自动复制到剪切板。
 <div align="center"><img src="/images/Blog/Play_cocos2dx_12/1.jpg" alt="" border="0" title="1" /><br></br></div>
+（2）在列表中选择小图名字，软件自动显示红框。包裹该小图。
 <div align="center"><img src="/images/Blog/Play_cocos2dx_12/2.jpg" alt="" border="0" title="2" /><br></br></div>
+（3）点击裁剪PNG，弹出保存路径，选择保存路径确定。
 <div align="center"><img src="/images/Blog/Play_cocos2dx_12/3.jpg" alt="" border="0" title="3" /><br></br></div>
+（4）工作线程中处理PNG图的裁剪。
 <div align="center"><img src="/images/Blog/Play_cocos2dx_12/4.jpg" alt="" border="0" title="4" /><br></br></div>
+（5）PNG图裁剪成功。
 <div align="center"><img src="/images/Blog/Play_cocos2dx_12/5.jpg" alt="" border="0" title="5" /><br></br></div>
+（6）目录下可以看到裁剪后的小图，按照原来名字命名。
 <div align="center"><img src="/images/Blog/Play_cocos2dx_12/6.jpg" alt="" border="0" title="6" /><br></br></div>
 
-###6.下载地址###
+###7.下载地址###
 
 v.1.2版
 
@@ -176,3 +203,5 @@ v1.1版
 *5.修改icon*
 
 [下载地址](http://download.csdn.net/detail/jackyvincefu/6429297)
+
+源码：[https://github.com/fusijie/Anti_TexturePaker.git](https://github.com/fusijie/Anti_TexturePaker.git)
