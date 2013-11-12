@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: 多线程 | Jacky's Blog]]></title>
+  <link href="http://www.jacky.tk/tags/duo-xian-cheng/atom.xml" rel="self"/>
+  <link href="http://www.jacky.tk/"/>
+  <updated>2013-11-12T11:31:15+08:00</updated>
+  <id>http://www.jacky.tk/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十一】cocos2d-x多线程和同步01]]></title>
+    <link href="http://www.jacky.tk/blog/2013/11/04/play-cocos2dx-21/"/>
+    <updated>2013-11-04T11:01:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/11/04/play-cocos2dx-21</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/14118939">http://blog.csdn.net/jackystudio</a></p>
+
+<p>和其他框架一样，cocos2d-x允许我们使用多线程进行编程。cocos2d-x v2.2.0使用的是pthread库，是一套用户级线程库，被广泛地使用在跨平台应用上。</p>
+
+<h3>1.配置</h3>
+
+<p>在使用pthread之前，需要把头文件和库文件链接进来。pthread的官网<a href="http://www.sourceware.org/pthreads-win32/">戳这里</a>，当然cocos2d-x帮我们包含进引擎了。</p>
+
+<!-- more -->
+
+
+<p><strong>1.1.头文件</strong></p>
+
+<p>pthread.h放在\cocos2d-x目录\cocos2dx\platform\third_party\win32\pthread\下，右键项目→属性→配置属性→C/C++→附加包含目录添加如下，这里要注意附加包含目录是只包含当前目录下的文件，而不会包含该目录下子目录。</p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_21/1.jpg" alt="" border="0" title="添加包含目录" /><br></br></div>
+
+
+<p><strong>1.2.库文件</strong></p>
+
+<p>一样的，右键项目→属性→配置属性→链接器→输入→附加依赖项，添加pthreadVCE2.lib即可。v2.2.0会自动包含，这步可省。</p>
+
+<h3>2.pthread库</h3>
+
+<p><strong>2.1.主要功能</strong></p>
+
+<p>pthread库包含了四大部分功能：</p>
+
+<p><em>（1）Thread Management：线程管理。</em>提供了线程的创建，删除，结束等功能，也包含了对线程属性的修改和设置。</p>
+
+<p><em>（2）Mutexex：互斥对象。</em>用于处理同步机制。提供了创建，销毁，加锁，解锁等功能，也包含了对互斥对象属性的修改和设置。</p>
+
+<p><em>（3）Condition variables：条件变量。</em>提供了基于程序员提供条件的进程间通讯互斥锁的操作，包含了对其属性的修改和设置。</p>
+
+<p><em>（4）Synchronization：同步相关。</em>提供了操作读写锁等功能。</p>
+
+<p><strong>2.2.命名规则</strong></p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_21/2.jpg" alt="" border="0" title="命名规则" /><br></br></div>
+
+
+<h3>3.线程和互斥对象</h3>
+
+<p>我们这里主要了解线程和互斥对象，也是最常用到的。</p>
+
+<p><strong>3.1.线程</strong></p>
+
+<pre><code>//创建线程  
+PTW32_DLLPORT int PTW32_CDECL pthread_create (pthread_t * tid,  
+    const pthread_attr_t * attr,  
+    void *(*start) (void *),  
+    void *arg);  
+
+//退出线程  
+PTW32_DLLPORT void PTW32_CDECL pthread_exit (void *value_ptr);  
+
+//取消执行线程  
+PTW32_DLLPORT int PTW32_CDECL pthread_cancel (pthread_t thread);  
+
+//删除线程  
+PTW32_DLLPORT int PTW32_CDECL pthread_detach (pthread_t tid);  
+
+//加入线程  
+PTW32_DLLPORT int PTW32_CDECL pthread_join (pthread_t thread,  
+    void **value_ptr);  
+
+//初始化线程属性  
+PTW32_DLLPORT int PTW32_CDECL pthread_attr_init (pthread_attr_t * attr);  
+
+//清理线程属性  
+PTW32_DLLPORT int PTW32_CDECL pthread_attr_destroy (pthread_attr_t * attr);  
+</code></pre>
+
+<p><strong>3.2.互斥对象</strong></p>
+
+<pre><code>//初始化mutex  
+PTW32_DLLPORT int PTW32_CDECL pthread_mutex_init (pthread_mutex_t * mutex,  
+    const pthread_mutexattr_t * attr);  
+
+//销毁mutex，要注意如果是new的指针，需要手动释放，pthread_mutex_destroy并不会帮你释放  
+PTW32_DLLPORT int PTW32_CDECL pthread_mutex_destroy (pthread_mutex_t * mutex);  
+
+//加锁  
+PTW32_DLLPORT int PTW32_CDECL pthread_mutex_lock (pthread_mutex_t * mutex);  
+
+//尝试加锁  
+PTW32_DLLPORT int PTW32_CDECL pthread_mutex_trylock (pthread_mutex_t * mutex);  
+
+//解锁  
+PTW32_DLLPORT int PTW32_CDECL pthread_mutex_unlock (pthread_mutex_t * mutex);  
+</code></pre>
+
+<p>要注意的是mutex变量必须要被声明为pthread_mutex_t类型，且在使用前必须要被初始化，初始化有2种方式：</p>
+
+<p><em>（1）静态初始化</em></p>
+
+<pre><code>pthread_mutex_t mymutex = PTHREAD_MUTEX_INITIALIZER;  
+</code></pre>
+
+<p><em>（2）动态初始化</em></p>
+
+<pre><code>pthread_mutex_init();  
+</code></pre>
+
+<h3>4.注意</h3>
+
+<p>cocos2d-x使用多线程应注意的问题（来自官方文档）：</p>
+
+<p><em>（1）不能调用涉及到CCObject::retain(), CCObject::release() 或者 CCObject::autorelease()的函数，因为CCAutoreleasePool不是线程安全的。因为cocos2d-x框架中无处不在使用CCAutoreleasePool，所以建议不要在新线程中调用cocos2d-x的API。</em></p>
+
+<p><em>（2）如果要在新线程中加载资源，那么可以使用CCTextureCache::addImageAsync()。</em></p>
+
+<p><em>（3）pthread_cond_wait()看起来有个bug，首次wait会失败，但是之后又会工作的很好。</em></p>
+
+<p><em>（4）OpenGL context也不是线程安全。</em></p>
+]]></content>
+  </entry>
+  
+</feed>
