@@ -117,3 +117,6 @@ weibo_skin: 10                        #skin
 
 #flag_count
 flag_count: true
+
+#Tag_Cloud
+tag_cloud: false
