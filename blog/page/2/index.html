@@ -9,7 +9,8 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio 前两天写个游戏，发现CCMenu的布局还是比较有意思的，这里总结一下，以便后用。 1.概况 CCMenu是cocos2d-x的菜单类，但它本身并不具备菜单具体属性，而是作为一个父节点， &hellip;">
+  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio 有时候，我们希望实现一个选项卡功能，就是切换tab选项，场景中的内容会跟着改变，但是tab选项卡不动。这是用切换场景的方式没办法做到的。
+这里我们就可以使用CCLayerMultiplex来实现这个功能。 1. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +80,54 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/22/play-cocos2dx-14/">【玩转cocos2d-x之十四】菜单选项卡的实现</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-22T10:34:00+08:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12940733">http://blog.csdn.net/jackystudio</a></p>
+
+<p>有时候，我们希望实现一个选项卡功能，就是切换tab选项，场景中的内容会跟着改变，但是tab选项卡不动。这是用切换场景的方式没办法做到的。
+这里我们就可以使用CCLayerMultiplex来实现这个功能。</p>
+
+<h3>1.创建布景</h3>
+
+<p>这里创建3个布景来做示范。分别是Laye1，Layer2和Layer3。代码就不贴了，布景内容可以直接使用HelloWorld的代码。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/22/play-cocos2dx-14/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -504,53 +553,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/10/11/play-cocos2dx-04/">【玩转cocos2d-x之四】cocos2d-x怎么实现跨平台</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-11T21:23:00+08:00" pubdate data-updated="true">Oct 11<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12610287">http://blog.csdn.net/jackystudio</a></p>
-
-<p>cocos2d-x到底是怎样实现跨平台的呢？这里以Win32和Android为例。</p>
-
-<h3>1.跨平台项目目录结构</h3>
-
-<p>先看一下一个项目创建后的目录结构吧！这还是以HelloCpp为例。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/10/11/play-cocos2dx-04/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -578,12 +580,16 @@
 </section><section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (23)</a></li>
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (24)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/11/13/play-cocos2dx-24/">【玩转cocos2d-x之二十四】截图保存功能的实现</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/11/11/play-cocos2dx-23/">【玩转cocos2d-x之二十三】cocos2d-x多线程和同步03</a>
@@ -599,10 +605,6 @@
     
       <li class="post">
         <a href="/blog/2013/10/31/play-cocos2dx-20/">【玩转cocos2d-x之二十】从CCObject看cocos2d-x的内存管理机制</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/10/30/play-cocos2dx-19/">【玩转cocos2d-x之十九】从CCObject看cocos2d-x的拷贝机制</a>
       </li>
     
   </ul>

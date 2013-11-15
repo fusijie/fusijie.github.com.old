@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: CCRenderTexture | Jacky's Blog]]></title>
+  <link href="http://www.jacky.tk/tags/ccrendertexture/atom.xml" rel="self"/>
+  <link href="http://www.jacky.tk/"/>
+  <updated>2013-11-15T08:42:54+08:00</updated>
+  <id>http://www.jacky.tk/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十四】截图保存功能的实现]]></title>
+    <link href="http://www.jacky.tk/blog/2013/11/13/play-cocos2dx-24/"/>
+    <updated>2013-11-13T08:34:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/11/13/play-cocos2dx-24</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/15498083">http://blog.csdn.net/jackystudio</a></p>
+
+<p>官方TestCpp有这个demo了，这里还是把它单独拖出来写一下，游戏推广的一个很重要组成就是玩家分享，所以游戏截图就起到很大作用了。截图功能通过CCRenderTexture实现。</p>
+
+<h3>1.CCRenderTexture</h3>
+
+<p>CCRenderTexture是一个通用渲染对象，可以通过构建一个CCRenderTexture对象，进而把要渲染的东西填充进去，在渲染开始前调用call函数，调用cocos的场景的visit函数对其进行渲染，渲染结束后调用end函数。CCRenderTexture继承于CCNode，所以可以简单地把渲染纹理添加到你的场景中，就像处理其它cocos中的节点一样，当然它还提供了保存功能，可以把渲染纹理保存为PNG或JPG格式。</p>
+
+<!-- more -->
+
+
+<h3>2.API</h3>
+
+<pre><code>   //创建和初始化函数  
+   static CCRenderTexture * create(int w ,int h, CCTexture2DPixelFormat eFormat, GLuint uDepthStencilFormat);  
+   static CCRenderTexture * create(int w, int h, CCTexture2DPixelFormat eFormat);  
+   static CCRenderTexture * create(int w, int h);  
+   bool initWithWidthAndHeight(int w, int h, CCTexture2DPixelFormat eFormat);  
+   bool initWithWidthAndHeight(int w, int h, CCTexture2DPixelFormat eFormat, GLuint uDepthStencilFormat);  
+
+   //开始获取  
+   void begin();  
+
+   //开始渲染时清除之前渲染的内容  
+   void beginWithClear(float r, float g, float b, float a);  
+   void beginWithClear(float r, float g, float b, float a, float depthValue);  
+   void beginWithClear(float r, float g, float b, float a, float depthValue, int stencilValue);  
+
+   //结束获取  
+   void end();  
+
+   //清除纹理  
+   void clear(float r, float g, float b, float a);  
+   void clearDepth(float depthValue);  
+   void clearStencil(int stencilValue);  
+
+   //保存纹理为图片文件，可以选择JPG/PNG格式，默认是JPEG格式，成功返回真  
+   bool saveToFile(const char *szFilePath);  
+   bool saveToFile(const char *name, tCCImageFormat format);  
+</code></pre>
+
+<h3>3.示例</h3>
+
+<p>修改HelloWorld中结束菜单的回调函数如下：</p>
+
+<pre><code>void CTestLayer::menuCloseCallback(CCObject* pSender)  
+{  
+    SaveScreenShot();  
+}  
+
+//截图功能  
+void CTestLayer::SaveScreenShot()  
+{  
+    //获取屏幕尺寸  
+    CCSize size = CCDirector::sharedDirector()-&gt;getWinSize();  
+    //使用屏幕尺寸初始化一个空的渲染纹理对象  
+    CCRenderTexture* texture = CCRenderTexture::create((int)size.width, (int)size.height);  
+    //设置位置  
+    texture-&gt;setPosition(ccp(size.width/2, size.height/2));  
+    //开始获取  
+    texture-&gt;begin();  
+    //遍历场景节点对象，填充纹理到texure中  
+    CCDirector::sharedDirector()-&gt;getRunningScene()-&gt;visit();  
+    //结束获取  
+    texture-&gt;end();  
+    //保存为PNG图，Win32/Debug目录下  
+    texture-&gt;saveToFile("screenshot.png", kCCImageFormatPNG);  
+}  
+</code></pre>
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6538305">下载地址</a></p>
+]]></content>
+  </entry>
+  
+</feed>

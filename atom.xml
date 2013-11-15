@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://www.jacky.tk/atom.xml" rel="self"/>
   <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-14T09:55:29+08:00</updated>
+  <updated>2013-11-15T08:42:54+08:00</updated>
   <id>http://www.jacky.tk/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,87 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十四】截图保存功能的实现]]></title>
+    <link href="http://www.jacky.tk/blog/2013/11/13/play-cocos2dx-24/"/>
+    <updated>2013-11-13T08:34:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/11/13/play-cocos2dx-24</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/15498083">http://blog.csdn.net/jackystudio</a></p>
+
+<p>官方TestCpp有这个demo了，这里还是把它单独拖出来写一下，游戏推广的一个很重要组成就是玩家分享，所以游戏截图就起到很大作用了。截图功能通过CCRenderTexture实现。</p>
+
+<h3>1.CCRenderTexture</h3>
+
+<p>CCRenderTexture是一个通用渲染对象，可以通过构建一个CCRenderTexture对象，进而把要渲染的东西填充进去，在渲染开始前调用call函数，调用cocos的场景的visit函数对其进行渲染，渲染结束后调用end函数。CCRenderTexture继承于CCNode，所以可以简单地把渲染纹理添加到你的场景中，就像处理其它cocos中的节点一样，当然它还提供了保存功能，可以把渲染纹理保存为PNG或JPG格式。</p>
+
+<!-- more -->
+
+
+<h3>2.API</h3>
+
+<pre><code>   //创建和初始化函数  
+   static CCRenderTexture * create(int w ,int h, CCTexture2DPixelFormat eFormat, GLuint uDepthStencilFormat);  
+   static CCRenderTexture * create(int w, int h, CCTexture2DPixelFormat eFormat);  
+   static CCRenderTexture * create(int w, int h);  
+   bool initWithWidthAndHeight(int w, int h, CCTexture2DPixelFormat eFormat);  
+   bool initWithWidthAndHeight(int w, int h, CCTexture2DPixelFormat eFormat, GLuint uDepthStencilFormat);  
+
+   //开始获取  
+   void begin();  
+
+   //开始渲染时清除之前渲染的内容  
+   void beginWithClear(float r, float g, float b, float a);  
+   void beginWithClear(float r, float g, float b, float a, float depthValue);  
+   void beginWithClear(float r, float g, float b, float a, float depthValue, int stencilValue);  
+
+   //结束获取  
+   void end();  
+
+   //清除纹理  
+   void clear(float r, float g, float b, float a);  
+   void clearDepth(float depthValue);  
+   void clearStencil(int stencilValue);  
+
+   //保存纹理为图片文件，可以选择JPG/PNG格式，默认是JPEG格式，成功返回真  
+   bool saveToFile(const char *szFilePath);  
+   bool saveToFile(const char *name, tCCImageFormat format);  
+</code></pre>
+
+<h3>3.示例</h3>
+
+<p>修改HelloWorld中结束菜单的回调函数如下：</p>
+
+<pre><code>void CTestLayer::menuCloseCallback(CCObject* pSender)  
+{  
+    SaveScreenShot();  
+}  
+
+//截图功能  
+void CTestLayer::SaveScreenShot()  
+{  
+    //获取屏幕尺寸  
+    CCSize size = CCDirector::sharedDirector()-&gt;getWinSize();  
+    //使用屏幕尺寸初始化一个空的渲染纹理对象  
+    CCRenderTexture* texture = CCRenderTexture::create((int)size.width, (int)size.height);  
+    //设置位置  
+    texture-&gt;setPosition(ccp(size.width/2, size.height/2));  
+    //开始获取  
+    texture-&gt;begin();  
+    //遍历场景节点对象，填充纹理到texure中  
+    CCDirector::sharedDirector()-&gt;getRunningScene()-&gt;visit();  
+    //结束获取  
+    texture-&gt;end();  
+    //保存为PNG图，Win32/Debug目录下  
+    texture-&gt;saveToFile("screenshot.png", kCCImageFormatPNG);  
+}  
+</code></pre>
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6538305">下载地址</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十三】cocos2d-x多线程和同步03]]></title>
@@ -2702,170 +2783,6 @@ void setDepthTest(bool bOn);
 <h3>3.CCDisplayLinkDirector</h3>
 
 <p>CCDisplayLinkDirector继承于CCDirector，它实现了mainloop函数，是一个以显示刷新速度同步定时器的Director，也就是可以自动刷新的导演类，它支持60，30，15三种帧数。我们平时使用的也就是它。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之四】cocos2d-x怎么实现跨平台]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/11/play-cocos2dx-04/"/>
-    <updated>2013-10-11T21:23:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/11/play-cocos2dx-04</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12610287">http://blog.csdn.net/jackystudio</a></p>
-
-<p>cocos2d-x到底是怎样实现跨平台的呢？这里以Win32和Android为例。</p>
-
-<h3>1.跨平台项目目录结构</h3>
-
-<p>先看一下一个项目创建后的目录结构吧！这还是以HelloCpp为例。</p>
-
-<!-- more -->
-
-
-
-
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_04/1.jpg" alt="" border="0" title="跨平台项目目录结构" /><br></br></div>
-
-
-<p>从左边目录可以看到，Classes和Resource已经平台无关了，而Classes中包含了AppDelegate类，因此我们可以认为AppDelegate是与平台最接近的类，在它以上就要区分平台了。</p>
-
-<h3>2.Win32下的实现</h3>
-
-<p>在前一篇就介绍了Win32怎么开始cocos2dx，Win32平台下main.cpp就是程序入口：</p>
-
-<pre><code>int APIENTRY _tWinMain(HINSTANCE hInstance,  
-   HINSTANCE hPrevInstance,  
-   LPTSTRlpCmdLine,  
-   int   nCmdShow)  
-{  
-    UNREFERENCED_PARAMETER(hPrevInstance);  
-    UNREFERENCED_PARAMETER(lpCmdLine);  
-
-    // create the application instance  
-    AppDelegate app;//创建应用实例  
-    CCEGLView* eglView = CCEGLView::sharedOpenGLView();  
-    eglView-&gt;setViewName("HelloCpp");  
-    eglView-&gt;setFrameSize(2048, 1536);  
-    eglView-&gt;setFrameZoomFactor(0.4f);  
-    return CCApplication::sharedApplication()-&gt;run();//运行程序  
-}  
-</code></pre>
-
-<p>Win32下的实现比较简单，就是正常的创建实例，运行就可以了。</p>
-
-<h3>3.Android下的实现</h3>
-
-<p><strong>3.1.cocos2d-x程序入口</strong></p>
-
-<p>我们先看一下Android下cocos2d-x程序入口点在哪，我们知道Android是采用Java编写的，而cocos2d-x是c++编写的，所以如果要在Java中调用c++代码，那就需要采用JNI技术，看起来好像高端大气上档次，其实程序就是函数调用，也就是输入→处理→输出，所以JNI实际上简单抽象出来就这么回事：</p>
-
-<p>java输入→Jni→c++输入→c++处理（API实现）→c++输出→Jni→java输出</p>
-
-<p>在\proj.android\jni\hellocpp文件夹下可以找到main.cpp，这就是cocos2d-x的入口：</p>
-
-<pre><code>jint JNI_OnLoad(JavaVM *vm, void *reserved)  
-{  
-    JniHelper::setJavaVM(vm);  
-
-    return JNI_VERSION_1_4;  
-}  
-
-void Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit(JNIEnv*  env, jobject thiz, jint w, jint h)  
-{  
-    if (!CCDirector::sharedDirector()-&gt;getOpenGLView())  
-    {  
-        CCEGLView *view = CCEGLView::sharedOpenGLView();  
-        view-&gt;setFrameSize(w, h);  
-
-        AppDelegate *pAppDelegate = new AppDelegate();  
-        CCApplication::sharedApplication()-&gt;run();  
-    }  
-    else  
-    {  
-        ccGLInvalidateStateCache();  
-        CCShaderCache::sharedShaderCache()-&gt;reloadDefaultShaders();  
-        ccDrawInit();  
-        CCTextureCache::reloadAllTextures();  
-        CCNotificationCenter::sharedNotificationCenter()-&gt;postNotification(EVENT_COME_TO_FOREGROUND, NULL);  
-        CCDirector::sharedDirector()-&gt;setGLDefaultValues();   
-    }  
-}
-</code></pre>
-
-<p>里面包含了2个函数，JNI_OnLoad和Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit。我们看一下功能而先不管它在哪里被调用。</p>
-
-<p><em>（1）JNI_OnLoad，</em>这个函数主要是用来高速Android VM当前使用的是什么版本是Jni，如果不提供此函数，则默认使用Jni1.1版本。</p>
-
-<p><em>（2）Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit，</em>这个函数很明显就是运行一个cocos2d-x的应用实例了，这和Win32是一样的，当然它多了一个openGlView的检测。一旦调用了它那么cocos2d-x游戏启动。
-接下来再看看它们是在哪里被调用的。</p>
-
-<p><strong>3.2.JNI_OnLoad的调用</strong></p>
-
-<p>在proj.android\src\org\cocos2dx\hellocpp目录下，可以看到Android的入口Activity，也就是HelloCpp，它继承自Cocos2dxActivity。</p>
-
-<pre><code>public class HelloCpp extends Cocos2dxActivity{  
-
-    protected void onCreate(Bundle savedInstanceState){  
-    super.onCreate(savedInstanceState);  
-    }  
-
-static {  
-     System.loadLibrary("hellocpp");  
-    }  
-}  
-</code></pre>
-
-<p>很简单的代码，因为功能都被封装到Cocos2dxActivity中了，所以OnCreate中调用了父类的OnCreate就把功能都实现了，而system.LoadLibrary就是载入编译出来的.so文件，此时就会执行JNI_OnLoad。</p>
-
-<p><strong>3.3.Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit的调用</strong></p>
-
-<p>那最重要的Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit是在哪调用呢？这就比较麻烦了，先大致了解一下Cocos2dxActivity做了一些什么事。</p>
-
-<p>直接进入Cocos2dxActivity的OnCreate函数，它调用了一个init初始化函数：</p>
-
-<pre><code>public void init() {  
-
-    // 设置布局，是一个FrameLayout  
-    ViewGroup.LayoutParams framelayout_params =  
-    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,  
-                                   ViewGroup.LayoutParams.FILL_PARENT);  
-    FrameLayout framelayout = new FrameLayout(this);  
-    framelayout.setLayoutParams(framelayout_params);  
-
-    // 设置Cocos2dxEditText布局，这一个跟GLSurfaceView兼容的edittext  
-    ViewGroup.LayoutParams edittext_layout_params =  
-    new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,  
-                               ViewGroup.LayoutParams.WRAP_CONTENT);  
-    Cocos2dxEditText edittext = new Cocos2dxEditText(this);  
-    edittext.setLayoutParams(edittext_layout_params);  
-
-    // 添加到framelaout  
-    framelayout.addView(edittext);  
-
-    // 创建Cocos2dxGLSurfaceView  
-    this.mGLSurfaceView = this.onCreateView();  
-
-    // 添加到framelaout  
-    framelayout.addView(this.mGLSurfaceView);  
-
-    // Switch to supported OpenGL (ARGB888) mode on emulator  
-    if (isAndroidEmulator())  
-       this.mGLSurfaceView.setEGLConfigChooser(8 , 8, 8, 8, 16, 0);  
-
-    //设置Cocos2dxRenderer和Cocos2dxEditText  
-    this.mGLSurfaceView.setCocos2dxRenderer(new Cocos2dxRenderer());  
-    this.mGLSurfaceView.setCocos2dxEditText(edittext);  
-
-    // 设置framelayout作为内容视图  
-    setContentView(framelayout);  
-} 
-</code></pre>
-
-<p>在这里Cocos2dxActivity做的就是创建Cocos2dxGLSurfaceView，并设置了Cocos2dxRenderer和Cocos2dxEditText，然后添加到FramLayout。具体的各部分实现这里就不贴代码了，画了个图：</p>
-
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_04/2.jpg" alt="" border="0" title="Android调用流程" /><br></br></div>
-
-
-<p>好了，就这样吧。因为我对Android界面开发，特别是OpenGLView这块也不熟，所以只能大概推出是这样子了，有什么错误，还请指出。</p>
 ]]></content>
   </entry>
   
