@@ -81,9 +81,6 @@ tags: [滚动字幕, 滚动公告, update]
 
 ###3.效果###
 这个效果有点小bug，就是文字覆盖到边框上了，这是因为没有把边框做在top层上导致的，实际使用注意这个问题即可。
-<div align="center"><img src="/images/Blog/Play_cocos2dx_16/2.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
-<div align="center"><img src="/images/Blog/Play_cocos2dx_16/3.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
-<div align="center"><img src="/images/Blog/Play_cocos2dx_16/4.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
-<div align="center"><img src="/images/Blog/Play_cocos2dx_16/5.jpg" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
+<div align="center"><img src="http://note.youdao.com/yws/res/342/322D013ED8154EFD821FFA021F6D3DBD" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
 ###4.源码下载###
 [源码下载](http://download.csdn.net/detail/jackyvincefu/6434549)
