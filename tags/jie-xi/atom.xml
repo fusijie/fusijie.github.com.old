@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 解析 | Jacky's Blog]]></title>
   <link href="http://www.jacky.tk/tags/jie-xi/atom.xml" rel="self"/>
   <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-20T10:48:55+08:00</updated>
+  <updated>2013-11-21T17:06:27+08:00</updated>
   <id>http://www.jacky.tk/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -190,32 +190,17 @@ delete pWrapBitmap;
 
 <p>（1）鼠标移动到小图上，右上角显示当前位置所在的PNG名。单击小图，PNG名自动复制到剪切板。</p>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_12/1.jpg" alt="" border="0" title="1" /><br></br></div>
+<div align="center"><img src="http://note.youdao.com/yws/res/290/5653CB6D76534E0D8495D39B0BDFD4C2" alt="" border="0" title="1" /><br></br></div>
 
 
 <p>（2）在列表中选择小图名字，软件自动显示红框。包裹该小图。</p>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_12/2.jpg" alt="" border="0" title="2" /><br></br></div>
+<div align="center"><img src="http://note.youdao.com/yws/res/289/2E20B4600C864388B6049251C2FA320D" alt="" border="0" title="2" /><br></br></div>
 
 
-<p>（3）点击裁剪PNG，弹出保存路径，选择保存路径确定。</p>
+<p>（3）点击裁剪PNG，弹出保存路径，选择保存路径确定,工作线程中处理PNG图的裁剪,PNG图裁剪成功,目录下可以看到裁剪后的小图，按照原来名字命名。</p>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_12/3.jpg" alt="" border="0" title="3" /><br></br></div>
-
-
-<p>（4）工作线程中处理PNG图的裁剪。</p>
-
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_12/4.jpg" alt="" border="0" title="4" /><br></br></div>
-
-
-<p>（5）PNG图裁剪成功。</p>
-
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_12/5.jpg" alt="" border="0" title="5" /><br></br></div>
-
-
-<p>（6）目录下可以看到裁剪后的小图，按照原来名字命名。</p>
-
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_12/6.jpg" alt="" border="0" title="6" /><br></br></div>
+<div align="center"><img src="http://note.youdao.com/yws/res/291/65FF068A33684AFC94C04F4751C2FE32" alt="" border="0" title="6" /><br></br></div>
 
 
 <h3>7.下载地址</h3>

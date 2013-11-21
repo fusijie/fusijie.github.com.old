@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 环境配置 | Jacky's Blog]]></title>
   <link href="http://www.jacky.tk/tags/huan-jing-pei-zhi/atom.xml" rel="self"/>
   <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-20T10:48:55+08:00</updated>
+  <updated>2013-11-21T17:06:27+08:00</updated>
   <id>http://www.jacky.tk/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -118,7 +118,9 @@ pause
 <div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_01/5.jpg" alt="" border="0" title="设置NDK_MODULE_PATH" /><br></br></div>
 
 
-<p>（5）build project ，run as andorid app即可。如果出错，clean一下。不过运行的时候程序出现了Fatal signal 11 (SIGSEGV) at 0x00000000 (code=1)异常，原因还没找到。。。有知道的吱一声。。。（先用Cygwin编译一次再到Eclipse中编译就可以了。真心不知道差别在哪。）</p>
+<p>（5）拷贝Resource目录下的资源到安卓目录下的assets中（如果使用Cygwin编译就不需要拷贝资源，build_native.sh帮我们做了这一步）。</p>
+
+<p>（6）build project ，run as andorid app即可。</p>
 
 <div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_01/6.jpg" alt="" border="0" title="Eclipse编译" /><br></br></div>
 
