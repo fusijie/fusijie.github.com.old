@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: CCFiniteTimeAction | Jacky's Blog]]></title>
+  <link href="http://www.jacky.tk/tags/ccfinitetimeaction/atom.xml" rel="self"/>
+  <link href="http://www.jacky.tk/"/>
+  <updated>2013-11-25T14:03:47+08:00</updated>
+  <id>http://www.jacky.tk/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之九】动作类CCAction]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/16/play-cocos2dx-09/"/>
+    <updated>2013-10-16T14:33:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/16/play-cocos2dx-09</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12770909">http://blog.csdn.net/jackystudio</a></p>
+
+<p>精灵也出来了，但是不会动的精灵是木有用的。。。CCAction就是负责来解决精灵运动的问题。</p>
+
+<h3>1.概况</h3>
+
+<p>CCAction直接从CCObject继承而来，注意它代表的是一个动作，是动词。精灵执行了这个动作，而不是名词。CCAction本身并没有什么功能，主要是定义了一些通用函数和虚函数让子类实现多态性。</p>
+
+<!-- more -->
+
+
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_09/1.jpg" alt="" border="0" title="CCAction" /><br></br></div>
+
+
+<h3>2.接口</h3>
+
+<pre><code>//返回一个描述  
+const char* description();  
+
+//返回动作是否结束  
+virtual bool isDone(void);  
+
+//在动作开始前调用，需要设置目标精灵  
+virtual void startWithTarget(CCNode *pTarget);  
+
+//每帧调用，time在0~1之间，0代表动作刚开始，0.5代表动作执行一半，1代表动作结束  
+virtual void update(float time);  
+
+//返回/设置目标节点  
+CCNode* getTarget(void);  
+void setTarget(CCNode *pTarget);  
+
+//获取/设置上一个节点  
+CCNode* getOriginalTarget(void);  
+void setOriginalTarget(CCNode *pOriginalTarget);  
+
+//获取/设置标签  
+int getTag(void);  
+void setTag(int nTag);  
+
+//创建动作静态方法  
+static CCAction* create();  
+</code></pre>
+
+<h3>3.CCFollow</h3>
+
+<p>CCFollow跟随动作，继承于CCAction，可以实现节点跟随另一个节点动作。它内部封装了一个boundary，也就是跟随范围，初始为CCRectZero。</p>
+
+<pre><code>//创建一个CCFollow对象，create实际上调用了initWithTarget  
+static CCFollow* create(CCNode *pFollowedNode, const CCRect&amp; rect = CCRectZero);  
+bool initWithTarget(CCNode *pFollowedNode, const CCRect&amp; rect = CCRectZero);  
+</code></pre>
+
+<h3>4.CCSpeed</h3>
+
+<p>CCSpeed可调整速度动作类，内部封装了一个速度值，CCSpeed使用很简单，就是传入一个动作和速度，在内部重新copy一个新的动作返回。</p>
+
+<pre><code>//创建一个可变速度动作类，传入速度值  
+static CCSpeed* create(CCActionInterval* pAction, float fSpeed);  
+</code></pre>
+
+<h3>5.CCFiniteTimeAction</h3>
+
+<p>CCFiniteTimeAction有限次动作执行类，继承于CCAction，它有两个子类CCActionInstant和CCActionInterval，前者代表瞬时动作，也就是这个动作基本不需要时间马上就能完成，而后者代表延时，这个动作需要一段时间来运行。它的子类说明看上图吧。
+相比CCAction，它多了一个m_fDuration属性，表示持续时间。</p>
+
+<pre><code>//获取/设置动作持续时间  
+float getDuration(void);  
+void setDuration(float duration);  
+
+//反转动作，类似于倒带效果，返回一个新的动作  
+virtual CCFiniteTimeAction* reverse(void);  
+</code></pre>
+
+<p>好了，游戏的基本元素就写到这里，写API文档很蛋疼的说。。。</p>
+]]></content>
+  </entry>
+  
+</feed>

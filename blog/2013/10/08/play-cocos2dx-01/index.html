@@ -1,0 +1,429 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>【玩转cocos2d-x之一】V2.2.0版本开发环境配置 - Jacky's Blog</title>
+  <meta name="author" content="FuSijie">
+
+  
+  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio 现在cocos2d-x处在上升期，各个版本的变化还是比较大的，单从环境配置来看，从v2.0到v2.2就变化了不少。今天配置了一下V2.2.0环境，创建项目，并进行交叉编译，发现比之前麻烦了不少。这里稍微记录一下 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.jacky.tk/blog/2013/10/08/play-cocos2dx-01">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jacky's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '45386223']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jacky's Blog</a></h1>
+  
+    <h2>Stay Hungry,Stay Foolish!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.jacky.tk" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/projects">Projects</a></li>
+  <li><a href="/tag-cloud/">Tags</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">【玩转cocos2d-x之一】V2.2.0版本开发环境配置</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-08T16:18:00+08:00" pubdate data-updated="true">Oct 8<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12419387">http://blog.csdn.net/jackystudio</a></p>
+
+<p>现在cocos2d-x处在上升期，各个版本的变化还是比较大的，单从环境配置来看，从v2.0到v2.2就变化了不少。今天配置了一下V2.2.0环境，创建项目，并进行交叉编译，发现比之前麻烦了不少。这里稍微记录一下。
+3.0版本出来了，大概看了下目录和2.2的差不多，环境配置也基本一样。</p>
+
+<h3>1.VS，VA，Cygwin，Java，Eclipse，ADT，SDK，NDK</h3>
+
+<p>这里就不重复啰嗦这些了，<a href="http://blog.csdn.net/jackystudio/article/details/11516435">传送门</a>。不过这里需要使用VS2010以上版本。</p>
+
+<p>这里强烈建议NDK版本为r8c或者r9，试过r7，r8都编译不过。。。</p>
+
+<!-- more -->
+
+
+<h3>2.安装cocos2d-x</h3>
+
+<p>这里使用的是V2.2.0版本，<a href="http://www.cocos2d-x.org/download">传送门</a>，下载完解压即可，运行build-win32.bat进行编译。</p>
+
+<h3>3.配置python</h3>
+
+<p>因为之前没用过python，而现在cocos2d-x的项目创建已经取消了VS模版，改用python创建，所以相比之前用起来还是比较坑爹的。</p>
+
+<p><strong>3.1.清除原有的VS模版</strong></p>
+
+<p>如果之前安装过其他cocos2d-x版本，有可能在VS上会创建cocos2d-x的模版，就会造成在VS中新建项目的时候会创建旧版本的cocos2d-x模版，而使用的却是新版本的cocos2d-x引擎，导致编译出错，没注意的话还真不好找原因。</p>
+
+<p>清除方法：</p>
+
+<p><em>（1）进入目录，VS2010安装路径：</em></p>
+
+<pre><code>VS2010: C:\Program Files\Microsoft Visual Studio 10.0\VC\vcprojects\  
+VC2010Express: C:\Program Files\Microsoft Visual Studio 10.0\VC\Express\VCProjects. 
+</code></pre>
+
+<p><em>（2）删除cocos2d-x文件夹，删除以CCAppWiz和CCXAppWiz开头的两个文件，删除cocos2d-x的图标</em></p>
+
+<p><strong>3.2.安装python</strong></p>
+
+<p>我这里使用的是2.7.5版本，<a href="http://www.python.org/download/releases/2.7.5/">传送门</a>， Windows X86 msi installer。不同的python版本可能会导致后面运行出错。所以建议使用此版本。</p>
+
+<p><strong>3.3.设置环境变量</strong></p>
+
+<p>用过Java的都应该很熟了吧。</p>
+
+<p>我的电脑→右键→属性→高级→环境变量→系统变量→path→加入你的python安装目录。测试一下：进入cmd，输入python，不会提示“不是外部或内部命令balabala&hellip;”就OK。</p>
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_01/1.jpg" alt="" border="0" title="设置环境变量" /><br></br></div>
+
+
+<h3>4.创建项目</h3>
+
+<p>进入cocos2d-x-2.2.0\tools\project-creator目录，可以在cmd下执行：</p>
+
+<p><code>python create_project.py -project Test -package com.jacky.test -language cpp//其中Test为工程名称，com.jacky.test为包名</code></p>
+
+<p>也可以创建一个批处理文件.bat，放在project-creator目录下，内容为：</p>
+
+<pre><code>@echo off  
+set /p projectName=请输入项目名称：  
+if "%projectName%"=="" goto inputError  
+set /p packageName=请输入包标示名：  
+if "%packageName%"=="" goto inputError  
+create_project.py -project %projectName% -package %packageName% -language cpp  
+pause  
+exit  
+:inputError  
+@echo 项目名称或者包标示名不能为空！  
+pause  
+</code></pre>
+
+<p>双击运行它就可以了。效果如下：</p>
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_01/2.jpg" alt="" border="0" title="创建项目" /><br></br></div>
+
+
+<p>然后在cocos2d-x目录下的project就可以看到Test文件夹，里面包含了各个平台的项目。</p>
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_01/3.jpg" alt="" border="0" title="各平台项目" /><br></br></div>
+
+
+<h3>5.导入eclipse，生成apk</h3>
+
+<p><strong>5.1.使用Eclipse NDK交叉编译</strong></p>
+
+<p>这里可以直接采用Eclipse NDK来交叉编译，具体方法为：</p>
+
+<p>（1）导入proj.android项目。</p>
+
+<p>（2）拷贝cocos2dx目录\cocos2dx\platform\android\java\src目录下的org包到android项目的src下。</p>
+
+<p>（3）修改项目属性C/C++ builder的build command和build directory。分别为NDK目录下的ndk-builder和当前项目文件夹。</p>
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_01/4.jpg" alt="" border="0" title="设置C++ build" /><br></br></div>
+
+
+<p>（4）添加C/C++→Builder→Environment→NDK_MODULE_PATH，值为cocos2dx目录和cocos2dx目录\cocos2dx\platform\third_party\android\prebuilt。</p>
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_01/5.jpg" alt="" border="0" title="设置NDK_MODULE_PATH" /><br></br></div>
+
+
+<p>（5）拷贝Resource目录下的资源到安卓目录下的assets中（如果使用Cygwin编译就不需要拷贝资源，build_native.sh帮我们做了这一步）。</p>
+
+<p>（6）build project ，run as andorid app即可。</p>
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_01/6.jpg" alt="" border="0" title="Eclipse编译" /><br></br></div>
+
+
+<p><strong>5.2.Cygwin编译</strong></p>
+
+<p>这个请参见<a href="http://blog.csdn.net/jackystudio/article/details/11516435">传送门</a>。编译完成后导入Eclipse即可。</p>
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_01/7.jpg" alt="" border="0" title="CygWin编译" /><br></br></div>
+
+
+<p>如果提示需要定义NDK_ROOT，那么在cygwin安装目录\home\username.bash_profile文件末尾添加：</p>
+
+<pre><code>NDK_ROOT=/cygdrive/d/eclipse/android-ndk-r9  
+export NDK_ROOT   
+</code></pre>
+
+<h3>6.本文环境</h3>
+
+<p>（1）VS2010</p>
+
+<p>（2）VA_X</p>
+
+<p>（3）Cygwin</p>
+
+<p>（4）Jdk1.7.0_11</p>
+
+<p>（5）Eclipse Juno</p>
+
+<p>（6）Andorid SDK2.2</p>
+
+<p>（7）Adroid-ndk-r9</p>
+
+<p>（8）cocos2dx-2.2.0</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">FuSijie</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-08T16:18:00+08:00" pubdate data-updated="true">Oct 8<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cocos2d-x/'>cocos2d-x</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+      <!-- JiaThis Button BEGIN -->
+  <section>
+    <h1>Share</h1>
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share?uid=1859056" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1859056" charset="utf-8"></script>
+</section>
+<!-- JiaThis Button END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+	    <p></p>
+        <a class="basic-alignment right" href="/blog/2013/10/09/play-cocos2dx-02/" title="Next Post: 【玩转cocos2d-x之二】游戏和引擎构成">【玩转cocos2d-x之二】游戏和引擎构成 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+  <section>
+    <h1>Comments</h1>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"fusijie"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->  
+</section>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+		<br>
+		<center><a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&amp;email=Geek.Jacky@Gmail.com" style="text-decoration:none" ><img src="\images\aboutme.png" border=0></img></a></center>
+		</br>
+</section><section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (25)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/11/25/play-cocos2dx-25/">【玩转cocos2d-x之二十五】数据结构CCArray</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/13/play-cocos2dx-24/">【玩转cocos2d-x之二十四】截图保存功能的实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/11/play-cocos2dx-23/">【玩转cocos2d-x之二十三】cocos2d-x多线程和同步03</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/05/play-cocos2dx-22/">【玩转cocos2d-x之二十二】cocos2d-x多线程和同步02</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/04/play-cocos2dx-21/">【玩转cocos2d-x之二十一】cocos2d-x多线程和同步01</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+  
+<section>
+  <h1>Sina Weibo</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="450" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=450&fansRow=0&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=0&uid=1307211523&verifier=3619ee9c">
+      </iframe>
+    </li>
+  </ul>
+</section>
+ 
+<section>
+<h1>Visitor</h1>
+<div>
+	<p></p>
+    <center>
+	<a href="http://info.flagcounter.com/3pF8"><img src="http://s08.flagcounter.com/count/3pF8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_12/viewers_3/labels_0/pageviews_1/flags_0/" alt="Flag Counter" border="0"></a>
+	</center>
+</div>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - FuSijie -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

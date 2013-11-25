@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: CCScheduler | Jacky's Blog]]></title>
+  <link href="http://www.jacky.tk/tags/ccscheduler/atom.xml" rel="self"/>
+  <link href="http://www.jacky.tk/"/>
+  <updated>2013-11-25T14:03:47+08:00</updated>
+  <id>http://www.jacky.tk/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十一】定时器schedule]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/18/play-cocos2dx-11/"/>
+    <updated>2013-10-18T08:08:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/18/play-cocos2dx-11</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12848473">http://blog.csdn.net/jackystudio</a></p>
+
+<p>如果我们想定时执行一个动作怎么办？CCScheduler帮了我们一个大忙。</p>
+
+<h3>1.概况</h3>
+
+<p>CCNode内部封装了一个</p>
+
+<pre><code>CCScheduler *m_pScheduler;  
+</code></pre>
+
+<p>正是通过它我们可以很轻松地完成一些定时功能，所以定时器是节点所具备的功能。</p>
+
+<p>定时器分为2种，一种是更新定时器，执行的频率是每帧执行一次，另一种则是自定义回调函数的定时器（最小值是一帧），关于回调函数和函数指针的相关基础可参见<a href="http://blog.csdn.net/jackystudio/article/details/11720325">这里</a>。</p>
+
+<!-- more -->
+
+
+<h3>2.API</h3>
+
+<pre><code>//更新定时器，每帧调用1次。每个节点只能有1个被调度的update函数  
+void scheduleUpdate(void);  
+//卸载更新定时器  
+void unscheduleUpdate(void);  
+
+//自定义定时器，如果重复调用，那调用间隔会更新，而不会再次调用  
+//interval，调用时间间隔，如果为0，建议使用scheduleUpdate  
+//repeat，回调函数会被执行repeat+1次，kCCRepeatForever是无限次调用  
+//delay，第一次执行前的延时  
+void schedule(SEL_SCHEDULE selector, float interval, unsigned int repeat, float delay);  
+void schedule(SEL_SCHEDULE selector, float interval);  
+void scheduleOnce(SEL_SCHEDULE selector, float delay);  
+void schedule(SEL_SCHEDULE selector);  
+//卸载自定义定时器  
+void unschedule(SEL_SCHEDULE selector);  
+void unscheduleAllSelectors(void);  
+
+//恢复所有定时器和动作，OnEnter调用  
+void resumeSchedulerAndActions(void);  
+//暂停所有定时器和动作，OnExit调用  
+void pauseSchedulerAndActions(void);  
+
+//scheduleUpdate每帧调用  
+virtual void update(float delta);  
+</code></pre>
+
+<h3>3.示例</h3>
+
+<p><strong>3.1.更新定时器</strong></p>
+
+<pre><code>//开启定时器  
+this-&gt;scheduleUpdate();  
+
+//虚函数update  
+void HelloWorld::update(float delta)  
+{  
+    CCLog("%f",delta);  
+}  
+
+//输出，这里设置了60fps，调用间隔1/60s  
+0.016667  
+0.016676  
+0.016657  
+0.016669  
+</code></pre>
+
+<p><strong>3.2.自定义定时器</strong></p>
+
+<pre><code>//开启定时器，延时2s执行，执行3+1次，执行间隔1s  
+this-&gt;schedule(schedule_selector(HelloWorld::log),1,3,2);  
+
+//回调函数  
+void HelloWorld::log(float dt)  
+{  
+    CCLog("schedule");  
+}  
+
+//输出  
+2.004532  
+1.005827  
+1.000238  
+1.001019  
+</code></pre>
+
+<h3>4.schedule_selector和SEL_SCHEDULE</h3>
+
+<p>看到上面的schedule_selector了吧，这又是个什么玩意？看看它的宏定义。</p>
+
+<pre><code>#define schedule_selector(_SELECTOR) (SEL_SCHEDULE)(&amp;_SELECTOR)  
+</code></pre>
+
+<p>原来是把函数指针转化为SEL_SCHEDULE型指针，那SEL_SCHEDULE又是什么？</p>
+
+<pre><code>typedef void (CCObject::*SEL_SCHEDULE)(float);  
+</code></pre>
+
+<p>也没啥，就是定义了一个带有float参数函数指针。所以我们在使用自定义Schedule的时候，回调函数一定要记得带上一个float参数，它记录了两次执行的间隔。如果忘了，可是会出现类型转换错误的异常。这种方式在callfunc_selector，menu_selector等也以同样的方式出现。</p>
+
+<h3>5.谁来调用回调函数</h3>
+
+<p>但是有没有发现，如果这个回调函数是个全局函数或者static函数也就算了，偏偏它是个成员函数，成员函数需要实例来调用，可是从调用方法来看，好像没传入调用对象？</p>
+
+<pre><code>this-&gt;schedule(schedule_selector(HelloWorld::log),1,3,2);  
+</code></pre>
+
+<p>是的，还记得一开头说的CCNode内部封装的m_pScheduler吗？</p>
+
+<pre><code>CCScheduler *m_pScheduler;  
+</code></pre>
+
+<p>原来CCNode帮我们实现了：</p>
+
+<pre><code>void CCNode::schedule(SEL_SCHEDULE selector, float interval, unsigned int repeat, float delay)  
+{  
+    CCAssert( selector, "Argument must be non-nil");  
+    CCAssert( interval &gt;=0, "Argument must be positive");  
+
+    m_pScheduler-&gt;scheduleSelector(selector, this, interval , repeat, delay, !m_bRunning);  
+}  
+</code></pre>
+
+<p>原来this这个时候被传入了，同时传入的参数还有m_bRunning，m_bRunning表示节点是否在运行中（是否在舞台上），OnEnter的时候赋值true，OnExit的时候赋值false，所以在执行定时器的时候还必须确保节点有在运行。</p>
+
+<p>这样确实用起来怪怪的，所以在cocos2d-x v3.0版本中，参数和函数指针用一个宏打包起来了~</p>
+
+<p>至于CCSchedule内部是怎么实现的，以及CCTimer的触发回调，有兴趣的就自己看看源码吧，我也写不来，源码有点长啊。</p>
+]]></content>
+  </entry>
+  
+</feed>

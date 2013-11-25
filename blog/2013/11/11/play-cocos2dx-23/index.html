@@ -1,0 +1,461 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>【玩转cocos2d-x之二十三】cocos2d-x多线程和同步03 - Jacky's Blog</title>
+  <meta name="author" content="FuSijie">
+
+  
+  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio cocos2d-x中和Android，Windows都一样，如果在主线程中处理一些耗时操作，那么主线程就会出现阻塞现象，表现在界面上就是卡住，未响应等情况。为了避免这种情况的出现， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.jacky.tk/blog/2013/11/11/play-cocos2dx-23">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jacky's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '45386223']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jacky's Blog</a></h1>
+  
+    <h2>Stay Hungry,Stay Foolish!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.jacky.tk" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/projects">Projects</a></li>
+  <li><a href="/tag-cloud/">Tags</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">【玩转cocos2d-x之二十三】cocos2d-x多线程和同步03</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-11T11:22:00+08:00" pubdate data-updated="true">Nov 11<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/15334159">http://blog.csdn.net/jackystudio</a></p>
+
+<p>cocos2d-x中和Android，Windows都一样，如果在主线程中处理一些耗时操作，那么主线程就会出现阻塞现象，表现在界面上就是卡住，未响应等情况。为了避免这种情况的出现，我们需要在后台开辟工作线程进行数据的处理，再采用消息传递或者其他形式来通知主线程进行UI变化。最常见的情况就是游戏进入前的loading。</p>
+
+<h3>1.图片的异步加载</h3>
+
+<p>在多线程和同步的第一篇介绍到使用pthread库的时候，讲到由于CCAutoreleasePool不是线程安全的，所以不能在工作线程中引入cocos2d-x相关的API（其实并不是所有的API都不能使用）。但是cocos2d-x显然考虑到这个问题了，所以它本身就帮我们封装好了一个API，避免了还要手动引入pthread库的尴尬。</p>
+
+<pre><code>void CCTextureCache::addImageAsync(const char *path, CCObject *target, SEL_CallFuncO selector)  
+</code></pre>
+
+<!--more -->
+
+
+<p>其中path是图片的位置，selector是加载完成时的回调函数。很方便，如果需要加载很多图片的话，对每一个进行回调处理，然后在update中更新UI即可。</p>
+
+<h3>2.plist的异步加载</h3>
+
+<p>可是由于内存原因，大部分情况下图片会被合成打包，同时带入plist。这时候如何进行图片的异步加载呢？这个时候就需要对addImageAsync的源码进一步的探究了。</p>
+
+<p><strong>2.1.耗时的是什么？</strong></p>
+
+<p>首先要理解的是耗时的动作是什么，只有把耗时的工作真正抓出来丢到工作线程上，异步加载才有意义。我们知道，图片在内存中是以纹理的形式存在的，而图片的加载，通俗来讲也就是纹理的生成，这就是耗时的原因。那CCTexureCache中addImage（同步加载）和addImageAysnc（异步加载）分别做了什么事？</p>
+
+<p><em>（1）addImage</em>
+可以看出addImage使用同步的方式生成了纹理，也就是在主线程中进行了耗时的加载操作。</p>
+
+<pre><code>//...cocos2d-x维护着一个全局纹理，在判断纹理是否已存在  
+if (! texture)   
+    {  
+        do   
+        {  
+        //...判断图片格式  
+
+            pImage = new CCImage();  
+            CC_BREAK_IF(NULL == pImage);  
+
+            bool bRet = pImage-&gt;initWithImageFile(fullpath.c_str(), eImageFormat);  
+            CC_BREAK_IF(!bRet);  
+
+            texture = new CCTexture2D();    //开辟纹理空间  
+
+            if( texture &amp;&amp;  
+                texture-&gt;initWithImage(pImage) )  //使用CCImage初始化纹理  
+            {  
+#if CC_ENABLE_CACHE_TEXTURE_DATA  
+                // cache the texture file name  
+                VolatileTexture::addImageTexture(texture, fullpath.c_str(), eImageFormat);  
+#endif  
+                m_pTextures-&gt;setObject(texture, pathKey.c_str());  
+                texture-&gt;release();  
+            }  
+            else  
+            {  
+                CCLOG("cocos2d: Couldn't create texture for file:%s in CCTextureCache", path);  
+            }  
+        } while (0);  
+    }  
+//...释放资源，返回纹理  
+</code></pre>
+
+<p><em>（2）addImageAsync</em></p>
+
+<p>addImageAsync则是在工作线程中加载图片，然后通过调度器进行纹理的转换。</p>
+
+<pre><code>//创建工作线程用于后台加载图片  
+pthread_create(&amp;s_loadingThread, NULL, loadImage, NULL);  
+
+//创建调度队列，用来根据已加载的图片进行纹理转换  
+CCDirector::sharedDirector()-&gt;getScheduler()-&gt;scheduleSelector(schedule_selector(CCTextureCache::addImageAsyncCallBack), this, 0, false);  
+
+void CCTextureCache::addImageAsyncCallBack(float dt)  
+{  
+    //...  
+    CCTexture2D *texture = new CCTexture2D();   //开辟纹理空间  
+#if 0 //TODO: (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)  
+    texture-&gt;initWithImage(pImage, kCCResolutioniPhone);  
+#else  
+    texture-&gt;initWithImage(pImage);      //使用CCImage初始化纹理  
+#endif  
+
+#if CC_ENABLE_CACHE_TEXTURE_DATA  
+
+   VolatileTexture::addImageTexture(texture, filename, pImageInfo-&gt;imageType);  
+#endif  
+    //...将加入autorelease，进行加载后的回调函数的调用，释放相关资源  
+}  
+</code></pre>
+
+<p><strong>2.2.plist加载的原理</strong></p>
+
+<p>之前使用plist是这样子的：</p>
+
+<pre><code>void CCSpriteFrameCache::addSpriteFramesWithFile(const char *pszPlist)//传入plist文件即可  
+</code></pre>
+
+<p>在它的实现中，发现了这么一句：</p>
+
+<pre><code>CCTexture2D *pTexture = CCTextureCache::sharedTextureCache()-&gt;addImage(texturePath.c_str());  
+</code></pre>
+
+<p>原来addSpriteFramesWithFile会先查找是否存在纹理，否则会在.plist的目录下寻找同名图片，然后调用同步的addImage函数来生成纹理。这也就是为什么只加载了plist，而纹理就会存在的原因了。</p>
+
+<p><strong>2.3.异步加载plist</strong></p>
+
+<p>知道了这些，那就让addSpriteFramesWithFile调用异步的addImageAsync函数就可以了，当然不需要改源码，因为CCSpriteFrameCache还提供了如下的plist加载方式：</p>
+
+<pre><code>void CCSpriteFrameCache::addSpriteFramesWithFile(const char *pszPlist, CCTexture2D *pobTexture)  
+</code></pre>
+
+<p>所以我们可以手动异步生成纹理后，在回调函数中和.plist一起传入addSpriteFramesWithFile，搞定！还记得刚开始的selector么？生成的纹理会作为参数传入这个回调函数中，完美！</p>
+
+<p><strong>2.4.注意</strong></p>
+
+<p>只要注意一点的是，在使用任何plist中的小图片时，引擎并不会为每一张小图片生成一个纹理，而是共用了大图片的纹理，同时指定了小图片的坐标和长宽。</p>
+
+<h3>3.示例</h3>
+
+<p>其中ui_text.png是大图片，raffle_b_friend.png和raffle_b_diamond.png是两张小图片。</p>
+
+<pre><code>bool CTestLayer::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCLayer::init());  
+
+        //addImage or addImageAsync中创建纹理  
+        CCTextureCache::sharedTextureCache()-&gt;addImageAsync("ui_text.png",this,callfuncO_selector(CTestLayer::showSprite));  
+
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+
+void CTestLayer::showSprite(CCObject* obj)  
+{  
+    CCTexture2D* texture_ui_text=(CCTexture2D*)obj;//传入的obj即是异步生成的纹理  
+    CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;addSpriteFramesWithFile("ui_text.plist",texture_ui_text);//通过纹理和.plist文件加入CCSpriteFrameCache  
+    CCSprite* raffle_b_friend=CCSprite::createWithSpriteFrameName("raffle_b_friend.png");//尽情使用小图片吧  
+    raffle_b_friend-&gt;setPosition(ccp(100,100));  
+    this-&gt;addChild(raffle_b_friend);  
+
+    //错误，只能获取ui_text.png的纹理  
+    //CCTexture2D* raffle_b_diamond_texture=CCTextureCache::sharedTextureCache()-&gt;textureForKey("raffle_b_diamond.png");  
+    //正确，可以用这种先获取精灵帧，再从精灵帧中获取ui_text的纹理，以及大小，来构建CCSprite  
+    CCSpriteFrame* raffle_b_diamond_spriteframe=CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;spriteFrameByName("raffle_b_diamond.png");  
+    CCTexture2D* texture=raffle_b_diamond_spriteframe-&gt;getTexture();  
+    CCRect rect=raffle_b_diamond_spriteframe-&gt;getRect();  
+    CCSprite* raffle_b_diamond=CCSprite::createWithTexture(texture,rect); //如果纹理需要旋转，setRotation吧  
+    raffle_b_diamond-&gt;setRotation(false);  
+    raffle_b_diamond-&gt;setPosition(ccp(300,100));  
+    this-&gt;addChild(raffle_b_diamond);  
+}  
+</code></pre>
+
+<h3>4.效果</h3>
+
+<p>使用异步加载plist方式处理:</p>
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_23/1.jpg" alt="" border="0" title="效果图" /><br></br></div>
+
+
+<h3>5.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6533293">下载地址</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">FuSijie</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-11T11:22:00+08:00" pubdate data-updated="true">Nov 11<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cocos2d-x/'>cocos2d-x</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+      <!-- JiaThis Button BEGIN -->
+  <section>
+    <h1>Share</h1>
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share?uid=1859056" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1859056" charset="utf-8"></script>
+</section>
+<!-- JiaThis Button END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+	    <p></p>
+        <a class="basic-alignment left" href="/blog/2013/11/05/play-cocos2dx-22/" title="Previous Post: 【玩转cocos2d-x之二十二】cocos2d-x多线程和同步02">&laquo; 【玩转cocos2d-x之二十二】cocos2d-x多线程和同步02</a>
+      
+      
+	    <p></p>
+        <a class="basic-alignment right" href="/blog/2013/11/13/play-cocos2dx-24/" title="Next Post: 【玩转cocos2d-x之二十四】截图保存功能的实现">【玩转cocos2d-x之二十四】截图保存功能的实现 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+  <section>
+    <h1>Comments</h1>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"fusijie"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->  
+</section>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+		<br>
+		<center><a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&amp;email=Geek.Jacky@Gmail.com" style="text-decoration:none" ><img src="\images\aboutme.png" border=0></img></a></center>
+		</br>
+</section><section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (25)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/11/25/play-cocos2dx-25/">【玩转cocos2d-x之二十五】数据结构CCArray</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/13/play-cocos2dx-24/">【玩转cocos2d-x之二十四】截图保存功能的实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/11/play-cocos2dx-23/">【玩转cocos2d-x之二十三】cocos2d-x多线程和同步03</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/05/play-cocos2dx-22/">【玩转cocos2d-x之二十二】cocos2d-x多线程和同步02</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/04/play-cocos2dx-21/">【玩转cocos2d-x之二十一】cocos2d-x多线程和同步01</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+  
+<section>
+  <h1>Sina Weibo</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="450" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=450&fansRow=0&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=0&uid=1307211523&verifier=3619ee9c">
+      </iframe>
+    </li>
+  </ul>
+</section>
+ 
+<section>
+<h1>Visitor</h1>
+<div>
+	<p></p>
+    <center>
+	<a href="http://info.flagcounter.com/3pF8"><img src="http://s08.flagcounter.com/count/3pF8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_12/viewers_3/labels_0/pageviews_1/flags_0/" alt="Flag Counter" border="0"></a>
+	</center>
+</div>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - FuSijie -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

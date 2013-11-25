@@ -1,0 +1,409 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>【玩转cocos2d-x之十八】仿《中国好学霸》文字拖拽和定位 - Jacky's Blog</title>
+  <meta name="author" content="FuSijie">
+
+  
+  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio 现在各种猜成语猜歌名好学霸之类的游戏火的一塌糊涂。本节就介绍下文字的拖拽和定位。 1.基本原理 其实这只是精灵的简单拖拽和坐标的识别而已。当触摸点在精灵的范围内，精灵可以感应拖动，当触摸结束进行位置判断， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.jacky.tk/blog/2013/10/28/play-cocos2dx-18">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jacky's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '45386223']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jacky's Blog</a></h1>
+  
+    <h2>Stay Hungry,Stay Foolish!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.jacky.tk" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/projects">Projects</a></li>
+  <li><a href="/tag-cloud/">Tags</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">【玩转cocos2d-x之十八】仿《中国好学霸》文字拖拽和定位</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-28T18:00:00+08:00" pubdate data-updated="true">Oct 28<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13287519">http://blog.csdn.net/jackystudio</a></p>
+
+<p>现在各种猜成语猜歌名好学霸之类的游戏火的一塌糊涂。本节就介绍下文字的拖拽和定位。</p>
+
+<h3>1.基本原理</h3>
+
+<p>其实这只是精灵的简单拖拽和坐标的识别而已。当触摸点在精灵的范围内，精灵可以感应拖动，当触摸结束进行位置判断，如果在有效范围内就进行自动定位。</p>
+
+<!-- more -->
+
+
+<h3>2.实现</h3>
+
+<p><strong>2.1.背景加入和文字精灵的加入</strong>
+这里是采用<a href="http://blog.csdn.net/jackystudio/article/details/13014883">这一节</a>所述方式添加中文。</p>
+
+<pre><code>bool AutoSet::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCLayer::init());  
+        CCSize visiableSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+
+        CCSprite* background=CCSprite::create("AutoSetBk.jpg");  
+        background-&gt;setPosition(ccp(visiableSize.width/2,visiableSize.height/2));  
+        this-&gt;addChild(background);//添加背景  
+
+        //利用CCDictionary来读取xml  
+        CCDictionary* chnStrings = CCDictionary::createWithContentsOfFile("CHN_Strings.xml");  
+        const char *hao = ((CCString*)chnStrings-&gt;objectForKey("hao"))-&gt;m_sString.c_str();   
+
+        text=CCLabelTTF::create(hao,"Arial",50);  
+        text-&gt;setPosition(ccp(120,160));  
+        text-&gt;setColor(ccc3(0,0,0));  
+        this-&gt;addChild(text);//添加文本  
+
+        this-&gt;setTouchEnabled(true);//设置触摸可用  
+
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+</code></pre>
+
+<p><strong>2.2.触摸的实现和拖拽的定位</strong></p>
+
+<p>因为3.0版本cocos2d-x的触摸实现已经变更了，所以这里不再赘述，3.0之前的触摸的原理和实现具体可以参见<a href="http://blog.csdn.net/jackystudio/article/details/11860007">这一节</a>。</p>
+
+<p><strong>2.2.1注册触摸事件</strong></p>
+
+<pre><code>void AutoSet::registerWithTouchDispatcher(void)  
+{  
+    CCDirector *pDirector=CCDirector::sharedDirector();    
+    pDirector-&gt;getTouchDispatcher()-&gt;addTargetedDelegate(this,0,true);//单点触摸  
+}  
+</code></pre>
+
+<p><strong>2.2.2.触摸开始</strong></p>
+
+<pre><code>bool AutoSet::ccTouchBegan(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent)  
+{  
+    return true;//返回true表示接收触摸事件  
+}  
+</code></pre>
+
+<p><strong>2.2.3.触摸过程</strong></p>
+
+<pre><code>void AutoSet::ccTouchMoved(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent)  
+{  
+    CCPoint beginPoint = pTouch-&gt;getLocationInView();  //获取触摸位置  
+    beginPoint = CCDirector::sharedDirector()-&gt;convertToGL(beginPoint);//坐标转换  
+    CCPoint pt=text-&gt;getPosition();  
+    CCRect rect=CCRectMake(pt.x-30,pt.y-30,60,60);  
+    if (rect.containsPoint(beginPoint))//判断触摸点是否在文字上  
+    {  
+        CCPoint endPoint=pTouch-&gt;getPreviousLocationInView();//获取触摸的前一个位置    
+        endPoint=CCDirector::sharedDirector()-&gt;convertToGL(endPoint);     
+
+        CCPoint offSet =ccpSub(beginPoint,endPoint);//获取offset    
+        CCPoint toPoint=ccpAdd(text-&gt;getPosition(),offSet); //获取真正移动位置  
+        text-&gt;setPosition(toPoint);//移动文字  
+    }  
+}  
+</code></pre>
+
+<p><strong>2.2.4.触摸结束</strong></p>
+
+<pre><code>void AutoSet::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)  
+{  
+    CCPoint lastPoint = pTouch-&gt;getLocationInView();//获取触摸结束点位置  
+    lastPoint = CCDirector::sharedDirector()-&gt;convertToGL(lastPoint);  
+    CCRect rect=CCRectMake(330,130,60,60);  
+    CCMoveTo* moveto;  
+    if (!rect.containsPoint(lastPoint))//如果未在指定区域，还原到初始位置  
+    {  
+        moveto=CCMoveTo::create(0.1f,ccp(120,160));  
+    }  
+    else//如果在指定区域，移动到该区域中心  
+    {  
+        moveto=CCMoveTo::create(0.1f,ccp(360,160));  
+    }  
+    text-&gt;runAction(moveto);  
+}  
+</code></pre>
+
+<h3>3.效果图</h3>
+
+<div align="center"><img src="http://note.youdao.com/yws/res/346/61EB707E6CE049128DE07F50141B2F54" alt="" border="0" title="效果" /><br></br></div>
+
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6463261">源码下载</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">FuSijie</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-28T18:00:00+08:00" pubdate data-updated="true">Oct 28<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cocos2d-x/'>cocos2d-x</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+      <!-- JiaThis Button BEGIN -->
+  <section>
+    <h1>Share</h1>
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share?uid=1859056" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1859056" charset="utf-8"></script>
+</section>
+<!-- JiaThis Button END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+	    <p></p>
+        <a class="basic-alignment left" href="/blog/2013/10/25/play-cocos2dx-17/" title="Previous Post: 【玩转cocos2d-x之十七】cocos2d-x中文显示">&laquo; 【玩转cocos2d-x之十七】cocos2d-x中文显示</a>
+      
+      
+	    <p></p>
+        <a class="basic-alignment right" href="/blog/2013/10/30/play-cocos2dx-19/" title="Next Post: 【玩转cocos2d-x之十九】从CCObject看cocos2d-x的拷贝机制">【玩转cocos2d-x之十九】从CCObject看cocos2d-x的拷贝机制 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+  <section>
+    <h1>Comments</h1>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"fusijie"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->  
+</section>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+		<br>
+		<center><a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&amp;email=Geek.Jacky@Gmail.com" style="text-decoration:none" ><img src="\images\aboutme.png" border=0></img></a></center>
+		</br>
+</section><section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (25)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/11/25/play-cocos2dx-25/">【玩转cocos2d-x之二十五】数据结构CCArray</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/13/play-cocos2dx-24/">【玩转cocos2d-x之二十四】截图保存功能的实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/11/play-cocos2dx-23/">【玩转cocos2d-x之二十三】cocos2d-x多线程和同步03</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/05/play-cocos2dx-22/">【玩转cocos2d-x之二十二】cocos2d-x多线程和同步02</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/04/play-cocos2dx-21/">【玩转cocos2d-x之二十一】cocos2d-x多线程和同步01</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+  
+<section>
+  <h1>Sina Weibo</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="450" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=450&fansRow=0&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=0&uid=1307211523&verifier=3619ee9c">
+      </iframe>
+    </li>
+  </ul>
+</section>
+ 
+<section>
+<h1>Visitor</h1>
+<div>
+	<p></p>
+    <center>
+	<a href="http://info.flagcounter.com/3pF8"><img src="http://s08.flagcounter.com/count/3pF8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_12/viewers_3/labels_0/pageviews_1/flags_0/" alt="Flag Counter" border="0"></a>
+	</center>
+</div>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - FuSijie -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

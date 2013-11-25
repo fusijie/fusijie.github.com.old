@@ -1,0 +1,2794 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Jacky's Blog]]></title>
+  <link href="http://www.jacky.tk/atom.xml" rel="self"/>
+  <link href="http://www.jacky.tk/"/>
+  <updated>2013-11-25T14:03:47+08:00</updated>
+  <id>http://www.jacky.tk/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十五】数据结构CCArray]]></title>
+    <link href="http://www.jacky.tk/blog/2013/11/25/play-cocos2dx-25/"/>
+    <updated>2013-11-25T13:53:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/11/25/play-cocos2dx-25</id>
+    <content type="html"><![CDATA[<p>CCArray是从cocos2d中移植过来的，类似于Apple的NSMutableArray，但是比NSMutableArray更为的好用。要注意的是虽然CCArray和CCDictionary可以管理cocos2d-x中绝大多数的类，但是仍然无法替代STL库，STL库更为强有力。</p>
+
+<h3>1.API</h3>
+
+<p>先看一下CCArray可以帮我们做什么。</p>
+
+<!-- more -->
+
+
+<p><strong>1.1.创建</strong></p>
+
+<pre><code>//创建array  
+static CCArray* create();  
+//使用一系列CCObject创建array  
+static CCArray* create(CCObject* pObject, …);  
+//使用一个CCObject创建array  
+static CCArray* createWithObject(CCObject* pObject);  
+//创建array并设置容量  
+static CCArray* createWithCapacity(unsigned int capacity);  
+//用一个已存在的array创建另一个array  
+static CCArray* createWithArray(CCArray* otherArray);  
+</code></pre>
+
+<p><strong>1.2.添加</strong></p>
+
+<pre><code>//添加一个元素  
+void addObject(CCObject* object);  
+//添加一个已存在array中所有元素  
+void addObjectsFromArray(CCArray* otherArray);  
+//在指定位置插入元素  
+void insertObject(CCObject* object, unsigned int index);  
+</code></pre>
+
+<p><strong>1.3.删除</strong></p>
+
+<pre><code>//移除最后一个元素  
+void removeLastObject(bool bReleaseObj = true);  
+//移除某个元素  
+void removeObject(CCObject* object, bool bReleaseObj = true);  
+//移除一个指定位置的元素  
+void removeObjectAtIndex(unsigned int index, bool bReleaseObj = true);  
+//移除某个array  
+void removeObjectsInArray(CCArray* otherArray);  
+//移除所有元素  
+void removeAllObjects();  
+//快速移除某个元素  
+void fastRemoveObject(CCObject* object);  
+//快速移除某个指定位置的元素  
+void fastRemoveObjectAtIndex(unsigned int index);  
+</code></pre>
+
+<p><strong>1.4.操作元素</strong></p>
+
+<pre><code>//返回元素个数  
+unsigned int count() const;  
+//返回array容量  
+unsigned int capacity() const;  
+//返回指定CCObject的位置，如果不存在返回UINT_MAX  
+unsigned int indexOfObject(CCObject* object) const;  
+//返回指定位置的CCObject  
+CCObject* objectAtIndex(unsigned int index);  
+//返回最后一个元素  
+CCObject* lastObject();  
+//返回随机元素  
+CCObject* randomObject();  
+//返回某个元素是否存在于array中  
+bool containsObject(CCObject* object) const;  
+//判断array是否相等  
+bool isEqualToArray(CCArray* pOtherArray);  
+</code></pre>
+
+<p><strong>1.5.操作array内容</strong></p>
+
+<pre><code>//交换2个元素  
+void exchangeObject(CCObject* object1, CCObject* object2);  
+//交换2个指定位置元素  
+void exchangeObjectAtIndex(unsigned int index1, unsigned int index2);  
+//用一个对象替代指定位置元素  
+void replaceObjectAtIndex(unsigned int uIndex, CCObject* pObject, bool bReleaseObject = true);  
+//反转array  
+void reverseObjects();  
+//收缩array内存以匹配元素个数  
+void reduceMemoryFootprint();  
+</code></pre>
+
+<h3>2.remove和fastremove</h3>
+
+<p>从<strong>1.3</strong>可以看出删除有两种方式，普通删除和快速删除，它们有什么区别呢？</p>
+
+<p><strong>2.1.普通删除</strong></p>
+
+<pre><code>//普通删除  
+void ccArrayRemoveObjectAtIndex(ccArray *arr, unsigned int index, bool bReleaseObj/* = true*/)  
+{  
+    CCAssert(arr &amp;&amp; arr-&gt;num &gt; 0 &amp;&amp; index &lt; arr-&gt;num, "Invalid index. Out of bounds");  
+    //删除元素内容，位置仍保留着  
+    if (bReleaseObj)  
+    {  
+        CC_SAFE_RELEASE(arr-&gt;arr[index]);  
+    }  
+    //长度减1  
+    arr-&gt;num--;  
+    //获得要删除的元素后的元素个数  
+    unsigned int remaining = arr-&gt;num - index;  
+    if(remaining&gt;0)  
+    {  
+        //将要删除元素后的所有元素逐个向前移动  
+        memmove((void *)&amp;arr-&gt;arr[index], (void *)&amp;arr-&gt;arr[index+1], remaining * sizeof(CCObject*));  
+    }  
+}  
+</code></pre>
+
+<p><strong>2.2.快速删除</strong></p>
+
+<pre><code>//快速删除  
+void ccArrayFastRemoveObjectAtIndex(ccArray *arr, unsigned int index)  
+{  
+    //删除元素内容，位置仍保留着  
+    CC_SAFE_RELEASE(arr-&gt;arr[index]);  
+    //获取最后一个元素  
+    unsigned int last = --arr-&gt;num;  
+    //把最后一个元素插到删除元素的位置上  
+    arr-&gt;arr[index] = arr-&gt;arr[last];  
+}  
+</code></pre>
+
+<p><strong>2.3.总结</strong></p>
+
+<p>如果有array={0,1,2,3,4,5}，如果要删除3，使用普通删除得到的结果{0,1,2,4,5}，使用快速删除得到的结果是{0,1,2,5,4}。可以看出快速删除的效率比普通删除效率高，就差在移动元素的时间复杂度上。</p>
+
+<h3>3.内存分配</h3>
+
+<p><strong>3.1.容量和个数</strong>
+CCArray中容量和个数并不是同一个概念。个数&lt;=容量。从添加元素的源码中可以看到在添加之前会先进行空间分配，所以它是一个动态分配内存的过程。如下</p>
+
+<pre><code>void ccArrayEnsureExtraCapacity(ccArray *arr, unsigned int extra)//确保有额外的空间  
+{  
+    while (arr-&gt;max &lt; arr-&gt;num + extra)//判断空间是否足够  
+    {  
+        ccArrayDoubleCapacity(arr);//增加一倍空间  
+    }  
+}  
+</code></pre>
+
+<p>所以，每次CCArray在插入数据时检测到空间不足会增加一倍空间，再进行检测，直到空间满足分配为止。</p>
+
+<p><strong>3.2.判等</strong></p>
+
+<p>判断2个CCArray是否相等使用isEqualToArray()，判断相等的条件是CCArray中的每个元素相等即可，与CCArray的容量无关。</p>
+
+<h3>4.效率</h3>
+
+<p>比起NSMutableArray，CCArray效率能高出10%左右，原因有三：</p>
+
+<p><em>（1）它使用的是C接口，所以它不有Objective-C消息开销。</em></p>
+
+<p><em>（2）它假定你知道你在做什么，所以它不花时间在安全检查上（如边界溢出，空间需求等）。</em></p>
+
+<p><em>（3）在比较上使用了指针而不是isEqual。</em></p>
+
+<p>除了CCArray，我们还看到了ccCArray，CCArray基本上都是调用了ccCArray的函数，为什么要分为2种？
+仔细看一下CCArray是继承于CCObject，所以CCArray是用于处理cocos2d-x对象的，内存管理上也有cocos2d-x的autorelease等诸多特性。而ccCArray可以直接操作标准的C数据结构和类型。</p>
+
+<h3>5.CCARRAY_FOREACH和CCARRAY_FOREACH_REVERSE</h3>
+
+<p>宏定义，用于正向遍历和反向遍历CCArray元素</p>
+
+<pre><code>#define CCARRAY_FOREACH(__array__, __object__)                                                                         \  
+    if ((__array__) &amp;&amp; (__array__)-&gt;data-&gt;num &gt; 0)                                                                     \  
+    for(CCObject** __arr__ = (__array__)-&gt;data-&gt;arr, **__end__ = (__array__)-&gt;data-&gt;arr + (__array__)-&gt;data-&gt;num-1;    \  
+    __arr__ &lt;= __end__ &amp;&amp; (((__object__) = *__arr__) != NULL/* || true*/);                                             \  
+    __arr__++)  
+
+#define CCARRAY_FOREACH_REVERSE(__array__, __object__)                                                                  \  
+    if ((__array__) &amp;&amp; (__array__)-&gt;data-&gt;num &gt; 0)                                                                      \  
+    for(CCObject** __arr__ = (__array__)-&gt;data-&gt;arr + (__array__)-&gt;data-&gt;num-1, **__end__ = (__array__)-&gt;data-&gt;arr;     \  
+    __arr__ &gt;= __end__ &amp;&amp; (((__object__) = *__arr__) != NULL/* || true*/);                                              \  
+    __arr__--)  
+</code></pre>
+
+<h3>6.示例</h3>
+
+<p>CCArray的使用示例在<a href="http://blog.csdn.net/jackystudio/article/details/11917875">此文</a>中有比较典型的应用，这里就不再详述。</p>
+
+<h3>7.注意</h3>
+
+<p>一般来说，CCArray不会被add到其他类，所以它的引用计数是1，而且被设置为自动释放。所以创建CCArray对象时要记得调用retain，而且在析构的时候也要调用release来释放内存。真心想吐槽。。。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十四】截图保存功能的实现]]></title>
+    <link href="http://www.jacky.tk/blog/2013/11/13/play-cocos2dx-24/"/>
+    <updated>2013-11-13T08:34:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/11/13/play-cocos2dx-24</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/15498083">http://blog.csdn.net/jackystudio</a></p>
+
+<p>官方TestCpp有这个demo了，这里还是把它单独拖出来写一下，游戏推广的一个很重要组成就是玩家分享，所以游戏截图就起到很大作用了。截图功能通过CCRenderTexture实现。</p>
+
+<h3>1.CCRenderTexture</h3>
+
+<p>CCRenderTexture是一个通用渲染对象，可以通过构建一个CCRenderTexture对象，进而把要渲染的东西填充进去，在渲染开始前调用call函数，调用cocos的场景的visit函数对其进行渲染，渲染结束后调用end函数。CCRenderTexture继承于CCNode，所以可以简单地把渲染纹理添加到你的场景中，就像处理其它cocos中的节点一样，当然它还提供了保存功能，可以把渲染纹理保存为PNG或JPG格式。</p>
+
+<!-- more -->
+
+
+<h3>2.API</h3>
+
+<pre><code>   //创建和初始化函数  
+   static CCRenderTexture * create(int w ,int h, CCTexture2DPixelFormat eFormat, GLuint uDepthStencilFormat);  
+   static CCRenderTexture * create(int w, int h, CCTexture2DPixelFormat eFormat);  
+   static CCRenderTexture * create(int w, int h);  
+   bool initWithWidthAndHeight(int w, int h, CCTexture2DPixelFormat eFormat);  
+   bool initWithWidthAndHeight(int w, int h, CCTexture2DPixelFormat eFormat, GLuint uDepthStencilFormat);  
+
+   //开始获取  
+   void begin();  
+
+   //开始渲染时清除之前渲染的内容  
+   void beginWithClear(float r, float g, float b, float a);  
+   void beginWithClear(float r, float g, float b, float a, float depthValue);  
+   void beginWithClear(float r, float g, float b, float a, float depthValue, int stencilValue);  
+
+   //结束获取  
+   void end();  
+
+   //清除纹理  
+   void clear(float r, float g, float b, float a);  
+   void clearDepth(float depthValue);  
+   void clearStencil(int stencilValue);  
+
+   //保存纹理为图片文件，可以选择JPG/PNG格式，默认是JPEG格式，成功返回真  
+   bool saveToFile(const char *szFilePath);  
+   bool saveToFile(const char *name, tCCImageFormat format);  
+</code></pre>
+
+<h3>3.示例</h3>
+
+<p>修改HelloWorld中结束菜单的回调函数如下：</p>
+
+<pre><code>void CTestLayer::menuCloseCallback(CCObject* pSender)  
+{  
+    SaveScreenShot();  
+}  
+
+//截图功能  
+void CTestLayer::SaveScreenShot()  
+{  
+    //获取屏幕尺寸  
+    CCSize size = CCDirector::sharedDirector()-&gt;getWinSize();  
+    //使用屏幕尺寸初始化一个空的渲染纹理对象  
+    CCRenderTexture* texture = CCRenderTexture::create((int)size.width, (int)size.height);  
+    //设置位置  
+    texture-&gt;setPosition(ccp(size.width/2, size.height/2));  
+    //开始获取  
+    texture-&gt;begin();  
+    //遍历场景节点对象，填充纹理到texure中  
+    CCDirector::sharedDirector()-&gt;getRunningScene()-&gt;visit();  
+    //结束获取  
+    texture-&gt;end();  
+    //保存为PNG图，Win32/Debug目录下  
+    texture-&gt;saveToFile("screenshot.png", kCCImageFormatPNG);  
+}  
+</code></pre>
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6538305">下载地址</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十三】cocos2d-x多线程和同步03]]></title>
+    <link href="http://www.jacky.tk/blog/2013/11/11/play-cocos2dx-23/"/>
+    <updated>2013-11-11T11:22:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/11/11/play-cocos2dx-23</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/15334159">http://blog.csdn.net/jackystudio</a></p>
+
+<p>cocos2d-x中和Android，Windows都一样，如果在主线程中处理一些耗时操作，那么主线程就会出现阻塞现象，表现在界面上就是卡住，未响应等情况。为了避免这种情况的出现，我们需要在后台开辟工作线程进行数据的处理，再采用消息传递或者其他形式来通知主线程进行UI变化。最常见的情况就是游戏进入前的loading。</p>
+
+<h3>1.图片的异步加载</h3>
+
+<p>在多线程和同步的第一篇介绍到使用pthread库的时候，讲到由于CCAutoreleasePool不是线程安全的，所以不能在工作线程中引入cocos2d-x相关的API（其实并不是所有的API都不能使用）。但是cocos2d-x显然考虑到这个问题了，所以它本身就帮我们封装好了一个API，避免了还要手动引入pthread库的尴尬。</p>
+
+<pre><code>void CCTextureCache::addImageAsync(const char *path, CCObject *target, SEL_CallFuncO selector)  
+</code></pre>
+
+<!--more -->
+
+
+<p>其中path是图片的位置，selector是加载完成时的回调函数。很方便，如果需要加载很多图片的话，对每一个进行回调处理，然后在update中更新UI即可。</p>
+
+<h3>2.plist的异步加载</h3>
+
+<p>可是由于内存原因，大部分情况下图片会被合成打包，同时带入plist。这时候如何进行图片的异步加载呢？这个时候就需要对addImageAsync的源码进一步的探究了。</p>
+
+<p><strong>2.1.耗时的是什么？</strong></p>
+
+<p>首先要理解的是耗时的动作是什么，只有把耗时的工作真正抓出来丢到工作线程上，异步加载才有意义。我们知道，图片在内存中是以纹理的形式存在的，而图片的加载，通俗来讲也就是纹理的生成，这就是耗时的原因。那CCTexureCache中addImage（同步加载）和addImageAysnc（异步加载）分别做了什么事？</p>
+
+<p><em>（1）addImage</em>
+可以看出addImage使用同步的方式生成了纹理，也就是在主线程中进行了耗时的加载操作。</p>
+
+<pre><code>//...cocos2d-x维护着一个全局纹理，在判断纹理是否已存在  
+if (! texture)   
+    {  
+        do   
+        {  
+        //...判断图片格式  
+
+            pImage = new CCImage();  
+            CC_BREAK_IF(NULL == pImage);  
+
+            bool bRet = pImage-&gt;initWithImageFile(fullpath.c_str(), eImageFormat);  
+            CC_BREAK_IF(!bRet);  
+
+            texture = new CCTexture2D();    //开辟纹理空间  
+
+            if( texture &amp;&amp;  
+                texture-&gt;initWithImage(pImage) )  //使用CCImage初始化纹理  
+            {  
+#if CC_ENABLE_CACHE_TEXTURE_DATA  
+                // cache the texture file name  
+                VolatileTexture::addImageTexture(texture, fullpath.c_str(), eImageFormat);  
+#endif  
+                m_pTextures-&gt;setObject(texture, pathKey.c_str());  
+                texture-&gt;release();  
+            }  
+            else  
+            {  
+                CCLOG("cocos2d: Couldn't create texture for file:%s in CCTextureCache", path);  
+            }  
+        } while (0);  
+    }  
+//...释放资源，返回纹理  
+</code></pre>
+
+<p><em>（2）addImageAsync</em></p>
+
+<p>addImageAsync则是在工作线程中加载图片，然后通过调度器进行纹理的转换。</p>
+
+<pre><code>//创建工作线程用于后台加载图片  
+pthread_create(&amp;s_loadingThread, NULL, loadImage, NULL);  
+
+//创建调度队列，用来根据已加载的图片进行纹理转换  
+CCDirector::sharedDirector()-&gt;getScheduler()-&gt;scheduleSelector(schedule_selector(CCTextureCache::addImageAsyncCallBack), this, 0, false);  
+
+void CCTextureCache::addImageAsyncCallBack(float dt)  
+{  
+    //...  
+    CCTexture2D *texture = new CCTexture2D();   //开辟纹理空间  
+#if 0 //TODO: (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)  
+    texture-&gt;initWithImage(pImage, kCCResolutioniPhone);  
+#else  
+    texture-&gt;initWithImage(pImage);      //使用CCImage初始化纹理  
+#endif  
+
+#if CC_ENABLE_CACHE_TEXTURE_DATA  
+
+   VolatileTexture::addImageTexture(texture, filename, pImageInfo-&gt;imageType);  
+#endif  
+    //...将加入autorelease，进行加载后的回调函数的调用，释放相关资源  
+}  
+</code></pre>
+
+<p><strong>2.2.plist加载的原理</strong></p>
+
+<p>之前使用plist是这样子的：</p>
+
+<pre><code>void CCSpriteFrameCache::addSpriteFramesWithFile(const char *pszPlist)//传入plist文件即可  
+</code></pre>
+
+<p>在它的实现中，发现了这么一句：</p>
+
+<pre><code>CCTexture2D *pTexture = CCTextureCache::sharedTextureCache()-&gt;addImage(texturePath.c_str());  
+</code></pre>
+
+<p>原来addSpriteFramesWithFile会先查找是否存在纹理，否则会在.plist的目录下寻找同名图片，然后调用同步的addImage函数来生成纹理。这也就是为什么只加载了plist，而纹理就会存在的原因了。</p>
+
+<p><strong>2.3.异步加载plist</strong></p>
+
+<p>知道了这些，那就让addSpriteFramesWithFile调用异步的addImageAsync函数就可以了，当然不需要改源码，因为CCSpriteFrameCache还提供了如下的plist加载方式：</p>
+
+<pre><code>void CCSpriteFrameCache::addSpriteFramesWithFile(const char *pszPlist, CCTexture2D *pobTexture)  
+</code></pre>
+
+<p>所以我们可以手动异步生成纹理后，在回调函数中和.plist一起传入addSpriteFramesWithFile，搞定！还记得刚开始的selector么？生成的纹理会作为参数传入这个回调函数中，完美！</p>
+
+<p><strong>2.4.注意</strong></p>
+
+<p>只要注意一点的是，在使用任何plist中的小图片时，引擎并不会为每一张小图片生成一个纹理，而是共用了大图片的纹理，同时指定了小图片的坐标和长宽。</p>
+
+<h3>3.示例</h3>
+
+<p>其中ui_text.png是大图片，raffle_b_friend.png和raffle_b_diamond.png是两张小图片。</p>
+
+<pre><code>bool CTestLayer::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCLayer::init());  
+
+        //addImage or addImageAsync中创建纹理  
+        CCTextureCache::sharedTextureCache()-&gt;addImageAsync("ui_text.png",this,callfuncO_selector(CTestLayer::showSprite));  
+
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+
+void CTestLayer::showSprite(CCObject* obj)  
+{  
+    CCTexture2D* texture_ui_text=(CCTexture2D*)obj;//传入的obj即是异步生成的纹理  
+    CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;addSpriteFramesWithFile("ui_text.plist",texture_ui_text);//通过纹理和.plist文件加入CCSpriteFrameCache  
+    CCSprite* raffle_b_friend=CCSprite::createWithSpriteFrameName("raffle_b_friend.png");//尽情使用小图片吧  
+    raffle_b_friend-&gt;setPosition(ccp(100,100));  
+    this-&gt;addChild(raffle_b_friend);  
+
+    //错误，只能获取ui_text.png的纹理  
+    //CCTexture2D* raffle_b_diamond_texture=CCTextureCache::sharedTextureCache()-&gt;textureForKey("raffle_b_diamond.png");  
+    //正确，可以用这种先获取精灵帧，再从精灵帧中获取ui_text的纹理，以及大小，来构建CCSprite  
+    CCSpriteFrame* raffle_b_diamond_spriteframe=CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;spriteFrameByName("raffle_b_diamond.png");  
+    CCTexture2D* texture=raffle_b_diamond_spriteframe-&gt;getTexture();  
+    CCRect rect=raffle_b_diamond_spriteframe-&gt;getRect();  
+    CCSprite* raffle_b_diamond=CCSprite::createWithTexture(texture,rect); //如果纹理需要旋转，setRotation吧  
+    raffle_b_diamond-&gt;setRotation(false);  
+    raffle_b_diamond-&gt;setPosition(ccp(300,100));  
+    this-&gt;addChild(raffle_b_diamond);  
+}  
+</code></pre>
+
+<h3>4.效果</h3>
+
+<p>使用异步加载plist方式处理:</p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_23/1.jpg" alt="" border="0" title="效果图" /><br></br></div>
+
+
+<h3>5.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6533293">下载地址</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十二】cocos2d-x多线程和同步02]]></title>
+    <link href="http://www.jacky.tk/blog/2013/11/05/play-cocos2dx-22/"/>
+    <updated>2013-11-05T11:12:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/11/05/play-cocos2dx-22</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/14161151">http://blog.csdn.net/jackystudio</a></p>
+
+<p>pthread有很多不同应用，官网都有相应的API解释和Sample，这里不再重复，本文主要介绍一个cocos2d-x多线程和同步示例。</p>
+
+<h3>1.售票</h3>
+
+<p>孙鑫老师的C++和Java多线程售票一直让我念念不忘，好吧，这里用cocos2d-x和pthread实现一个吧。总共有100张火车票，有2个售票点A和B再售票，当票卖完了就结束了。我们知道当程序一开始进程就会创建一个主线程，所以可以在主线程基础上再创建2个线程A和B，再线程A和B中分别售票，当票数为0的时候，结束线程A和B。</p>
+
+<!-- more -->
+
+
+<h3>2.多线程售票</h3>
+
+<pre><code>//TestLayer.h  
+class CTestLayer :  
+public CCLayer  
+{  
+    public:  
+    CTestLayer(void);  
+    ~CTestLayer(void);  
+
+    CREATE_FUNC(CTestLayer);  
+    virtual bool init();  
+
+    pthread_t sellA_pid,sellB_pid;//线程id  
+    static int tickets;//票数  
+
+    static void* threadA(void* p);//线程A回调  
+    static void* threadB(void* p);//线程B回调  
+};  
+
+
+//TestLayer.cpp  
+#include "TestLayer.h"  
+
+int CTestLayer::tickets=100;//初始化票数100  
+CTestLayer::CTestLayer(void)  
+{  
+}  
+
+
+CTestLayer::~CTestLayer(void)  
+{  
+}  
+
+bool CTestLayer::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCLayer::init());  
+        pthread_create(&amp;sellA_pid,NULL,threadA,0);//创建线程A  
+        pthread_create(&amp;sellB_pid,NULL,threadB,0);//创建线程B  
+
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+
+void* CTestLayer::threadA(void* p)  
+{  
+    while(true)  
+    {  
+        if(tickets&gt;0)  
+        {  
+            CCLog("A Sell %d",tickets--);//输出售票，每次减1  
+        }  
+        else {  
+            break;  
+        }  
+    }  
+    return NULL;  
+}  
+
+void* CTestLayer::threadB(void* p)  
+{  
+    while(true)  
+    {  
+        if (tickets&gt;0)  
+        {  
+            CCLog("B Sell %d",tickets--);  
+        }  
+        else   
+        {  
+            break;  
+        }  
+    }  
+    return NULL;  
+}  
+</code></pre>
+
+<p>代码很简单，不多说了。我们来看一下输出，会发现有很多不可思议的现象出现，因为每个人每次运行的结果都不一样，所以这里不贴结果了，不可思议的现象可能有：</p>
+
+<p><em>（1）同一张票卖了2次。</em></p>
+
+<p><em>（2）后面的票比前面的票先卖出去。</em></p>
+
+<p><em>（3）第0张票竟然也可以卖。（这算站票么。。。）</em></p>
+
+<p>原因不多解释了，时间片的问题，不明白的Google之。如果你觉得不会有这么巧，那么在打印结果前加上这么一句：</p>
+
+<pre><code>Sleep(100);  
+</code></pre>
+
+<p>人为干扰线程的运行，增大出错几率。结果可能会是这样：</p>
+
+<pre><code>A Sell 36  
+B Sell 36//卖2次了  
+A Sell 35  
+B Sell 34  
+A Sell 33  
+B Sell 32  
+A Sell 30//提早卖了  
+B Sell 31  
+B Sell 28  
+A Sell 29  
+A Sell 27  
+B Sell 26  
+A Sell 25  
+B Sell 24  
+A Sell 23  
+B Sell 22  
+A Sell 21  
+B Sell 20  
+A Sell 19  
+B Sell 18  
+A Sell 17  
+B Sell 16  
+A Sell 15  
+B Sell 14  
+A Sell 13  
+B Sell 12  
+A Sell 11  
+B Sell 10  
+A Sell 9  
+B Sell 8  
+A Sell 7  
+B Sell 6  
+A Sell 5  
+B Sell 4  
+A Sell 3  
+B Sell 2  
+A Sell 1  
+B Sell 0//站票。。。  
+</code></pre>
+
+<h3>3.利用互斥对象同步数据</h3>
+
+<p>这个问题主要是因为一个线程执行到一半的时候，时间片的切换导致另一个线程修改了同一个数据，当再次切换会原来线程并继续往下运行的时候，数据由于被修改了导致结果出错。所以我们要做的就是保证这个线程完全执行完，所以对线程加锁是个不错的注意，互斥对象mutex就是这个锁。</p>
+
+<p><strong>3.1.初始化</strong></p>
+
+<p>在cpp外分配空间：</p>
+
+<pre><code>pthread_mutex_t CTestLayer::mutex;//mutex是静态成员变量  
+</code></pre>
+
+<p>在init中初始化，动态初始化：</p>
+
+<pre><code>pthread_mutex_init(&amp;mutex,NULL);  
+</code></pre>
+
+<p><strong>3.2.加锁和解锁</strong></p>
+
+<p>以线程A为例：</p>
+
+<pre><code>void* CTestLayer::threadA(void* p)  
+{  
+    while(true)  
+    {  
+        pthread_mutex_lock(&amp;mutex);//加锁  
+        if(tickets&gt;0)  
+        {  
+            Sleep(100);  
+            CCLog("A Sell %d",tickets--);  
+            pthread_mutex_unlock(&amp;mutex);//解锁  
+        }  
+        else {  
+            pthread_mutex_unlock(&amp;mutex);//解锁  
+            break;  
+        }  
+    }  
+    return NULL;  
+}  
+</code></pre>
+
+<p><strong>3.3.释放</strong></p>
+
+<p>在当前层的析构函数中：</p>
+
+<pre><code>pthread_mutex_destroy(&amp;mutex);//前提要保证是解锁状态，否则会返回16的错误，释放失败  
+</code></pre>
+
+<p>这个时候再看一下结果，Bingo!</p>
+
+<pre><code>B Sell 16  
+A Sell 15  
+B Sell 14  
+B Sell 13  
+B Sell 12  
+B Sell 11  
+B Sell 10  
+B Sell 9  
+B Sell 8  
+B Sell 7  
+B Sell 6  
+B Sell 5  
+B Sell 4  
+B Sell 3  
+B Sell 2  
+B Sell 1  
+</code></pre>
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6503759">下载地址</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十一】cocos2d-x多线程和同步01]]></title>
+    <link href="http://www.jacky.tk/blog/2013/11/04/play-cocos2dx-21/"/>
+    <updated>2013-11-04T11:01:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/11/04/play-cocos2dx-21</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/14118939">http://blog.csdn.net/jackystudio</a></p>
+
+<p>和其他框架一样，cocos2d-x允许我们使用多线程进行编程。cocos2d-x v2.2.0使用的是pthread库，是一套用户级线程库，被广泛地使用在跨平台应用上。</p>
+
+<h3>1.配置</h3>
+
+<p>在使用pthread之前，需要把头文件和库文件链接进来。pthread的官网<a href="http://www.sourceware.org/pthreads-win32/">戳这里</a>，当然cocos2d-x帮我们包含进引擎了。</p>
+
+<!-- more -->
+
+
+<p><strong>1.1.头文件</strong></p>
+
+<p>pthread.h放在\cocos2d-x目录\cocos2dx\platform\third_party\win32\pthread\下，右键项目→属性→配置属性→C/C++→附加包含目录添加如下，这里要注意附加包含目录是只包含当前目录下的文件，而不会包含该目录下子目录。</p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_21/1.jpg" alt="" border="0" title="添加包含目录" /><br></br></div>
+
+
+<p><strong>1.2.库文件</strong></p>
+
+<p>一样的，右键项目→属性→配置属性→链接器→输入→附加依赖项，添加pthreadVCE2.lib即可。v2.2.0会自动包含，这步可省。</p>
+
+<h3>2.pthread库</h3>
+
+<p><strong>2.1.主要功能</strong></p>
+
+<p>pthread库包含了四大部分功能：</p>
+
+<p><em>（1）Thread Management：线程管理。</em>提供了线程的创建，删除，结束等功能，也包含了对线程属性的修改和设置。</p>
+
+<p><em>（2）Mutexex：互斥对象。</em>用于处理同步机制。提供了创建，销毁，加锁，解锁等功能，也包含了对互斥对象属性的修改和设置。</p>
+
+<p><em>（3）Condition variables：条件变量。</em>提供了基于程序员提供条件的进程间通讯互斥锁的操作，包含了对其属性的修改和设置。</p>
+
+<p><em>（4）Synchronization：同步相关。</em>提供了操作读写锁等功能。</p>
+
+<p><strong>2.2.命名规则</strong></p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_21/2.jpg" alt="" border="0" title="命名规则" /><br></br></div>
+
+
+<h3>3.线程和互斥对象</h3>
+
+<p>我们这里主要了解线程和互斥对象，也是最常用到的。</p>
+
+<p><strong>3.1.线程</strong></p>
+
+<pre><code>//创建线程  
+PTW32_DLLPORT int PTW32_CDECL pthread_create (pthread_t * tid,  
+    const pthread_attr_t * attr,  
+    void *(*start) (void *),  
+    void *arg);  
+
+//退出线程  
+PTW32_DLLPORT void PTW32_CDECL pthread_exit (void *value_ptr);  
+
+//取消执行线程  
+PTW32_DLLPORT int PTW32_CDECL pthread_cancel (pthread_t thread);  
+
+//删除线程  
+PTW32_DLLPORT int PTW32_CDECL pthread_detach (pthread_t tid);  
+
+//加入线程  
+PTW32_DLLPORT int PTW32_CDECL pthread_join (pthread_t thread,  
+    void **value_ptr);  
+
+//初始化线程属性  
+PTW32_DLLPORT int PTW32_CDECL pthread_attr_init (pthread_attr_t * attr);  
+
+//清理线程属性  
+PTW32_DLLPORT int PTW32_CDECL pthread_attr_destroy (pthread_attr_t * attr);  
+</code></pre>
+
+<p><strong>3.2.互斥对象</strong></p>
+
+<pre><code>//初始化mutex  
+PTW32_DLLPORT int PTW32_CDECL pthread_mutex_init (pthread_mutex_t * mutex,  
+    const pthread_mutexattr_t * attr);  
+
+//销毁mutex，要注意如果是new的指针，需要手动释放，pthread_mutex_destroy并不会帮你释放  
+PTW32_DLLPORT int PTW32_CDECL pthread_mutex_destroy (pthread_mutex_t * mutex);  
+
+//加锁  
+PTW32_DLLPORT int PTW32_CDECL pthread_mutex_lock (pthread_mutex_t * mutex);  
+
+//尝试加锁  
+PTW32_DLLPORT int PTW32_CDECL pthread_mutex_trylock (pthread_mutex_t * mutex);  
+
+//解锁  
+PTW32_DLLPORT int PTW32_CDECL pthread_mutex_unlock (pthread_mutex_t * mutex);  
+</code></pre>
+
+<p>要注意的是mutex变量必须要被声明为pthread_mutex_t类型，且在使用前必须要被初始化，初始化有2种方式：</p>
+
+<p><em>（1）静态初始化</em></p>
+
+<pre><code>pthread_mutex_t mymutex = PTHREAD_MUTEX_INITIALIZER;  
+</code></pre>
+
+<p><em>（2）动态初始化</em></p>
+
+<pre><code>pthread_mutex_init();  
+</code></pre>
+
+<h3>4.注意</h3>
+
+<p>cocos2d-x使用多线程应注意的问题（来自官方文档）：</p>
+
+<p><em>（1）不能调用涉及到CCObject::retain(), CCObject::release() 或者 CCObject::autorelease()的函数，因为CCAutoreleasePool不是线程安全的。因为cocos2d-x框架中无处不在使用CCAutoreleasePool，所以建议不要在新线程中调用cocos2d-x的API。</em></p>
+
+<p><em>（2）如果要在新线程中加载资源，那么可以使用CCTextureCache::addImageAsync()。</em></p>
+
+<p><em>（3）pthread_cond_wait()看起来有个bug，首次wait会失败，但是之后又会工作的很好。</em></p>
+
+<p><em>（4）OpenGL context也不是线程安全。</em></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十】从CCObject看cocos2d-x的内存管理机制]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/31/play-cocos2dx-20/"/>
+    <updated>2013-10-31T18:13:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/31/play-cocos2dx-20</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13765639">http://blog.csdn.net/jackystudio</a></p>
+
+<p>再看CCObject，剔除上节的拷贝相关，以及Lua脚本相关的属性和方法后，CCObject还剩下什么？</p>
+
+<h3>1.剩下什么？</h3>
+
+<p>可以看到整个CCObject就是围绕着m_uReference和m_uAutoReleaseCount在转。这两个变量的解释如下。所以CCObject剩下的其实就是对内存的管理。</p>
+
+<!-- more -->
+
+
+<pre><code>CCObject::CCObject(void)//构造函数  
+: m_nLuaID(0)  
+, m_uReference(1) //引用计数，初始为1，当引用计数=0，自动释放该对象  
+, m_uAutoReleaseCount(0)//自动释放对象计数，如果是手动new的，则为0，如果autoRelease的，则在AutoreleasePool会+1  
+                    //这里是保护成员，所以CCAutoreleasePool被声明为友元类  
+{  
+    static unsigned int uObjectCount = 0;//静态成员，对象的计数，只增不减，用于标识唯一一个对象实例  
+    m_uID = ++uObjectCount;                
+}  
+
+CCObject::~CCObject(void)  
+{  
+    if (m_uAutoReleaseCount &gt; 0)//如果是自动管理，则在PoolManager中删除  
+    {  
+        CCPoolManager::sharedPoolManager()-&gt;removeObject(this);  
+    }  
+
+    // if the object is referenced by Lua engine, remove it  
+    if (m_nLuaID)  
+    {  
+        CCScriptEngineManager::sharedManager()-&gt;getScriptEngine()-&gt;removeScriptObjectByCCObject(this);  
+    }  
+    else  
+    {  
+        CCScriptEngineProtocol* pEngine = CCScriptEngineManager::sharedManager()-&gt;getScriptEngine();  
+        if (pEngine != NULL &amp;&amp; pEngine-&gt;getScriptType() == kScriptTypeJavascript)  
+        {  
+            pEngine-&gt;removeScriptObjectByCCObject(this);  
+        }  
+    }  
+}  
+
+void CCObject::release(void)//引用计数-1，如果引用计数=0，释放对象  
+{  
+    CCAssert(m_uReference &gt; 0, "reference count should greater than 0");  
+    --m_uReference;  
+
+    if (m_uReference == 0)  
+    {  
+        delete this;  
+    }  
+}  
+
+void CCObject::retain(void)//引用计数+1,防止被对象释放  
+{  
+    CCAssert(m_uReference &gt; 0, "reference count should greater than 0");  
+
+    ++m_uReference;  
+}  
+
+CCObject* CCObject::autorelease(void)//对象加入PoolManager，自动管理  
+{  
+    CCPoolManager::sharedPoolManager()-&gt;addObject(this);  
+    return this;  
+}  
+
+bool CCObject::isSingleReference(void) const //返回是否唯一引用  
+{  
+    return m_uReference == 1;  
+}  
+
+unsigned int CCObject::retainCount(void) const  //返回引用计数  
+{  
+    return m_uReference;  
+}  
+
+bool CCObject::isEqual(const CCObject *pObject) //判断对象是否相等  
+{  
+    return this == pObject;  
+}  
+
+void CCObject::acceptVisitor(CCDataVisitor &amp;visitor) //辅助对象执行动作  
+{  
+    visitor.visitObject(this);  
+}  
+</code></pre>
+
+<h3>2.内存管理</h3>
+
+<p>从CCObject可以看出，内存的管理方式有两种：手动管理和自动管理。</p>
+
+<p><strong>2.1.手动内存管理</strong></p>
+
+<p>想必从Java转到C++的朋友可能很受不了C++再申请完内存后还要手动释放，就像我从C++转Java时也同样很不习惯竟然不用管理内存，老是害怕会不小心让系统给销毁了。CCObject的成员变量m_uAutoReleaseCount标识了是手动管理还是自动管理。如果执行以下操作：</p>
+
+<pre><code>CCObject* obj=new CCObject();//m_uAutoReleaseCount=0,m_uReference=1  
+</code></pre>
+
+<p>从析构函数可以看到，析构函数是不对所有手动进行申请的变量进行内存释放（必须m_uAutoReleaseCount>0）。那么这时得手动释放：</p>
+
+<pre><code>obj-&gt;release();//m_uReference-1后为0，执行delete this;  
+</code></pre>
+
+<p>所以，new和release是好基友！而手动内存管理一般不再使用retain。</p>
+
+<p><strong>2.2.自动内存管理</strong></p>
+
+<p>如果需要进行内存的自动管理，那要怎么做呢？</p>
+
+<pre><code>CCObject* obj=new CCObject();//m_uAutoReleaseCount=0,m_uReference=1  
+obj-&gt;autorelease();//m_uAutoReleaseCount=1,m_uReference=1  
+</code></pre>
+
+<p>好了，什么都不用做，obj自生自灭了。
+如果我们需要随时用到obj，而不愿意让它在我们不知情的情况下被释放，那么使用：</p>
+
+<pre><code>obj-&gt;retain();//m_uAutoReleaseCount=1,m_uReference=2  
+</code></pre>
+
+<p>当不再需要它的时候，使用：</p>
+
+<pre><code>obj-&gt;release();//m_uAutoReleaseCount=1,m_uReference=1  
+</code></pre>
+
+<p>又恢复回去了，所以，retain和release是好基友，一般在自动内存管理使用。</p>
+
+<p>这里只是大概写一下如何使用new，autorelease，retain和release，至于内存管理的实现网上的代码解析很多，发现自己没办法深入浅出地写出来，所以还是放弃再写一回注释了，原理可以这么理解：Cocos2d-x提供了一个内存管理器类CCPoolManager，它包含了一个CCArray容器m_pReleasePoolStack，这个容器用来存放一些容器管理类CCAutoreleasePool的实例对象。需要自动进行内存释放的CCObject实例对象会把其指针存放在容器管理类CCAutoreleasePool的实例对象中的m_pManagedObjectArray容器里。所有存在其中的CCObject实例对象在进行释放操作时通过使用计数器来进行判断在何时真正释放内存，游戏在每一帧结束时都会对autorelease对象进行释放。</p>
+
+<p><strong>2.3.一个疑问</strong></p>
+
+<p>平时我们可能会这么用：</p>
+
+<pre><code>//CTestLayer.h  
+class CTestLayer : public cocos2d::CCLayer  
+{  
+public:  
+    virtual bool init();  
+
+    CREATE_FUNC(CTestLayer);  
+
+    virtual void update(float delta);  
+
+private:  
+    CCSprite* background;  
+};  
+
+//CTestLayer.cpp  
+bool CTestLayer::init()  
+{  
+    if ( !CCLayer::init() )  
+    {  
+        return false;  
+    }  
+    background=CCSprite::create("background.png");  
+    this-&gt;addChild(background);  
+    this-&gt;scheduleUpdate();  
+    return true;  
+}  
+
+void update(float delta)  
+{  
+    background-&gt;setPositionY(background-&gt;getPositionY()-0.1);  
+}  
+</code></pre>
+
+<p>background是create出来的，可以知道它是调用了autorelease，属于自动管理对象，而且我们又没有进行retain操作，按道理在执行update的时候background已经是要被销毁的，但是实际并没有。问题就出在这一句：</p>
+
+<pre><code>this-&gt;addChild(background);  
+</code></pre>
+
+<p>至于为什么，大家翻一下addChild实现源码就知道啦~</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十九】从CCObject看cocos2d-x的拷贝机制]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/30/play-cocos2dx-19/"/>
+    <updated>2013-10-30T18:08:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/30/play-cocos2dx-19</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13295505">http://blog.csdn.net/jackystudio</a></p>
+
+<p>CCObject在之前的文章中出现了N次，它扮演了一个老祖宗的角色，但是它到底是做什么的？先从它看看cocos2d-x的拷贝机制吧。</p>
+
+<h3>1.CCCopying</h3>
+
+<p>CCObject从CCCopying继承而来，而CCCopying拥有唯一的一个成员虚函数copyWithZone，这个函数可以认为是拷贝的一个协议，所有继承了CCObject并且需要实现拷贝功能的子类都可以通过它来实现，它的源码很简单，就是一个未实现的断言。CCZone是神马？只是封装了一个CCObject对象指针而已。</p>
+
+<!-- more -->
+
+
+<pre><code>CCObject* CCCopying::copyWithZone(CCZone *pZone)  
+{  
+    CC_UNUSED_PARAM(pZone);  
+    CCAssert(0, "not implement");  
+    return 0;  
+}  
+</code></pre>
+
+<h3>2.CCObject的子类拷贝问题</h3>
+
+<p>再看看CCObject中copy的实现，是的，直接调用了copyWithZone，所以子类在处理拷贝问题时只需要对copyWithZone进行实现，使用时调用copy即可。</p>
+
+<pre><code>CCObject* CCObject::copy()  
+{  
+    return copyWithZone(0);  
+}  
+</code></pre>
+
+<h3>3.CCArray示例</h3>
+
+<p>这里以CCArray的拷贝为例，CCArray继承于CCObject，如上所说，我们只需要实现copyWithZone，然后在拷贝时调用copy即可实现CCArray的拷贝。</p>
+
+<p><strong>3.1.CCArray拷贝时调用copy</strong></p>
+
+<pre><code>CCArray* CCArray::createWithArray(CCArray* otherArray)  
+{  
+    CCArray* pRet = (CCArray*)otherArray-&gt;copy();//copy调用了copyWithZone  
+    pRet-&gt;autorelease();  
+    return pRet;  
+}  
+</code></pre>
+
+<p><strong>3.2.copyWithZone的实现</strong></p>
+
+<p>可以看出CCArray采用的是深拷贝的方式。</p>
+
+<pre><code>CCObject* CCArray::copyWithZone(CCZone* pZone)  
+{  
+    CCAssert(pZone == NULL, "CCArray should not be inherited.");  
+    CCArray* pArray = new CCArray();  //new一个存放拷贝的空间  
+    pArray-&gt;initWithCapacity(this-&gt;data-&gt;num &gt; 0 ? this-&gt;data-&gt;num : 1);//初始化一样的长度  
+
+    CCObject* pObj = NULL;  
+    CCObject* pTmpObj = NULL;  
+    CCARRAY_FOREACH(this, pObj)//遍历CCArray成员  
+    {  
+        pTmpObj = pObj-&gt;copy();//逐个拷贝  
+        pArray-&gt;addObject(pTmpObj);//添加到新拷贝pArray中  
+        pTmpObj-&gt;release();  
+    }  
+    return pArray;//返回拷贝  
+}  
+</code></pre>
+
+<h3>4.深拷贝和浅拷贝</h3>
+
+<p>其实不单是CCArray，cocos2d-x采用的都是深拷贝的方式，深拷贝和浅拷贝的概念和详解请移步<a href="http://blog.csdn.net/jackystudio/article/details/11553117">这里</a>。它们的区别在于当前对象是否包含了对其他资源的引用。在拷贝机制上采用深拷贝的方式，大大方便了我们对内存的管理，避免因资源的释放导致引用异常。这对于平时在进行一些自定义子类的拷贝处理上还是很有指导意义的。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十八】仿《中国好学霸》文字拖拽和定位]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/28/play-cocos2dx-18/"/>
+    <updated>2013-10-28T18:00:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/28/play-cocos2dx-18</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13287519">http://blog.csdn.net/jackystudio</a></p>
+
+<p>现在各种猜成语猜歌名好学霸之类的游戏火的一塌糊涂。本节就介绍下文字的拖拽和定位。</p>
+
+<h3>1.基本原理</h3>
+
+<p>其实这只是精灵的简单拖拽和坐标的识别而已。当触摸点在精灵的范围内，精灵可以感应拖动，当触摸结束进行位置判断，如果在有效范围内就进行自动定位。</p>
+
+<!-- more -->
+
+
+<h3>2.实现</h3>
+
+<p><strong>2.1.背景加入和文字精灵的加入</strong>
+这里是采用<a href="http://blog.csdn.net/jackystudio/article/details/13014883">这一节</a>所述方式添加中文。</p>
+
+<pre><code>bool AutoSet::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCLayer::init());  
+        CCSize visiableSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+
+        CCSprite* background=CCSprite::create("AutoSetBk.jpg");  
+        background-&gt;setPosition(ccp(visiableSize.width/2,visiableSize.height/2));  
+        this-&gt;addChild(background);//添加背景  
+
+        //利用CCDictionary来读取xml  
+        CCDictionary* chnStrings = CCDictionary::createWithContentsOfFile("CHN_Strings.xml");  
+        const char *hao = ((CCString*)chnStrings-&gt;objectForKey("hao"))-&gt;m_sString.c_str();   
+
+        text=CCLabelTTF::create(hao,"Arial",50);  
+        text-&gt;setPosition(ccp(120,160));  
+        text-&gt;setColor(ccc3(0,0,0));  
+        this-&gt;addChild(text);//添加文本  
+
+        this-&gt;setTouchEnabled(true);//设置触摸可用  
+
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+</code></pre>
+
+<p><strong>2.2.触摸的实现和拖拽的定位</strong></p>
+
+<p>因为3.0版本cocos2d-x的触摸实现已经变更了，所以这里不再赘述，3.0之前的触摸的原理和实现具体可以参见<a href="http://blog.csdn.net/jackystudio/article/details/11860007">这一节</a>。</p>
+
+<p><strong>2.2.1注册触摸事件</strong></p>
+
+<pre><code>void AutoSet::registerWithTouchDispatcher(void)  
+{  
+    CCDirector *pDirector=CCDirector::sharedDirector();    
+    pDirector-&gt;getTouchDispatcher()-&gt;addTargetedDelegate(this,0,true);//单点触摸  
+}  
+</code></pre>
+
+<p><strong>2.2.2.触摸开始</strong></p>
+
+<pre><code>bool AutoSet::ccTouchBegan(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent)  
+{  
+    return true;//返回true表示接收触摸事件  
+}  
+</code></pre>
+
+<p><strong>2.2.3.触摸过程</strong></p>
+
+<pre><code>void AutoSet::ccTouchMoved(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent)  
+{  
+    CCPoint beginPoint = pTouch-&gt;getLocationInView();  //获取触摸位置  
+    beginPoint = CCDirector::sharedDirector()-&gt;convertToGL(beginPoint);//坐标转换  
+    CCPoint pt=text-&gt;getPosition();  
+    CCRect rect=CCRectMake(pt.x-30,pt.y-30,60,60);  
+    if (rect.containsPoint(beginPoint))//判断触摸点是否在文字上  
+    {  
+        CCPoint endPoint=pTouch-&gt;getPreviousLocationInView();//获取触摸的前一个位置    
+        endPoint=CCDirector::sharedDirector()-&gt;convertToGL(endPoint);     
+
+        CCPoint offSet =ccpSub(beginPoint,endPoint);//获取offset    
+        CCPoint toPoint=ccpAdd(text-&gt;getPosition(),offSet); //获取真正移动位置  
+        text-&gt;setPosition(toPoint);//移动文字  
+    }  
+}  
+</code></pre>
+
+<p><strong>2.2.4.触摸结束</strong></p>
+
+<pre><code>void AutoSet::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)  
+{  
+    CCPoint lastPoint = pTouch-&gt;getLocationInView();//获取触摸结束点位置  
+    lastPoint = CCDirector::sharedDirector()-&gt;convertToGL(lastPoint);  
+    CCRect rect=CCRectMake(330,130,60,60);  
+    CCMoveTo* moveto;  
+    if (!rect.containsPoint(lastPoint))//如果未在指定区域，还原到初始位置  
+    {  
+        moveto=CCMoveTo::create(0.1f,ccp(120,160));  
+    }  
+    else//如果在指定区域，移动到该区域中心  
+    {  
+        moveto=CCMoveTo::create(0.1f,ccp(360,160));  
+    }  
+    text-&gt;runAction(moveto);  
+}  
+</code></pre>
+
+<h3>3.效果图</h3>
+
+<div align="center"><img src="http://note.youdao.com/yws/res/346/61EB707E6CE049128DE07F50141B2F54" alt="" border="0" title="效果" /><br></br></div>
+
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6463261">源码下载</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十七】cocos2d-x中文显示]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/25/play-cocos2dx-17/"/>
+    <updated>2013-10-25T16:53:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/25/play-cocos2dx-17</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13014883">http://blog.csdn.net/jackystudio</a></p>
+
+<p>cocos2d-x的中文显示其实就是一个UTF-8编码在作怪而已，一种简单的方法就是把文本保存为UTF-8编码即可（注意不是UTF-8 + BOM），建议使用UE，Sublime Text或者EditPlus之类的本文编辑器。这里介绍另一种方法：通过读取xml文件显示中文，这种方法更利于软件的国际化，demo顺便实现了中英文切换。</p>
+
+<!-- more -->
+
+
+<h3>1.xml文件</h3>
+
+<p>先写好一个xml文件（CHN_Strings.xml）。注意记得要以UTF-8编码保存。格式很简单，一个key对应一个string的键值对。如下：</p>
+
+<pre><code>&lt;dict&gt;  
+    &lt;key&gt;language&lt;/key&gt;  
+    &lt;string&gt;English&lt;/string&gt;  
+    &lt;key&gt;username&lt;/key&gt;  
+    &lt;string&gt;偶尔e网事&lt;/string&gt;  
+    &lt;key&gt;website&lt;/key&gt;  
+    &lt;string&gt;CSDN博客：http://blog.csdn.net/jackystudio&lt;/string&gt;  
+&lt;/dict&gt;  
+</code></pre>
+
+<h3>2.通过CCDictionary读取xml</h3>
+
+<p>CCDictionary是利用哈希表算法来进行CCObject管理的一个类。这里不再对它的API及内部实现进行说明了。</p>
+
+<p><strong>2.1.创建词典类实例</strong></p>
+
+<pre><code>CCDictionary *chnStrings = CCDictionary::createWithContentsOfFile("CHN_Strings.xml");  
+</code></pre>
+
+<p><strong>2.2.通过键（key）获取值（value）</strong></p>
+
+<pre><code>const char *username = ((CCString*)chnStrings-&gt;objectForKey("username"))-&gt;m_sString.c_str();  
+</code></pre>
+
+<p><strong>2.3.使用value</strong></p>
+
+<pre><code>CCLabelTTF* pLabel = CCLabelTTF::create(username, "Arial", 24);//这里创建一个文本  
+pLabel-&gt;setPosition(ccp(origin.x + visibleSize.width/2,origin.y + visibleSize.height - pLabel-&gt;getContentSize().height));  
+this-&gt;addChild(pLabel, 1);  
+</code></pre>
+
+<h3>3.效果</h3>
+
+<p>这里我用了2个xml，一个是中文，一个是英文，设置了一个菜单，点击即可调用不同的xml进行中英文的切换，效果如下图。</p>
+
+<div align="center"><img src="http://note.youdao.com/yws/res/344/5BC62BD640604DE3A30FF228633D70D5" alt="" border="0" title="效果" /><br></br></div>
+
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6442201">源码下载</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十六】滚动字幕和公告]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/24/play-cocos2dx-16/"/>
+    <updated>2013-10-24T16:38:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/24/play-cocos2dx-16</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12991977">http://blog.csdn.net/jackystudio</a></p>
+
+<p>滚动字幕和公告是游戏中经常使用到的元素，本文大致写一下实现方法，至于例子中具体的坐标值，请不要纠结。。。这和美工关系还是蛮大的。我PS技术太搓了。。。</p>
+
+<h3>1.原理</h3>
+
+<p>其实它们的实现都是简单的通过调用update来更新位置达到的移动效果，和背景滚动有点类似，一旦滚动结束就重置为起点，开始新的滚动。只是为了达到在某个区域内滚动而不至于超出这个区域，有时候会用一些前景图来做遮盖，所以这个时候其实字幕或者公告是有在后面滚动的，但是被遮住了，因此看起来就像是只在某个区域内滚动。以垂直字幕滚动为例说明，如下图。</p>
+
+<!-- more -->
+
+
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_16/1.jpg" alt="" border="0" title="原理" /><br></br></div>
+
+
+<h3>2.实现</h3>
+
+<p>不要纠结以下各精灵的坐标位置：）</p>
+
+<pre><code>bool CTestLayer::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCLayer::init());  
+
+        CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+        CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;addSpriteFramesWithFile("ui_serverlist.plist");  
+
+        //垂直滚动字幕  
+        CCSprite* listbase=CCSprite::createWithSpriteFrame(CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;spriteFrameByName("login_listbase.png"));//bottom底图  
+        listbase-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2+10));  
+        this-&gt;addChild(listbase);  
+        text1=CCLabelTTF::create("1.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n2.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n3.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n4.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!","Arial",12);//middle文本  
+        text1-&gt;setHorizontalAlignment(kCCTextAlignmentLeft);//左对齐  
+        text1-&gt;setAnchorPoint(ccp(0.5,1));  
+        text1-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2-55));  
+        this-&gt;addChild(text1);  
+        CCSprite* fg=CCSprite::create("fg.png");//top前景  
+        fg-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
+        this-&gt;addChild(fg);  
+
+        //水平滚动公告  
+        CCSprite* textbase=CCSprite::createWithSpriteFrame(CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;spriteFrameByName("login_textbase.png"));  
+        textbase-&gt;setPosition(ccp(visibleSize.width/2,50));  
+        textbase-&gt;setScaleX(2.5f);  
+        this-&gt;addChild(textbase);  
+        text2=CCLabelTTF::create("Hi! Welcome to JackyStudio,My Blog is blog.csdn.net/jackystudio!","Arial",12);  
+        text2-&gt;setPosition(ccp(visibleSize.width+text2-&gt;getContentSize().width/2,50));  
+        text2-&gt;setColor(ccc3(255,0,0));//红色字体  
+        this-&gt;addChild(text2);  
+
+        this-&gt;scheduleUpdate();//执行更新  
+
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+
+void CTestLayer::update(float delta)  
+{  
+    CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+
+    int newY=text1-&gt;getPositionY()+1;  
+    if (newY==500)//如果滚动到这个位置，重置  
+    {  
+        newY=visibleSize.height/2-55;  
+    }  
+    text1-&gt;setPositionY(newY);  
+
+    int newX=text2-&gt;getPositionX()-1;  
+    if (newX&lt;=-text2-&gt;getContentSize().width/2)//如果滚动到这个位置，重置  
+    {  
+        newX=visibleSize.width+text2-&gt;getContentSize().width/2;  
+    }  
+    text2-&gt;setPositionX(newX);  
+}  
+</code></pre>
+
+<h3>3.效果</h3>
+
+<p>这个效果有点小bug，就是文字覆盖到边框上了，这是因为没有把边框做在top层上导致的，实际使用注意这个问题即可。</p>
+
+<div align="center"><img src="http://note.youdao.com/yws/res/342/322D013ED8154EFD821FFA021F6D3DBD" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
+
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6434549">源码下载</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十五】关卡选择的设计]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/23/play-cocos2dx-15/"/>
+    <updated>2013-10-23T16:26:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/23/play-cocos2dx-15</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12966993">http://blog.csdn.net/jackystudio</a></p>
+
+<p>这节介绍一下游戏中帮助界面和关卡选择的设计，其实都是一样的，关键在于美工。这里采用自定义TableView层来实现。</p>
+
+<h3>1.导入头文件和设定空间</h3>
+
+<p>因为TableView相关的类是在扩展包里面，所以必须先声明</p>
+
+<pre><code>#include "cocos-ext.h"  
+USING_NS_CC_EXT;  
+</code></pre>
+
+<!-- more -->
+
+
+<h3>2.继承的实现</h3>
+
+<p>自定义TableView继承于CCLayer，因此可以捕获触摸，同时继承于扩展包的CCTableViewDataSource和CCTableViewDelegate。前者是TableView的数据源，包含了一系列和TableView数据单元相关的操作，后者则是继承于CCScrollViewDelegate抽象类，声明了一些和滚动，放大，触摸回调之类的接口，然后在内部包含了一个CCTableView，这用起来有点像Android的Adapter。当然分别继承几个类使用也是一样的。</p>
+
+<p>先看一下要实现的接口吧。</p>
+
+<pre><code>class TableViewTestLayer : public cocos2d::CCLayer, public cocos2d::extension::CCTableViewDataSource, public cocos2d::extension::CCTableViewDelegate  
+{  
+    public:  
+    virtual bool init();    
+
+    CREATE_FUNC(TableViewTestLayer);  
+
+    virtual void scrollViewDidScroll(cocos2d::extension::CCScrollView* view){}//滚动时调用，空实现，因为继承了抽象类所以必须重写  
+    virtual void scrollViewDidZoom(cocos2d::extension::CCScrollView* view){}//缩放时调用，空实现，同上  
+    virtual void tableCellTouched(cocos2d::extension::CCTableView* table, cocos2d::extension::CCTableViewCell* cell);//触摸单元时回调  
+    virtual cocos2d::CCSize tableCellSizeForIndex(cocos2d::extension::CCTableView *table, unsigned int idx);//设定单元所占大小  
+    virtual cocos2d::extension::CCTableViewCell* tableCellAtIndex(cocos2d::extension::CCTableView *table, unsigned int idx);//设定单元内容  
+    virtual unsigned int numberOfCellsInTableView(cocos2d::extension::CCTableView *table);//返回单元数  
+};  
+</code></pre>
+
+<p>当然还有一些其他功能，如高亮，循环，看情况重载。</p>
+
+<h3>3.自定义TabView层各模块的实现</h3>
+
+<p><strong>3.1.初始化函数init</strong></p>
+
+<pre><code>CCSize winSize = CCDirector::sharedDirector()-&gt;getWinSize();  
+CCTableView* tableView = CCTableView::create(this, winSize);//创建一个CCTableView  
+tableView-&gt;setDirection(kCCScrollViewDirectionHorizontal);//设置方向  
+tableView-&gt;setPosition(ccp(0,winSize.height/2-50));  
+tableView-&gt;setDelegate(this);//这句话很重要，把taleView和当前类绑到一起，所以后面的调用主体都是tableView  
+this-&gt;addChild(tableView);  
+tableView-&gt;reloadData();  
+</code></pre>
+
+<p><strong>3.2.触摸回调tableCellTouched</strong></p>
+
+<pre><code>void TableViewTestLayer::tableCellTouched(CCTableView* table, CCTableViewCell* cell)  
+{  
+    CCLOG("cell touched at index: %i", cell-&gt;getIdx());//cell为当前选择单元  
+}  
+</code></pre>
+
+<p><strong>3.3.单元大小tableCellSizeForIndex</strong></p>
+
+<pre><code>CCSize TableViewTestLayer::tableCellSizeForIndex(CCTableView *table, unsigned int idx)  
+{  
+    //if (idx == 2) {  
+    //    return CCSizeMake(100, 100);//第2个大小为100，100  
+    //}  
+    return CCSizeMake(120, 120);其余为120，120  
+}  
+</code></pre>
+
+<p><strong>3.4.设置数据源tableCellAtIndex</strong></p>
+
+<pre><code>CCTableViewCell* TableViewTestLayer::tableCellAtIndex(CCTableView *table, unsigned int idx)  
+{  
+    CCString *string = CCString::createWithFormat("%d", idx);  
+    CCTableViewCell *cell = table-&gt;dequeueCell();  
+    if (!cell) {  
+        cell = new CCTableViewCell();//创建单元，如果要自定义单元效果，需继承CCTableViewCell，并重载draw函数  
+        cell-&gt;autorelease();  
+        CCSprite *sprite = CCSprite::create("HelloWorld.png");  
+        sprite-&gt;setScale(0.2f);  
+        sprite-&gt;setPosition(ccp(60, 60));  
+        sprite-&gt;setTag(123);  
+        cell-&gt;addChild(sprite);//添加到cell  
+        CCLabelTTF *label = CCLabelTTF::create(string-&gt;getCString(), "Helvetica", 20.0);  
+        label-&gt;setPosition(ccp(60,10));  
+        label-&gt;setTag(456);  
+        cell-&gt;addChild(label);//添加到cell  
+    }  
+    else  
+    {  
+        CCLabelTTF *label = (CCLabelTTF*)cell-&gt;getChildByTag(456);  
+        label-&gt;setString(string-&gt;getCString());  
+    }  
+    return cell;  
+}  
+</code></pre>
+
+<p><strong>3.5.单元数numberOfCellsInTableView</strong></p>
+
+<pre><code>unsigned int TableViewTestLayer::numberOfCellsInTableView(CCTableView *table)  
+{  
+    return 20;//直接返回设定单元数  
+}  
+</code></pre>
+
+<h3>4.效果图</h3>
+
+<div align="center"><img src="http://note.youdao.com/yws/res/340/BCFCE344208144AD9280A6A16E8DF093" alt="" border="0" title="关卡1" /><br></br></div>
+
+
+<h3>5.源码下载地址</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6422401">下载地址</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十四】菜单选项卡的实现]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/22/play-cocos2dx-14/"/>
+    <updated>2013-10-22T10:34:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/22/play-cocos2dx-14</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12940733">http://blog.csdn.net/jackystudio</a></p>
+
+<p>有时候，我们希望实现一个选项卡功能，就是切换tab选项，场景中的内容会跟着改变，但是tab选项卡不动。这是用切换场景的方式没办法做到的。
+这里我们就可以使用CCLayerMultiplex来实现这个功能。</p>
+
+<h3>1.创建布景</h3>
+
+<p>这里创建3个布景来做示范。分别是Laye1，Layer2和Layer3。代码就不贴了，布景内容可以直接使用HelloWorld的代码。</p>
+
+<!-- more -->
+
+
+<h3>2.创建主场景</h3>
+
+<p>主场景的初始化函数如下：</p>
+
+<pre><code>bool CCMainScene::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCScene::init());  
+
+        _layer1=CCLayer1::create();//创建3个层的实例  
+        _layer2=CCLayer2::create();  
+        _layer3=CCLayer3::create();  
+
+        _layerMuticomplex=CCLayerMultiplex::create(_layer1,_layer2,_layer3,NULL);//创建多层布景层  
+        this-&gt;addChild(_layerMuticomplex);//添加到场景，默认显示第一个布景  
+
+        CCSize visibleSize = CCDirector::sharedDirector()-&gt;getVisibleSize();  
+        CCPoint origin = CCDirector::sharedDirector()-&gt;getVisibleOrigin();  
+
+        CCMenuItemImage *pCloseItem1 = CCMenuItemImage::create(//创建3个tab菜单，用于切换布景  
+            "w_b.png",  
+            "w_b.png",  
+            this,  
+            menu_selector(CCMainScene::menuCallback));  
+
+        CCMenuItemImage *pCloseItem2 = CCMenuItemImage::create(  
+            "r_b.png",  
+            "r_b.png",  
+            this,  
+            menu_selector(CCMainScene::menuCallback));  
+
+        CCMenuItemImage *pCloseItem3 = CCMenuItemImage::create(  
+            "g_b.png",  
+            "g_b.png",  
+            this,  
+            menu_selector(CCMainScene::menuCallback));  
+
+        // create menu, it's an autorelease object  
+        pCloseItem1-&gt;setTag(0);//给tab按钮设置tag，方便回调函数中的获取  
+        pCloseItem2-&gt;setTag(1);  
+        pCloseItem3-&gt;setTag(2);  
+        CCMenu* pMenu = CCMenu::create(pCloseItem1, pCloseItem2, pCloseItem3, NULL);//创建菜单  
+        pMenu-&gt;alignItemsHorizontallyWithPadding(-1);//设置菜单项间隔  
+        pMenu-&gt;setPosition(visibleSize.width/2,25);  
+        this-&gt;addChild(pMenu, 1);//注意哦，菜单要在场景中添加而不是在布景中了！而且z轴要高于多层布景，保证可见。  
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+</code></pre>
+
+<p>回调函数如下：</p>
+
+<pre><code>void CCMainScene::menuCallback(CCObject* pSender)  
+{  
+    int item=((CCMenuItemImage*)pSender)-&gt;getTag();//获取选择项  
+    if (item!=curLayerPos)  
+    {  
+        _layerMuticomplex-&gt;switchTo(item);//切换布景，如果使用switchToAndReleaseMe会释放掉当前布景  
+        curLayerPos=item;  
+    }  
+}  
+</code></pre>
+
+<h3>3.效果</h3>
+
+<p>为了让效果明显一点，我让3个布景稍微有点区别。当然菜单是可以做normal，pressed，disable三态的，这里略去。点击不同的选项卡就可以切换到不同的布景层。当然CCLayerMultiplex还可以嵌套使用。</p>
+
+<div align="center"><img src="http://note.youdao.com/yws/res/338/EE8A094840454FCEA5E421711E889FC7" alt="" border="0" title="效果" /><br></br></div>
+
+
+<h3>4.源码下载地址</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6421801">下载地址</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十三】CCMenu的布局]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/21/play-cocos2dx-13/"/>
+    <updated>2013-10-21T10:23:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/21/play-cocos2dx-13</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12904705">http://blog.csdn.net/jackystudio</a></p>
+
+<p>前两天写个游戏，发现CCMenu的布局还是比较有意思的，这里总结一下，以便后用。</p>
+
+<h3>1.概况</h3>
+
+<p>CCMenu是cocos2d-x的菜单类，但它本身并不具备菜单具体属性，而是作为一个父节点，将一些具体类型的菜单添加进去来达到菜单目的的。我们正常会这么使用它：先创建子菜单项CCMenuItem，然后将子菜单项CCMenuItem加入菜单CCMenu，最后把CCMenu加入当前层CCLayer。</p>
+
+<p>如果直接在层中添加CCMenuItem会怎样？其实显示也是会正常，但是无法响应回调，因为CCMenu是继承至CCLayer，也就继承了触摸的相关事件，而CCMenuItem只是从CCNode继承而来，并不响应触摸，因此无法调用回调函数。</p>
+
+<!-- more -->
+
+
+<h3>2.菜单CCMenu</h3>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_13/1.jpg" alt="" border="0" title="CCMenu" /><br></br></div>
+
+
+<h3>3.子菜单项CCMenuItem</h3>
+
+<p>子菜单项可以是用精灵，图片，标签文本，或者开关都可以，这里不具体解释。请看：</p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_13/2.jpg" alt="" border="0" title="CCMenuItem" /><br></br></div>
+
+
+<h3>4.锚点</h3>
+
+<p>CCMenu继承于CCLayer，所以它具有忽略锚点的属性。而CCMenuItem的锚点是正常的(0.5,0.5)。</p>
+
+<p>（1）看一下自带的HelloCpp这个工程，在添加退出按钮的时候，是不是有这么一句：</p>
+
+<pre><code>pMenu-&gt;setPosition(CCPointZero);
+</code></pre>
+
+<p>这句话的作用就是把Menu放在原点的位置，假设Menu有大小，那就是下图1。</p>
+
+<p>（2）现在再做点改变，把MenuItem指定的位置去掉，也就是让它默认在(0,0)位置上。</p>
+
+<pre><code>//pCloseItem-&gt;setPosition(ccp(origin.x + visibleSize.width - pCloseItem-&gt;getContentSize().width/2 ,origin.y + pCloseItem-&gt;getContentSize().height/2));  
+</code></pre>
+
+<p>那么再看一下效果，如图2，抽象出来就是图3，因为CCMenuItem的锚点是(0.5,0.5)。</p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_13/3.jpg" alt="" border="0" title="" /><br></br></div>
+
+
+<p>（3）所以现在可以理解HelloCpp中为什么定义的是CCMenuItem的位置，而不是定义CCMenu的位置了吧。CCMenu包含了多个子菜单项，每个子菜单的位置都不一样，如果定义了CCMenu的位置，那它作为父节点会影响到所有的子菜单的位置，因此我们一般把它设置在原点处，然后通过设置子菜单的位置（也就是相对父节点的偏移量）来定位整个菜单。</p>
+
+<h3>5.多子菜单的排列</h3>
+
+<p><em>（1）横向排列，纵向排列，可以指定间隔</em></p>
+
+<pre><code>CCMenuItemImage *pCloseItem1 = CCMenuItemImage::create(  
+    "CloseNormal.png",  
+    "CloseSelected.png",  
+    this,  
+    menu_selector(HelloWorld::menuCloseCallback));  
+CCMenuItemImage *pCloseItem2 = CCMenuItemImage::create(  
+    "CloseNormal.png",  
+    "CloseSelected.png",  
+    this,  
+    menu_selector(HelloWorld::menuCloseCallback));  
+
+CCMenu* pMenu = CCMenu::create(pCloseItem1,pCloseItem2,NULL);  
+pMenu-&gt;alignItemsHorizontally();//默认间隔是kDefaultPadding=5  
+//pMenu-&gt;alignItemsHorizontallyWithPadding(20);//指定间隔  
+//pMenu-&gt;alignItemsVertically();//默认间隔也是kDefaultPadding=5  
+//pMenu-&gt;alignItemsVerticallyWithPadding(20);//指定间隔  
+this-&gt;addChild(pMenu, 1);  
+</code></pre>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_13/4.jpg" alt="" border="0" title="" /><br></br></div>
+
+
+<p><em>（2）按行排列，按列排列，不能指定间隔，只能自己实现。希望下一版本有这个功能。</em></p>
+
+<pre><code>CCMenuItemImage *pCloseItem1 = CCMenuItemImage::create(  
+    "CloseNormal.png",  
+    "CloseSelected.png",  
+    this,  
+    menu_selector(HelloWorld::menuCloseCallback));  
+...  
+CCMenuItemImage *pCloseItem6 = CCMenuItemImage::create(  
+    "CloseNormal.png",  
+    "CloseSelected.png",  
+    this,  
+    menu_selector(HelloWorld::menuCloseCallback));  
+CCMenu* pMenu = CCMenu::create(pCloseItem1,pCloseItem2,pCloseItem3,pCloseItem4,pCloseItem5,pCloseItem6,NULL);  
+pMenu-&gt;alignItemsInRows(3,2,1,NULL);  
+//pMenu-&gt;alignItemsInColumns(3,2,1,NULL);  
+this-&gt;addChild(pMenu, 1);  
+</code></pre>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_13/5.jpg" alt="" border="0" title="" /><br></br></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十二】plist解析工具：Anti_TexturePacker]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/19/play-cocos2dx-12/"/>
+    <updated>2013-10-19T09:49:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/19/play-cocos2dx-12</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12867863">http://blog.csdn.net/jackystudio</a></p>
+
+<p>之前拿了一些别人的图片素材，是用TexturePacker打包合成的，结果写程序的时候不知道每个合成前小png图的名字是什么，只能一个一个从plist文件中找，然后猜测对应的名字，再进行显示，如果不对，还要继续猜。。。坑爹啊，效率大大降低了，时间都耗在找图片名字上了。后来决定动手写一个解析plist的软件，就叫它Anti_TexturePacker吧。</p>
+
+<p>Anti_TexurePacker软件基于VS 2008 MFC Dialog。</p>
+
+<h3>1.PNG图的显示</h3>
+
+<p>这个还好，VS2008提供了GDI+，所以可以直接用它显示。关键是屏幕尺寸有限，如果打包后的PNG图很大的话，不能直接显示，又懒得做滚动条，所以直接采用缩放的方式了。缩放比例较大的话，可能会出现捕获点计算不精确，不过效果还是不错的，没有尺寸限制。</p>
+
+<!-- more -->
+
+
+<pre><code>CDC* pDC =GetDC();  
+Graphics graphics( pDC-&gt;m_hDC);  
+Image image(m_PNGFileName.GetString(), FALSE);  
+graphics.DrawImage(&amp;image,ORIGIN_DRAW_X,ORIGIN_DRAW_Y,(int)(m_RealWidth*m_ScaleRatio),(int)(m_RealHeight*m_ScaleRatio)); 
+</code></pre>
+
+<p>要注意PNG图的显示要放在OnPaint中执行，这样窗口进行重绘的时候才会保证PNG图的正常显示。</p>
+
+<h3>2.plist文件的读取</h3>
+
+<p>看一下plist的格式：</p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_12/7.jpg" alt="" border="0" title="xml" /><br></br></div>
+
+
+<p>这样一看，就知道了标准的plist文件中，我们需要的是第7，10，14，20，23，27&hellip;行。抓出规律，读取到CStringArray。我没有采用xml的解析库，而是直接无耻的这么做了，用起来倒是没什么问题，但是不要学啊。。。</p>
+
+<pre><code>    int i=1;
+    int needName=7;
+    int needConfig=10;
+    int needrotate=14;
+    if(!bFileExist)//如果文件存在且可读
+    {
+        return FALSE;
+    }
+    CString strline;
+    FileContainer.RemoveAll();
+    //将PlistFile文件数据读到FileContainer
+    while(PlistFile.ReadString(strline))
+    {
+        if (i==needName)
+        {
+            FileContainer.Add(strline);
+            needName+=13;
+        }
+        if (i==needConfig)
+        {
+            FileContainer.Add(strline);
+            needConfig+=13;
+        }
+        if (i==needrotate)
+        {
+            FileContainer.Add(strline);
+            needrotate+=13;
+        }
+        i++;
+    }
+    PlistFile.Close();
+</code></pre>
+
+<p>然后再解析出CCStringArray中的名字和对应的坐标，尺寸，是否旋转赋值到一个结构体（包含Name，Width，Height，OriginX，OriginY，isRotate）。创建一个CList来储存这些结构体。</p>
+
+<pre><code>while(i&lt;iFileLines)
+{
+    strline = FileContainer.GetAt(i++);
+    strline.TrimLeft();//删除左边的空格
+    if (i%3==1)//第1行，储存名字
+    {
+        str=strline.Mid(5,strline.GetLength()-11);
+        t_pngcfg.strName=str;
+    }
+    else if(i%3==2)//第2行，储存坐标和尺寸
+    {
+        CString strTemp;
+        str=strline.Mid(10,strline.GetLength()-21);
+        AfxExtractSubString(strTemp,str,0,',');
+        t_pngcfg.originX=_ttoi(strTemp);
+        AfxExtractSubString(strTemp,str,1,',');
+        strTemp=strTemp.Left(strTemp.GetLength()-1);
+        t_pngcfg.originY=_ttoi(strTemp);
+        AfxExtractSubString(strTemp,str,2,',');
+        strTemp=strTemp.Right(strTemp.GetLength()-1);
+        t_pngcfg.width=_ttoi(strTemp);
+        AfxExtractSubString(strTemp,str,3,',');
+        t_pngcfg.height=_ttoi(strTemp);
+    }
+    else //第3行，存储旋转属性
+    {
+        str=strline.Mid(1,strline.GetLength()-3);
+        if (str=="true")
+        {
+            t_pngcfg.isRotate=true;
+        }
+        else if (str=="false")
+        {
+            t_pngcfg.isRotate=false;
+        }
+        m_list.AddTail(t_pngcfg);
+    }
+}
+</code></pre>
+
+<p>因为plist文件最后还有一个metadata字段，所以后面进行遍历的时候要对CCList的个数减1。</p>
+
+<h3>3.随鼠标移动的PNG图片名字的获取</h3>
+
+<p>在OnMouseMove中进行处理显示。</p>
+
+<pre><code>CPoint ptInPNG;  
+ptInPNG.x=(point.x-ORIGIN_DRAW_X)/m_ScaleRatio;  
+ptInPNG.y=(point.y-ORIGIN_DRAW_Y)/m_ScaleRatio;  
+
+int count=m_plistFile.m_list.GetCount();  
+for (int i=0;i&lt;count-1;i++)  
+{  
+    PNGCfg t_pngcfg=m_plistFile.m_list.GetAt(m_plistFile.m_list.FindIndex(i));  
+    if (isPtInRect(ptInPNG,t_pngcfg))  
+    {  
+        showStastus(t_pngcfg.strName);  
+    }  
+}  
+</code></pre>
+
+<h3>4.单击PNG图拷贝名字到剪切板</h3>
+
+<p>在OnLButtonDown中进行处理拷贝。</p>
+
+<pre><code>if(OpenClipboard()) //首先打开一个剪切板，如果成功则返回非0值  
+{
+    HANDLE hClip;//声明一个句柄  
+    char *pBuf;  
+    EmptyClipboard();//置空这个剪切板，且得到剪切板的所有权  
+    hClip=GlobalAlloc(GMEM_MOVEABLE,t_pngcfg.strName.GetLength()+1);  
+    //申请锁定一块存放数据的内存区域  
+    pBuf=(char *)GlobalLock(hClip);//得到指向内存区域的第一个字节指针  
+    strcpy(pBuf,(char*)_bstr_t(t_pngcfg.strName.GetBuffer()));//将文本框的值拷贝到内存中  
+    GlobalUnlock(hClip);//解除内存锁定  
+    SetClipboardData(CF_TEXT,hClip);//设置数据到剪切板中  
+    CloseClipboard();//关闭剪切板  
+}  
+</code></pre>
+
+<h3>5.PNG图的裁剪和保存</h3>
+
+<p>创建一个新的GDI+Bitmap对象，传入图像数据和大小，进行保存即可。</p>
+
+<pre><code>Gdiplus::Rect rcImage(x, y, width, height);  
+pWrapBitmap-&gt;LockBits(&amp;rcImage, Gdiplus::ImageLockModeRead, pWrapBitmap-&gt;GetPixelFormat(), &amp;bitmapData);  
+pBitmap = new Gdiplus::Bitmap(bitmapData.Width, bitmapData.Height, bitmapData.Stride, PixelFormat32bppARGB, (BYTE*)bitmapData.Scan0);  
+pWrapBitmap-&gt;UnlockBits(&amp;bitmapData);  
+if (pngcfg.isRotate)  
+{  
+    pBitmap-&gt;RotateFlip(Rotate270FlipNone);  
+}  
+
+CLSID pngClsid;   
+GetEncoderClsid(L"image/png", &amp;pngClsid);   
+CString strpathName=strClipDir;  
+strpathName+="\\";  
+strpathName+=pngcfg.strName;  
+pBitmap-&gt;Save(strpathName, &amp;pngClsid, NULL);  
+delete pBitmap;  
+delete pWrapBitmap;  
+</code></pre>
+
+<h3>6.效果图</h3>
+
+<p>（1）鼠标移动到小图上，右上角显示当前位置所在的PNG名。单击小图，PNG名自动复制到剪切板。</p>
+
+<div align="center"><img src="http://note.youdao.com/yws/res/290/5653CB6D76534E0D8495D39B0BDFD4C2" alt="" border="0" title="1" /><br></br></div>
+
+
+<p>（2）在列表中选择小图名字，软件自动显示红框。包裹该小图。</p>
+
+<div align="center"><img src="http://note.youdao.com/yws/res/289/2E20B4600C864388B6049251C2FA320D" alt="" border="0" title="2" /><br></br></div>
+
+
+<p>（3）点击裁剪PNG，弹出保存路径，选择保存路径确定,工作线程中处理PNG图的裁剪,PNG图裁剪成功,目录下可以看到裁剪后的小图，按照原来名字命名。</p>
+
+<div align="center"><img src="http://note.youdao.com/yws/res/291/65FF068A33684AFC94C04F4751C2FE32" alt="" border="0" title="6" /><br></br></div>
+
+
+<h3>7.下载地址</h3>
+
+<p>v.1.2版</p>
+
+<p>更新说明：</p>
+
+<p><em>1.增加PNG剪裁为小PNG功能</em></p>
+
+<p><em>2.修正列表显示</em></p>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6440769">下载地址</a></p>
+
+<p>v1.1版</p>
+
+<p>更新说明：</p>
+
+<p><em>1.修复旋转属性显示错误bug</em></p>
+
+<p><em>2.修复png相对路径无法显示bug</em></p>
+
+<p><em>3.增加双击列表显示红框功能</em></p>
+
+<p><em>4.简化操作</em></p>
+
+<p><em>5.修改icon</em></p>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6429297">下载地址</a></p>
+
+<p>源码：<a href="https://github.com/fusijie/Anti_TexturePaker.git">https://github.com/fusijie/Anti_TexturePaker.git</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十一】定时器schedule]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/18/play-cocos2dx-11/"/>
+    <updated>2013-10-18T08:08:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/18/play-cocos2dx-11</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12848473">http://blog.csdn.net/jackystudio</a></p>
+
+<p>如果我们想定时执行一个动作怎么办？CCScheduler帮了我们一个大忙。</p>
+
+<h3>1.概况</h3>
+
+<p>CCNode内部封装了一个</p>
+
+<pre><code>CCScheduler *m_pScheduler;  
+</code></pre>
+
+<p>正是通过它我们可以很轻松地完成一些定时功能，所以定时器是节点所具备的功能。</p>
+
+<p>定时器分为2种，一种是更新定时器，执行的频率是每帧执行一次，另一种则是自定义回调函数的定时器（最小值是一帧），关于回调函数和函数指针的相关基础可参见<a href="http://blog.csdn.net/jackystudio/article/details/11720325">这里</a>。</p>
+
+<!-- more -->
+
+
+<h3>2.API</h3>
+
+<pre><code>//更新定时器，每帧调用1次。每个节点只能有1个被调度的update函数  
+void scheduleUpdate(void);  
+//卸载更新定时器  
+void unscheduleUpdate(void);  
+
+//自定义定时器，如果重复调用，那调用间隔会更新，而不会再次调用  
+//interval，调用时间间隔，如果为0，建议使用scheduleUpdate  
+//repeat，回调函数会被执行repeat+1次，kCCRepeatForever是无限次调用  
+//delay，第一次执行前的延时  
+void schedule(SEL_SCHEDULE selector, float interval, unsigned int repeat, float delay);  
+void schedule(SEL_SCHEDULE selector, float interval);  
+void scheduleOnce(SEL_SCHEDULE selector, float delay);  
+void schedule(SEL_SCHEDULE selector);  
+//卸载自定义定时器  
+void unschedule(SEL_SCHEDULE selector);  
+void unscheduleAllSelectors(void);  
+
+//恢复所有定时器和动作，OnEnter调用  
+void resumeSchedulerAndActions(void);  
+//暂停所有定时器和动作，OnExit调用  
+void pauseSchedulerAndActions(void);  
+
+//scheduleUpdate每帧调用  
+virtual void update(float delta);  
+</code></pre>
+
+<h3>3.示例</h3>
+
+<p><strong>3.1.更新定时器</strong></p>
+
+<pre><code>//开启定时器  
+this-&gt;scheduleUpdate();  
+
+//虚函数update  
+void HelloWorld::update(float delta)  
+{  
+    CCLog("%f",delta);  
+}  
+
+//输出，这里设置了60fps，调用间隔1/60s  
+0.016667  
+0.016676  
+0.016657  
+0.016669  
+</code></pre>
+
+<p><strong>3.2.自定义定时器</strong></p>
+
+<pre><code>//开启定时器，延时2s执行，执行3+1次，执行间隔1s  
+this-&gt;schedule(schedule_selector(HelloWorld::log),1,3,2);  
+
+//回调函数  
+void HelloWorld::log(float dt)  
+{  
+    CCLog("schedule");  
+}  
+
+//输出  
+2.004532  
+1.005827  
+1.000238  
+1.001019  
+</code></pre>
+
+<h3>4.schedule_selector和SEL_SCHEDULE</h3>
+
+<p>看到上面的schedule_selector了吧，这又是个什么玩意？看看它的宏定义。</p>
+
+<pre><code>#define schedule_selector(_SELECTOR) (SEL_SCHEDULE)(&amp;_SELECTOR)  
+</code></pre>
+
+<p>原来是把函数指针转化为SEL_SCHEDULE型指针，那SEL_SCHEDULE又是什么？</p>
+
+<pre><code>typedef void (CCObject::*SEL_SCHEDULE)(float);  
+</code></pre>
+
+<p>也没啥，就是定义了一个带有float参数函数指针。所以我们在使用自定义Schedule的时候，回调函数一定要记得带上一个float参数，它记录了两次执行的间隔。如果忘了，可是会出现类型转换错误的异常。这种方式在callfunc_selector，menu_selector等也以同样的方式出现。</p>
+
+<h3>5.谁来调用回调函数</h3>
+
+<p>但是有没有发现，如果这个回调函数是个全局函数或者static函数也就算了，偏偏它是个成员函数，成员函数需要实例来调用，可是从调用方法来看，好像没传入调用对象？</p>
+
+<pre><code>this-&gt;schedule(schedule_selector(HelloWorld::log),1,3,2);  
+</code></pre>
+
+<p>是的，还记得一开头说的CCNode内部封装的m_pScheduler吗？</p>
+
+<pre><code>CCScheduler *m_pScheduler;  
+</code></pre>
+
+<p>原来CCNode帮我们实现了：</p>
+
+<pre><code>void CCNode::schedule(SEL_SCHEDULE selector, float interval, unsigned int repeat, float delay)  
+{  
+    CCAssert( selector, "Argument must be non-nil");  
+    CCAssert( interval &gt;=0, "Argument must be positive");  
+
+    m_pScheduler-&gt;scheduleSelector(selector, this, interval , repeat, delay, !m_bRunning);  
+}  
+</code></pre>
+
+<p>原来this这个时候被传入了，同时传入的参数还有m_bRunning，m_bRunning表示节点是否在运行中（是否在舞台上），OnEnter的时候赋值true，OnExit的时候赋值false，所以在执行定时器的时候还必须确保节点有在运行。</p>
+
+<p>这样确实用起来怪怪的，所以在cocos2d-x v3.0版本中，参数和函数指针用一个宏打包起来了~</p>
+
+<p>至于CCSchedule内部是怎么实现的，以及CCTimer的触发回调，有兴趣的就自己看看源码吧，我也写不来，源码有点长啊。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十】cocos2d-x坐标系]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/17/play-cocos2dx-10/"/>
+    <updated>2013-10-17T14:43:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/17/play-cocos2dx-10</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12830971">http://blog.csdn.net/jackystudio</a></p>
+
+<p>cocos2d-x采用的是笛卡尔平面坐标系，也就是平面上两条垂直线构成的坐标系，平面上任意一点都可以用（x，y）来表示。</p>
+
+<p><em>（1）就坐标系方向而言，cocos2d-x分为屏幕坐标系和OpenGL坐标系。</em></p>
+
+<p><em>（2）就节点本身而言，cocos2d-x分为绝对坐标系和相对坐标系。</em></p>
+
+<h3>1.屏幕坐标系</h3>
+
+<p>屏幕坐标系，也叫UIKit坐标系，原点在屏幕左上，x轴向右，y轴向下。cocos2d-x的屏幕触摸事件传入的位置坐标就是采用了屏幕坐标系。以320*480的屏幕为例，如图坐标值为屏幕坐标系。</p>
+
+<!-- more -->
+
+
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_10/1.jpg" alt="" border="0" title="屏幕坐标系" /><br></br></div>
+
+
+<h3>2.OpenGL坐标系</h3>
+
+<p>OpenGL坐标系原点在屏幕的左下，x轴向右，y轴向上。cocos2d-x的元素采用的就是OpenGL坐标系。同样的上例，如图坐标值为OpenGL坐标系。</p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_10/2.jpg" alt="" border="0" title="OpenGL坐标系" /><br></br></div>
+
+
+<h3>3.屏幕坐标系和OpenGL坐标系的转换</h3>
+
+<p>它们的转换导演类（CCDirector）已经封装好了两个函数供我们使用。</p>
+
+<pre><code>//UIKit To OpenGL  
+CCPoint convertToGL(const CCPoint&amp; obPoint);  
+//OpenGL To UIKit  
+CCPoint convertToUI(const CCPoint&amp; obPoint);  
+</code></pre>
+
+<h3>4.绝对坐标系</h3>
+
+<p>绝对坐标系也叫世界坐标系，从名字可以看来，绝对坐标系是一个恒坐标系，不参考也不依赖于其他坐标系。在cocos2d-x中它使用的是OpenGL坐标系。不过因为我们多在CCLayer上放置游戏元素，所以一般比较少直接用到绝对坐标系。</p>
+
+<h3>5.相对坐标系</h3>
+
+<p>cocos2d-x元素是有层次关系的，节点使用的是相对父节点的位置坐标，也就是相对坐标系（也叫本地坐标系），屏幕绘制的时候，cocos2d-x会自动将相对坐标系转换为绝对坐标系，渲染到屏幕的绝对位置上。</p>
+
+<h3>6.锚点</h3>
+
+<p>在举例之前有必要先了解一下锚点这个概念。锚点是对节点而言的，它是节点的一个属性，表明了节点位置的一个参考基准点，同样放置一个物体在(300,300)这个位置，不同的锚点会产生不同的效果。节点的默认锚点位置在(0.5,0.5)。锚点和节点的位置值没有关系，锚点只是影响了节点在屏幕上渲染的位置。如下图，虽然精灵的在屏幕上渲染的位置不一样，但是它们的position值是一样的，都是(300,300)。锚点只会影响它本身在父节点中的渲染位置，而不会影响其子节点的相对它本身的位置。</p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_10/3.jpg" alt="" border="0" title="锚点" /><br></br></div>
+
+
+<h3>7.绝对坐标系和相对坐标系的关系</h3>
+
+<p>我们先看一个例子，为了方便演示，节点的锚点都设置为(0,0)。</p>
+
+<pre><code>CCSprite* big=CCSprite::create("big.png");  
+big-&gt;setAnchorPoint(ccp(0,0));  
+big-&gt;setPosition(ccp(50,50));//设置在相对父节点的(50,50)位置  
+this-&gt;addChild(big);//屏幕是父节点  
+CCSprite* little=CCSprite::create("little.png");  
+little-&gt;setAnchorPoint(ccp(0,0));  
+little-&gt;setPosition(ccp(50,50));//设置在相对父节点的(50,50)位置  
+big-&gt;addChild(little);//big是父节点  
+</code></pre>
+
+<p>效果如下：</p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_10/4.jpg" alt="" border="0" title="绝对坐标系和相对坐标系的关系" /><br></br></div>
+
+
+<h3>7.绝对坐标系和相对坐标系的转换</h3>
+
+<p>CCNode提供给我们相对坐标系和绝对坐标系的转换函数。</p>
+
+<pre><code>CCPoint convertToNodeSpace(const CCPoint&amp; worldPoint);  //将世界坐标转换为对象节点内坐标，忽略锚点，以当前父节点左下角坐标为标准  
+CCPoint convertToWorldSpace(const CCPoint&amp; nodePoint);  //将对象节点内坐标转换为事件坐标，忽略锚点，以当前父节点左下角坐标为标准  
+CCPoint convertToNodeSpaceAR(const CCPoint&amp; worldPoint);//将世界坐标转换为基于锚点的对象节点内坐标
+CCPoint convertToWorldSpaceAR(const CCPoint&amp; nodePoint);//将局域锚点的对象节点内坐标转换为世界坐标  
+</code></pre>
+
+<p>如果要获取big和little的绝对坐标</p>
+
+<pre><code>CCPoint wp1=this-&gt;convertToWorldSpace(big-&gt;getPosition());//wp1(50,50)  
+CCPoint wp2=big-&gt;convertToWorldSpace(little-&gt;getPosition());//wp2(100,100)  
+</code></pre>
+
+<p>如果要把绝对坐标转换为big和little的相对坐标</p>
+
+<pre><code>CCPoint np1=big-&gt;convertToNodeSpace(ccp(200,200));//np1(150,150)  
+CCPoint np2=little-&gt;convertToNodeSpace(ccp(200,200));//np2(100,100)
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之九】动作类CCAction]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/16/play-cocos2dx-09/"/>
+    <updated>2013-10-16T14:33:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/16/play-cocos2dx-09</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12770909">http://blog.csdn.net/jackystudio</a></p>
+
+<p>精灵也出来了，但是不会动的精灵是木有用的。。。CCAction就是负责来解决精灵运动的问题。</p>
+
+<h3>1.概况</h3>
+
+<p>CCAction直接从CCObject继承而来，注意它代表的是一个动作，是动词。精灵执行了这个动作，而不是名词。CCAction本身并没有什么功能，主要是定义了一些通用函数和虚函数让子类实现多态性。</p>
+
+<!-- more -->
+
+
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_09/1.jpg" alt="" border="0" title="CCAction" /><br></br></div>
+
+
+<h3>2.接口</h3>
+
+<pre><code>//返回一个描述  
+const char* description();  
+
+//返回动作是否结束  
+virtual bool isDone(void);  
+
+//在动作开始前调用，需要设置目标精灵  
+virtual void startWithTarget(CCNode *pTarget);  
+
+//每帧调用，time在0~1之间，0代表动作刚开始，0.5代表动作执行一半，1代表动作结束  
+virtual void update(float time);  
+
+//返回/设置目标节点  
+CCNode* getTarget(void);  
+void setTarget(CCNode *pTarget);  
+
+//获取/设置上一个节点  
+CCNode* getOriginalTarget(void);  
+void setOriginalTarget(CCNode *pOriginalTarget);  
+
+//获取/设置标签  
+int getTag(void);  
+void setTag(int nTag);  
+
+//创建动作静态方法  
+static CCAction* create();  
+</code></pre>
+
+<h3>3.CCFollow</h3>
+
+<p>CCFollow跟随动作，继承于CCAction，可以实现节点跟随另一个节点动作。它内部封装了一个boundary，也就是跟随范围，初始为CCRectZero。</p>
+
+<pre><code>//创建一个CCFollow对象，create实际上调用了initWithTarget  
+static CCFollow* create(CCNode *pFollowedNode, const CCRect&amp; rect = CCRectZero);  
+bool initWithTarget(CCNode *pFollowedNode, const CCRect&amp; rect = CCRectZero);  
+</code></pre>
+
+<h3>4.CCSpeed</h3>
+
+<p>CCSpeed可调整速度动作类，内部封装了一个速度值，CCSpeed使用很简单，就是传入一个动作和速度，在内部重新copy一个新的动作返回。</p>
+
+<pre><code>//创建一个可变速度动作类，传入速度值  
+static CCSpeed* create(CCActionInterval* pAction, float fSpeed);  
+</code></pre>
+
+<h3>5.CCFiniteTimeAction</h3>
+
+<p>CCFiniteTimeAction有限次动作执行类，继承于CCAction，它有两个子类CCActionInstant和CCActionInterval，前者代表瞬时动作，也就是这个动作基本不需要时间马上就能完成，而后者代表延时，这个动作需要一段时间来运行。它的子类说明看上图吧。
+相比CCAction，它多了一个m_fDuration属性，表示持续时间。</p>
+
+<pre><code>//获取/设置动作持续时间  
+float getDuration(void);  
+void setDuration(float duration);  
+
+//反转动作，类似于倒带效果，返回一个新的动作  
+virtual CCFiniteTimeAction* reverse(void);  
+</code></pre>
+
+<p>好了，游戏的基本元素就写到这里，写API文档很蛋疼的说。。。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之八】精灵类CCSprite]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/15/play-cocos2dx-08/"/>
+    <updated>2013-10-15T17:17:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/15/play-cocos2dx-08</id>
+    <content type="html"><![CDATA[<p>精灵类CCSprite可以说是游戏的主角了，也是我们平时最常用到的类。</p>
+
+<h3>1.概况</h3>
+
+<!-- more -->
+
+
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_08/1.jpg" alt="" border="0" title="CCSprite" /><br></br></div>
+
+
+<p>CCSprite本质上就是一个二维图片，是静态的。游戏中的动画只不过是让一张张静态图片快速更换达到的动态效果。CCSprite继承于CCNodeRGBA，并实现了CCTextureProtocol的接口。因此CCNodeRGBA所具有的RGB和透明值这些属性和接口CCSprite都有，而CCTextureProtocol是一个抽象类，定义了和纹理相关的两个标准接口：</p>
+
+<pre><code>//返回当前使用的纹理  
+virtual CCTexture2D* getTexture(void) = 0;  
+
+//设置一个新的纹理，它会被retain  
+virtual void setTexture(CCTexture2D *texture) = 0;  
+</code></pre>
+
+<h3>2.常用接口</h3>
+
+<p><strong>2.1.初始化</strong></p>
+
+<pre><code>//初始化函数  
+virtual bool init(void);  
+
+//用CCTexture2D纹理来初始化，精灵大小即是纹理大小  
+virtual bool initWithTexture(CCTexture2D *pTexture);  
+
+///用CCTexture2D纹理和大小来初始化  
+virtual bool initWithTexture(CCTexture2D *pTexture, const CCRect&amp; rect);  
+
+//用CCTexture2D纹理，大小，旋转来初始化  
+virtual bool initWithTexture(CCTexture2D *pTexture, const CCRect&amp; rect, bool rotated);  
+
+//用CCSpriteFrame精灵帧来初始化  
+virtual bool initWithSpriteFrame(CCSpriteFrame *pSpriteFrame);  
+
+//用CCSpriteFrame精灵帧名来初始化  
+virtual bool initWithSpriteFrameName(const char *pszSpriteFrameName);  
+
+//用外部文件初始化，外部文件会先被创建为纹理，再用纹理初始化精灵  
+virtual bool initWithFile(const char *pszFilename);  
+
+//用外部文件和大小来初始化  
+virtual bool initWithFile(const char *pszFilename, const CCRect&amp; rect);  
+</code></pre>
+
+<p><strong>2.2.继承自CCTextureProtocol</strong></p>
+
+<pre><code>//设置/获取纹理  
+virtual void setTexture(CCTexture2D *texture);  
+virtual CCTexture2D* getTexture(void);  
+
+//设置/获取颜色描绘时混合方案  
+void setBlendFunc(ccBlendFunc blendFunc);  
+ccBlendFunc getBlendFunc(void);  
+</code></pre>
+
+<p><strong>2.3.继承自CCNode</strong></p>
+
+<p>参见CCNode。</p>
+
+<pre><code>virtual void setScaleX(float fScaleX);  
+virtual void setScaleY(float fScaleY);  
+virtual void setPosition(const CCPoint&amp; pos);  
+virtual void setRotation(float fRotation);  
+virtual void setRotationX(float fRotationX);  
+virtual void setRotationY(float fRotationY);  
+virtual void setSkewX(float sx);  
+virtual void setSkewY(float sy);  
+virtual void removeChild(CCNode* pChild, bool bCleanup);  
+virtual void removeAllChildrenWithCleanup(bool bCleanup);  
+virtual void reorderChild(CCNode *pChild, int zOrder);  
+virtual void addChild(CCNode *pChild);  
+virtual void addChild(CCNode *pChild, int zOrder);  
+virtual void addChild(CCNode *pChild, int zOrder, int tag);  
+virtual void sortAllChildren();  
+virtual void setScale(float fScale);  
+virtual void setVertexZ(float fVertexZ);  
+virtual void setAnchorPoint(const CCPoint&amp; anchor);//默认(0.5,0.5)  
+virtual void ignoreAnchorPointForPosition(bool value);  
+virtual void setVisible(bool bVisible);  
+virtual void draw(void);  
+</code></pre>
+
+<p><strong>2.4.继承自CCNodeRGBA</strong></p>
+
+<pre><code>//设置颜色  
+virtual void setColor(const ccColor3B&amp; color3);  
+
+//传递颜色  
+virtual void updateDisplayedColor(const ccColor3B&amp; parentColor);  
+
+//设置透明度  
+virtual void setOpacity(GLubyte opacity);  
+
+//设置/返回透明度是否跟随颜色值变化而变化  
+virtual void setOpacityModifyRGB(bool modify);  
+virtual bool isOpacityModifyRGB(void);  
+
+//传递透明度  
+virtual void updateDisplayedOpacity(GLubyte parentOpacity);  
+</code></pre>
+
+<p><strong>2.5.批节点</strong></p>
+
+<pre><code>//更新4属性：x,y,rotation,scale  
+virtual void updateTransform(void);  
+
+//如果精灵是由批节点CCSpriteBatchNode渲染的，则返回批节点  
+virtual CCSpriteBatchNode* getBatchNode(void);  
+//设置批节点，不推荐使用  
+virtual void setBatchNode(CCSpriteBatchNode *pobSpriteBatchNode);  
+</code></pre>
+
+<p><strong>2.6.纹理</strong></p>
+
+<pre><code>//设置纹理区域  
+virtual void setTextureRect(const CCRect&amp; rect);  
+virtual void setTextureRect(const CCRect&amp; rect, bool rotated, const CCSize&amp; untrimmedSize);  
+virtual void setVertexRect(const CCRect&amp; rect);  
+</code></pre>
+
+<p><strong>2.7.精灵帧和动画</strong></p>
+
+<pre><code>//设置新的精灵帧  
+virtual void setDisplayFrame(CCSpriteFrame *pNewFrame);  
+
+//返回精灵帧是否在使用  
+virtual bool isFrameDisplayed(CCSpriteFrame *pFrame);  
+
+//返回当期使用精灵帧  
+virtual CCSpriteFrame* displayFrame(void);  
+
+//设置动画和显示索引  
+virtual void setDisplayFrameWithAnimationName(const char *animationName, int frameIndex);  
+</code></pre>
+
+<p><strong>2.8.Setter和Getter方法</strong></p>
+
+<p>设置/获取CCSprite属性。</p>
+
+<pre><code>//设置获取是否更新  
+virtual bool isDirty(void);  
+virtual void setDirty(bool bDirty);  
+
+//返回坐标、顶点、颜色信息  
+ccV3F_C4B_T2F_Quad getQuad(void);  
+
+//返回纹理旋转  
+bool isTextureRectRotated(void);  
+
+//返回/设置地图集索引  
+unsigned int getAtlasIndex(void);  
+void setAtlasIndex(unsigned int uAtlasIndex);  
+
+//返回精灵区域，单位为点  
+const CCRect&amp; getTextureRect(void);  
+
+//如果采用批渲染，返回/设置纹理地图集  
+CCTextureAtlas* getTextureAtlas(void);  
+inline void setTextureAtlas(CCTextureAtlas *pobTextureAtlas);  
+
+//获取偏移  
+const CCPoint&amp; getOffsetPosition(void);  
+
+//设置返回翻转  
+bool isFlipX(void);  
+void setFlipX(bool bFlipX);  
+bool isFlipY(void);  
+void setFlipY(bool bFlipY);  
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之七】场景类CCScene和布景类CCLayer]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/14/play-cocos2dx-07/"/>
+    <updated>2013-10-14T22:21:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/14/play-cocos2dx-07</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12708811">http://blog.csdn.net/jackystudio</a></p>
+
+<p>场景类CCScene和布景类CCLayer都是作为一个容器来使用，这里简单地看下它们的实现：</p>
+
+<h3>1.场景类：CCScene</h3>
+
+<!-- more -->
+
+
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_07/1.jpg" alt="" border="0" title="CCScene" /><br></br></div>
+
+
+<p>CCScene类继承于CCNode，它的实现很简单，就是基本上没添加什么内容。。。它只是作为一个容器（父节点）的抽象概念存在。对比CCNode差别有：</p>
+
+<p>（1）构造函数中设置了不使用锚点定位，而是使用了坐标原点，即使设置了锚点也不起作用。</p>
+
+<p>m_bIgnoreAnchorPointForPosition是CCNode的属性，用于CCScene和CCLayer。</p>
+
+<pre><code>m_bIgnoreAnchorPointForPosition = true;  
+</code></pre>
+
+<p>（2）在init中设置场景的大小。节点的初始化大小为CCSizeZero，也就是没有大小。CCScene初始化时设置了场景的大小，即窗口大小。</p>
+
+<pre><code>this-&gt;setContentSize(pDirector-&gt;getWinSize());  
+</code></pre>
+
+<h3>2.布景类：CCLayer</h3>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_07/2.jpg" alt="" border="0" title="CCLayer" /><br></br></div>
+
+
+<p>CCLayer相对CCScene而言会比较麻烦一点，因为他不仅要作为容器使用，而且还要实现一些游戏功能，所以它继承了CCTouchDelegate，CCAccelerometerDelegate和CCKeypadDelegate，这三个类是用来处理触摸事件，重力感应事件和键盘事件的，默认初始化都是不可用，需要手动设置开启。</p>
+
+<p>（1）CCLayer和CCScene的初始化差不多，也是构造函数中设置不使用锚点定位，init函数中设置了层的大小，即窗口大小。</p>
+
+<p>（2）常用接口：</p>
+
+<pre><code>//初始化函数，添加精灵就在这里进行  
+virtual bool init();  
+
+//分配内存，标记autoRelease  
+static CCLayer *create(void);  
+
+//层进入回调  
+virtual void onEnter();  
+//层退出回调  
+virtual void onExit();  
+//如果层进入带效果，效果完成时回调  
+virtual void onEnterTransitionDidFinish();  
+
+//触摸事件(单点和多点)  
+virtual bool ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent);  
+virtual void ccTouchMoved(CCTouch *pTouch, CCEvent *pEvent);  
+virtual void ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent);  
+virtual void ccTouchCancelled(CCTouch *pTouch, CCEvent *pEvent);  
+virtual void ccTouchesBegan(CCSet *pTouches, CCEvent *pEvent);  
+virtual void ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent);  
+virtual void ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent);  
+virtual void ccTouchesCancelled(CCSet *pTouches, CCEvent *pEvent);  
+
+//重力感应相关  
+virtual void didAccelerate(CCAcceleration* pAccelerationValue);  
+void registerScriptAccelerateHandler(int nHandler);  
+void unregisterScriptAccelerateHandler(void);  
+
+//注册触摸分发，默认是addStandardDelegate  
+virtual void registerWithTouchDispatcher(void);  
+
+//设置/获取释放触摸可用  
+virtual bool isTouchEnabled();  
+virtual void setTouchEnabled(bool value);  
+
+//设置/获取触摸模式  
+virtual void setTouchMode(ccTouchesMode mode);  
+virtual int getTouchMode();  
+
+//设置/获取触摸优先级，默认为0  
+virtual void setTouchPriority(int priority);  
+virtual int getTouchPriority();  
+
+//设置/获取是否接收重力感应事件  
+virtual bool isAccelerometerEnabled();  
+virtual void setAccelerometerEnabled(bool value);  
+virtual void setAccelerometerInterval(double interval);  
+
+//设置/获取是否接收键盘事件  
+virtual bool isKeypadEnabled();  
+virtual void setKeypadEnabled(bool value);  
+
+//返回键和菜单键的回调，需要设置接收键盘事件  
+virtual void keyBackClicked(void);  
+virtual void keyMenuClicked(void);  
+</code></pre>
+
+<h3>3.颜色布景层：CCLayerRGBA，CCLayerColor和CCLayerGradient</h3>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_07/3.jpg" alt="" border="0" title="颜色布景层" /><br></br></div>
+
+
+<p>（1）CCLayerRGBA和CCNodeRGBA差不多，也是用于设置RGB值和Blend值，同时可以传递到子节点。它的相关接口参见CCNodeRGBA。</p>
+
+<p>（2）CCLayerColor只是一个单纯的可以绘制颜色的层。可以带入长宽参数，绘制一个矩形的布景层。</p>
+
+<p>（3）CCLayerGradient继承于CClayerColor，是一个带有渐变效果的布景层。</p>
+
+<h3>4.多层布景层：CCLayerMultiplex</h3>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_07/4.jpg" alt="" border="0" title="CCLayerMultiplex" /><br></br></div>
+
+
+<p>CCLayerMultiplex继承与CCLayer，相当于一个层容器，他可以包含多个层，但是同一时间只能显示一个CCLayer。《我叫MT》的第一个界面菜单那一块就是这么处理的。CCLayerMultiplex最重要的函数就是：</p>
+
+<pre><code>//切换布景层  
+pLayerMultiplex-&gt;switchTo(item-&gt;getTag());  
+pLayerMultiplex-&gt;switchToAndReleaseMe(item-&gt;getTag());  
+</code></pre>
+
+<p>两者的差别在于是否释放当前处于活动的布景层。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之六】节点类CCNode]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/14/play-cocos2dx-06/"/>
+    <updated>2013-10-14T22:06:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/14/play-cocos2dx-06</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12703741">http://blog.csdn.net/jackystudio/</a></p>
+
+<p>节点类CCNode可以说是游戏元素的祖宗了，基本上我们看得到的游戏元素都是以它为原型进行扩展的。像CCScene，CCLayer，CCSprite，CCMenu，CCSpriteBatchNode等等都是从CCNode继承而来。另外如果我们要自定义精灵，那么从CCNode继承也是一个很不错的选择。</p>
+
+<!-- more -->
+
+
+<h3>1.概况</h3>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_06/1.jpg" alt="" border="0" title="CCNode" /><br></br></div>
+
+
+<p>CCNode直接从CCObject继承而来，有如下几个特点：</p>
+
+<p><em>（1）可以包含其他CCNode节点，可以进行添加/获取/删除子节点操作。</em></p>
+
+<p><em>（2）可以执行周期性的回调任务。</em></p>
+
+<p><em>（3）可以执行动作。</em></p>
+
+<p>一些子类化的节点提供了更为丰富的特性和功能。</p>
+
+<h3>2.属性</h3>
+
+<pre><code>Features of CCNode:  
+- position   //位置，默认(0,0)  
+- scale (x, y)   //缩放，默认(1,1)  
+- rotation (in degrees, clockwise)   //旋转，默认为0  
+- skew   //倾斜，默认为0  
+- CCCamera (an interface to gluLookAt )  //CCCamera，视点转换，每个节点都有，默认指向节点中心  
+- CCGridBase (to do mesh transformations)//CCGridBase，网类转变  
+- anchor point   //锚点，默认(0,0)  
+- size   //尺寸，默认(0,0)  
+- visible//可见  
+- z-order//z轴值  
+- openGL z position  //OpenGL z值  
+</code></pre>
+
+<h3>3.接口</h3>
+
+<p><strong>3.1.初始化</strong></p>
+
+<pre><code>//初始化函数，成功返回true  
+virtual bool init();  
+
+//分配内存空间，调用init并添加autoRelease标记  
+static CCNode * create(void);  
+
+//返回描述字符串  
+const char* description(void);  
+</code></pre>
+
+<p><strong>3.2.图形属性</strong></p>
+
+<pre><code>//设置/获取Z轴顺序，Z轴大的覆盖Z轴小的  
+virtual void setZOrder(int zOrder);  
+virtual void _setZOrder(int z);  
+virtual int getZOrder();  
+
+//设置/获取OpenGL Z轴顶点  
+virtual void setVertexZ(float vertexZ);  
+virtual float getVertexZ();  
+
+//设置/获取缩放值  
+virtual void setScaleX(float fScaleX);  
+virtual float getScaleX();  
+virtual void setScaleY(float fScaleY);  
+virtual float getScaleY();  
+virtual void setScale(float scale);  
+virtual float getScale();  
+virtual void setScale(float fScaleX,float fScaleY);  
+
+//设置/获取位置  
+virtual void setPosition(const CCPoint &amp;position);  
+virtual const CCPoint&amp; getPosition();  
+virtual void setPosition(float x, float y);  
+virtual void getPosition(float* x, float* y);  
+virtual void  setPositionX(float x);  
+virtual float getPositionX(void);  
+virtual void  setPositionY(float y);  
+virtual float getPositionY(void);  
+
+//设置/获取倾斜角度  
+virtual void setSkewX(float fSkewX);  
+virtual float getSkewX();  
+virtual void setSkewY(float fSkewY);  
+virtual float getSkewY();  
+
+//设置/获取锚点  
+virtual void setAnchorPoint(const CCPoint&amp; anchorPoint);  
+virtual const CCPoint&amp; getAnchorPoint();  
+virtual const CCPoint&amp; getAnchorPointInPoints();  
+
+//设置/获取大小  
+virtual void setContentSize(const CCSize&amp; contentSize);  
+virtual const CCSize&amp; getContentSize() const;  
+
+//设置/获取可见性  
+virtual void setVisible(bool visible);  
+virtual bool isVisible();  
+
+//设置/获取旋转角度  
+virtual void setRotation(float fRotation);  
+virtual float getRotation();  
+virtual void setRotationX(float fRotaionX);  
+virtual float getRotationX();  
+virtual void setRotationY(float fRotationY);  
+virtual float getRotationY();  
+</code></pre>
+
+<p><strong>3.3.节点操作</strong></p>
+
+<pre><code>//添加/获取子节点，可以带Z轴顺序（默认为0）和标签  
+virtual void addChild(CCNode * child);  
+virtual void addChild(CCNode * child, int zOrder);  
+virtual void addChild(CCNode* child, int zOrder, int tag);  
+CCNode * getChildByTag(int tag);  
+virtual CCArray* getChildren();  
+unsigned int getChildrenCount(void) const;  
+
+//设置/获取父节点  
+virtual void setParent(CCNode* parent);  
+virtual CCNode* getParent();  
+
+//从父节点中移除自身，默认cleanup为true  
+virtual void removeFromParent();  
+virtual void removeFromParentAndCleanup(bool cleanup);  
+
+//移除子节点  
+virtual void removeChild(CCNode* child);  
+virtual void removeChild(CCNode* child, bool cleanup);  
+virtual void removeChildByTag(int tag);  
+virtual void removeChildByTag(int tag, bool cleanup);  
+
+//移除所有节点  
+virtual void removeAllChildren();  
+virtual void removeAllChildrenWithCleanup(bool cleanup);  
+
+//重新设置节点顺序  
+virtual void reorderChild(CCNode * child, int zOrder);  
+</code></pre>
+
+<p><strong>3.4.标签和用户数据</strong></p>
+
+<pre><code>//设置/获取tag  
+virtual int getTag() const;  
+virtual void setTag(int nTag);  
+
+//设置/获取userdata，它是一个指针可以指向你想要的任意数据块，不过记得要释放  
+virtual void* getUserData();  
+virtual void setUserData(void *pUserData);  
+
+//设置/获取CCObject，和上面一样，只是数据换成了CCObject对象  
+virtual CCObject* getUserObject();  
+virtual void setUserObject(CCObject *pUserObject);  
+</code></pre>
+
+<p><strong>3.5.事件回调</strong></p>
+
+<pre><code>//事件回调
+//节点开始进入触发  
+virtual void onEnter();  
+//节点完成进入触发  
+virtual void onEnterTransitionDidFinish();  
+//节点退出触发  
+virtual void onExit();  
+//如果节点退出有过渡动画，动画开始时触发  
+virtual void onExitTransitionDidStart();  
+//停止动画和调度器  
+virtual void cleanup(void);  
+</code></pre>
+
+<p><strong>3.6.动作</strong></p>
+
+<pre><code>//获取/设置动作管理器
+virtual void setActionManager(CCActionManager* actionManager);  
+virtual CCActionManager* getActionManager();  
+
+//运行动作  
+CCAction* runAction(CCAction* action);  
+
+//停止动作  
+void stopAllActions(void);  
+void stopAction(CCAction* action);  
+void stopActionByTag(int tag);  
+CCAction* getActionByTag(int tag);  
+
+//获取正在运行动作数  
+unsigned int numberOfRunningActions(void);  
+</code></pre>
+
+<p><strong>3.7.调度器和定时器</strong></p>
+
+<pre><code>//获取/设置调度器  
+virtual void setScheduler(CCScheduler* scheduler);  
+virtual CCScheduler* getScheduler();  
+
+//检测某个调度器是否有在运行  
+bool isScheduled(SEL_SCHEDULE selector);  
+
+//开启update调度  
+void scheduleUpdate(void);  
+//设置调度优先级  
+void scheduleUpdateWithPriority(int priority);  
+//关闭update调度器  
+void unscheduleUpdate(void);  
+
+//开启/关闭/恢复/暂停调度器  
+void schedule(SEL_SCHEDULE selector, float interval, unsigned int repeat, float delay);  
+void schedule(SEL_SCHEDULE selector, float interval);  
+void scheduleOnce(SEL_SCHEDULE selector, float delay);  
+void schedule(SEL_SCHEDULE selector);  
+void unschedule(SEL_SCHEDULE selector);  
+void unscheduleAllSelectors(void);  
+void resumeSchedulerAndActions(void);  
+void pauseSchedulerAndActions(void);  
+
+//每帧调用函数  
+virtual void update(float delta);  
+</code></pre>
+
+<p><strong>3.8.坐标转换</strong></p>
+
+<pre><code>//坐标转换相关，这一部分后面再介绍  
+CCPoint convertToNodeSpace(const CCPoint&amp; worldPoint);  
+CCPoint convertToWorldSpace(const CCPoint&amp; nodePoint);  
+CCPoint convertToNodeSpaceAR(const CCPoint&amp; worldPoint);  
+CCPoint convertToWorldSpaceAR(const CCPoint&amp; nodePoint);  
+CCPoint convertTouchToNodeSpace(CCTouch * touch);  
+CCPoint convertTouchToNodeSpaceAR(CCTouch * touch);  
+</code></pre>
+
+<p><strong>3.9.其他</strong></p>
+
+<pre><code>//获取/设置着色程序  
+virtual CCGLProgram* getShaderProgram();  
+virtual void setShaderProgram(CCGLProgram *pShaderProgram);  
+
+//获取CCCamera对象  
+virtual CCCamera* getCamera();  
+
+//节点是否在运行  
+virtual bool isRunning();  
+
+//绘制节点  
+virtual void draw(void);  
+//递归访问节点  
+virtual void visit(void);  
+
+//返回所占矩形，节点坐标系  
+CCRect boundingBox(void);  
+</code></pre>
+
+<h3>4.CCNodeRGBA</h3>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_06/2.jpg" alt="" border="0" title="CCNodeRGBA" /><br></br></div>
+
+
+<p>CCNodeRGBA继承于CCNode，所以它拥有CCNode的所有特性，并且它也继承于CCRGBAProtocol。从名字看来我们就知道它是一个带有颜色和透明度的节点。</p>
+
+<p>所以它比起CCNode就多了2个特性，Opacity和RGB值。</p>
+
+<p>如果要给子节点传递透明度属性，那么需要设置setCascadeOpacityEnabled(true)，如果传递的过程中遇到了CCNode，那么传递会中断。颜色值的传递也是一样的道理。</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: 中国好学霸 | Jacky's Blog]]></title>
+  <link href="http://www.jacky.tk/tags/zhong-guo-hao-xue-ba/atom.xml" rel="self"/>
+  <link href="http://www.jacky.tk/"/>
+  <updated>2013-11-25T14:03:47+08:00</updated>
+  <id>http://www.jacky.tk/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十八】仿《中国好学霸》文字拖拽和定位]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/28/play-cocos2dx-18/"/>
+    <updated>2013-10-28T18:00:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/28/play-cocos2dx-18</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13287519">http://blog.csdn.net/jackystudio</a></p>
+
+<p>现在各种猜成语猜歌名好学霸之类的游戏火的一塌糊涂。本节就介绍下文字的拖拽和定位。</p>
+
+<h3>1.基本原理</h3>
+
+<p>其实这只是精灵的简单拖拽和坐标的识别而已。当触摸点在精灵的范围内，精灵可以感应拖动，当触摸结束进行位置判断，如果在有效范围内就进行自动定位。</p>
+
+<!-- more -->
+
+
+<h3>2.实现</h3>
+
+<p><strong>2.1.背景加入和文字精灵的加入</strong>
+这里是采用<a href="http://blog.csdn.net/jackystudio/article/details/13014883">这一节</a>所述方式添加中文。</p>
+
+<pre><code>bool AutoSet::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCLayer::init());  
+        CCSize visiableSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+
+        CCSprite* background=CCSprite::create("AutoSetBk.jpg");  
+        background-&gt;setPosition(ccp(visiableSize.width/2,visiableSize.height/2));  
+        this-&gt;addChild(background);//添加背景  
+
+        //利用CCDictionary来读取xml  
+        CCDictionary* chnStrings = CCDictionary::createWithContentsOfFile("CHN_Strings.xml");  
+        const char *hao = ((CCString*)chnStrings-&gt;objectForKey("hao"))-&gt;m_sString.c_str();   
+
+        text=CCLabelTTF::create(hao,"Arial",50);  
+        text-&gt;setPosition(ccp(120,160));  
+        text-&gt;setColor(ccc3(0,0,0));  
+        this-&gt;addChild(text);//添加文本  
+
+        this-&gt;setTouchEnabled(true);//设置触摸可用  
+
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+</code></pre>
+
+<p><strong>2.2.触摸的实现和拖拽的定位</strong></p>
+
+<p>因为3.0版本cocos2d-x的触摸实现已经变更了，所以这里不再赘述，3.0之前的触摸的原理和实现具体可以参见<a href="http://blog.csdn.net/jackystudio/article/details/11860007">这一节</a>。</p>
+
+<p><strong>2.2.1注册触摸事件</strong></p>
+
+<pre><code>void AutoSet::registerWithTouchDispatcher(void)  
+{  
+    CCDirector *pDirector=CCDirector::sharedDirector();    
+    pDirector-&gt;getTouchDispatcher()-&gt;addTargetedDelegate(this,0,true);//单点触摸  
+}  
+</code></pre>
+
+<p><strong>2.2.2.触摸开始</strong></p>
+
+<pre><code>bool AutoSet::ccTouchBegan(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent)  
+{  
+    return true;//返回true表示接收触摸事件  
+}  
+</code></pre>
+
+<p><strong>2.2.3.触摸过程</strong></p>
+
+<pre><code>void AutoSet::ccTouchMoved(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent)  
+{  
+    CCPoint beginPoint = pTouch-&gt;getLocationInView();  //获取触摸位置  
+    beginPoint = CCDirector::sharedDirector()-&gt;convertToGL(beginPoint);//坐标转换  
+    CCPoint pt=text-&gt;getPosition();  
+    CCRect rect=CCRectMake(pt.x-30,pt.y-30,60,60);  
+    if (rect.containsPoint(beginPoint))//判断触摸点是否在文字上  
+    {  
+        CCPoint endPoint=pTouch-&gt;getPreviousLocationInView();//获取触摸的前一个位置    
+        endPoint=CCDirector::sharedDirector()-&gt;convertToGL(endPoint);     
+
+        CCPoint offSet =ccpSub(beginPoint,endPoint);//获取offset    
+        CCPoint toPoint=ccpAdd(text-&gt;getPosition(),offSet); //获取真正移动位置  
+        text-&gt;setPosition(toPoint);//移动文字  
+    }  
+}  
+</code></pre>
+
+<p><strong>2.2.4.触摸结束</strong></p>
+
+<pre><code>void AutoSet::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)  
+{  
+    CCPoint lastPoint = pTouch-&gt;getLocationInView();//获取触摸结束点位置  
+    lastPoint = CCDirector::sharedDirector()-&gt;convertToGL(lastPoint);  
+    CCRect rect=CCRectMake(330,130,60,60);  
+    CCMoveTo* moveto;  
+    if (!rect.containsPoint(lastPoint))//如果未在指定区域，还原到初始位置  
+    {  
+        moveto=CCMoveTo::create(0.1f,ccp(120,160));  
+    }  
+    else//如果在指定区域，移动到该区域中心  
+    {  
+        moveto=CCMoveTo::create(0.1f,ccp(360,160));  
+    }  
+    text-&gt;runAction(moveto);  
+}  
+</code></pre>
+
+<h3>3.效果图</h3>
+
+<div align="center"><img src="http://note.youdao.com/yws/res/346/61EB707E6CE049128DE07F50141B2F54" alt="" border="0" title="效果" /><br></br></div>
+
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6463261">源码下载</a></p>
+]]></content>
+  </entry>
+  
+</feed>

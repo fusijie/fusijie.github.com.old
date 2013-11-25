@@ -1,0 +1,813 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: cocos2d-x | Jacky's Blog]]></title>
+  <link href="http://www.jacky.tk/blog/categories/cocos2d-x/atom.xml" rel="self"/>
+  <link href="http://www.jacky.tk/"/>
+  <updated>2013-11-25T14:03:47+08:00</updated>
+  <id>http://www.jacky.tk/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十五】数据结构CCArray]]></title>
+    <link href="http://www.jacky.tk/blog/2013/11/25/play-cocos2dx-25/"/>
+    <updated>2013-11-25T13:53:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/11/25/play-cocos2dx-25</id>
+    <content type="html"><![CDATA[<p>CCArray是从cocos2d中移植过来的，类似于Apple的NSMutableArray，但是比NSMutableArray更为的好用。要注意的是虽然CCArray和CCDictionary可以管理cocos2d-x中绝大多数的类，但是仍然无法替代STL库，STL库更为强有力。</p>
+
+<h3>1.API</h3>
+
+<p>先看一下CCArray可以帮我们做什么。</p>
+
+<!-- more -->
+
+
+<p><strong>1.1.创建</strong></p>
+
+<pre><code>//创建array  
+static CCArray* create();  
+//使用一系列CCObject创建array  
+static CCArray* create(CCObject* pObject, …);  
+//使用一个CCObject创建array  
+static CCArray* createWithObject(CCObject* pObject);  
+//创建array并设置容量  
+static CCArray* createWithCapacity(unsigned int capacity);  
+//用一个已存在的array创建另一个array  
+static CCArray* createWithArray(CCArray* otherArray);  
+</code></pre>
+
+<p><strong>1.2.添加</strong></p>
+
+<pre><code>//添加一个元素  
+void addObject(CCObject* object);  
+//添加一个已存在array中所有元素  
+void addObjectsFromArray(CCArray* otherArray);  
+//在指定位置插入元素  
+void insertObject(CCObject* object, unsigned int index);  
+</code></pre>
+
+<p><strong>1.3.删除</strong></p>
+
+<pre><code>//移除最后一个元素  
+void removeLastObject(bool bReleaseObj = true);  
+//移除某个元素  
+void removeObject(CCObject* object, bool bReleaseObj = true);  
+//移除一个指定位置的元素  
+void removeObjectAtIndex(unsigned int index, bool bReleaseObj = true);  
+//移除某个array  
+void removeObjectsInArray(CCArray* otherArray);  
+//移除所有元素  
+void removeAllObjects();  
+//快速移除某个元素  
+void fastRemoveObject(CCObject* object);  
+//快速移除某个指定位置的元素  
+void fastRemoveObjectAtIndex(unsigned int index);  
+</code></pre>
+
+<p><strong>1.4.操作元素</strong></p>
+
+<pre><code>//返回元素个数  
+unsigned int count() const;  
+//返回array容量  
+unsigned int capacity() const;  
+//返回指定CCObject的位置，如果不存在返回UINT_MAX  
+unsigned int indexOfObject(CCObject* object) const;  
+//返回指定位置的CCObject  
+CCObject* objectAtIndex(unsigned int index);  
+//返回最后一个元素  
+CCObject* lastObject();  
+//返回随机元素  
+CCObject* randomObject();  
+//返回某个元素是否存在于array中  
+bool containsObject(CCObject* object) const;  
+//判断array是否相等  
+bool isEqualToArray(CCArray* pOtherArray);  
+</code></pre>
+
+<p><strong>1.5.操作array内容</strong></p>
+
+<pre><code>//交换2个元素  
+void exchangeObject(CCObject* object1, CCObject* object2);  
+//交换2个指定位置元素  
+void exchangeObjectAtIndex(unsigned int index1, unsigned int index2);  
+//用一个对象替代指定位置元素  
+void replaceObjectAtIndex(unsigned int uIndex, CCObject* pObject, bool bReleaseObject = true);  
+//反转array  
+void reverseObjects();  
+//收缩array内存以匹配元素个数  
+void reduceMemoryFootprint();  
+</code></pre>
+
+<h3>2.remove和fastremove</h3>
+
+<p>从<strong>1.3</strong>可以看出删除有两种方式，普通删除和快速删除，它们有什么区别呢？</p>
+
+<p><strong>2.1.普通删除</strong></p>
+
+<pre><code>//普通删除  
+void ccArrayRemoveObjectAtIndex(ccArray *arr, unsigned int index, bool bReleaseObj/* = true*/)  
+{  
+    CCAssert(arr &amp;&amp; arr-&gt;num &gt; 0 &amp;&amp; index &lt; arr-&gt;num, "Invalid index. Out of bounds");  
+    //删除元素内容，位置仍保留着  
+    if (bReleaseObj)  
+    {  
+        CC_SAFE_RELEASE(arr-&gt;arr[index]);  
+    }  
+    //长度减1  
+    arr-&gt;num--;  
+    //获得要删除的元素后的元素个数  
+    unsigned int remaining = arr-&gt;num - index;  
+    if(remaining&gt;0)  
+    {  
+        //将要删除元素后的所有元素逐个向前移动  
+        memmove((void *)&amp;arr-&gt;arr[index], (void *)&amp;arr-&gt;arr[index+1], remaining * sizeof(CCObject*));  
+    }  
+}  
+</code></pre>
+
+<p><strong>2.2.快速删除</strong></p>
+
+<pre><code>//快速删除  
+void ccArrayFastRemoveObjectAtIndex(ccArray *arr, unsigned int index)  
+{  
+    //删除元素内容，位置仍保留着  
+    CC_SAFE_RELEASE(arr-&gt;arr[index]);  
+    //获取最后一个元素  
+    unsigned int last = --arr-&gt;num;  
+    //把最后一个元素插到删除元素的位置上  
+    arr-&gt;arr[index] = arr-&gt;arr[last];  
+}  
+</code></pre>
+
+<p><strong>2.3.总结</strong></p>
+
+<p>如果有array={0,1,2,3,4,5}，如果要删除3，使用普通删除得到的结果{0,1,2,4,5}，使用快速删除得到的结果是{0,1,2,5,4}。可以看出快速删除的效率比普通删除效率高，就差在移动元素的时间复杂度上。</p>
+
+<h3>3.内存分配</h3>
+
+<p><strong>3.1.容量和个数</strong>
+CCArray中容量和个数并不是同一个概念。个数&lt;=容量。从添加元素的源码中可以看到在添加之前会先进行空间分配，所以它是一个动态分配内存的过程。如下</p>
+
+<pre><code>void ccArrayEnsureExtraCapacity(ccArray *arr, unsigned int extra)//确保有额外的空间  
+{  
+    while (arr-&gt;max &lt; arr-&gt;num + extra)//判断空间是否足够  
+    {  
+        ccArrayDoubleCapacity(arr);//增加一倍空间  
+    }  
+}  
+</code></pre>
+
+<p>所以，每次CCArray在插入数据时检测到空间不足会增加一倍空间，再进行检测，直到空间满足分配为止。</p>
+
+<p><strong>3.2.判等</strong></p>
+
+<p>判断2个CCArray是否相等使用isEqualToArray()，判断相等的条件是CCArray中的每个元素相等即可，与CCArray的容量无关。</p>
+
+<h3>4.效率</h3>
+
+<p>比起NSMutableArray，CCArray效率能高出10%左右，原因有三：</p>
+
+<p><em>（1）它使用的是C接口，所以它不有Objective-C消息开销。</em></p>
+
+<p><em>（2）它假定你知道你在做什么，所以它不花时间在安全检查上（如边界溢出，空间需求等）。</em></p>
+
+<p><em>（3）在比较上使用了指针而不是isEqual。</em></p>
+
+<p>除了CCArray，我们还看到了ccCArray，CCArray基本上都是调用了ccCArray的函数，为什么要分为2种？
+仔细看一下CCArray是继承于CCObject，所以CCArray是用于处理cocos2d-x对象的，内存管理上也有cocos2d-x的autorelease等诸多特性。而ccCArray可以直接操作标准的C数据结构和类型。</p>
+
+<h3>5.CCARRAY_FOREACH和CCARRAY_FOREACH_REVERSE</h3>
+
+<p>宏定义，用于正向遍历和反向遍历CCArray元素</p>
+
+<pre><code>#define CCARRAY_FOREACH(__array__, __object__)                                                                         \  
+    if ((__array__) &amp;&amp; (__array__)-&gt;data-&gt;num &gt; 0)                                                                     \  
+    for(CCObject** __arr__ = (__array__)-&gt;data-&gt;arr, **__end__ = (__array__)-&gt;data-&gt;arr + (__array__)-&gt;data-&gt;num-1;    \  
+    __arr__ &lt;= __end__ &amp;&amp; (((__object__) = *__arr__) != NULL/* || true*/);                                             \  
+    __arr__++)  
+
+#define CCARRAY_FOREACH_REVERSE(__array__, __object__)                                                                  \  
+    if ((__array__) &amp;&amp; (__array__)-&gt;data-&gt;num &gt; 0)                                                                      \  
+    for(CCObject** __arr__ = (__array__)-&gt;data-&gt;arr + (__array__)-&gt;data-&gt;num-1, **__end__ = (__array__)-&gt;data-&gt;arr;     \  
+    __arr__ &gt;= __end__ &amp;&amp; (((__object__) = *__arr__) != NULL/* || true*/);                                              \  
+    __arr__--)  
+</code></pre>
+
+<h3>6.示例</h3>
+
+<p>CCArray的使用示例在<a href="http://blog.csdn.net/jackystudio/article/details/11917875">此文</a>中有比较典型的应用，这里就不再详述。</p>
+
+<h3>7.注意</h3>
+
+<p>一般来说，CCArray不会被add到其他类，所以它的引用计数是1，而且被设置为自动释放。所以创建CCArray对象时要记得调用retain，而且在析构的时候也要调用release来释放内存。真心想吐槽。。。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十四】截图保存功能的实现]]></title>
+    <link href="http://www.jacky.tk/blog/2013/11/13/play-cocos2dx-24/"/>
+    <updated>2013-11-13T08:34:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/11/13/play-cocos2dx-24</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/15498083">http://blog.csdn.net/jackystudio</a></p>
+
+<p>官方TestCpp有这个demo了，这里还是把它单独拖出来写一下，游戏推广的一个很重要组成就是玩家分享，所以游戏截图就起到很大作用了。截图功能通过CCRenderTexture实现。</p>
+
+<h3>1.CCRenderTexture</h3>
+
+<p>CCRenderTexture是一个通用渲染对象，可以通过构建一个CCRenderTexture对象，进而把要渲染的东西填充进去，在渲染开始前调用call函数，调用cocos的场景的visit函数对其进行渲染，渲染结束后调用end函数。CCRenderTexture继承于CCNode，所以可以简单地把渲染纹理添加到你的场景中，就像处理其它cocos中的节点一样，当然它还提供了保存功能，可以把渲染纹理保存为PNG或JPG格式。</p>
+
+<!-- more -->
+
+
+<h3>2.API</h3>
+
+<pre><code>   //创建和初始化函数  
+   static CCRenderTexture * create(int w ,int h, CCTexture2DPixelFormat eFormat, GLuint uDepthStencilFormat);  
+   static CCRenderTexture * create(int w, int h, CCTexture2DPixelFormat eFormat);  
+   static CCRenderTexture * create(int w, int h);  
+   bool initWithWidthAndHeight(int w, int h, CCTexture2DPixelFormat eFormat);  
+   bool initWithWidthAndHeight(int w, int h, CCTexture2DPixelFormat eFormat, GLuint uDepthStencilFormat);  
+
+   //开始获取  
+   void begin();  
+
+   //开始渲染时清除之前渲染的内容  
+   void beginWithClear(float r, float g, float b, float a);  
+   void beginWithClear(float r, float g, float b, float a, float depthValue);  
+   void beginWithClear(float r, float g, float b, float a, float depthValue, int stencilValue);  
+
+   //结束获取  
+   void end();  
+
+   //清除纹理  
+   void clear(float r, float g, float b, float a);  
+   void clearDepth(float depthValue);  
+   void clearStencil(int stencilValue);  
+
+   //保存纹理为图片文件，可以选择JPG/PNG格式，默认是JPEG格式，成功返回真  
+   bool saveToFile(const char *szFilePath);  
+   bool saveToFile(const char *name, tCCImageFormat format);  
+</code></pre>
+
+<h3>3.示例</h3>
+
+<p>修改HelloWorld中结束菜单的回调函数如下：</p>
+
+<pre><code>void CTestLayer::menuCloseCallback(CCObject* pSender)  
+{  
+    SaveScreenShot();  
+}  
+
+//截图功能  
+void CTestLayer::SaveScreenShot()  
+{  
+    //获取屏幕尺寸  
+    CCSize size = CCDirector::sharedDirector()-&gt;getWinSize();  
+    //使用屏幕尺寸初始化一个空的渲染纹理对象  
+    CCRenderTexture* texture = CCRenderTexture::create((int)size.width, (int)size.height);  
+    //设置位置  
+    texture-&gt;setPosition(ccp(size.width/2, size.height/2));  
+    //开始获取  
+    texture-&gt;begin();  
+    //遍历场景节点对象，填充纹理到texure中  
+    CCDirector::sharedDirector()-&gt;getRunningScene()-&gt;visit();  
+    //结束获取  
+    texture-&gt;end();  
+    //保存为PNG图，Win32/Debug目录下  
+    texture-&gt;saveToFile("screenshot.png", kCCImageFormatPNG);  
+}  
+</code></pre>
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6538305">下载地址</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十三】cocos2d-x多线程和同步03]]></title>
+    <link href="http://www.jacky.tk/blog/2013/11/11/play-cocos2dx-23/"/>
+    <updated>2013-11-11T11:22:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/11/11/play-cocos2dx-23</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/15334159">http://blog.csdn.net/jackystudio</a></p>
+
+<p>cocos2d-x中和Android，Windows都一样，如果在主线程中处理一些耗时操作，那么主线程就会出现阻塞现象，表现在界面上就是卡住，未响应等情况。为了避免这种情况的出现，我们需要在后台开辟工作线程进行数据的处理，再采用消息传递或者其他形式来通知主线程进行UI变化。最常见的情况就是游戏进入前的loading。</p>
+
+<h3>1.图片的异步加载</h3>
+
+<p>在多线程和同步的第一篇介绍到使用pthread库的时候，讲到由于CCAutoreleasePool不是线程安全的，所以不能在工作线程中引入cocos2d-x相关的API（其实并不是所有的API都不能使用）。但是cocos2d-x显然考虑到这个问题了，所以它本身就帮我们封装好了一个API，避免了还要手动引入pthread库的尴尬。</p>
+
+<pre><code>void CCTextureCache::addImageAsync(const char *path, CCObject *target, SEL_CallFuncO selector)  
+</code></pre>
+
+<!--more -->
+
+
+<p>其中path是图片的位置，selector是加载完成时的回调函数。很方便，如果需要加载很多图片的话，对每一个进行回调处理，然后在update中更新UI即可。</p>
+
+<h3>2.plist的异步加载</h3>
+
+<p>可是由于内存原因，大部分情况下图片会被合成打包，同时带入plist。这时候如何进行图片的异步加载呢？这个时候就需要对addImageAsync的源码进一步的探究了。</p>
+
+<p><strong>2.1.耗时的是什么？</strong></p>
+
+<p>首先要理解的是耗时的动作是什么，只有把耗时的工作真正抓出来丢到工作线程上，异步加载才有意义。我们知道，图片在内存中是以纹理的形式存在的，而图片的加载，通俗来讲也就是纹理的生成，这就是耗时的原因。那CCTexureCache中addImage（同步加载）和addImageAysnc（异步加载）分别做了什么事？</p>
+
+<p><em>（1）addImage</em>
+可以看出addImage使用同步的方式生成了纹理，也就是在主线程中进行了耗时的加载操作。</p>
+
+<pre><code>//...cocos2d-x维护着一个全局纹理，在判断纹理是否已存在  
+if (! texture)   
+    {  
+        do   
+        {  
+        //...判断图片格式  
+
+            pImage = new CCImage();  
+            CC_BREAK_IF(NULL == pImage);  
+
+            bool bRet = pImage-&gt;initWithImageFile(fullpath.c_str(), eImageFormat);  
+            CC_BREAK_IF(!bRet);  
+
+            texture = new CCTexture2D();    //开辟纹理空间  
+
+            if( texture &amp;&amp;  
+                texture-&gt;initWithImage(pImage) )  //使用CCImage初始化纹理  
+            {  
+#if CC_ENABLE_CACHE_TEXTURE_DATA  
+                // cache the texture file name  
+                VolatileTexture::addImageTexture(texture, fullpath.c_str(), eImageFormat);  
+#endif  
+                m_pTextures-&gt;setObject(texture, pathKey.c_str());  
+                texture-&gt;release();  
+            }  
+            else  
+            {  
+                CCLOG("cocos2d: Couldn't create texture for file:%s in CCTextureCache", path);  
+            }  
+        } while (0);  
+    }  
+//...释放资源，返回纹理  
+</code></pre>
+
+<p><em>（2）addImageAsync</em></p>
+
+<p>addImageAsync则是在工作线程中加载图片，然后通过调度器进行纹理的转换。</p>
+
+<pre><code>//创建工作线程用于后台加载图片  
+pthread_create(&amp;s_loadingThread, NULL, loadImage, NULL);  
+
+//创建调度队列，用来根据已加载的图片进行纹理转换  
+CCDirector::sharedDirector()-&gt;getScheduler()-&gt;scheduleSelector(schedule_selector(CCTextureCache::addImageAsyncCallBack), this, 0, false);  
+
+void CCTextureCache::addImageAsyncCallBack(float dt)  
+{  
+    //...  
+    CCTexture2D *texture = new CCTexture2D();   //开辟纹理空间  
+#if 0 //TODO: (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)  
+    texture-&gt;initWithImage(pImage, kCCResolutioniPhone);  
+#else  
+    texture-&gt;initWithImage(pImage);      //使用CCImage初始化纹理  
+#endif  
+
+#if CC_ENABLE_CACHE_TEXTURE_DATA  
+
+   VolatileTexture::addImageTexture(texture, filename, pImageInfo-&gt;imageType);  
+#endif  
+    //...将加入autorelease，进行加载后的回调函数的调用，释放相关资源  
+}  
+</code></pre>
+
+<p><strong>2.2.plist加载的原理</strong></p>
+
+<p>之前使用plist是这样子的：</p>
+
+<pre><code>void CCSpriteFrameCache::addSpriteFramesWithFile(const char *pszPlist)//传入plist文件即可  
+</code></pre>
+
+<p>在它的实现中，发现了这么一句：</p>
+
+<pre><code>CCTexture2D *pTexture = CCTextureCache::sharedTextureCache()-&gt;addImage(texturePath.c_str());  
+</code></pre>
+
+<p>原来addSpriteFramesWithFile会先查找是否存在纹理，否则会在.plist的目录下寻找同名图片，然后调用同步的addImage函数来生成纹理。这也就是为什么只加载了plist，而纹理就会存在的原因了。</p>
+
+<p><strong>2.3.异步加载plist</strong></p>
+
+<p>知道了这些，那就让addSpriteFramesWithFile调用异步的addImageAsync函数就可以了，当然不需要改源码，因为CCSpriteFrameCache还提供了如下的plist加载方式：</p>
+
+<pre><code>void CCSpriteFrameCache::addSpriteFramesWithFile(const char *pszPlist, CCTexture2D *pobTexture)  
+</code></pre>
+
+<p>所以我们可以手动异步生成纹理后，在回调函数中和.plist一起传入addSpriteFramesWithFile，搞定！还记得刚开始的selector么？生成的纹理会作为参数传入这个回调函数中，完美！</p>
+
+<p><strong>2.4.注意</strong></p>
+
+<p>只要注意一点的是，在使用任何plist中的小图片时，引擎并不会为每一张小图片生成一个纹理，而是共用了大图片的纹理，同时指定了小图片的坐标和长宽。</p>
+
+<h3>3.示例</h3>
+
+<p>其中ui_text.png是大图片，raffle_b_friend.png和raffle_b_diamond.png是两张小图片。</p>
+
+<pre><code>bool CTestLayer::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCLayer::init());  
+
+        //addImage or addImageAsync中创建纹理  
+        CCTextureCache::sharedTextureCache()-&gt;addImageAsync("ui_text.png",this,callfuncO_selector(CTestLayer::showSprite));  
+
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+
+void CTestLayer::showSprite(CCObject* obj)  
+{  
+    CCTexture2D* texture_ui_text=(CCTexture2D*)obj;//传入的obj即是异步生成的纹理  
+    CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;addSpriteFramesWithFile("ui_text.plist",texture_ui_text);//通过纹理和.plist文件加入CCSpriteFrameCache  
+    CCSprite* raffle_b_friend=CCSprite::createWithSpriteFrameName("raffle_b_friend.png");//尽情使用小图片吧  
+    raffle_b_friend-&gt;setPosition(ccp(100,100));  
+    this-&gt;addChild(raffle_b_friend);  
+
+    //错误，只能获取ui_text.png的纹理  
+    //CCTexture2D* raffle_b_diamond_texture=CCTextureCache::sharedTextureCache()-&gt;textureForKey("raffle_b_diamond.png");  
+    //正确，可以用这种先获取精灵帧，再从精灵帧中获取ui_text的纹理，以及大小，来构建CCSprite  
+    CCSpriteFrame* raffle_b_diamond_spriteframe=CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;spriteFrameByName("raffle_b_diamond.png");  
+    CCTexture2D* texture=raffle_b_diamond_spriteframe-&gt;getTexture();  
+    CCRect rect=raffle_b_diamond_spriteframe-&gt;getRect();  
+    CCSprite* raffle_b_diamond=CCSprite::createWithTexture(texture,rect); //如果纹理需要旋转，setRotation吧  
+    raffle_b_diamond-&gt;setRotation(false);  
+    raffle_b_diamond-&gt;setPosition(ccp(300,100));  
+    this-&gt;addChild(raffle_b_diamond);  
+}  
+</code></pre>
+
+<h3>4.效果</h3>
+
+<p>使用异步加载plist方式处理:</p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_23/1.jpg" alt="" border="0" title="效果图" /><br></br></div>
+
+
+<h3>5.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6533293">下载地址</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十二】cocos2d-x多线程和同步02]]></title>
+    <link href="http://www.jacky.tk/blog/2013/11/05/play-cocos2dx-22/"/>
+    <updated>2013-11-05T11:12:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/11/05/play-cocos2dx-22</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/14161151">http://blog.csdn.net/jackystudio</a></p>
+
+<p>pthread有很多不同应用，官网都有相应的API解释和Sample，这里不再重复，本文主要介绍一个cocos2d-x多线程和同步示例。</p>
+
+<h3>1.售票</h3>
+
+<p>孙鑫老师的C++和Java多线程售票一直让我念念不忘，好吧，这里用cocos2d-x和pthread实现一个吧。总共有100张火车票，有2个售票点A和B再售票，当票卖完了就结束了。我们知道当程序一开始进程就会创建一个主线程，所以可以在主线程基础上再创建2个线程A和B，再线程A和B中分别售票，当票数为0的时候，结束线程A和B。</p>
+
+<!-- more -->
+
+
+<h3>2.多线程售票</h3>
+
+<pre><code>//TestLayer.h  
+class CTestLayer :  
+public CCLayer  
+{  
+    public:  
+    CTestLayer(void);  
+    ~CTestLayer(void);  
+
+    CREATE_FUNC(CTestLayer);  
+    virtual bool init();  
+
+    pthread_t sellA_pid,sellB_pid;//线程id  
+    static int tickets;//票数  
+
+    static void* threadA(void* p);//线程A回调  
+    static void* threadB(void* p);//线程B回调  
+};  
+
+
+//TestLayer.cpp  
+#include "TestLayer.h"  
+
+int CTestLayer::tickets=100;//初始化票数100  
+CTestLayer::CTestLayer(void)  
+{  
+}  
+
+
+CTestLayer::~CTestLayer(void)  
+{  
+}  
+
+bool CTestLayer::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCLayer::init());  
+        pthread_create(&amp;sellA_pid,NULL,threadA,0);//创建线程A  
+        pthread_create(&amp;sellB_pid,NULL,threadB,0);//创建线程B  
+
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+
+void* CTestLayer::threadA(void* p)  
+{  
+    while(true)  
+    {  
+        if(tickets&gt;0)  
+        {  
+            CCLog("A Sell %d",tickets--);//输出售票，每次减1  
+        }  
+        else {  
+            break;  
+        }  
+    }  
+    return NULL;  
+}  
+
+void* CTestLayer::threadB(void* p)  
+{  
+    while(true)  
+    {  
+        if (tickets&gt;0)  
+        {  
+            CCLog("B Sell %d",tickets--);  
+        }  
+        else   
+        {  
+            break;  
+        }  
+    }  
+    return NULL;  
+}  
+</code></pre>
+
+<p>代码很简单，不多说了。我们来看一下输出，会发现有很多不可思议的现象出现，因为每个人每次运行的结果都不一样，所以这里不贴结果了，不可思议的现象可能有：</p>
+
+<p><em>（1）同一张票卖了2次。</em></p>
+
+<p><em>（2）后面的票比前面的票先卖出去。</em></p>
+
+<p><em>（3）第0张票竟然也可以卖。（这算站票么。。。）</em></p>
+
+<p>原因不多解释了，时间片的问题，不明白的Google之。如果你觉得不会有这么巧，那么在打印结果前加上这么一句：</p>
+
+<pre><code>Sleep(100);  
+</code></pre>
+
+<p>人为干扰线程的运行，增大出错几率。结果可能会是这样：</p>
+
+<pre><code>A Sell 36  
+B Sell 36//卖2次了  
+A Sell 35  
+B Sell 34  
+A Sell 33  
+B Sell 32  
+A Sell 30//提早卖了  
+B Sell 31  
+B Sell 28  
+A Sell 29  
+A Sell 27  
+B Sell 26  
+A Sell 25  
+B Sell 24  
+A Sell 23  
+B Sell 22  
+A Sell 21  
+B Sell 20  
+A Sell 19  
+B Sell 18  
+A Sell 17  
+B Sell 16  
+A Sell 15  
+B Sell 14  
+A Sell 13  
+B Sell 12  
+A Sell 11  
+B Sell 10  
+A Sell 9  
+B Sell 8  
+A Sell 7  
+B Sell 6  
+A Sell 5  
+B Sell 4  
+A Sell 3  
+B Sell 2  
+A Sell 1  
+B Sell 0//站票。。。  
+</code></pre>
+
+<h3>3.利用互斥对象同步数据</h3>
+
+<p>这个问题主要是因为一个线程执行到一半的时候，时间片的切换导致另一个线程修改了同一个数据，当再次切换会原来线程并继续往下运行的时候，数据由于被修改了导致结果出错。所以我们要做的就是保证这个线程完全执行完，所以对线程加锁是个不错的注意，互斥对象mutex就是这个锁。</p>
+
+<p><strong>3.1.初始化</strong></p>
+
+<p>在cpp外分配空间：</p>
+
+<pre><code>pthread_mutex_t CTestLayer::mutex;//mutex是静态成员变量  
+</code></pre>
+
+<p>在init中初始化，动态初始化：</p>
+
+<pre><code>pthread_mutex_init(&amp;mutex,NULL);  
+</code></pre>
+
+<p><strong>3.2.加锁和解锁</strong></p>
+
+<p>以线程A为例：</p>
+
+<pre><code>void* CTestLayer::threadA(void* p)  
+{  
+    while(true)  
+    {  
+        pthread_mutex_lock(&amp;mutex);//加锁  
+        if(tickets&gt;0)  
+        {  
+            Sleep(100);  
+            CCLog("A Sell %d",tickets--);  
+            pthread_mutex_unlock(&amp;mutex);//解锁  
+        }  
+        else {  
+            pthread_mutex_unlock(&amp;mutex);//解锁  
+            break;  
+        }  
+    }  
+    return NULL;  
+}  
+</code></pre>
+
+<p><strong>3.3.释放</strong></p>
+
+<p>在当前层的析构函数中：</p>
+
+<pre><code>pthread_mutex_destroy(&amp;mutex);//前提要保证是解锁状态，否则会返回16的错误，释放失败  
+</code></pre>
+
+<p>这个时候再看一下结果，Bingo!</p>
+
+<pre><code>B Sell 16  
+A Sell 15  
+B Sell 14  
+B Sell 13  
+B Sell 12  
+B Sell 11  
+B Sell 10  
+B Sell 9  
+B Sell 8  
+B Sell 7  
+B Sell 6  
+B Sell 5  
+B Sell 4  
+B Sell 3  
+B Sell 2  
+B Sell 1  
+</code></pre>
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6503759">下载地址</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十一】cocos2d-x多线程和同步01]]></title>
+    <link href="http://www.jacky.tk/blog/2013/11/04/play-cocos2dx-21/"/>
+    <updated>2013-11-04T11:01:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/11/04/play-cocos2dx-21</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/14118939">http://blog.csdn.net/jackystudio</a></p>
+
+<p>和其他框架一样，cocos2d-x允许我们使用多线程进行编程。cocos2d-x v2.2.0使用的是pthread库，是一套用户级线程库，被广泛地使用在跨平台应用上。</p>
+
+<h3>1.配置</h3>
+
+<p>在使用pthread之前，需要把头文件和库文件链接进来。pthread的官网<a href="http://www.sourceware.org/pthreads-win32/">戳这里</a>，当然cocos2d-x帮我们包含进引擎了。</p>
+
+<!-- more -->
+
+
+<p><strong>1.1.头文件</strong></p>
+
+<p>pthread.h放在\cocos2d-x目录\cocos2dx\platform\third_party\win32\pthread\下，右键项目→属性→配置属性→C/C++→附加包含目录添加如下，这里要注意附加包含目录是只包含当前目录下的文件，而不会包含该目录下子目录。</p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_21/1.jpg" alt="" border="0" title="添加包含目录" /><br></br></div>
+
+
+<p><strong>1.2.库文件</strong></p>
+
+<p>一样的，右键项目→属性→配置属性→链接器→输入→附加依赖项，添加pthreadVCE2.lib即可。v2.2.0会自动包含，这步可省。</p>
+
+<h3>2.pthread库</h3>
+
+<p><strong>2.1.主要功能</strong></p>
+
+<p>pthread库包含了四大部分功能：</p>
+
+<p><em>（1）Thread Management：线程管理。</em>提供了线程的创建，删除，结束等功能，也包含了对线程属性的修改和设置。</p>
+
+<p><em>（2）Mutexex：互斥对象。</em>用于处理同步机制。提供了创建，销毁，加锁，解锁等功能，也包含了对互斥对象属性的修改和设置。</p>
+
+<p><em>（3）Condition variables：条件变量。</em>提供了基于程序员提供条件的进程间通讯互斥锁的操作，包含了对其属性的修改和设置。</p>
+
+<p><em>（4）Synchronization：同步相关。</em>提供了操作读写锁等功能。</p>
+
+<p><strong>2.2.命名规则</strong></p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_21/2.jpg" alt="" border="0" title="命名规则" /><br></br></div>
+
+
+<h3>3.线程和互斥对象</h3>
+
+<p>我们这里主要了解线程和互斥对象，也是最常用到的。</p>
+
+<p><strong>3.1.线程</strong></p>
+
+<pre><code>//创建线程  
+PTW32_DLLPORT int PTW32_CDECL pthread_create (pthread_t * tid,  
+    const pthread_attr_t * attr,  
+    void *(*start) (void *),  
+    void *arg);  
+
+//退出线程  
+PTW32_DLLPORT void PTW32_CDECL pthread_exit (void *value_ptr);  
+
+//取消执行线程  
+PTW32_DLLPORT int PTW32_CDECL pthread_cancel (pthread_t thread);  
+
+//删除线程  
+PTW32_DLLPORT int PTW32_CDECL pthread_detach (pthread_t tid);  
+
+//加入线程  
+PTW32_DLLPORT int PTW32_CDECL pthread_join (pthread_t thread,  
+    void **value_ptr);  
+
+//初始化线程属性  
+PTW32_DLLPORT int PTW32_CDECL pthread_attr_init (pthread_attr_t * attr);  
+
+//清理线程属性  
+PTW32_DLLPORT int PTW32_CDECL pthread_attr_destroy (pthread_attr_t * attr);  
+</code></pre>
+
+<p><strong>3.2.互斥对象</strong></p>
+
+<pre><code>//初始化mutex  
+PTW32_DLLPORT int PTW32_CDECL pthread_mutex_init (pthread_mutex_t * mutex,  
+    const pthread_mutexattr_t * attr);  
+
+//销毁mutex，要注意如果是new的指针，需要手动释放，pthread_mutex_destroy并不会帮你释放  
+PTW32_DLLPORT int PTW32_CDECL pthread_mutex_destroy (pthread_mutex_t * mutex);  
+
+//加锁  
+PTW32_DLLPORT int PTW32_CDECL pthread_mutex_lock (pthread_mutex_t * mutex);  
+
+//尝试加锁  
+PTW32_DLLPORT int PTW32_CDECL pthread_mutex_trylock (pthread_mutex_t * mutex);  
+
+//解锁  
+PTW32_DLLPORT int PTW32_CDECL pthread_mutex_unlock (pthread_mutex_t * mutex);  
+</code></pre>
+
+<p>要注意的是mutex变量必须要被声明为pthread_mutex_t类型，且在使用前必须要被初始化，初始化有2种方式：</p>
+
+<p><em>（1）静态初始化</em></p>
+
+<pre><code>pthread_mutex_t mymutex = PTHREAD_MUTEX_INITIALIZER;  
+</code></pre>
+
+<p><em>（2）动态初始化</em></p>
+
+<pre><code>pthread_mutex_init();  
+</code></pre>
+
+<h3>4.注意</h3>
+
+<p>cocos2d-x使用多线程应注意的问题（来自官方文档）：</p>
+
+<p><em>（1）不能调用涉及到CCObject::retain(), CCObject::release() 或者 CCObject::autorelease()的函数，因为CCAutoreleasePool不是线程安全的。因为cocos2d-x框架中无处不在使用CCAutoreleasePool，所以建议不要在新线程中调用cocos2d-x的API。</em></p>
+
+<p><em>（2）如果要在新线程中加载资源，那么可以使用CCTextureCache::addImageAsync()。</em></p>
+
+<p><em>（3）pthread_cond_wait()看起来有个bug，首次wait会失败，但是之后又会工作的很好。</em></p>
+
+<p><em>（4）OpenGL context也不是线程安全。</em></p>
+]]></content>
+  </entry>
+  
+</feed>

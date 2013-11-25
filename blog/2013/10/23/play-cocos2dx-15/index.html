@@ -1,0 +1,410 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>【玩转cocos2d-x之十五】关卡选择的设计 - Jacky's Blog</title>
+  <meta name="author" content="FuSijie">
+
+  
+  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio 这节介绍一下游戏中帮助界面和关卡选择的设计，其实都是一样的，关键在于美工。这里采用自定义TableView层来实现。 1.导入头文件和设定空间 因为TableView相关的类是在扩展包里面，所以必须先声明 # &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.jacky.tk/blog/2013/10/23/play-cocos2dx-15">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jacky's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '45386223']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jacky's Blog</a></h1>
+  
+    <h2>Stay Hungry,Stay Foolish!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.jacky.tk" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/projects">Projects</a></li>
+  <li><a href="/tag-cloud/">Tags</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">【玩转cocos2d-x之十五】关卡选择的设计</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-23T16:26:00+08:00" pubdate data-updated="true">Oct 23<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12966993">http://blog.csdn.net/jackystudio</a></p>
+
+<p>这节介绍一下游戏中帮助界面和关卡选择的设计，其实都是一样的，关键在于美工。这里采用自定义TableView层来实现。</p>
+
+<h3>1.导入头文件和设定空间</h3>
+
+<p>因为TableView相关的类是在扩展包里面，所以必须先声明</p>
+
+<pre><code>#include "cocos-ext.h"  
+USING_NS_CC_EXT;  
+</code></pre>
+
+<!-- more -->
+
+
+<h3>2.继承的实现</h3>
+
+<p>自定义TableView继承于CCLayer，因此可以捕获触摸，同时继承于扩展包的CCTableViewDataSource和CCTableViewDelegate。前者是TableView的数据源，包含了一系列和TableView数据单元相关的操作，后者则是继承于CCScrollViewDelegate抽象类，声明了一些和滚动，放大，触摸回调之类的接口，然后在内部包含了一个CCTableView，这用起来有点像Android的Adapter。当然分别继承几个类使用也是一样的。</p>
+
+<p>先看一下要实现的接口吧。</p>
+
+<pre><code>class TableViewTestLayer : public cocos2d::CCLayer, public cocos2d::extension::CCTableViewDataSource, public cocos2d::extension::CCTableViewDelegate  
+{  
+    public:  
+    virtual bool init();    
+
+    CREATE_FUNC(TableViewTestLayer);  
+
+    virtual void scrollViewDidScroll(cocos2d::extension::CCScrollView* view){}//滚动时调用，空实现，因为继承了抽象类所以必须重写  
+    virtual void scrollViewDidZoom(cocos2d::extension::CCScrollView* view){}//缩放时调用，空实现，同上  
+    virtual void tableCellTouched(cocos2d::extension::CCTableView* table, cocos2d::extension::CCTableViewCell* cell);//触摸单元时回调  
+    virtual cocos2d::CCSize tableCellSizeForIndex(cocos2d::extension::CCTableView *table, unsigned int idx);//设定单元所占大小  
+    virtual cocos2d::extension::CCTableViewCell* tableCellAtIndex(cocos2d::extension::CCTableView *table, unsigned int idx);//设定单元内容  
+    virtual unsigned int numberOfCellsInTableView(cocos2d::extension::CCTableView *table);//返回单元数  
+};  
+</code></pre>
+
+<p>当然还有一些其他功能，如高亮，循环，看情况重载。</p>
+
+<h3>3.自定义TabView层各模块的实现</h3>
+
+<p><strong>3.1.初始化函数init</strong></p>
+
+<pre><code>CCSize winSize = CCDirector::sharedDirector()-&gt;getWinSize();  
+CCTableView* tableView = CCTableView::create(this, winSize);//创建一个CCTableView  
+tableView-&gt;setDirection(kCCScrollViewDirectionHorizontal);//设置方向  
+tableView-&gt;setPosition(ccp(0,winSize.height/2-50));  
+tableView-&gt;setDelegate(this);//这句话很重要，把taleView和当前类绑到一起，所以后面的调用主体都是tableView  
+this-&gt;addChild(tableView);  
+tableView-&gt;reloadData();  
+</code></pre>
+
+<p><strong>3.2.触摸回调tableCellTouched</strong></p>
+
+<pre><code>void TableViewTestLayer::tableCellTouched(CCTableView* table, CCTableViewCell* cell)  
+{  
+    CCLOG("cell touched at index: %i", cell-&gt;getIdx());//cell为当前选择单元  
+}  
+</code></pre>
+
+<p><strong>3.3.单元大小tableCellSizeForIndex</strong></p>
+
+<pre><code>CCSize TableViewTestLayer::tableCellSizeForIndex(CCTableView *table, unsigned int idx)  
+{  
+    //if (idx == 2) {  
+    //    return CCSizeMake(100, 100);//第2个大小为100，100  
+    //}  
+    return CCSizeMake(120, 120);其余为120，120  
+}  
+</code></pre>
+
+<p><strong>3.4.设置数据源tableCellAtIndex</strong></p>
+
+<pre><code>CCTableViewCell* TableViewTestLayer::tableCellAtIndex(CCTableView *table, unsigned int idx)  
+{  
+    CCString *string = CCString::createWithFormat("%d", idx);  
+    CCTableViewCell *cell = table-&gt;dequeueCell();  
+    if (!cell) {  
+        cell = new CCTableViewCell();//创建单元，如果要自定义单元效果，需继承CCTableViewCell，并重载draw函数  
+        cell-&gt;autorelease();  
+        CCSprite *sprite = CCSprite::create("HelloWorld.png");  
+        sprite-&gt;setScale(0.2f);  
+        sprite-&gt;setPosition(ccp(60, 60));  
+        sprite-&gt;setTag(123);  
+        cell-&gt;addChild(sprite);//添加到cell  
+        CCLabelTTF *label = CCLabelTTF::create(string-&gt;getCString(), "Helvetica", 20.0);  
+        label-&gt;setPosition(ccp(60,10));  
+        label-&gt;setTag(456);  
+        cell-&gt;addChild(label);//添加到cell  
+    }  
+    else  
+    {  
+        CCLabelTTF *label = (CCLabelTTF*)cell-&gt;getChildByTag(456);  
+        label-&gt;setString(string-&gt;getCString());  
+    }  
+    return cell;  
+}  
+</code></pre>
+
+<p><strong>3.5.单元数numberOfCellsInTableView</strong></p>
+
+<pre><code>unsigned int TableViewTestLayer::numberOfCellsInTableView(CCTableView *table)  
+{  
+    return 20;//直接返回设定单元数  
+}  
+</code></pre>
+
+<h3>4.效果图</h3>
+
+<div align="center"><img src="http://note.youdao.com/yws/res/340/BCFCE344208144AD9280A6A16E8DF093" alt="" border="0" title="关卡1" /><br></br></div>
+
+
+<h3>5.源码下载地址</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6422401">下载地址</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">FuSijie</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-23T16:26:00+08:00" pubdate data-updated="true">Oct 23<span>rd</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cocos2d-x/'>cocos2d-x</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+      <!-- JiaThis Button BEGIN -->
+  <section>
+    <h1>Share</h1>
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share?uid=1859056" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1859056" charset="utf-8"></script>
+</section>
+<!-- JiaThis Button END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+	    <p></p>
+        <a class="basic-alignment left" href="/blog/2013/10/22/play-cocos2dx-14/" title="Previous Post: 【玩转cocos2d-x之十四】菜单选项卡的实现">&laquo; 【玩转cocos2d-x之十四】菜单选项卡的实现</a>
+      
+      
+	    <p></p>
+        <a class="basic-alignment right" href="/blog/2013/10/24/play-cocos2dx-16/" title="Next Post: 【玩转cocos2d-x之十六】滚动字幕和公告">【玩转cocos2d-x之十六】滚动字幕和公告 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+  <section>
+    <h1>Comments</h1>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"fusijie"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->  
+</section>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+		<br>
+		<center><a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&amp;email=Geek.Jacky@Gmail.com" style="text-decoration:none" ><img src="\images\aboutme.png" border=0></img></a></center>
+		</br>
+</section><section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (25)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/11/25/play-cocos2dx-25/">【玩转cocos2d-x之二十五】数据结构CCArray</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/13/play-cocos2dx-24/">【玩转cocos2d-x之二十四】截图保存功能的实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/11/play-cocos2dx-23/">【玩转cocos2d-x之二十三】cocos2d-x多线程和同步03</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/05/play-cocos2dx-22/">【玩转cocos2d-x之二十二】cocos2d-x多线程和同步02</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/04/play-cocos2dx-21/">【玩转cocos2d-x之二十一】cocos2d-x多线程和同步01</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+  
+<section>
+  <h1>Sina Weibo</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="450" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=450&fansRow=0&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=0&uid=1307211523&verifier=3619ee9c">
+      </iframe>
+    </li>
+  </ul>
+</section>
+ 
+<section>
+<h1>Visitor</h1>
+<div>
+	<p></p>
+    <center>
+	<a href="http://info.flagcounter.com/3pF8"><img src="http://s08.flagcounter.com/count/3pF8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_12/viewers_3/labels_0/pageviews_1/flags_0/" alt="Flag Counter" border="0"></a>
+	</center>
+</div>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - FuSijie -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
