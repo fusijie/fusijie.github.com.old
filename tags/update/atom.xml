@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: update | Jacky's Blog]]></title>
+  <link href="http://www.jacky.tk/tags/update/atom.xml" rel="self"/>
+  <link href="http://www.jacky.tk/"/>
+  <updated>2013-11-25T19:49:57+08:00</updated>
+  <id>http://www.jacky.tk/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十六】滚动字幕和公告]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/24/play-cocos2dx-16/"/>
+    <updated>2013-10-24T16:38:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/24/play-cocos2dx-16</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12991977">http://blog.csdn.net/jackystudio</a></p>
+
+<p>滚动字幕和公告是游戏中经常使用到的元素，本文大致写一下实现方法，至于例子中具体的坐标值，请不要纠结。。。这和美工关系还是蛮大的。我PS技术太搓了。。。</p>
+
+<h3>1.原理</h3>
+
+<p>其实它们的实现都是简单的通过调用update来更新位置达到的移动效果，和背景滚动有点类似，一旦滚动结束就重置为起点，开始新的滚动。只是为了达到在某个区域内滚动而不至于超出这个区域，有时候会用一些前景图来做遮盖，所以这个时候其实字幕或者公告是有在后面滚动的，但是被遮住了，因此看起来就像是只在某个区域内滚动。以垂直字幕滚动为例说明，如下图。</p>
+
+<!-- more -->
+
+
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_16/1.jpg" alt="" border="0" title="原理" /><br></br></div>
+
+
+<h3>2.实现</h3>
+
+<p>不要纠结以下各精灵的坐标位置：）</p>
+
+<pre><code>bool CTestLayer::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCLayer::init());  
+
+        CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+        CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;addSpriteFramesWithFile("ui_serverlist.plist");  
+
+        //垂直滚动字幕  
+        CCSprite* listbase=CCSprite::createWithSpriteFrame(CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;spriteFrameByName("login_listbase.png"));//bottom底图  
+        listbase-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2+10));  
+        this-&gt;addChild(listbase);  
+        text1=CCLabelTTF::create("1.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n2.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n3.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n4.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!","Arial",12);//middle文本  
+        text1-&gt;setHorizontalAlignment(kCCTextAlignmentLeft);//左对齐  
+        text1-&gt;setAnchorPoint(ccp(0.5,1));  
+        text1-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2-55));  
+        this-&gt;addChild(text1);  
+        CCSprite* fg=CCSprite::create("fg.png");//top前景  
+        fg-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
+        this-&gt;addChild(fg);  
+
+        //水平滚动公告  
+        CCSprite* textbase=CCSprite::createWithSpriteFrame(CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;spriteFrameByName("login_textbase.png"));  
+        textbase-&gt;setPosition(ccp(visibleSize.width/2,50));  
+        textbase-&gt;setScaleX(2.5f);  
+        this-&gt;addChild(textbase);  
+        text2=CCLabelTTF::create("Hi! Welcome to JackyStudio,My Blog is blog.csdn.net/jackystudio!","Arial",12);  
+        text2-&gt;setPosition(ccp(visibleSize.width+text2-&gt;getContentSize().width/2,50));  
+        text2-&gt;setColor(ccc3(255,0,0));//红色字体  
+        this-&gt;addChild(text2);  
+
+        this-&gt;scheduleUpdate();//执行更新  
+
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+
+void CTestLayer::update(float delta)  
+{  
+    CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+
+    int newY=text1-&gt;getPositionY()+1;  
+    if (newY==500)//如果滚动到这个位置，重置  
+    {  
+        newY=visibleSize.height/2-55;  
+    }  
+    text1-&gt;setPositionY(newY);  
+
+    int newX=text2-&gt;getPositionX()-1;  
+    if (newX&lt;=-text2-&gt;getContentSize().width/2)//如果滚动到这个位置，重置  
+    {  
+        newX=visibleSize.width+text2-&gt;getContentSize().width/2;  
+    }  
+    text2-&gt;setPositionX(newX);  
+}  
+</code></pre>
+
+<h3>3.效果</h3>
+
+<p>这个效果有点小bug，就是文字覆盖到边框上了，这是因为没有把边框做在top层上导致的，实际使用注意这个问题即可。</p>
+
+<div align="center"><img src="http://note.youdao.com/yws/res/342/322D013ED8154EFD821FFA021F6D3DBD" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
+
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6434549">源码下载</a></p>
+]]></content>
+  </entry>
+  
+</feed>

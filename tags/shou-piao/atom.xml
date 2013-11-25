@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: 售票 | Jacky's Blog]]></title>
+  <link href="http://www.jacky.tk/tags/shou-piao/atom.xml" rel="self"/>
+  <link href="http://www.jacky.tk/"/>
+  <updated>2013-11-25T19:49:57+08:00</updated>
+  <id>http://www.jacky.tk/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十二】cocos2d-x多线程和同步02]]></title>
+    <link href="http://www.jacky.tk/blog/2013/11/05/play-cocos2dx-22/"/>
+    <updated>2013-11-05T11:12:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/11/05/play-cocos2dx-22</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/14161151">http://blog.csdn.net/jackystudio</a></p>
+
+<p>pthread有很多不同应用，官网都有相应的API解释和Sample，这里不再重复，本文主要介绍一个cocos2d-x多线程和同步示例。</p>
+
+<h3>1.售票</h3>
+
+<p>孙鑫老师的C++和Java多线程售票一直让我念念不忘，好吧，这里用cocos2d-x和pthread实现一个吧。总共有100张火车票，有2个售票点A和B再售票，当票卖完了就结束了。我们知道当程序一开始进程就会创建一个主线程，所以可以在主线程基础上再创建2个线程A和B，再线程A和B中分别售票，当票数为0的时候，结束线程A和B。</p>
+
+<!-- more -->
+
+
+<h3>2.多线程售票</h3>
+
+<pre><code>//TestLayer.h  
+class CTestLayer :  
+public CCLayer  
+{  
+    public:  
+    CTestLayer(void);  
+    ~CTestLayer(void);  
+
+    CREATE_FUNC(CTestLayer);  
+    virtual bool init();  
+
+    pthread_t sellA_pid,sellB_pid;//线程id  
+    static int tickets;//票数  
+
+    static void* threadA(void* p);//线程A回调  
+    static void* threadB(void* p);//线程B回调  
+};  
+
+
+//TestLayer.cpp  
+#include "TestLayer.h"  
+
+int CTestLayer::tickets=100;//初始化票数100  
+CTestLayer::CTestLayer(void)  
+{  
+}  
+
+
+CTestLayer::~CTestLayer(void)  
+{  
+}  
+
+bool CTestLayer::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCLayer::init());  
+        pthread_create(&amp;sellA_pid,NULL,threadA,0);//创建线程A  
+        pthread_create(&amp;sellB_pid,NULL,threadB,0);//创建线程B  
+
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+
+void* CTestLayer::threadA(void* p)  
+{  
+    while(true)  
+    {  
+        if(tickets&gt;0)  
+        {  
+            CCLog("A Sell %d",tickets--);//输出售票，每次减1  
+        }  
+        else {  
+            break;  
+        }  
+    }  
+    return NULL;  
+}  
+
+void* CTestLayer::threadB(void* p)  
+{  
+    while(true)  
+    {  
+        if (tickets&gt;0)  
+        {  
+            CCLog("B Sell %d",tickets--);  
+        }  
+        else   
+        {  
+            break;  
+        }  
+    }  
+    return NULL;  
+}  
+</code></pre>
+
+<p>代码很简单，不多说了。我们来看一下输出，会发现有很多不可思议的现象出现，因为每个人每次运行的结果都不一样，所以这里不贴结果了，不可思议的现象可能有：</p>
+
+<p><em>（1）同一张票卖了2次。</em></p>
+
+<p><em>（2）后面的票比前面的票先卖出去。</em></p>
+
+<p><em>（3）第0张票竟然也可以卖。（这算站票么。。。）</em></p>
+
+<p>原因不多解释了，时间片的问题，不明白的Google之。如果你觉得不会有这么巧，那么在打印结果前加上这么一句：</p>
+
+<pre><code>Sleep(100);  
+</code></pre>
+
+<p>人为干扰线程的运行，增大出错几率。结果可能会是这样：</p>
+
+<pre><code>A Sell 36  
+B Sell 36//卖2次了  
+A Sell 35  
+B Sell 34  
+A Sell 33  
+B Sell 32  
+A Sell 30//提早卖了  
+B Sell 31  
+B Sell 28  
+A Sell 29  
+A Sell 27  
+B Sell 26  
+A Sell 25  
+B Sell 24  
+A Sell 23  
+B Sell 22  
+A Sell 21  
+B Sell 20  
+A Sell 19  
+B Sell 18  
+A Sell 17  
+B Sell 16  
+A Sell 15  
+B Sell 14  
+A Sell 13  
+B Sell 12  
+A Sell 11  
+B Sell 10  
+A Sell 9  
+B Sell 8  
+A Sell 7  
+B Sell 6  
+A Sell 5  
+B Sell 4  
+A Sell 3  
+B Sell 2  
+A Sell 1  
+B Sell 0//站票。。。  
+</code></pre>
+
+<h3>3.利用互斥对象同步数据</h3>
+
+<p>这个问题主要是因为一个线程执行到一半的时候，时间片的切换导致另一个线程修改了同一个数据，当再次切换会原来线程并继续往下运行的时候，数据由于被修改了导致结果出错。所以我们要做的就是保证这个线程完全执行完，所以对线程加锁是个不错的注意，互斥对象mutex就是这个锁。</p>
+
+<p><strong>3.1.初始化</strong></p>
+
+<p>在cpp外分配空间：</p>
+
+<pre><code>pthread_mutex_t CTestLayer::mutex;//mutex是静态成员变量  
+</code></pre>
+
+<p>在init中初始化，动态初始化：</p>
+
+<pre><code>pthread_mutex_init(&amp;mutex,NULL);  
+</code></pre>
+
+<p><strong>3.2.加锁和解锁</strong></p>
+
+<p>以线程A为例：</p>
+
+<pre><code>void* CTestLayer::threadA(void* p)  
+{  
+    while(true)  
+    {  
+        pthread_mutex_lock(&amp;mutex);//加锁  
+        if(tickets&gt;0)  
+        {  
+            Sleep(100);  
+            CCLog("A Sell %d",tickets--);  
+            pthread_mutex_unlock(&amp;mutex);//解锁  
+        }  
+        else {  
+            pthread_mutex_unlock(&amp;mutex);//解锁  
+            break;  
+        }  
+    }  
+    return NULL;  
+}  
+</code></pre>
+
+<p><strong>3.3.释放</strong></p>
+
+<p>在当前层的析构函数中：</p>
+
+<pre><code>pthread_mutex_destroy(&amp;mutex);//前提要保证是解锁状态，否则会返回16的错误，释放失败  
+</code></pre>
+
+<p>这个时候再看一下结果，Bingo!</p>
+
+<pre><code>B Sell 16  
+A Sell 15  
+B Sell 14  
+B Sell 13  
+B Sell 12  
+B Sell 11  
+B Sell 10  
+B Sell 9  
+B Sell 8  
+B Sell 7  
+B Sell 6  
+B Sell 5  
+B Sell 4  
+B Sell 3  
+B Sell 2  
+B Sell 1  
+</code></pre>
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6503759">下载地址</a></p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: CCDictionary | Jacky's Blog]]></title>
+  <link href="http://www.jacky.tk/tags/ccdictionary/atom.xml" rel="self"/>
+  <link href="http://www.jacky.tk/"/>
+  <updated>2013-11-25T19:49:57+08:00</updated>
+  <id>http://www.jacky.tk/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十七】cocos2d-x中文显示]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/25/play-cocos2dx-17/"/>
+    <updated>2013-10-25T16:53:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/25/play-cocos2dx-17</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13014883">http://blog.csdn.net/jackystudio</a></p>
+
+<p>cocos2d-x的中文显示其实就是一个UTF-8编码在作怪而已，一种简单的方法就是把文本保存为UTF-8编码即可（注意不是UTF-8 + BOM），建议使用UE，Sublime Text或者EditPlus之类的本文编辑器。这里介绍另一种方法：通过读取xml文件显示中文，这种方法更利于软件的国际化，demo顺便实现了中英文切换。</p>
+
+<!-- more -->
+
+
+<h3>1.xml文件</h3>
+
+<p>先写好一个xml文件（CHN_Strings.xml）。注意记得要以UTF-8编码保存。格式很简单，一个key对应一个string的键值对。如下：</p>
+
+<pre><code>&lt;dict&gt;  
+    &lt;key&gt;language&lt;/key&gt;  
+    &lt;string&gt;English&lt;/string&gt;  
+    &lt;key&gt;username&lt;/key&gt;  
+    &lt;string&gt;偶尔e网事&lt;/string&gt;  
+    &lt;key&gt;website&lt;/key&gt;  
+    &lt;string&gt;CSDN博客：http://blog.csdn.net/jackystudio&lt;/string&gt;  
+&lt;/dict&gt;  
+</code></pre>
+
+<h3>2.通过CCDictionary读取xml</h3>
+
+<p>CCDictionary是利用哈希表算法来进行CCObject管理的一个类。这里不再对它的API及内部实现进行说明了。</p>
+
+<p><strong>2.1.创建词典类实例</strong></p>
+
+<pre><code>CCDictionary *chnStrings = CCDictionary::createWithContentsOfFile("CHN_Strings.xml");  
+</code></pre>
+
+<p><strong>2.2.通过键（key）获取值（value）</strong></p>
+
+<pre><code>const char *username = ((CCString*)chnStrings-&gt;objectForKey("username"))-&gt;m_sString.c_str();  
+</code></pre>
+
+<p><strong>2.3.使用value</strong></p>
+
+<pre><code>CCLabelTTF* pLabel = CCLabelTTF::create(username, "Arial", 24);//这里创建一个文本  
+pLabel-&gt;setPosition(ccp(origin.x + visibleSize.width/2,origin.y + visibleSize.height - pLabel-&gt;getContentSize().height));  
+this-&gt;addChild(pLabel, 1);  
+</code></pre>
+
+<h3>3.效果</h3>
+
+<p>这里我用了2个xml，一个是中文，一个是英文，设置了一个菜单，点击即可调用不同的xml进行中英文的切换，效果如下图。</p>
+
+<div align="center"><img src="http://note.youdao.com/yws/res/344/5BC62BD640604DE3A30FF228633D70D5" alt="" border="0" title="效果" /><br></br></div>
+
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6442201">源码下载</a></p>
+]]></content>
+  </entry>
+  
+</feed>

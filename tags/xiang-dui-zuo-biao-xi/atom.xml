@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: 相对坐标系 | Jacky's Blog]]></title>
+  <link href="http://www.jacky.tk/tags/xiang-dui-zuo-biao-xi/atom.xml" rel="self"/>
+  <link href="http://www.jacky.tk/"/>
+  <updated>2013-11-25T19:49:57+08:00</updated>
+  <id>http://www.jacky.tk/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之十】cocos2d-x坐标系]]></title>
+    <link href="http://www.jacky.tk/blog/2013/10/17/play-cocos2dx-10/"/>
+    <updated>2013-10-17T14:43:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/10/17/play-cocos2dx-10</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12830971">http://blog.csdn.net/jackystudio</a></p>
+
+<p>cocos2d-x采用的是笛卡尔平面坐标系，也就是平面上两条垂直线构成的坐标系，平面上任意一点都可以用（x，y）来表示。</p>
+
+<p><em>（1）就坐标系方向而言，cocos2d-x分为屏幕坐标系和OpenGL坐标系。</em></p>
+
+<p><em>（2）就节点本身而言，cocos2d-x分为绝对坐标系和相对坐标系。</em></p>
+
+<h3>1.屏幕坐标系</h3>
+
+<p>屏幕坐标系，也叫UIKit坐标系，原点在屏幕左上，x轴向右，y轴向下。cocos2d-x的屏幕触摸事件传入的位置坐标就是采用了屏幕坐标系。以320*480的屏幕为例，如图坐标值为屏幕坐标系。</p>
+
+<!-- more -->
+
+
+
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_10/1.jpg" alt="" border="0" title="屏幕坐标系" /><br></br></div>
+
+
+<h3>2.OpenGL坐标系</h3>
+
+<p>OpenGL坐标系原点在屏幕的左下，x轴向右，y轴向上。cocos2d-x的元素采用的就是OpenGL坐标系。同样的上例，如图坐标值为OpenGL坐标系。</p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_10/2.jpg" alt="" border="0" title="OpenGL坐标系" /><br></br></div>
+
+
+<h3>3.屏幕坐标系和OpenGL坐标系的转换</h3>
+
+<p>它们的转换导演类（CCDirector）已经封装好了两个函数供我们使用。</p>
+
+<pre><code>//UIKit To OpenGL  
+CCPoint convertToGL(const CCPoint&amp; obPoint);  
+//OpenGL To UIKit  
+CCPoint convertToUI(const CCPoint&amp; obPoint);  
+</code></pre>
+
+<h3>4.绝对坐标系</h3>
+
+<p>绝对坐标系也叫世界坐标系，从名字可以看来，绝对坐标系是一个恒坐标系，不参考也不依赖于其他坐标系。在cocos2d-x中它使用的是OpenGL坐标系。不过因为我们多在CCLayer上放置游戏元素，所以一般比较少直接用到绝对坐标系。</p>
+
+<h3>5.相对坐标系</h3>
+
+<p>cocos2d-x元素是有层次关系的，节点使用的是相对父节点的位置坐标，也就是相对坐标系（也叫本地坐标系），屏幕绘制的时候，cocos2d-x会自动将相对坐标系转换为绝对坐标系，渲染到屏幕的绝对位置上。</p>
+
+<h3>6.锚点</h3>
+
+<p>在举例之前有必要先了解一下锚点这个概念。锚点是对节点而言的，它是节点的一个属性，表明了节点位置的一个参考基准点，同样放置一个物体在(300,300)这个位置，不同的锚点会产生不同的效果。节点的默认锚点位置在(0.5,0.5)。锚点和节点的位置值没有关系，锚点只是影响了节点在屏幕上渲染的位置。如下图，虽然精灵的在屏幕上渲染的位置不一样，但是它们的position值是一样的，都是(300,300)。锚点只会影响它本身在父节点中的渲染位置，而不会影响其子节点的相对它本身的位置。</p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_10/3.jpg" alt="" border="0" title="锚点" /><br></br></div>
+
+
+<h3>7.绝对坐标系和相对坐标系的关系</h3>
+
+<p>我们先看一个例子，为了方便演示，节点的锚点都设置为(0,0)。</p>
+
+<pre><code>CCSprite* big=CCSprite::create("big.png");  
+big-&gt;setAnchorPoint(ccp(0,0));  
+big-&gt;setPosition(ccp(50,50));//设置在相对父节点的(50,50)位置  
+this-&gt;addChild(big);//屏幕是父节点  
+CCSprite* little=CCSprite::create("little.png");  
+little-&gt;setAnchorPoint(ccp(0,0));  
+little-&gt;setPosition(ccp(50,50));//设置在相对父节点的(50,50)位置  
+big-&gt;addChild(little);//big是父节点  
+</code></pre>
+
+<p>效果如下：</p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_10/4.jpg" alt="" border="0" title="绝对坐标系和相对坐标系的关系" /><br></br></div>
+
+
+<h3>7.绝对坐标系和相对坐标系的转换</h3>
+
+<p>CCNode提供给我们相对坐标系和绝对坐标系的转换函数。</p>
+
+<pre><code>CCPoint convertToNodeSpace(const CCPoint&amp; worldPoint);  //将世界坐标转换为对象节点内坐标，忽略锚点，以当前父节点左下角坐标为标准  
+CCPoint convertToWorldSpace(const CCPoint&amp; nodePoint);  //将对象节点内坐标转换为事件坐标，忽略锚点，以当前父节点左下角坐标为标准  
+CCPoint convertToNodeSpaceAR(const CCPoint&amp; worldPoint);//将世界坐标转换为基于锚点的对象节点内坐标
+CCPoint convertToWorldSpaceAR(const CCPoint&amp; nodePoint);//将局域锚点的对象节点内坐标转换为世界坐标  
+</code></pre>
+
+<p>如果要获取big和little的绝对坐标</p>
+
+<pre><code>CCPoint wp1=this-&gt;convertToWorldSpace(big-&gt;getPosition());//wp1(50,50)  
+CCPoint wp2=big-&gt;convertToWorldSpace(little-&gt;getPosition());//wp2(100,100)  
+</code></pre>
+
+<p>如果要把绝对坐标转换为big和little的相对坐标</p>
+
+<pre><code>CCPoint np1=big-&gt;convertToNodeSpace(ccp(200,200));//np1(150,150)  
+CCPoint np2=little-&gt;convertToNodeSpace(ccp(200,200));//np2(100,100)
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

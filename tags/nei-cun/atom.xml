@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: 内存 | Jacky's Blog]]></title>
+  <link href="http://www.jacky.tk/tags/nei-cun/atom.xml" rel="self"/>
+  <link href="http://www.jacky.tk/"/>
+  <updated>2013-11-25T19:49:57+08:00</updated>
+  <id>http://www.jacky.tk/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十五】数据结构CCArray]]></title>
+    <link href="http://www.jacky.tk/blog/2013/11/25/play-cocos2dx-25/"/>
+    <updated>2013-11-25T13:53:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/11/25/play-cocos2dx-25</id>
+    <content type="html"><![CDATA[<p>CCArray是从cocos2d中移植过来的，类似于Apple的NSMutableArray，但是比NSMutableArray更为的好用。要注意的是虽然CCArray和CCDictionary可以管理cocos2d-x中绝大多数的类，但是仍然无法替代STL库，STL库更为强有力。</p>
+
+<h3>1.API</h3>
+
+<p>先看一下CCArray可以帮我们做什么。</p>
+
+<!-- more -->
+
+
+<p><strong>1.1.创建</strong></p>
+
+<pre><code>//创建array  
+static CCArray* create();  
+//使用一系列CCObject创建array  
+static CCArray* create(CCObject* pObject, …);  
+//使用一个CCObject创建array  
+static CCArray* createWithObject(CCObject* pObject);  
+//创建array并设置容量  
+static CCArray* createWithCapacity(unsigned int capacity);  
+//用一个已存在的array创建另一个array  
+static CCArray* createWithArray(CCArray* otherArray);  
+</code></pre>
+
+<p><strong>1.2.添加</strong></p>
+
+<pre><code>//添加一个元素  
+void addObject(CCObject* object);  
+//添加一个已存在array中所有元素  
+void addObjectsFromArray(CCArray* otherArray);  
+//在指定位置插入元素  
+void insertObject(CCObject* object, unsigned int index);  
+</code></pre>
+
+<p><strong>1.3.删除</strong></p>
+
+<pre><code>//移除最后一个元素  
+void removeLastObject(bool bReleaseObj = true);  
+//移除某个元素  
+void removeObject(CCObject* object, bool bReleaseObj = true);  
+//移除一个指定位置的元素  
+void removeObjectAtIndex(unsigned int index, bool bReleaseObj = true);  
+//移除某个array  
+void removeObjectsInArray(CCArray* otherArray);  
+//移除所有元素  
+void removeAllObjects();  
+//快速移除某个元素  
+void fastRemoveObject(CCObject* object);  
+//快速移除某个指定位置的元素  
+void fastRemoveObjectAtIndex(unsigned int index);  
+</code></pre>
+
+<p><strong>1.4.操作元素</strong></p>
+
+<pre><code>//返回元素个数  
+unsigned int count() const;  
+//返回array容量  
+unsigned int capacity() const;  
+//返回指定CCObject的位置，如果不存在返回UINT_MAX  
+unsigned int indexOfObject(CCObject* object) const;  
+//返回指定位置的CCObject  
+CCObject* objectAtIndex(unsigned int index);  
+//返回最后一个元素  
+CCObject* lastObject();  
+//返回随机元素  
+CCObject* randomObject();  
+//返回某个元素是否存在于array中  
+bool containsObject(CCObject* object) const;  
+//判断array是否相等  
+bool isEqualToArray(CCArray* pOtherArray);  
+</code></pre>
+
+<p><strong>1.5.操作array内容</strong></p>
+
+<pre><code>//交换2个元素  
+void exchangeObject(CCObject* object1, CCObject* object2);  
+//交换2个指定位置元素  
+void exchangeObjectAtIndex(unsigned int index1, unsigned int index2);  
+//用一个对象替代指定位置元素  
+void replaceObjectAtIndex(unsigned int uIndex, CCObject* pObject, bool bReleaseObject = true);  
+//反转array  
+void reverseObjects();  
+//收缩array内存以匹配元素个数  
+void reduceMemoryFootprint();  
+</code></pre>
+
+<h3>2.remove和fastremove</h3>
+
+<p>从<strong>1.3</strong>可以看出删除有两种方式，普通删除和快速删除，它们有什么区别呢？</p>
+
+<p><strong>2.1.普通删除</strong></p>
+
+<pre><code>//普通删除  
+void ccArrayRemoveObjectAtIndex(ccArray *arr, unsigned int index, bool bReleaseObj/* = true*/)  
+{  
+    CCAssert(arr &amp;&amp; arr-&gt;num &gt; 0 &amp;&amp; index &lt; arr-&gt;num, "Invalid index. Out of bounds");  
+    //删除元素内容，位置仍保留着  
+    if (bReleaseObj)  
+    {  
+        CC_SAFE_RELEASE(arr-&gt;arr[index]);  
+    }  
+    //长度减1  
+    arr-&gt;num--;  
+    //获得要删除的元素后的元素个数  
+    unsigned int remaining = arr-&gt;num - index;  
+    if(remaining&gt;0)  
+    {  
+        //将要删除元素后的所有元素逐个向前移动  
+        memmove((void *)&amp;arr-&gt;arr[index], (void *)&amp;arr-&gt;arr[index+1], remaining * sizeof(CCObject*));  
+    }  
+}  
+</code></pre>
+
+<p><strong>2.2.快速删除</strong></p>
+
+<pre><code>//快速删除  
+void ccArrayFastRemoveObjectAtIndex(ccArray *arr, unsigned int index)  
+{  
+    //删除元素内容，位置仍保留着  
+    CC_SAFE_RELEASE(arr-&gt;arr[index]);  
+    //获取最后一个元素  
+    unsigned int last = --arr-&gt;num;  
+    //把最后一个元素插到删除元素的位置上  
+    arr-&gt;arr[index] = arr-&gt;arr[last];  
+}  
+</code></pre>
+
+<p><strong>2.3.总结</strong></p>
+
+<p>如果有array={0,1,2,3,4,5}，如果要删除3，使用普通删除得到的结果{0,1,2,4,5}，使用快速删除得到的结果是{0,1,2,5,4}。可以看出快速删除的效率比普通删除效率高，就差在移动元素的时间复杂度上。</p>
+
+<h3>3.内存分配</h3>
+
+<p><strong>3.1.容量和个数</strong>
+CCArray中容量和个数并不是同一个概念。个数&lt;=容量。从添加元素的源码中可以看到在添加之前会先进行空间分配，所以它是一个动态分配内存的过程。如下</p>
+
+<pre><code>void ccArrayEnsureExtraCapacity(ccArray *arr, unsigned int extra)//确保有额外的空间  
+{  
+    while (arr-&gt;max &lt; arr-&gt;num + extra)//判断空间是否足够  
+    {  
+        ccArrayDoubleCapacity(arr);//增加一倍空间  
+    }  
+}  
+</code></pre>
+
+<p>所以，每次CCArray在插入数据时检测到空间不足会增加一倍空间，再进行检测，直到空间满足分配为止。</p>
+
+<p><strong>3.2.判等</strong></p>
+
+<p>判断2个CCArray是否相等使用isEqualToArray()，判断相等的条件是CCArray中的每个元素相等即可，与CCArray的容量无关。</p>
+
+<h3>4.效率</h3>
+
+<p>比起NSMutableArray，CCArray效率能高出10%左右，原因有三：</p>
+
+<p><em>（1）它使用的是C接口，所以它不有Objective-C消息开销。</em></p>
+
+<p><em>（2）它假定你知道你在做什么，所以它不花时间在安全检查上（如边界溢出，空间需求等）。</em></p>
+
+<p><em>（3）在比较上使用了指针而不是isEqual。</em></p>
+
+<p>除了CCArray，我们还看到了ccCArray，CCArray基本上都是调用了ccCArray的函数，为什么要分为2种？
+仔细看一下CCArray是继承于CCObject，所以CCArray是用于处理cocos2d-x对象的，内存管理上也有cocos2d-x的autorelease等诸多特性。而ccCArray可以直接操作标准的C数据结构和类型。</p>
+
+<h3>5.CCARRAY_FOREACH和CCARRAY_FOREACH_REVERSE</h3>
+
+<p>宏定义，用于正向遍历和反向遍历CCArray元素</p>
+
+<pre><code>#define CCARRAY_FOREACH(__array__, __object__)                                                                         \  
+    if ((__array__) &amp;&amp; (__array__)-&gt;data-&gt;num &gt; 0)                                                                     \  
+    for(CCObject** __arr__ = (__array__)-&gt;data-&gt;arr, **__end__ = (__array__)-&gt;data-&gt;arr + (__array__)-&gt;data-&gt;num-1;    \  
+    __arr__ &lt;= __end__ &amp;&amp; (((__object__) = *__arr__) != NULL/* || true*/);                                             \  
+    __arr__++)  
+
+#define CCARRAY_FOREACH_REVERSE(__array__, __object__)                                                                  \  
+    if ((__array__) &amp;&amp; (__array__)-&gt;data-&gt;num &gt; 0)                                                                      \  
+    for(CCObject** __arr__ = (__array__)-&gt;data-&gt;arr + (__array__)-&gt;data-&gt;num-1, **__end__ = (__array__)-&gt;data-&gt;arr;     \  
+    __arr__ &gt;= __end__ &amp;&amp; (((__object__) = *__arr__) != NULL/* || true*/);                                              \  
+    __arr__--)  
+</code></pre>
+
+<h3>6.示例</h3>
+
+<p>CCArray的使用示例在<a href="http://blog.csdn.net/jackystudio/article/details/11917875">此文</a>中有比较典型的应用，这里就不再详述。</p>
+
+<h3>7.注意</h3>
+
+<p>一般来说，CCArray不会被add到其他类，所以它的引用计数是1，而且被设置为自动释放。所以创建CCArray对象时要记得调用retain，而且在析构的时候也要调用release来释放内存。真心想吐槽。。。</p>
+]]></content>
+  </entry>
+  
+</feed>
