@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
 <!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
@@ -650,3 +649,656 @@
 
 </body>
 </html>
+=======
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Jacky's Blog</title>
+  <meta name="author" content="FuSijie">
+
+  
+  <meta name="description" content="CCArray是从cocos2d中移植过来的，类似于Apple的NSMutableArray，但是比NSMutableArray更为的好用。要注意的是虽然CCArray和CCDictionary可以管理cocos2d-x中绝大多数的类，但是仍然无法替代STL库，STL库更为强有力。 1.API &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.jacky.tk">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jacky's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '45386223']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jacky's Blog</a></h1>
+  
+    <h2>Stay Hungry,Stay Foolish!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.jacky.tk" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/projects">Projects</a></li>
+  <li><a href="/tag-cloud/">Tags</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/11/25/play-cocos2dx-25/">【玩转cocos2d-x之二十五】数据结构CCArray</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-25T13:53:00+08:00" pubdate data-updated="true">Nov 25<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>CCArray是从cocos2d中移植过来的，类似于Apple的NSMutableArray，但是比NSMutableArray更为的好用。要注意的是虽然CCArray和CCDictionary可以管理cocos2d-x中绝大多数的类，但是仍然无法替代STL库，STL库更为强有力。</p>
+
+<h3>1.API</h3>
+
+<p>先看一下CCArray可以帮我们做什么。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/11/25/play-cocos2dx-25/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/11/13/play-cocos2dx-24/">【玩转cocos2d-x之二十四】截图保存功能的实现</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-13T08:34:00+08:00" pubdate data-updated="true">Nov 13<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/15498083">http://blog.csdn.net/jackystudio</a></p>
+
+<p>官方TestCpp有这个demo了，这里还是把它单独拖出来写一下，游戏推广的一个很重要组成就是玩家分享，所以游戏截图就起到很大作用了。截图功能通过CCRenderTexture实现。</p>
+
+<h3>1.CCRenderTexture</h3>
+
+<p>CCRenderTexture是一个通用渲染对象，可以通过构建一个CCRenderTexture对象，进而把要渲染的东西填充进去，在渲染开始前调用call函数，调用cocos的场景的visit函数对其进行渲染，渲染结束后调用end函数。CCRenderTexture继承于CCNode，所以可以简单地把渲染纹理添加到你的场景中，就像处理其它cocos中的节点一样，当然它还提供了保存功能，可以把渲染纹理保存为PNG或JPG格式。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/11/13/play-cocos2dx-24/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/11/11/play-cocos2dx-23/">【玩转cocos2d-x之二十三】cocos2d-x多线程和同步03</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-11T11:22:00+08:00" pubdate data-updated="true">Nov 11<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/15334159">http://blog.csdn.net/jackystudio</a></p>
+
+<p>cocos2d-x中和Android，Windows都一样，如果在主线程中处理一些耗时操作，那么主线程就会出现阻塞现象，表现在界面上就是卡住，未响应等情况。为了避免这种情况的出现，我们需要在后台开辟工作线程进行数据的处理，再采用消息传递或者其他形式来通知主线程进行UI变化。最常见的情况就是游戏进入前的loading。</p>
+
+<h3>1.图片的异步加载</h3>
+
+<p>在多线程和同步的第一篇介绍到使用pthread库的时候，讲到由于CCAutoreleasePool不是线程安全的，所以不能在工作线程中引入cocos2d-x相关的API（其实并不是所有的API都不能使用）。但是cocos2d-x显然考虑到这个问题了，所以它本身就帮我们封装好了一个API，避免了还要手动引入pthread库的尴尬。</p>
+
+<pre><code>void CCTextureCache::addImageAsync(const char *path, CCObject *target, SEL_CallFuncO selector)  
+</code></pre>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/11/11/play-cocos2dx-23/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/11/05/play-cocos2dx-22/">【玩转cocos2d-x之二十二】cocos2d-x多线程和同步02</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-05T11:12:00+08:00" pubdate data-updated="true">Nov 5<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/14161151">http://blog.csdn.net/jackystudio</a></p>
+
+<p>pthread有很多不同应用，官网都有相应的API解释和Sample，这里不再重复，本文主要介绍一个cocos2d-x多线程和同步示例。</p>
+
+<h3>1.售票</h3>
+
+<p>孙鑫老师的C++和Java多线程售票一直让我念念不忘，好吧，这里用cocos2d-x和pthread实现一个吧。总共有100张火车票，有2个售票点A和B再售票，当票卖完了就结束了。我们知道当程序一开始进程就会创建一个主线程，所以可以在主线程基础上再创建2个线程A和B，再线程A和B中分别售票，当票数为0的时候，结束线程A和B。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/11/05/play-cocos2dx-22/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/11/04/play-cocos2dx-21/">【玩转cocos2d-x之二十一】cocos2d-x多线程和同步01</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-04T11:01:00+08:00" pubdate data-updated="true">Nov 4<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/14118939">http://blog.csdn.net/jackystudio</a></p>
+
+<p>和其他框架一样，cocos2d-x允许我们使用多线程进行编程。cocos2d-x v2.2.0使用的是pthread库，是一套用户级线程库，被广泛地使用在跨平台应用上。</p>
+
+<h3>1.配置</h3>
+
+<p>在使用pthread之前，需要把头文件和库文件链接进来。pthread的官网<a href="http://www.sourceware.org/pthreads-win32/">戳这里</a>，当然cocos2d-x帮我们包含进引擎了。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/11/04/play-cocos2dx-21/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/31/play-cocos2dx-20/">【玩转cocos2d-x之二十】从CCObject看cocos2d-x的内存管理机制</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-31T18:13:00+08:00" pubdate data-updated="true">Oct 31<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13765639">http://blog.csdn.net/jackystudio</a></p>
+
+<p>再看CCObject，剔除上节的拷贝相关，以及Lua脚本相关的属性和方法后，CCObject还剩下什么？</p>
+
+<h3>1.剩下什么？</h3>
+
+<p>可以看到整个CCObject就是围绕着m_uReference和m_uAutoReleaseCount在转。这两个变量的解释如下。所以CCObject剩下的其实就是对内存的管理。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/31/play-cocos2dx-20/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/30/play-cocos2dx-19/">【玩转cocos2d-x之十九】从CCObject看cocos2d-x的拷贝机制</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-30T18:08:00+08:00" pubdate data-updated="true">Oct 30<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13295505">http://blog.csdn.net/jackystudio</a></p>
+
+<p>CCObject在之前的文章中出现了N次，它扮演了一个老祖宗的角色，但是它到底是做什么的？先从它看看cocos2d-x的拷贝机制吧。</p>
+
+<h3>1.CCCopying</h3>
+
+<p>CCObject从CCCopying继承而来，而CCCopying拥有唯一的一个成员虚函数copyWithZone，这个函数可以认为是拷贝的一个协议，所有继承了CCObject并且需要实现拷贝功能的子类都可以通过它来实现，它的源码很简单，就是一个未实现的断言。CCZone是神马？只是封装了一个CCObject对象指针而已。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/30/play-cocos2dx-19/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/28/play-cocos2dx-18/">【玩转cocos2d-x之十八】仿《中国好学霸》文字拖拽和定位</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-28T18:00:00+08:00" pubdate data-updated="true">Oct 28<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13287519">http://blog.csdn.net/jackystudio</a></p>
+
+<p>现在各种猜成语猜歌名好学霸之类的游戏火的一塌糊涂。本节就介绍下文字的拖拽和定位。</p>
+
+<h3>1.基本原理</h3>
+
+<p>其实这只是精灵的简单拖拽和坐标的识别而已。当触摸点在精灵的范围内，精灵可以感应拖动，当触摸结束进行位置判断，如果在有效范围内就进行自动定位。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/28/play-cocos2dx-18/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/25/play-cocos2dx-17/">【玩转cocos2d-x之十七】cocos2d-x中文显示</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-25T16:53:00+08:00" pubdate data-updated="true">Oct 25<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13014883">http://blog.csdn.net/jackystudio</a></p>
+
+<p>cocos2d-x的中文显示其实就是一个UTF-8编码在作怪而已，一种简单的方法就是把文本保存为UTF-8编码即可（注意不是UTF-8 + BOM），建议使用UE，Sublime Text或者EditPlus之类的本文编辑器。这里介绍另一种方法：通过读取xml文件显示中文，这种方法更利于软件的国际化，demo顺便实现了中英文切换。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/25/play-cocos2dx-17/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/24/play-cocos2dx-16/">【玩转cocos2d-x之十六】滚动字幕和公告</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-24T16:38:00+08:00" pubdate data-updated="true">Oct 24<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12991977">http://blog.csdn.net/jackystudio</a></p>
+
+<p>滚动字幕和公告是游戏中经常使用到的元素，本文大致写一下实现方法，至于例子中具体的坐标值，请不要纠结。。。这和美工关系还是蛮大的。我PS技术太搓了。。。</p>
+
+<h3>1.原理</h3>
+
+<p>其实它们的实现都是简单的通过调用update来更新位置达到的移动效果，和背景滚动有点类似，一旦滚动结束就重置为起点，开始新的滚动。只是为了达到在某个区域内滚动而不至于超出这个区域，有时候会用一些前景图来做遮盖，所以这个时候其实字幕或者公告是有在后面滚动的，但是被遮住了，因此看起来就像是只在某个区域内滚动。以垂直字幕滚动为例说明，如下图。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/24/play-cocos2dx-16/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/blog/page/2/">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+		<br>
+		<center><a target="_blank" href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&amp;email=Geek.Jacky@Gmail.com" style="text-decoration:none" ><img src="\images\aboutme.png" border=0></img></a></center>
+		</br>
+</section><section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (25)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/11/25/play-cocos2dx-25/">【玩转cocos2d-x之二十五】数据结构CCArray</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/13/play-cocos2dx-24/">【玩转cocos2d-x之二十四】截图保存功能的实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/11/play-cocos2dx-23/">【玩转cocos2d-x之二十三】cocos2d-x多线程和同步03</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/05/play-cocos2dx-22/">【玩转cocos2d-x之二十二】cocos2d-x多线程和同步02</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/04/play-cocos2dx-21/">【玩转cocos2d-x之二十一】cocos2d-x多线程和同步01</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+  
+<section>
+  <h1>Sina Weibo</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="450" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=450&fansRow=0&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=0&uid=1307211523&verifier=3619ee9c">
+      </iframe>
+    </li>
+  </ul>
+</section>
+ 
+<section>
+<h1>Visitor</h1>
+<div>
+	<p></p>
+    <center>
+	<a href="http://info.flagcounter.com/3pF8"><img src="http://s08.flagcounter.com/count/3pF8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_12/viewers_3/labels_0/pageviews_1/flags_0/" alt="Flag Counter" border="0"></a>
+	</center>
+</div>
+</section>
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - FuSijie -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
