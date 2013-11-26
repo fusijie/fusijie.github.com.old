@@ -1,0 +1,443 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>【玩转cocos2d-x之二十六】数据结构CCDictionary - Jacky's Blog</title>
+  <meta name="author" content="FuSijie">
+
+  
+  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio CCDictionary在cocos2d-x中被大量的应用，比如CCTexureCache，CCSpriteFramCache等等。 1.实现原理 1.1.uthash &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.jacky.tk/blog/2013/11/26/play-cocos2dx-26">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jacky's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '45386223']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jacky's Blog</a></h1>
+  
+    <h2>Stay Hungry,Stay Foolish!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.jacky.tk" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/projects">Projects</a></li>
+  <li><a href="/tag-cloud/">Tags</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">【玩转cocos2d-x之二十六】数据结构CCDictionary</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-26T09:00:00+08:00" pubdate data-updated="true">Nov 26<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/16958587">http://blog.csdn.net/jackystudio</a></p>
+
+<p>CCDictionary在cocos2d-x中被大量的应用，比如CCTexureCache，CCSpriteFramCache等等。</p>
+
+<h3>1.实现原理</h3>
+
+<p><strong>1.1.uthash</strong></p>
+
+<p>CCDictionary是使用uthash实现的，而过时的CCMutableDictionary则是使用STL实现，就效率而言CCDictionary至少提升了两倍，而且CCDictionary并没有使用C++模版，因此也很容易绑定到脚本。</p>
+
+<p>uthash是一个C/C++的哈希表实现，它以宏定义的方式实现了哈希表，不仅加快了运行速度，而且与key类型无关。它的github在<a href="https://github.com/troydhanson/uthash">这里</a>。cocos2d-x的头文件在\cocos2d-x-2.2.0\cocos2dx\support\data_support\uthash.h。</p>
+
+<!-- more -->
+
+
+<p>如果想在C++中直接使用也很简单，userguide在<a href="http://troydhanson.github.io/uthash/userguide.html">这里</a>。可以很方便地进行增加，删除，查找，计数，迭代，排序等操作。</p>
+
+<p><strong>1.2.键（key）</strong></p>
+
+<p>uthash支持4种标准类型的键：整型，字符串，指针和结构体，不过到了CCDictionary就只支持整型和字符串型了。</p>
+
+<pre><code>enum CCDictType  
+{  
+    kCCDictUnknown = 0,  
+    kCCDictStr,  
+    kCCDictInt  
+};  
+</code></pre>
+
+<h3>2.CCDictElement</h3>
+
+<p>在了解CCDictionary之前还要看一下CCDictElement，很明显，CCDictElement是CCDictionary的一个元素，包含了一个key-value。key支持整型和字符串，使用的时候要注意在同一个CCDictionary中key类型必须要一致，value可以不一致。</p>
+
+<h3>3.API</h3>
+
+<p><strong>3.1.创建</strong></p>
+
+<pre><code>//创建一个CCDictionary  
+static CCDictionary* create();  
+//用一个已存在的CCDictionary来创建一个新的CCDictionary  
+static CCDictionary* createWithDictionary(CCDictionary* srcDict);  
+//用一个plist来创建CCDictionary  
+static CCDictionary* createWithContentsOfFile(const char *pFileName);  
+//返回一个非autorelease对象的CCDictionary，它讷讷感够确保在新线程中使用  
+//但是你必须手动管理它的生命周期，当你不再需要它的时候，必须调用CC_SAFE_RELEASE  
+static CCDictionary* createWithContentsOfFileThreadSafe(const char *pFileName); 
+</code></pre>
+
+<p><strong>3.2.查找</strong></p>
+
+<pre><code>//返回指定字符串类型key的value，如果CCDictionary的key是整型，会出现断言  
+CCObject* objectForKey(const std::string&amp; key);  
+//返回指定整型key的value，如果CCDictionary的key是字符串型，会出现断言  
+CCObject* objectForKey(intptr_t key);  
+//返回指定字符串类型key的CCString，这里假定value是CCString型，如果不是或者未找到，则返回空串  
+const CCString* valueForKey(const std::string&amp; key);  
+//返回指定整型类型key的CCString，这里假定value是CCString型，如果不是或者未找到，则返回空串  
+const CCString* valueForKey(intptr_t key);  
+</code></pre>
+
+<p><strong>3.3.增加</strong></p>
+
+<pre><code>//插入一个key-value，如果是第一次调用，那么CCDictionary的key类型会被确定为字符串型，之后就不能插入整型key  
+//如果已存在该key，则旧key-value会被释放和移除，被新的替代  
+void setObject(CCObject* pObject, const std::string&amp; key);  
+//插入一个key-value，如果是第一次调用，那么CCDictionary的key类型会被确定为整型，之后就不能插入字符串型key  
+//如果已存在该key，则旧key-value会被释放和移除，被新的替代  
+void setObject(CCObject* pObject, intptr_t key);  
+</code></pre>
+
+<p><strong>3.4.移除</strong></p>
+
+<pre><code>//移除指定key  
+void removeObjectForKey(const std::string&amp; key);  
+void removeObjectForKey(intptr_t key);  
+//移除一个CCArray中keys  
+void removeObjectsForKeys(CCArray* pKeyArray);  
+//通过元素来移除value  
+void removeObjectForElememt(CCDictElement* pElement);  
+//移除所有的key-value  
+void removeAllObjects();
+</code></pre>
+
+<p><strong>3.5.其他</strong></p>
+
+<pre><code>//返回一个随机元素，这个使用得注意，因为value可以不一样，所以返回类型每次都可能不同，在类型转换的时候要非常小心  
+CCObject* randomObject();  
+//返回一个包含所有key的CCArray  
+CCArray* allKeys();  
+//返回指定value的所有key，因为value是可以相同的，内部使用==比较两个value是否相同   
+CCArray* allKeysForObject(CCObject* object);  
+//返回元素个数  
+unsigned int count();  
+//把CCDictionary写到一个plist中，写入的value要求是字符串型  
+bool writeToFile(const char *fullPath);  
+</code></pre>
+
+<h3>4.示例</h3>
+
+<pre><code>// Create a dictionary, return an autorelease object.  
+CCDictionary* pDict = CCDictionary::create();  
+
+// Insert objects to dictionary  
+CCString* pValue1 = CCString::create("100");  
+CCString* pValue2 = CCString::create("120");  
+CCInteger* pValue3 = CCInteger::create(200);  
+pDict-&gt;setObject(pValue1, "key1");  
+pDict-&gt;setObject(pValue2, "key2");  
+pDict-&gt;setObject(pValue3, "key3");  
+
+// Get the object for key  
+CCString* pStr1 = (CCString*)pDict-&gt;objectForKey("key1");  
+CCLog("{ key1: %s }", pStr1-&gt;getCString());  
+CCInteger* pInteger = (CCInteger*)pDict-&gt;objectForKey("key3");  
+CCLog("{ key3: %d }", pInteger-&gt;getValue());  
+CCString* pStr3=static_cast&lt;CCString*&gt;(pDict-&gt;randomObject());//这里有问题了，因为value有不同类型，所以随机返回时类型处理要小心  
+CCLog("{ random key: %s }",pStr3-&gt;getCString());  //如果返回的是整型pValue3，那么会出现断言  
+if(pDict-&gt;writeToFile("pdic.plist"))  //整型的value无法写入，会提示This type cannot appear in property list  
+    CCLog("Write to file success!");  
+</code></pre>
+
+<p>Resource/pdic.plist</p>
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_26/1.jpg" alt="" border="0" title="pdic.plist" /><br></br></div>
+
+
+<p></p>
+
+<h3>5.CCDICT_FOREACH</h3>
+
+<p><strong>5.1.概况</strong></p>
+
+<p>宏定义，用于遍历CCDictionary的value。</p>
+
+<pre><code>#define CCDICT_FOREACH(__dict__, __el__) \  
+CCDictElement* pTmp##__dict__##__el__ = NULL; \  
+if (__dict__) \  
+HASH_ITER(hh, (__dict__)-&gt;m_pElements, __el__, pTmp##__dict__##__el__)  
+</code></pre>
+
+<p><strong>5.2.示例</strong></p>
+
+<pre><code>CCDictElement* pElement;  
+CCDICT_FOREACH(dict, pElement)  
+{  
+    const char*key = pElement-&gt;getStrKey();  
+    // You certainly know the type of value, so we assume that it's a CCSprite.  
+    CCSprite* pSprite = (CCSprite*)pElement-&gt;getObject();  
+    // ......  
+}  
+</code></pre>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">FuSijie</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-26T09:00:00+08:00" pubdate data-updated="true">Nov 26<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cocos2d-x/'>cocos2d-x</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+      <!-- JiaThis Button BEGIN -->
+  <section>
+    <h1>Share</h1>
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share?uid=1859056" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1859056" charset="utf-8"></script>
+</section>
+<!-- JiaThis Button END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+	    <p></p>
+        <a class="basic-alignment left" href="/blog/2013/11/25/play-cocos2dx-25/" title="Previous Post: 【玩转cocos2d-x之二十五】数据结构CCArray">&laquo; 【玩转cocos2d-x之二十五】数据结构CCArray</a>
+      
+      
+    </p>
+  </footer>
+</article>
+  <section>
+    <h1>Comments</h1>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"fusijie"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->  
+</section>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+		<br>
+		<center><a target="_blank" href="http://blog.csdn.net/jackystudio" style="text-decoration:none" ><img src="\images\aboutme.png" border=0></img></a></center>
+		</br>
+</section><section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (26)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/11/26/play-cocos2dx-26/">【玩转cocos2d-x之二十六】数据结构CCDictionary</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/25/play-cocos2dx-25/">【玩转cocos2d-x之二十五】数据结构CCArray</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/13/play-cocos2dx-24/">【玩转cocos2d-x之二十四】截图保存功能的实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/11/play-cocos2dx-23/">【玩转cocos2d-x之二十三】cocos2d-x多线程和同步03</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/05/play-cocos2dx-22/">【玩转cocos2d-x之二十二】cocos2d-x多线程和同步02</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+  
+<section>
+  <h1>Sina Weibo</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="450" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=450&fansRow=0&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=0&uid=1307211523&verifier=3619ee9c">
+      </iframe>
+    </li>
+  </ul>
+</section>
+ 
+<section>
+<h1>Visitor</h1>
+<div>
+	<p></p>
+    <center>
+	<a href="http://info.flagcounter.com/3pF8"><img src="http://s08.flagcounter.com/count/3pF8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_12/viewers_3/labels_0/pageviews_1/flags_0/" alt="Flag Counter" border="0"></a>
+	</center>
+</div>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - FuSijie -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

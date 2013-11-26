@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: CCDictionary | Jacky's Blog]]></title>
   <link href="http://www.jacky.tk/tags/ccdictionary/atom.xml" rel="self"/>
   <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-25T20:36:56+08:00</updated>
+  <updated>2013-11-26T09:20:52+08:00</updated>
   <id>http://www.jacky.tk/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,165 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十六】数据结构CCDictionary]]></title>
+    <link href="http://www.jacky.tk/blog/2013/11/26/play-cocos2dx-26/"/>
+    <updated>2013-11-26T09:00:00+08:00</updated>
+    <id>http://www.jacky.tk/blog/2013/11/26/play-cocos2dx-26</id>
+    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/16958587">http://blog.csdn.net/jackystudio</a></p>
+
+<p>CCDictionary在cocos2d-x中被大量的应用，比如CCTexureCache，CCSpriteFramCache等等。</p>
+
+<h3>1.实现原理</h3>
+
+<p><strong>1.1.uthash</strong></p>
+
+<p>CCDictionary是使用uthash实现的，而过时的CCMutableDictionary则是使用STL实现，就效率而言CCDictionary至少提升了两倍，而且CCDictionary并没有使用C++模版，因此也很容易绑定到脚本。</p>
+
+<p>uthash是一个C/C++的哈希表实现，它以宏定义的方式实现了哈希表，不仅加快了运行速度，而且与key类型无关。它的github在<a href="https://github.com/troydhanson/uthash">这里</a>。cocos2d-x的头文件在\cocos2d-x-2.2.0\cocos2dx\support\data_support\uthash.h。</p>
+
+<!-- more -->
+
+
+<p>如果想在C++中直接使用也很简单，userguide在<a href="http://troydhanson.github.io/uthash/userguide.html">这里</a>。可以很方便地进行增加，删除，查找，计数，迭代，排序等操作。</p>
+
+<p><strong>1.2.键（key）</strong></p>
+
+<p>uthash支持4种标准类型的键：整型，字符串，指针和结构体，不过到了CCDictionary就只支持整型和字符串型了。</p>
+
+<pre><code>enum CCDictType  
+{  
+    kCCDictUnknown = 0,  
+    kCCDictStr,  
+    kCCDictInt  
+};  
+</code></pre>
+
+<h3>2.CCDictElement</h3>
+
+<p>在了解CCDictionary之前还要看一下CCDictElement，很明显，CCDictElement是CCDictionary的一个元素，包含了一个key-value。key支持整型和字符串，使用的时候要注意在同一个CCDictionary中key类型必须要一致，value可以不一致。</p>
+
+<h3>3.API</h3>
+
+<p><strong>3.1.创建</strong></p>
+
+<pre><code>//创建一个CCDictionary  
+static CCDictionary* create();  
+//用一个已存在的CCDictionary来创建一个新的CCDictionary  
+static CCDictionary* createWithDictionary(CCDictionary* srcDict);  
+//用一个plist来创建CCDictionary  
+static CCDictionary* createWithContentsOfFile(const char *pFileName);  
+//返回一个非autorelease对象的CCDictionary，它讷讷感够确保在新线程中使用  
+//但是你必须手动管理它的生命周期，当你不再需要它的时候，必须调用CC_SAFE_RELEASE  
+static CCDictionary* createWithContentsOfFileThreadSafe(const char *pFileName); 
+</code></pre>
+
+<p><strong>3.2.查找</strong></p>
+
+<pre><code>//返回指定字符串类型key的value，如果CCDictionary的key是整型，会出现断言  
+CCObject* objectForKey(const std::string&amp; key);  
+//返回指定整型key的value，如果CCDictionary的key是字符串型，会出现断言  
+CCObject* objectForKey(intptr_t key);  
+//返回指定字符串类型key的CCString，这里假定value是CCString型，如果不是或者未找到，则返回空串  
+const CCString* valueForKey(const std::string&amp; key);  
+//返回指定整型类型key的CCString，这里假定value是CCString型，如果不是或者未找到，则返回空串  
+const CCString* valueForKey(intptr_t key);  
+</code></pre>
+
+<p><strong>3.3.增加</strong></p>
+
+<pre><code>//插入一个key-value，如果是第一次调用，那么CCDictionary的key类型会被确定为字符串型，之后就不能插入整型key  
+//如果已存在该key，则旧key-value会被释放和移除，被新的替代  
+void setObject(CCObject* pObject, const std::string&amp; key);  
+//插入一个key-value，如果是第一次调用，那么CCDictionary的key类型会被确定为整型，之后就不能插入字符串型key  
+//如果已存在该key，则旧key-value会被释放和移除，被新的替代  
+void setObject(CCObject* pObject, intptr_t key);  
+</code></pre>
+
+<p><strong>3.4.移除</strong></p>
+
+<pre><code>//移除指定key  
+void removeObjectForKey(const std::string&amp; key);  
+void removeObjectForKey(intptr_t key);  
+//移除一个CCArray中keys  
+void removeObjectsForKeys(CCArray* pKeyArray);  
+//通过元素来移除value  
+void removeObjectForElememt(CCDictElement* pElement);  
+//移除所有的key-value  
+void removeAllObjects();
+</code></pre>
+
+<p><strong>3.5.其他</strong></p>
+
+<pre><code>//返回一个随机元素，这个使用得注意，因为value可以不一样，所以返回类型每次都可能不同，在类型转换的时候要非常小心  
+CCObject* randomObject();  
+//返回一个包含所有key的CCArray  
+CCArray* allKeys();  
+//返回指定value的所有key，因为value是可以相同的，内部使用==比较两个value是否相同   
+CCArray* allKeysForObject(CCObject* object);  
+//返回元素个数  
+unsigned int count();  
+//把CCDictionary写到一个plist中，写入的value要求是字符串型  
+bool writeToFile(const char *fullPath);  
+</code></pre>
+
+<h3>4.示例</h3>
+
+<pre><code>// Create a dictionary, return an autorelease object.  
+CCDictionary* pDict = CCDictionary::create();  
+
+// Insert objects to dictionary  
+CCString* pValue1 = CCString::create("100");  
+CCString* pValue2 = CCString::create("120");  
+CCInteger* pValue3 = CCInteger::create(200);  
+pDict-&gt;setObject(pValue1, "key1");  
+pDict-&gt;setObject(pValue2, "key2");  
+pDict-&gt;setObject(pValue3, "key3");  
+
+// Get the object for key  
+CCString* pStr1 = (CCString*)pDict-&gt;objectForKey("key1");  
+CCLog("{ key1: %s }", pStr1-&gt;getCString());  
+CCInteger* pInteger = (CCInteger*)pDict-&gt;objectForKey("key3");  
+CCLog("{ key3: %d }", pInteger-&gt;getValue());  
+CCString* pStr3=static_cast&lt;CCString*&gt;(pDict-&gt;randomObject());//这里有问题了，因为value有不同类型，所以随机返回时类型处理要小心  
+CCLog("{ random key: %s }",pStr3-&gt;getCString());  //如果返回的是整型pValue3，那么会出现断言  
+if(pDict-&gt;writeToFile("pdic.plist"))  //整型的value无法写入，会提示This type cannot appear in property list  
+    CCLog("Write to file success!");  
+</code></pre>
+
+<p>Resource/pdic.plist</p>
+
+<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_26/1.jpg" alt="" border="0" title="pdic.plist" /><br></br></div>
+
+
+<p></p>
+
+<h3>5.CCDICT_FOREACH</h3>
+
+<p><strong>5.1.概况</strong></p>
+
+<p>宏定义，用于遍历CCDictionary的value。</p>
+
+<pre><code>#define CCDICT_FOREACH(__dict__, __el__) \  
+CCDictElement* pTmp##__dict__##__el__ = NULL; \  
+if (__dict__) \  
+HASH_ITER(hh, (__dict__)-&gt;m_pElements, __el__, pTmp##__dict__##__el__)  
+</code></pre>
+
+<p><strong>5.2.示例</strong></p>
+
+<pre><code>CCDictElement* pElement;  
+CCDICT_FOREACH(dict, pElement)  
+{  
+    const char*key = pElement-&gt;getStrKey();  
+    // You certainly know the type of value, so we assume that it's a CCSprite.  
+    CCSprite* pSprite = (CCSprite*)pElement-&gt;getObject();  
+    // ......  
+}  
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十七】cocos2d-x中文显示]]></title>
