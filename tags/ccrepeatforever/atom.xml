@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: CCRepeatForever | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/ccrepeatforever/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-11-28T09:39:12+08:00</updated>
+  <updated>2013-11-28T09:47:21+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -19,9 +19,6 @@
     <updated>2013-11-28T09:25:00+08:00</updated>
     <id>http://www.fusijie.com/blog/2013/11/28/play-cocos2dx-27</id>
     <content type="html"><![CDATA[<p>之前在遇到这么一个问题，在CCSequence中加入CCRepeatForever，发现其他动作执行没问题，就是CCRepeatForever无法执行。代码并没有问题，很奇怪。</p>
-
-<!-- more -->
-
 
 <h3>1.示例</h3>
 
@@ -40,6 +37,9 @@ close-&gt;runAction(sequence);//执行连续动画
 </code></pre>
 
 <p>结果精灵闪烁10次以后，帧动画不执行了。</p>
+
+<!-- more -->
+
 
 <h3>2.原因</h3>
 
