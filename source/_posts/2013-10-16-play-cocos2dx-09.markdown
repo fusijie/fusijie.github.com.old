@@ -6,7 +6,6 @@ comments: true
 categories: cocos2d-x
 tags: [CCAction, CCFiniteTimeAction, CCFollowCCSpeed]
 ---
-原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/12770909)
 
 精灵也出来了，但是不会动的精灵是木有用的。。。CCAction就是负责来解决精灵运动的问题。
 

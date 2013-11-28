@@ -6,7 +6,6 @@ comments: true
 categories: cocos2d-x
 tags: [多线程, pthread, Mutex, 线程安全]
 ---
-原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/14118939)
 
 和其他框架一样，cocos2d-x允许我们使用多线程进行编程。cocos2d-x v2.2.0使用的是pthread库，是一套用户级线程库，被广泛地使用在跨平台应用上。
 

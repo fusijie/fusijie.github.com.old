@@ -6,7 +6,6 @@ comments: true
 categories: cocos2d-x
 tags: [cocos2d-x, CCApplication, CCEGLView, applicationDidFinish]
 ---
-原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/12554167)
 
 虽然cocos2d-x v3.0 alpha版已经出来了，也改进了不少，有兴趣的可以去尝尝鲜。因为后面可能还会配合cocoStudio写一下博客，而现在v1.0.0.0版本需要配合cocos2d-x v2.2.0使用。所以这里选择了V2.2.0版的cocos2d-x。
 

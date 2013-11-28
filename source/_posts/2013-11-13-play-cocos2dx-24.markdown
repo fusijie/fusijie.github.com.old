@@ -6,7 +6,6 @@ comments: true
 categories: cocos2d-x
 tags: [CCRenderTexture, 截图保存]
 ---
-原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/15498083)
 
 官方TestCpp有这个demo了，这里还是把它单独拖出来写一下，游戏推广的一个很重要组成就是玩家分享，所以游戏截图就起到很大作用了。截图功能通过CCRenderTexture实现。
 

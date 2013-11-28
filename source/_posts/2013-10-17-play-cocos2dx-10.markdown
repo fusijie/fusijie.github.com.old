@@ -6,7 +6,6 @@ comments: true
 categories: cocos2d-x
 tags: [OpenGL坐标系, 绝对坐标系, 相对坐标系, 屏幕坐标系]
 ---
-原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/12830971)
 
 cocos2d-x采用的是笛卡尔平面坐标系，也就是平面上两条垂直线构成的坐标系，平面上任意一点都可以用（x，y）来表示。
 

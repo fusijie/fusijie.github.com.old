@@ -6,8 +6,6 @@ comments: true
 categories: cocos2d-x
 tags: [cocos2d-x, 游戏引擎]
 ---
-原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/12432837)
-
 ###1.游戏构成###
 
 我们以超级马里奥游戏作为蓝本来描述一下一个游戏的构成。

@@ -6,7 +6,6 @@ comments: true
 categories: cocos2d-x
 tags: [精灵拖拽, 中国好学霸, 疯狂猜成语]
 ---
-原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/13287519)
 
 现在各种猜成语猜歌名好学霸之类的游戏火的一塌糊涂。本节就介绍下文字的拖拽和定位。
 

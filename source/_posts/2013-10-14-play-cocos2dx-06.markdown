@@ -6,7 +6,6 @@ comments: true
 categories: cocos2d-x
 tags: [CCNode, 属性, 常用接口, 特点]
 ---
-原创作品，转载请标明：[http://blog.csdn.net/jackystudio/](http://blog.csdn.net/jackystudio/article/details/12703741)
 
 节点类CCNode可以说是游戏元素的祖宗了，基本上我们看得到的游戏元素都是以它为原型进行扩展的。像CCScene，CCLayer，CCSprite，CCMenu，CCSpriteBatchNode等等都是从CCNode继承而来。另外如果我们要自定义精灵，那么从CCNode继承也是一个很不错的选择。
 

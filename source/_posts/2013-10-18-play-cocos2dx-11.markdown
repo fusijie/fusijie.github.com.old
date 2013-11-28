@@ -6,7 +6,6 @@ comments: true
 categories: cocos2d-x
 tags: [CCScheduler, 定时器, 函数指针, 回调函数]
 ---
-原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/12848473)
 
 如果我们想定时执行一个动作怎么办？CCScheduler帮了我们一个大忙。
 

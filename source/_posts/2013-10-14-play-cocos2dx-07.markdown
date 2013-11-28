@@ -6,7 +6,6 @@ comments: true
 categories: cocos2d-x
 tags: [CCScene, CCLayer, 带颜色的Layer, CCLayerMultiplex]
 ---
-原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/12708811)
 
 场景类CCScene和布景类CCLayer都是作为一个容器来使用，这里简单地看下它们的实现：
 

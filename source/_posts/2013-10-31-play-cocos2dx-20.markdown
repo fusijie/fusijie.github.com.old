@@ -6,7 +6,6 @@ comments: true
 categories: cocos2d-x
 tags: [内存管理, 自动内存管理, 手动内存管理, addChild]
 ---
-原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/13765639)
 
 再看CCObject，剔除上节的拷贝相关，以及Lua脚本相关的属性和方法后，CCObject还剩下什么？
 

@@ -6,7 +6,6 @@ comments: true
 categories: cocos2d-x
 tags: [CCMenu, CCMenu, Item, 锚点排列]
 ---
-原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/12904705)
 
 前两天写个游戏，发现CCMenu的布局还是比较有意思的，这里总结一下，以便后用。
 

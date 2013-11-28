@@ -7,8 +7,6 @@ categories: cocos2d-x
 tags: [cocos2d-x, plist, TexturePacket, 解析]
 ---
 
-原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/12867863)
-
 之前拿了一些别人的图片素材，是用TexturePacker打包合成的，结果写程序的时候不知道每个合成前小png图的名字是什么，只能一个一个从plist文件中找，然后猜测对应的名字，再进行显示，如果不对，还要继续猜。。。坑爹啊，效率大大降低了，时间都耗在找图片名字上了。后来决定动手写一个解析plist的软件，就叫它Anti_TexturePacker吧。
 
 Anti_TexurePacker软件基于VS 2008 MFC Dialog。

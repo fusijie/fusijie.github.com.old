@@ -6,7 +6,6 @@ comments: true
 categories: cocos2d-x
 tags: [CCTableView, 关卡选择, 数据源, 滚动]
 ---
-原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/12966993)
 
 这节介绍一下游戏中帮助界面和关卡选择的设计，其实都是一样的，关键在于美工。这里采用自定义TableView层来实现。
 

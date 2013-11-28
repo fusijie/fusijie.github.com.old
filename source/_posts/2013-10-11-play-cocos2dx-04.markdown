@@ -6,10 +6,8 @@ comments: true
 categories: cocos2d-x
 tags: [cocos2d-x, android, win32, 跨平台实现]
 ---
-原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/12610287)
 
 cocos2d-x到底是怎样实现跨平台的呢？这里以Win32和Android为例。
-
 
 ###1.跨平台项目目录结构###
 

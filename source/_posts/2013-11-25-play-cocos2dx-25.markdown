@@ -6,7 +6,6 @@ comments: true
 categories: cocos2d-x
 tags: [CCArray, fastmove, 内存, 效率, CCARRAY_FOREACH]
 ---
-原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/16938787)
 
 CCArray是从cocos2d中移植过来的，类似于Apple的NSMutableArray，但是比NSMutableArray更为的好用。要注意的是虽然CCArray和CCDictionary可以管理cocos2d-x中绝大多数的类，但是仍然无法替代STL库，STL库更为强有力。
 

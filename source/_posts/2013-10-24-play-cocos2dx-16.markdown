@@ -6,7 +6,6 @@ comments: true
 categories: cocos2d-x
 tags: [滚动字幕, 滚动公告, update]
 ---
-原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/12991977)
 
 滚动字幕和公告是游戏中经常使用到的元素，本文大致写一下实现方法，至于例子中具体的坐标值，请不要纠结。。。这和美工关系还是蛮大的。我PS技术太搓了。。。
 

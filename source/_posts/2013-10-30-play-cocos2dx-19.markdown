@@ -6,7 +6,6 @@ comments: true
 categories: cocos2d-x
 tags: [CCObject, CCCopying, 拷贝机制, copyWithZone]
 ---
-原创作品，转载请标明：[http://blog.csdn.net/jackystudio](http://blog.csdn.net/jackystudio/article/details/13295505)
 
 CCObject在之前的文章中出现了N次，它扮演了一个老祖宗的角色，但是它到底是做什么的？先从它看看cocos2d-x的拷贝机制吧。
 
