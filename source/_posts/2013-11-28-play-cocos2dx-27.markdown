@@ -8,7 +8,6 @@ tags: [CCSequence, CCRepeatForever, 无法执行, 解决方案]
 ---
 之前在遇到这么一个问题，在CCSequence中加入CCRepeatForever，发现其他动作执行没问题，就是CCRepeatForever无法执行。代码并没有问题，很奇怪。
 
-<!-- more -->
 
 ###1.示例###
 
@@ -25,6 +24,8 @@ tags: [CCSequence, CCRepeatForever, 无法执行, 解决方案]
     this->addChild(close);  
     close->runAction(sequence);//执行连续动画  
 结果精灵闪烁10次以后，帧动画不执行了。
+
+<!-- more -->
 
 ###2.原因###
 先了解一下CCSequence的创建和执行原理。
