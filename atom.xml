@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-11-28T08:16:02+08:00</updated>
+  <updated>2013-11-28T08:51:04+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -167,7 +167,7 @@ CCDICT_FOREACH(dict, pElement)
     // You certainly know the type of value, so we assume that it's a CCSprite.  
     CCSprite* pSprite = (CCSprite*)pElement-&gt;getObject();  
     // ......  
-}  
+}  &lt;p class='post-footer'&gt;&amp;nbsp;原文地址：&lt;a href='http://www.fusijie.com/blog/2013/11/26/play-cocos2dx-26/'&gt;http://www.fusijie.com/blog/2013/11/26/play-cocos2dx-26/&lt;/a&gt;&lt;br/&gt;&amp;nbsp;版权声明：自由转载-非商用-非衍生-保持署名| &lt;a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'&gt;Creative Commons BY-NC-ND 3.0&lt;/a&gt;&lt;/p&gt;
 </code></pre>
 ]]></content>
   </entry>
@@ -366,6 +366,9 @@ CCArray中容量和个数并不是同一个概念。个数&lt;=容量。从添�
 <h3>7.注意</h3>
 
 <p>一般来说，CCArray不会被add到其他类，所以它的引用计数是1，而且被设置为自动释放。所以创建CCArray对象时要记得调用retain，而且在析构的时候也要调用release来释放内存。真心想吐槽。。。</p>
+
+<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/11/25/play-cocos2dx-25/'>http://www.fusijie.com/blog/2013/11/25/play-cocos2dx-25/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+
 ]]></content>
   </entry>
   
@@ -446,7 +449,7 @@ void CTestLayer::SaveScreenShot()
 
 <h3>4.源码下载</h3>
 
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6538305">下载地址</a></p>
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6538305">下载地址</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/11/13/play-cocos2dx-24/'><a href="http://www.fusijie.com/blog/2013/11/13/play-cocos2dx-24/">http://www.fusijie.com/blog/2013/11/13/play-cocos2dx-24/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
@@ -621,6 +624,9 @@ void CTestLayer::showSprite(CCObject* obj)
 <h3>5.源码下载</h3>
 
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6533293">下载地址</a></p>
+
+<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/11/11/play-cocos2dx-23/'>http://www.fusijie.com/blog/2013/11/11/play-cocos2dx-23/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+
 ]]></content>
   </entry>
   
@@ -844,7 +850,7 @@ B Sell 1
 
 <h3>4.源码下载</h3>
 
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6503759">下载地址</a></p>
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6503759">下载地址</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/11/05/play-cocos2dx-22/'><a href="http://www.fusijie.com/blog/2013/11/05/play-cocos2dx-22/">http://www.fusijie.com/blog/2013/11/05/play-cocos2dx-22/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
@@ -967,7 +973,7 @@ PTW32_DLLPORT int PTW32_CDECL pthread_mutex_unlock (pthread_mutex_t * mutex);
 
 <p><em>（3）pthread_cond_wait()看起来有个bug，首次wait会失败，但是之后又会工作的很好。</em></p>
 
-<p><em>（4）OpenGL context也不是线程安全。</em></p>
+<p><em>（4）OpenGL context也不是线程安全。</em><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/11/04/play-cocos2dx-21/'><a href="http://www.fusijie.com/blog/2013/11/04/play-cocos2dx-21/">http://www.fusijie.com/blog/2013/11/04/play-cocos2dx-21/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
@@ -1148,6 +1154,9 @@ void update(float delta)
 </code></pre>
 
 <p>至于为什么，大家翻一下addChild实现源码就知道啦~</p>
+
+<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/31/play-cocos2dx-20/'>http://www.fusijie.com/blog/2013/10/31/play-cocos2dx-20/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+
 ]]></content>
   </entry>
   
@@ -1223,7 +1232,7 @@ void update(float delta)
 
 <h3>4.深拷贝和浅拷贝</h3>
 
-<p>其实不单是CCArray，cocos2d-x采用的都是深拷贝的方式，深拷贝和浅拷贝的概念和详解请移步<a href="http://blog.csdn.net/jackystudio/article/details/11553117">这里</a>。它们的区别在于当前对象是否包含了对其他资源的引用。在拷贝机制上采用深拷贝的方式，大大方便了我们对内存的管理，避免因资源的释放导致引用异常。这对于平时在进行一些自定义子类的拷贝处理上还是很有指导意义的。</p>
+<p>其实不单是CCArray，cocos2d-x采用的都是深拷贝的方式，深拷贝和浅拷贝的概念和详解请移步<a href="http://blog.csdn.net/jackystudio/article/details/11553117">这里</a>。它们的区别在于当前对象是否包含了对其他资源的引用。在拷贝机制上采用深拷贝的方式，大大方便了我们对内存的管理，避免因资源的释放导致引用异常。这对于平时在进行一些自定义子类的拷贝处理上还是很有指导意义的。<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/30/play-cocos2dx-19/'><a href="http://www.fusijie.com/blog/2013/10/30/play-cocos2dx-19/">http://www.fusijie.com/blog/2013/10/30/play-cocos2dx-19/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
@@ -1345,7 +1354,7 @@ void update(float delta)
 
 <h3>4.源码下载</h3>
 
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6463261">源码下载</a></p>
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6463261">源码下载</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/28/play-cocos2dx-18/'><a href="http://www.fusijie.com/blog/2013/10/28/play-cocos2dx-18/">http://www.fusijie.com/blog/2013/10/28/play-cocos2dx-18/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
@@ -1405,7 +1414,7 @@ this-&gt;addChild(pLabel, 1);
 
 <h3>4.源码下载</h3>
 
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6442201">源码下载</a></p>
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6442201">源码下载</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/25/play-cocos2dx-17/'><a href="http://www.fusijie.com/blog/2013/10/25/play-cocos2dx-17/">http://www.fusijie.com/blog/2013/10/25/play-cocos2dx-17/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
@@ -1503,7 +1512,7 @@ void CTestLayer::update(float delta)
 
 <h3>4.源码下载</h3>
 
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6434549">源码下载</a></p>
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6434549">源码下载</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/24/play-cocos2dx-16/'><a href="http://www.fusijie.com/blog/2013/10/24/play-cocos2dx-16/">http://www.fusijie.com/blog/2013/10/24/play-cocos2dx-16/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
@@ -1626,7 +1635,7 @@ tableView-&gt;reloadData();
 
 <h3>5.源码下载地址</h3>
 
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6422401">下载地址</a></p>
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6422401">下载地址</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/23/play-cocos2dx-15/'><a href="http://www.fusijie.com/blog/2013/10/23/play-cocos2dx-15/">http://www.fusijie.com/blog/2013/10/23/play-cocos2dx-15/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
@@ -1722,7 +1731,7 @@ tableView-&gt;reloadData();
 
 <h3>4.源码下载地址</h3>
 
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6421801">下载地址</a></p>
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6421801">下载地址</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/22/play-cocos2dx-14/'><a href="http://www.fusijie.com/blog/2013/10/22/play-cocos2dx-14/">http://www.fusijie.com/blog/2013/10/22/play-cocos2dx-14/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
@@ -1825,6 +1834,9 @@ this-&gt;addChild(pMenu, 1);
 </code></pre>
 
 <div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_13/5.jpg" alt="" border="0" title="" /><br></br></div>
+
+
+<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/21/play-cocos2dx-13/'>http://www.fusijie.com/blog/2013/10/21/play-cocos2dx-13/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
 
 ]]></content>
   </entry>
@@ -2047,7 +2059,7 @@ delete pWrapBitmap;
 
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6429297">下载地址</a></p>
 
-<p>源码：<a href="https://github.com/fusijie/Anti_TexturePaker.git">https://github.com/fusijie/Anti_TexturePaker.git</a></p>
+<p>源码：<a href="https://github.com/fusijie/Anti_TexturePaker.git">https://github.com/fusijie/Anti_TexturePaker.git</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/19/play-cocos2dx-12/'><a href="http://www.fusijie.com/blog/2013/10/19/play-cocos2dx-12/">http://www.fusijie.com/blog/2013/10/19/play-cocos2dx-12/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
@@ -2181,7 +2193,7 @@ void HelloWorld::log(float dt)
 
 <p>这样确实用起来怪怪的，所以在cocos2d-x v3.0版本中，参数和函数指针用一个宏打包起来了~</p>
 
-<p>至于CCSchedule内部是怎么实现的，以及CCTimer的触发回调，有兴趣的就自己看看源码吧，我也写不来，源码有点长啊。</p>
+<p>至于CCSchedule内部是怎么实现的，以及CCTimer的触发回调，有兴趣的就自己看看源码吧，我也写不来，源码有点长啊。<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/18/play-cocos2dx-11/'><a href="http://www.fusijie.com/blog/2013/10/18/play-cocos2dx-11/">http://www.fusijie.com/blog/2013/10/18/play-cocos2dx-11/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
@@ -2280,7 +2292,7 @@ CCPoint wp2=big-&gt;convertToWorldSpace(little-&gt;getPosition());//wp2(100,100)
 <p>如果要把绝对坐标转换为big和little的相对坐标</p>
 
 <pre><code>CCPoint np1=big-&gt;convertToNodeSpace(ccp(200,200));//np1(150,150)  
-CCPoint np2=little-&gt;convertToNodeSpace(ccp(200,200));//np2(100,100)
+CCPoint np2=little-&gt;convertToNodeSpace(ccp(200,200));//np2(100,100)&lt;p class='post-footer'&gt;&amp;nbsp;原文地址：&lt;a href='http://www.fusijie.com/blog/2013/10/17/play-cocos2dx-10/'&gt;http://www.fusijie.com/blog/2013/10/17/play-cocos2dx-10/&lt;/a&gt;&lt;br/&gt;&amp;nbsp;版权声明：自由转载-非商用-非衍生-保持署名| &lt;a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'&gt;Creative Commons BY-NC-ND 3.0&lt;/a&gt;&lt;/p&gt;
 </code></pre>
 ]]></content>
   </entry>
@@ -2367,6 +2379,9 @@ virtual CCFiniteTimeAction* reverse(void);
 </code></pre>
 
 <p>好了，游戏的基本元素就写到这里，写API文档很蛋疼的说。。。</p>
+
+<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/16/play-cocos2dx-09/'>http://www.fusijie.com/blog/2013/10/16/play-cocos2dx-09/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+
 ]]></content>
   </entry>
   
@@ -2548,7 +2563,7 @@ const CCPoint&amp; getOffsetPosition(void);
 bool isFlipX(void);  
 void setFlipX(bool bFlipX);  
 bool isFlipY(void);  
-void setFlipY(bool bFlipY);  
+void setFlipY(bool bFlipY);  &lt;p class='post-footer'&gt;&amp;nbsp;原文地址：&lt;a href='http://www.fusijie.com/blog/2013/10/15/play-cocos2dx-08/'&gt;http://www.fusijie.com/blog/2013/10/15/play-cocos2dx-08/&lt;/a&gt;&lt;br/&gt;&amp;nbsp;版权声明：自由转载-非商用-非衍生-保持署名| &lt;a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'&gt;Creative Commons BY-NC-ND 3.0&lt;/a&gt;&lt;/p&gt;
 </code></pre>
 ]]></content>
   </entry>
@@ -2677,7 +2692,7 @@ pLayerMultiplex-&gt;switchTo(item-&gt;getTag());
 pLayerMultiplex-&gt;switchToAndReleaseMe(item-&gt;getTag());  
 </code></pre>
 
-<p>两者的差别在于是否释放当前处于活动的布景层。</p>
+<p>两者的差别在于是否释放当前处于活动的布景层。<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/14/play-cocos2dx-07/'><a href="http://www.fusijie.com/blog/2013/10/14/play-cocos2dx-07/">http://www.fusijie.com/blog/2013/10/14/play-cocos2dx-07/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
