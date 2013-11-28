@@ -1,0 +1,160 @@
+---
+layout: post
+title: "【玩转cocos2d-x之二十七】CCSequence不能执行CCRepeatForever"
+date: 2013-11-28 09:25
+comments: true
+categories: cocos2d-x
+tags: [CCSequence, CCRepeatForever, 无法执行, 解决方案]
+---
+之前在遇到这么一个问题，在CCSequence中加入CCRepeatForever，发现其他动作执行没问题，就是CCRepeatForever无法执行。代码并没有问题，很奇怪。
+
+<!-- more -->
+
+###1.示例###
+
+    CCBlink* blink=CCBlink::create(0.5f,10);//创建闪烁动画，duration=0.5s  
+    CCAnimation* animation=CCAnimation::create();  
+    animation->addSpriteFrameWithFileName("CloseNormal.png");  
+    animation->addSpriteFrameWithFileName("CloseSelected.png");  
+    animation->setDelayPerUnit(1.0f);//帧间间隔1s  
+    CCAnimate* animate=CCAnimate::create(animation);//创建帧动画  
+    CCRepeatForever* repeat=CCRepeatForever::create(animate);  
+    CCSequence* sequence=CCSequence::create(blink,repeat,NULL);//创建连续动画  
+    CCSprite* close=CCSprite::create("CloseNormal.png");  
+    close->setPosition(ccp(240,160));  
+    this->addChild(close);  
+    close->runAction(sequence);//执行连续动画  
+结果精灵闪烁10次以后，帧动画不执行了。
+
+###2.原因###
+先了解一下CCSequence的创建和执行原理。
+
+**2.1.CCSequence的创建**
+
+创建CCSequence调用
+
+    //创建CCSequence  
+    CCSequence* CCSequence::create(CCFiniteTimeAction *pAction1, ...)  
+内部调用了createWithVariableList，从实现可以看出这是一个递归调用。
+
+    //获取动作列表，创建CCSequence  
+    CCSequence* CCSequence::createWithVariableList(CCFiniteTimeAction *pAction1, va_list args)  
+    {  
+    	CCFiniteTimeAction *pNow;//当前动作  
+    	CCFiniteTimeAction *pPrev = pAction1;//第一个动作  
+    	bool bOneAction = true;//只有一个动作的标志位  
+      
+    	while (pAction1)  
+    	{  
+    		pNow = va_arg(args, CCFiniteTimeAction*);//获取当前动作  
+    		if (pNow)//如果存在  
+    		{  
+    			pPrev = createWithTwoActions(pPrev, pNow);//用前两个动作创建CCSequence并赋给第一个动作  
+    			bOneAction = false;//置false  
+    		}  
+    		else//如果不存在  
+    		{  
+    			// If only one action is added to CCSequence, make up a CCSequence by adding a simplest finite time action.  
+    			if (bOneAction)//如果只有一个动作  
+    			{  
+    				pPrev = createWithTwoActions(pPrev, ExtraAction::create());  
+    			}  
+    		break;//跳出循环  
+    		}  
+    	}  
+    	return ((CCSequence*)pPrev);//返回第一个动作  
+    }  
+假如有3个动作要被串联，则先把第1个和第2个串联一个CCSequence，再把这个CCSequence和第3个动作串联成最终的CCSequence，然后返回。从CCSequence的成员变量可以看到：
+
+    CCFiniteTimeAction *m_pActions[2];//表明只包含2个动作对象指针
+
+使用递归多少会降低程序的运行效率，但是却可以换来代码的简洁性，同样的CCSpawn也是这么实现的。
+在createWithTwoActions中，调用了initWithTwoActions函数，实现了把两个动作串成一个CCSequence，关键代码如下：
+
+    float d = pActionOne->getDuration() + pActionTwo->getDuration();//获取两个动作的duration  
+    CCActionInterval::initWithDuration(d);//赋给新的CCSequence  
+      
+    m_pActions[0] = pActionOne;//同时把两个动作赋给m_pActions指针数组  
+    pActionOne->retain();  
+      
+    m_pActions[1] = pActionTwo;  
+    pActionTwo->retain();  
+
+**2.2.duration**
+
+从示例可以看出，闪烁动画blink的duration是0.5s，那CCRepeatForever呢？1s？当然不是，1s只是帧动画animate的帧间间隔，每个帧动画包含2帧，而CCRepeatForever的duration是0。因此，当示例中的闪烁动画blink和重复动画repeat串联成CCSequence sequence的时候，sequence的duration就变成0.5+0=0.5s，这很重要。
+
+**2.3.m_split**
+
+CCSequence中有这么一个成员变量
+
+	float m_split;//记录了第一个动画时长占总时长的比例，也就是2个动画的时长分界  
+当执行runAction的时候，CCSequence会调用
+
+	void CCSequence::startWithTarget(CCNode *pTarget)  
+	{  
+    	CCActionInterval::startWithTarget(pTarget);  
+    	m_split = m_pActions[0]->getDuration() / m_fDuration;//获取第一个动画占总时长的比例  
+    	m_last = -1;  
+	}  
+而这里由于blink占了0.5s，repeat占了0s，总时长0.5s，所以m_split是0.5/0.5=1。blink占满了整个CCSequence，所以CCSequence无法执行repeat。
+
+这时候再来看CCSequence::update(float dt)函数的执行，就会恍然大悟了。
+
+	int found = 0;//当前播放动作索引  
+	float new_t = 0.0f;//新播放进度  
+  
+	if( t < m_split ) {//播放进度<分界进度  
+    	found = 0;//设置当前播放的是第一个动作  
+    	if( m_split != 0 )//如果第一个动作时长占比!=0  
+        	new_t = t / m_split;//计算出第一个动作新的播放进度  
+    	else  
+        	new_t = 1;//设置第一个已播放完毕  
+  
+	} else {//播放进度>=分界进度  
+    	found = 1;//设置当前播放的是第二个动作  
+    	if ( m_split == 1 )//如果第一个动作时长占比==1  
+        	new_t = 1;//设置第二个动作已完成  
+    	else  
+        	new_t = (t-m_split) / (1 - m_split );//计算出第二个动作新的播放进度  
+	}  
+
+###3.注意###
+*（1）CCSpawn也会有这个问题，所以CCSpawn也无法执行加入其中的CCRepeatForever动作。*
+
+*（2）CCRepeatForever的反转动作也是无效了，一个不会停止的动作从什么地方开始反转？当然你可以先把动作反转了再加入CCRepeatForever中，这是没问题的。*
+
+###4.解决方案###
+*（1）对于同时动作，不使用CCSpawn，采用分别执行*
+
+	close->runAction(blink);  
+	close->runAction(repeat);  
+
+*（2）对于连续动作，不直接往CCSequence中加入CCRepeatForever，而是把CCRepeatForever放入瞬时动作CCCallFunc中，再把CCCallFunc加入CCSequence中执行。*
+
+	close=CCSprite::create("CloseNormal.png");  
+	CCBlink* blink=CCBlink::create(0.5f,10);  
+	CCCallFunc* callFunc=CCCallFunc::create(this,callfunc_selector(TestScene::repeatFunc));//创建CCCallFunc对象  
+	CCSequence* sequence=CCSequence::create(blink,callFunc,NULL);//把CCCallFunc对象加入CCSequence中  
+	close->setPosition(ccp(240,160));  
+	this->addChild(close);  
+	close->runAction(sequence);  
+  
+  
+	void TestScene::repeatFunc()  
+	{  
+    	CCAnimation* animation=CCAnimation::create();  
+    	animation->addSpriteFrameWithFileName("CloseNormal.png");  
+    	animation->addSpriteFrameWithFileName("CloseSelected.png");  
+    	animation->setDelayPerUnit(1.0f);  
+    	CCAnimate* animate=CCAnimate::create(animation);  
+    	CCRepeatForever* repeat=CCRepeatForever::create(animate);  
+    	close->runAction(repeat);  
+	}  
+
+*（3）对于CCAnimation帧动画，可以设置循环属性，而不使用CCRepeatForever。*
+
+	animation->setLoops(-1);  
+
+###5.总结###
+虽然CCRepeatForever也同样继承于CCActionInterval，理论上是延时动作的子类，但是和一般的延时动作又有很大的不同，所以平时在使用的时候必须很小心，不能当成一般的CCActionInterval使用。而在cocos2d-x动作的分类上是不是应该把它从CCAction继承出来会比较好一点？
