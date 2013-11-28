@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: CCCopying | Jacky's Blog]]></title>
-  <link href="http://www.jacky.tk/tags/cccopying/atom.xml" rel="self"/>
-  <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-26T09:20:52+08:00</updated>
-  <id>http://www.jacky.tk/</id>
+  <link href="http://www.fusijie.com/tags/cccopying/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2013-11-28T08:16:02+08:00</updated>
+  <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十九】从CCObject看cocos2d-x的拷贝机制]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/30/play-cocos2dx-19/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/30/play-cocos2dx-19/"/>
     <updated>2013-10-30T18:08:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/30/play-cocos2dx-19</id>
+    <id>http://www.fusijie.com/blog/2013/10/30/play-cocos2dx-19</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13295505">http://blog.csdn.net/jackystudio</a></p>
 
 <p>CCObject在之前的文章中出现了N次，它扮演了一个老祖宗的角色，但是它到底是做什么的？先从它看看cocos2d-x的拷贝机制吧。</p>

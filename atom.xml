@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Jacky's Blog]]></title>
-  <link href="http://www.jacky.tk/atom.xml" rel="self"/>
-  <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-26T09:20:52+08:00</updated>
-  <id>http://www.jacky.tk/</id>
+  <link href="http://www.fusijie.com/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2013-11-28T08:16:02+08:00</updated>
+  <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十六】数据结构CCDictionary]]></title>
-    <link href="http://www.jacky.tk/blog/2013/11/26/play-cocos2dx-26/"/>
+    <link href="http://www.fusijie.com/blog/2013/11/26/play-cocos2dx-26/"/>
     <updated>2013-11-26T09:00:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/11/26/play-cocos2dx-26</id>
+    <id>http://www.fusijie.com/blog/2013/11/26/play-cocos2dx-26</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/16958587">http://blog.csdn.net/jackystudio</a></p>
 
 <p>CCDictionary在cocos2d-x中被大量的应用，比如CCTexureCache，CCSpriteFramCache等等。</p>
@@ -141,7 +141,7 @@ if(pDict-&gt;writeToFile("pdic.plist"))  //整型的value无法写入，会提�
 
 <p>Resource/pdic.plist</p>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_26/1.jpg" alt="" border="0" title="pdic.plist" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_26/1.jpg" alt="" border="0" title="pdic.plist" /><br></br></div>
 
 
 <p></p>
@@ -174,9 +174,9 @@ CCDICT_FOREACH(dict, pElement)
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十五】数据结构CCArray]]></title>
-    <link href="http://www.jacky.tk/blog/2013/11/25/play-cocos2dx-25/"/>
+    <link href="http://www.fusijie.com/blog/2013/11/25/play-cocos2dx-25/"/>
     <updated>2013-11-25T13:53:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/11/25/play-cocos2dx-25</id>
+    <id>http://www.fusijie.com/blog/2013/11/25/play-cocos2dx-25</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/16938787">http://blog.csdn.net/jackystudio</a></p>
 
 <p>CCArray是从cocos2d中移植过来的，类似于Apple的NSMutableArray，但是比NSMutableArray更为的好用。要注意的是虽然CCArray和CCDictionary可以管理cocos2d-x中绝大多数的类，但是仍然无法替代STL库，STL库更为强有力。</p>
@@ -371,9 +371,9 @@ CCArray中容量和个数并不是同一个概念。个数&lt;=容量。从添�
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十四】截图保存功能的实现]]></title>
-    <link href="http://www.jacky.tk/blog/2013/11/13/play-cocos2dx-24/"/>
+    <link href="http://www.fusijie.com/blog/2013/11/13/play-cocos2dx-24/"/>
     <updated>2013-11-13T08:34:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/11/13/play-cocos2dx-24</id>
+    <id>http://www.fusijie.com/blog/2013/11/13/play-cocos2dx-24</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/15498083">http://blog.csdn.net/jackystudio</a></p>
 
 <p>官方TestCpp有这个demo了，这里还是把它单独拖出来写一下，游戏推广的一个很重要组成就是玩家分享，所以游戏截图就起到很大作用了。截图功能通过CCRenderTexture实现。</p>
@@ -452,9 +452,9 @@ void CTestLayer::SaveScreenShot()
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十三】cocos2d-x多线程和同步03]]></title>
-    <link href="http://www.jacky.tk/blog/2013/11/11/play-cocos2dx-23/"/>
+    <link href="http://www.fusijie.com/blog/2013/11/11/play-cocos2dx-23/"/>
     <updated>2013-11-11T11:22:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/11/11/play-cocos2dx-23</id>
+    <id>http://www.fusijie.com/blog/2013/11/11/play-cocos2dx-23</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/15334159">http://blog.csdn.net/jackystudio</a></p>
 
 <p>cocos2d-x中和Android，Windows都一样，如果在主线程中处理一些耗时操作，那么主线程就会出现阻塞现象，表现在界面上就是卡住，未响应等情况。为了避免这种情况的出现，我们需要在后台开辟工作线程进行数据的处理，再采用消息传递或者其他形式来通知主线程进行UI变化。最常见的情况就是游戏进入前的loading。</p>
@@ -615,7 +615,7 @@ void CTestLayer::showSprite(CCObject* obj)
 
 <p>使用异步加载plist方式处理:</p>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_23/1.jpg" alt="" border="0" title="效果图" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_23/1.jpg" alt="" border="0" title="效果图" /><br></br></div>
 
 
 <h3>5.源码下载</h3>
@@ -626,9 +626,9 @@ void CTestLayer::showSprite(CCObject* obj)
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十二】cocos2d-x多线程和同步02]]></title>
-    <link href="http://www.jacky.tk/blog/2013/11/05/play-cocos2dx-22/"/>
+    <link href="http://www.fusijie.com/blog/2013/11/05/play-cocos2dx-22/"/>
     <updated>2013-11-05T11:12:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/11/05/play-cocos2dx-22</id>
+    <id>http://www.fusijie.com/blog/2013/11/05/play-cocos2dx-22</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/14161151">http://blog.csdn.net/jackystudio</a></p>
 
 <p>pthread有很多不同应用，官网都有相应的API解释和Sample，这里不再重复，本文主要介绍一个cocos2d-x多线程和同步示例。</p>
@@ -850,9 +850,9 @@ B Sell 1
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十一】cocos2d-x多线程和同步01]]></title>
-    <link href="http://www.jacky.tk/blog/2013/11/04/play-cocos2dx-21/"/>
+    <link href="http://www.fusijie.com/blog/2013/11/04/play-cocos2dx-21/"/>
     <updated>2013-11-04T11:01:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/11/04/play-cocos2dx-21</id>
+    <id>http://www.fusijie.com/blog/2013/11/04/play-cocos2dx-21</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/14118939">http://blog.csdn.net/jackystudio</a></p>
 
 <p>和其他框架一样，cocos2d-x允许我们使用多线程进行编程。cocos2d-x v2.2.0使用的是pthread库，是一套用户级线程库，被广泛地使用在跨平台应用上。</p>
@@ -868,7 +868,7 @@ B Sell 1
 
 <p>pthread.h放在\cocos2d-x目录\cocos2dx\platform\third_party\win32\pthread\下，右键项目→属性→配置属性→C/C++→附加包含目录添加如下，这里要注意附加包含目录是只包含当前目录下的文件，而不会包含该目录下子目录。</p>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_21/1.jpg" alt="" border="0" title="添加包含目录" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_21/1.jpg" alt="" border="0" title="添加包含目录" /><br></br></div>
 
 
 <p><strong>1.2.库文件</strong></p>
@@ -891,7 +891,7 @@ B Sell 1
 
 <p><strong>2.2.命名规则</strong></p>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_21/2.jpg" alt="" border="0" title="命名规则" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_21/2.jpg" alt="" border="0" title="命名规则" /><br></br></div>
 
 
 <h3>3.线程和互斥对象</h3>
@@ -973,9 +973,9 @@ PTW32_DLLPORT int PTW32_CDECL pthread_mutex_unlock (pthread_mutex_t * mutex);
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十】从CCObject看cocos2d-x的内存管理机制]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/31/play-cocos2dx-20/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/31/play-cocos2dx-20/"/>
     <updated>2013-10-31T18:13:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/31/play-cocos2dx-20</id>
+    <id>http://www.fusijie.com/blog/2013/10/31/play-cocos2dx-20</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13765639">http://blog.csdn.net/jackystudio</a></p>
 
 <p>再看CCObject，剔除上节的拷贝相关，以及Lua脚本相关的属性和方法后，CCObject还剩下什么？</p>
@@ -1153,9 +1153,9 @@ void update(float delta)
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十九】从CCObject看cocos2d-x的拷贝机制]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/30/play-cocos2dx-19/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/30/play-cocos2dx-19/"/>
     <updated>2013-10-30T18:08:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/30/play-cocos2dx-19</id>
+    <id>http://www.fusijie.com/blog/2013/10/30/play-cocos2dx-19</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13295505">http://blog.csdn.net/jackystudio</a></p>
 
 <p>CCObject在之前的文章中出现了N次，它扮演了一个老祖宗的角色，但是它到底是做什么的？先从它看看cocos2d-x的拷贝机制吧。</p>
@@ -1229,9 +1229,9 @@ void update(float delta)
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十八】仿《中国好学霸》文字拖拽和定位]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/28/play-cocos2dx-18/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/28/play-cocos2dx-18/"/>
     <updated>2013-10-28T18:00:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/28/play-cocos2dx-18</id>
+    <id>http://www.fusijie.com/blog/2013/10/28/play-cocos2dx-18</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13287519">http://blog.csdn.net/jackystudio</a></p>
 
 <p>现在各种猜成语猜歌名好学霸之类的游戏火的一塌糊涂。本节就介绍下文字的拖拽和定位。</p>
@@ -1351,9 +1351,9 @@ void update(float delta)
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十七】cocos2d-x中文显示]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/25/play-cocos2dx-17/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/25/play-cocos2dx-17/"/>
     <updated>2013-10-25T16:53:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/25/play-cocos2dx-17</id>
+    <id>http://www.fusijie.com/blog/2013/10/25/play-cocos2dx-17</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13014883">http://blog.csdn.net/jackystudio</a></p>
 
 <p>cocos2d-x的中文显示其实就是一个UTF-8编码在作怪而已，一种简单的方法就是把文本保存为UTF-8编码即可（注意不是UTF-8 + BOM），建议使用UE，Sublime Text或者EditPlus之类的本文编辑器。这里介绍另一种方法：通过读取xml文件显示中文，这种方法更利于软件的国际化，demo顺便实现了中英文切换。</p>
@@ -1411,9 +1411,9 @@ this-&gt;addChild(pLabel, 1);
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十六】滚动字幕和公告]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/24/play-cocos2dx-16/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/24/play-cocos2dx-16/"/>
     <updated>2013-10-24T16:38:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/24/play-cocos2dx-16</id>
+    <id>http://www.fusijie.com/blog/2013/10/24/play-cocos2dx-16</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12991977">http://blog.csdn.net/jackystudio</a></p>
 
 <p>滚动字幕和公告是游戏中经常使用到的元素，本文大致写一下实现方法，至于例子中具体的坐标值，请不要纠结。。。这和美工关系还是蛮大的。我PS技术太搓了。。。</p>
@@ -1427,7 +1427,7 @@ this-&gt;addChild(pLabel, 1);
 
 
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_16/1.jpg" alt="" border="0" title="原理" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_16/1.jpg" alt="" border="0" title="原理" /><br></br></div>
 
 
 <h3>2.实现</h3>
@@ -1509,9 +1509,9 @@ void CTestLayer::update(float delta)
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十五】关卡选择的设计]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/23/play-cocos2dx-15/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/23/play-cocos2dx-15/"/>
     <updated>2013-10-23T16:26:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/23/play-cocos2dx-15</id>
+    <id>http://www.fusijie.com/blog/2013/10/23/play-cocos2dx-15</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12966993">http://blog.csdn.net/jackystudio</a></p>
 
 <p>这节介绍一下游戏中帮助界面和关卡选择的设计，其实都是一样的，关键在于美工。这里采用自定义TableView层来实现。</p>
@@ -1632,9 +1632,9 @@ tableView-&gt;reloadData();
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十四】菜单选项卡的实现]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/22/play-cocos2dx-14/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/22/play-cocos2dx-14/"/>
     <updated>2013-10-22T10:34:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/22/play-cocos2dx-14</id>
+    <id>http://www.fusijie.com/blog/2013/10/22/play-cocos2dx-14</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12940733">http://blog.csdn.net/jackystudio</a></p>
 
 <p>有时候，我们希望实现一个选项卡功能，就是切换tab选项，场景中的内容会跟着改变，但是tab选项卡不动。这是用切换场景的方式没办法做到的。
@@ -1728,9 +1728,9 @@ tableView-&gt;reloadData();
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十三】CCMenu的布局]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/21/play-cocos2dx-13/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/21/play-cocos2dx-13/"/>
     <updated>2013-10-21T10:23:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/21/play-cocos2dx-13</id>
+    <id>http://www.fusijie.com/blog/2013/10/21/play-cocos2dx-13</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12904705">http://blog.csdn.net/jackystudio</a></p>
 
 <p>前两天写个游戏，发现CCMenu的布局还是比较有意思的，这里总结一下，以便后用。</p>
@@ -1746,14 +1746,14 @@ tableView-&gt;reloadData();
 
 <h3>2.菜单CCMenu</h3>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_13/1.jpg" alt="" border="0" title="CCMenu" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_13/1.jpg" alt="" border="0" title="CCMenu" /><br></br></div>
 
 
 <h3>3.子菜单项CCMenuItem</h3>
 
 <p>子菜单项可以是用精灵，图片，标签文本，或者开关都可以，这里不具体解释。请看：</p>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_13/2.jpg" alt="" border="0" title="CCMenuItem" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_13/2.jpg" alt="" border="0" title="CCMenuItem" /><br></br></div>
 
 
 <h3>4.锚点</h3>
@@ -1774,7 +1774,7 @@ tableView-&gt;reloadData();
 
 <p>那么再看一下效果，如图2，抽象出来就是图3，因为CCMenuItem的锚点是(0.5,0.5)。</p>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_13/3.jpg" alt="" border="0" title="" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_13/3.jpg" alt="" border="0" title="" /><br></br></div>
 
 
 <p>（3）所以现在可以理解HelloCpp中为什么定义的是CCMenuItem的位置，而不是定义CCMenu的位置了吧。CCMenu包含了多个子菜单项，每个子菜单的位置都不一样，如果定义了CCMenu的位置，那它作为父节点会影响到所有的子菜单的位置，因此我们一般把它设置在原点处，然后通过设置子菜单的位置（也就是相对父节点的偏移量）来定位整个菜单。</p>
@@ -1802,7 +1802,7 @@ pMenu-&gt;alignItemsHorizontally();//默认间隔是kDefaultPadding=5
 this-&gt;addChild(pMenu, 1);  
 </code></pre>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_13/4.jpg" alt="" border="0" title="" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_13/4.jpg" alt="" border="0" title="" /><br></br></div>
 
 
 <p><em>（2）按行排列，按列排列，不能指定间隔，只能自己实现。希望下一版本有这个功能。</em></p>
@@ -1824,16 +1824,16 @@ pMenu-&gt;alignItemsInRows(3,2,1,NULL);
 this-&gt;addChild(pMenu, 1);  
 </code></pre>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_13/5.jpg" alt="" border="0" title="" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_13/5.jpg" alt="" border="0" title="" /><br></br></div>
 
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十二】plist解析工具：Anti_TexturePacker]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/19/play-cocos2dx-12/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/19/play-cocos2dx-12/"/>
     <updated>2013-10-19T09:49:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/19/play-cocos2dx-12</id>
+    <id>http://www.fusijie.com/blog/2013/10/19/play-cocos2dx-12</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12867863">http://blog.csdn.net/jackystudio</a></p>
 
 <p>之前拿了一些别人的图片素材，是用TexturePacker打包合成的，结果写程序的时候不知道每个合成前小png图的名字是什么，只能一个一个从plist文件中找，然后猜测对应的名字，再进行显示，如果不对，还要继续猜。。。坑爹啊，效率大大降低了，时间都耗在找图片名字上了。后来决定动手写一个解析plist的软件，就叫它Anti_TexturePacker吧。</p>
@@ -1859,7 +1859,7 @@ graphics.DrawImage(&amp;image,ORIGIN_DRAW_X,ORIGIN_DRAW_Y,(int)(m_RealWidth*m_Sc
 
 <p>看一下plist的格式：</p>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_12/7.jpg" alt="" border="0" title="xml" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_12/7.jpg" alt="" border="0" title="xml" /><br></br></div>
 
 
 <p>这样一看，就知道了标准的plist文件中，我们需要的是第7，10，14，20，23，27&hellip;行。抓出规律，读取到CStringArray。我没有采用xml的解析库，而是直接无耻的这么做了，用起来倒是没什么问题，但是不要学啊。。。</p>
@@ -2053,9 +2053,9 @@ delete pWrapBitmap;
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十一】定时器schedule]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/18/play-cocos2dx-11/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/18/play-cocos2dx-11/"/>
     <updated>2013-10-18T08:08:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/18/play-cocos2dx-11</id>
+    <id>http://www.fusijie.com/blog/2013/10/18/play-cocos2dx-11</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12848473">http://blog.csdn.net/jackystudio</a></p>
 
 <p>如果我们想定时执行一个动作怎么办？CCScheduler帮了我们一个大忙。</p>
@@ -2187,9 +2187,9 @@ void HelloWorld::log(float dt)
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十】cocos2d-x坐标系]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/17/play-cocos2dx-10/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/17/play-cocos2dx-10/"/>
     <updated>2013-10-17T14:43:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/17/play-cocos2dx-10</id>
+    <id>http://www.fusijie.com/blog/2013/10/17/play-cocos2dx-10</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12830971">http://blog.csdn.net/jackystudio</a></p>
 
 <p>cocos2d-x采用的是笛卡尔平面坐标系，也就是平面上两条垂直线构成的坐标系，平面上任意一点都可以用（x，y）来表示。</p>
@@ -2207,14 +2207,14 @@ void HelloWorld::log(float dt)
 
 
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_10/1.jpg" alt="" border="0" title="屏幕坐标系" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_10/1.jpg" alt="" border="0" title="屏幕坐标系" /><br></br></div>
 
 
 <h3>2.OpenGL坐标系</h3>
 
 <p>OpenGL坐标系原点在屏幕的左下，x轴向右，y轴向上。cocos2d-x的元素采用的就是OpenGL坐标系。同样的上例，如图坐标值为OpenGL坐标系。</p>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_10/2.jpg" alt="" border="0" title="OpenGL坐标系" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_10/2.jpg" alt="" border="0" title="OpenGL坐标系" /><br></br></div>
 
 
 <h3>3.屏幕坐标系和OpenGL坐标系的转换</h3>
@@ -2239,7 +2239,7 @@ CCPoint convertToUI(const CCPoint&amp; obPoint);
 
 <p>在举例之前有必要先了解一下锚点这个概念。锚点是对节点而言的，它是节点的一个属性，表明了节点位置的一个参考基准点，同样放置一个物体在(300,300)这个位置，不同的锚点会产生不同的效果。节点的默认锚点位置在(0.5,0.5)。锚点和节点的位置值没有关系，锚点只是影响了节点在屏幕上渲染的位置。如下图，虽然精灵的在屏幕上渲染的位置不一样，但是它们的position值是一样的，都是(300,300)。锚点只会影响它本身在父节点中的渲染位置，而不会影响其子节点的相对它本身的位置。</p>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_10/3.jpg" alt="" border="0" title="锚点" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_10/3.jpg" alt="" border="0" title="锚点" /><br></br></div>
 
 
 <h3>7.绝对坐标系和相对坐标系的关系</h3>
@@ -2258,7 +2258,7 @@ big-&gt;addChild(little);//big是父节点
 
 <p>效果如下：</p>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_10/4.jpg" alt="" border="0" title="绝对坐标系和相对坐标系的关系" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_10/4.jpg" alt="" border="0" title="绝对坐标系和相对坐标系的关系" /><br></br></div>
 
 
 <h3>7.绝对坐标系和相对坐标系的转换</h3>
@@ -2287,9 +2287,9 @@ CCPoint np2=little-&gt;convertToNodeSpace(ccp(200,200));//np2(100,100)
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之九】动作类CCAction]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/16/play-cocos2dx-09/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/16/play-cocos2dx-09/"/>
     <updated>2013-10-16T14:33:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/16/play-cocos2dx-09</id>
+    <id>http://www.fusijie.com/blog/2013/10/16/play-cocos2dx-09</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12770909">http://blog.csdn.net/jackystudio</a></p>
 
 <p>精灵也出来了，但是不会动的精灵是木有用的。。。CCAction就是负责来解决精灵运动的问题。</p>
@@ -2303,7 +2303,7 @@ CCPoint np2=little-&gt;convertToNodeSpace(ccp(200,200));//np2(100,100)
 
 
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_09/1.jpg" alt="" border="0" title="CCAction" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_09/1.jpg" alt="" border="0" title="CCAction" /><br></br></div>
 
 
 <h3>2.接口</h3>
@@ -2372,9 +2372,9 @@ virtual CCFiniteTimeAction* reverse(void);
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之八】精灵类CCSprite]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/15/play-cocos2dx-08/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/15/play-cocos2dx-08/"/>
     <updated>2013-10-15T17:17:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/15/play-cocos2dx-08</id>
+    <id>http://www.fusijie.com/blog/2013/10/15/play-cocos2dx-08</id>
     <content type="html"><![CDATA[<p>精灵类CCSprite可以说是游戏的主角了，也是我们平时最常用到的类。</p>
 
 <h3>1.概况</h3>
@@ -2384,7 +2384,7 @@ virtual CCFiniteTimeAction* reverse(void);
 
 
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_08/1.jpg" alt="" border="0" title="CCSprite" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_08/1.jpg" alt="" border="0" title="CCSprite" /><br></br></div>
 
 
 <p>CCSprite本质上就是一个二维图片，是静态的。游戏中的动画只不过是让一张张静态图片快速更换达到的动态效果。CCSprite继承于CCNodeRGBA，并实现了CCTextureProtocol的接口。因此CCNodeRGBA所具有的RGB和透明值这些属性和接口CCSprite都有，而CCTextureProtocol是一个抽象类，定义了和纹理相关的两个标准接口：</p>
@@ -2555,9 +2555,9 @@ void setFlipY(bool bFlipY);
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之七】场景类CCScene和布景类CCLayer]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/14/play-cocos2dx-07/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/14/play-cocos2dx-07/"/>
     <updated>2013-10-14T22:21:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/14/play-cocos2dx-07</id>
+    <id>http://www.fusijie.com/blog/2013/10/14/play-cocos2dx-07</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12708811">http://blog.csdn.net/jackystudio</a></p>
 
 <p>场景类CCScene和布景类CCLayer都是作为一个容器来使用，这里简单地看下它们的实现：</p>
@@ -2569,7 +2569,7 @@ void setFlipY(bool bFlipY);
 
 
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_07/1.jpg" alt="" border="0" title="CCScene" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_07/1.jpg" alt="" border="0" title="CCScene" /><br></br></div>
 
 
 <p>CCScene类继承于CCNode，它的实现很简单，就是基本上没添加什么内容。。。它只是作为一个容器（父节点）的抽象概念存在。对比CCNode差别有：</p>
@@ -2588,7 +2588,7 @@ void setFlipY(bool bFlipY);
 
 <h3>2.布景类：CCLayer</h3>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_07/2.jpg" alt="" border="0" title="CCLayer" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_07/2.jpg" alt="" border="0" title="CCLayer" /><br></br></div>
 
 
 <p>CCLayer相对CCScene而言会比较麻烦一点，因为他不仅要作为容器使用，而且还要实现一些游戏功能，所以它继承了CCTouchDelegate，CCAccelerometerDelegate和CCKeypadDelegate，这三个类是用来处理触摸事件，重力感应事件和键盘事件的，默认初始化都是不可用，需要手动设置开启。</p>
@@ -2656,7 +2656,7 @@ virtual void keyMenuClicked(void);
 
 <h3>3.颜色布景层：CCLayerRGBA，CCLayerColor和CCLayerGradient</h3>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_07/3.jpg" alt="" border="0" title="颜色布景层" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_07/3.jpg" alt="" border="0" title="颜色布景层" /><br></br></div>
 
 
 <p>（1）CCLayerRGBA和CCNodeRGBA差不多，也是用于设置RGB值和Blend值，同时可以传递到子节点。它的相关接口参见CCNodeRGBA。</p>
@@ -2667,7 +2667,7 @@ virtual void keyMenuClicked(void);
 
 <h3>4.多层布景层：CCLayerMultiplex</h3>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_07/4.jpg" alt="" border="0" title="CCLayerMultiplex" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_07/4.jpg" alt="" border="0" title="CCLayerMultiplex" /><br></br></div>
 
 
 <p>CCLayerMultiplex继承与CCLayer，相当于一个层容器，他可以包含多个层，但是同一时间只能显示一个CCLayer。《我叫MT》的第一个界面菜单那一块就是这么处理的。CCLayerMultiplex最重要的函数就是：</p>

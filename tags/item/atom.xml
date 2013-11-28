@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: Item | Jacky's Blog]]></title>
-  <link href="http://www.jacky.tk/tags/item/atom.xml" rel="self"/>
-  <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-26T09:20:52+08:00</updated>
-  <id>http://www.jacky.tk/</id>
+  <link href="http://www.fusijie.com/tags/item/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2013-11-28T08:16:02+08:00</updated>
+  <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十三】CCMenu的布局]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/21/play-cocos2dx-13/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/21/play-cocos2dx-13/"/>
     <updated>2013-10-21T10:23:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/21/play-cocos2dx-13</id>
+    <id>http://www.fusijie.com/blog/2013/10/21/play-cocos2dx-13</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12904705">http://blog.csdn.net/jackystudio</a></p>
 
 <p>前两天写个游戏，发现CCMenu的布局还是比较有意思的，这里总结一下，以便后用。</p>
@@ -33,14 +33,14 @@
 
 <h3>2.菜单CCMenu</h3>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_13/1.jpg" alt="" border="0" title="CCMenu" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_13/1.jpg" alt="" border="0" title="CCMenu" /><br></br></div>
 
 
 <h3>3.子菜单项CCMenuItem</h3>
 
 <p>子菜单项可以是用精灵，图片，标签文本，或者开关都可以，这里不具体解释。请看：</p>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_13/2.jpg" alt="" border="0" title="CCMenuItem" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_13/2.jpg" alt="" border="0" title="CCMenuItem" /><br></br></div>
 
 
 <h3>4.锚点</h3>
@@ -61,7 +61,7 @@
 
 <p>那么再看一下效果，如图2，抽象出来就是图3，因为CCMenuItem的锚点是(0.5,0.5)。</p>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_13/3.jpg" alt="" border="0" title="" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_13/3.jpg" alt="" border="0" title="" /><br></br></div>
 
 
 <p>（3）所以现在可以理解HelloCpp中为什么定义的是CCMenuItem的位置，而不是定义CCMenu的位置了吧。CCMenu包含了多个子菜单项，每个子菜单的位置都不一样，如果定义了CCMenu的位置，那它作为父节点会影响到所有的子菜单的位置，因此我们一般把它设置在原点处，然后通过设置子菜单的位置（也就是相对父节点的偏移量）来定位整个菜单。</p>
@@ -89,7 +89,7 @@ pMenu-&gt;alignItemsHorizontally();//默认间隔是kDefaultPadding=5
 this-&gt;addChild(pMenu, 1);  
 </code></pre>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_13/4.jpg" alt="" border="0" title="" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_13/4.jpg" alt="" border="0" title="" /><br></br></div>
 
 
 <p><em>（2）按行排列，按列排列，不能指定间隔，只能自己实现。希望下一版本有这个功能。</em></p>
@@ -111,7 +111,7 @@ pMenu-&gt;alignItemsInRows(3,2,1,NULL);
 this-&gt;addChild(pMenu, 1);  
 </code></pre>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_13/5.jpg" alt="" border="0" title="" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_13/5.jpg" alt="" border="0" title="" /><br></br></div>
 
 ]]></content>
   </entry>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: CCAction | Jacky's Blog]]></title>
-  <link href="http://www.jacky.tk/tags/ccaction/atom.xml" rel="self"/>
-  <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-26T09:20:52+08:00</updated>
-  <id>http://www.jacky.tk/</id>
+  <link href="http://www.fusijie.com/tags/ccaction/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2013-11-28T08:16:02+08:00</updated>
+  <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之九】动作类CCAction]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/16/play-cocos2dx-09/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/16/play-cocos2dx-09/"/>
     <updated>2013-10-16T14:33:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/16/play-cocos2dx-09</id>
+    <id>http://www.fusijie.com/blog/2013/10/16/play-cocos2dx-09</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12770909">http://blog.csdn.net/jackystudio</a></p>
 
 <p>精灵也出来了，但是不会动的精灵是木有用的。。。CCAction就是负责来解决精灵运动的问题。</p>
@@ -31,7 +31,7 @@
 
 
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_09/1.jpg" alt="" border="0" title="CCAction" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_09/1.jpg" alt="" border="0" title="CCAction" /><br></br></div>
 
 
 <h3>2.接口</h3>

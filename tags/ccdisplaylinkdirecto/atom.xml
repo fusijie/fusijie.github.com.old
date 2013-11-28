@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: CCDisplayLinkDirecto | Jacky's Blog]]></title>
-  <link href="http://www.jacky.tk/tags/ccdisplaylinkdirecto/atom.xml" rel="self"/>
-  <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-26T09:20:52+08:00</updated>
-  <id>http://www.jacky.tk/</id>
+  <link href="http://www.fusijie.com/tags/ccdisplaylinkdirecto/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2013-11-28T08:16:02+08:00</updated>
+  <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之五】导演类CCDirector]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/12/play-cocos2dx-05/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/12/play-cocos2dx-05/"/>
     <updated>2013-10-12T21:49:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/12/play-cocos2dx-05</id>
+    <id>http://www.fusijie.com/blog/2013/10/12/play-cocos2dx-05</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12646337">http://blog.csdn.net/jackystudio</a></p>
 
 <p>既然cocos2d-x都帮我们封装好了，使得开发与平台无关，那接下来我们就单纯地开始好好玩游戏吧！这几篇是对cocos2d-x一些基本且重要的元素进行解释和API介绍，之前没有系统的看过API，有时候某些功能引擎都已经提供好了，不知道还是会自己去写。所以全面地了解一下是必须的。</p>
@@ -27,7 +27,7 @@
 
 <h3>1.概况</h3>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_05/1.jpg" alt="" border="0" title="CCDirector" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_05/1.jpg" alt="" border="0" title="CCDirector" /><br></br></div>
 
 
 <p>导演类CCDirector是cocos2d-x引擎中非常重要的一个类，它是一个抽象类（mainloop空实现），主要完成以下工作：</p>

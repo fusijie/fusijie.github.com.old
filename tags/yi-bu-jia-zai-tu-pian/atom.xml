@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: 异步加载图片 | Jacky's Blog]]></title>
-  <link href="http://www.jacky.tk/tags/yi-bu-jia-zai-tu-pian/atom.xml" rel="self"/>
-  <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-26T09:20:52+08:00</updated>
-  <id>http://www.jacky.tk/</id>
+  <link href="http://www.fusijie.com/tags/yi-bu-jia-zai-tu-pian/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2013-11-28T08:16:02+08:00</updated>
+  <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十三】cocos2d-x多线程和同步03]]></title>
-    <link href="http://www.jacky.tk/blog/2013/11/11/play-cocos2dx-23/"/>
+    <link href="http://www.fusijie.com/blog/2013/11/11/play-cocos2dx-23/"/>
     <updated>2013-11-11T11:22:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/11/11/play-cocos2dx-23</id>
+    <id>http://www.fusijie.com/blog/2013/11/11/play-cocos2dx-23</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/15334159">http://blog.csdn.net/jackystudio</a></p>
 
 <p>cocos2d-x中和Android，Windows都一样，如果在主线程中处理一些耗时操作，那么主线程就会出现阻塞现象，表现在界面上就是卡住，未响应等情况。为了避免这种情况的出现，我们需要在后台开辟工作线程进行数据的处理，再采用消息传递或者其他形式来通知主线程进行UI变化。最常见的情况就是游戏进入前的loading。</p>
@@ -178,7 +178,7 @@ void CTestLayer::showSprite(CCObject* obj)
 
 <p>使用异步加载plist方式处理:</p>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_23/1.jpg" alt="" border="0" title="效果图" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_23/1.jpg" alt="" border="0" title="效果图" /><br></br></div>
 
 
 <h3>5.源码下载</h3>

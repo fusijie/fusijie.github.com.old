@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: 数据源 | Jacky's Blog]]></title>
-  <link href="http://www.jacky.tk/tags/shu-ju-yuan/atom.xml" rel="self"/>
-  <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-26T09:20:52+08:00</updated>
-  <id>http://www.jacky.tk/</id>
+  <link href="http://www.fusijie.com/tags/shu-ju-yuan/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2013-11-28T08:16:02+08:00</updated>
+  <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十五】关卡选择的设计]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/23/play-cocos2dx-15/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/23/play-cocos2dx-15/"/>
     <updated>2013-10-23T16:26:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/23/play-cocos2dx-15</id>
+    <id>http://www.fusijie.com/blog/2013/10/23/play-cocos2dx-15</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12966993">http://blog.csdn.net/jackystudio</a></p>
 
 <p>这节介绍一下游戏中帮助界面和关卡选择的设计，其实都是一样的，关键在于美工。这里采用自定义TableView层来实现。</p>

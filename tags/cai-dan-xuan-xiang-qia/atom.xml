@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: 菜单选项卡 | Jacky's Blog]]></title>
-  <link href="http://www.jacky.tk/tags/cai-dan-xuan-xiang-qia/atom.xml" rel="self"/>
-  <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-26T09:20:52+08:00</updated>
-  <id>http://www.jacky.tk/</id>
+  <link href="http://www.fusijie.com/tags/cai-dan-xuan-xiang-qia/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2013-11-28T08:16:02+08:00</updated>
+  <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十四】菜单选项卡的实现]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/22/play-cocos2dx-14/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/22/play-cocos2dx-14/"/>
     <updated>2013-10-22T10:34:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/22/play-cocos2dx-14</id>
+    <id>http://www.fusijie.com/blog/2013/10/22/play-cocos2dx-14</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12940733">http://blog.csdn.net/jackystudio</a></p>
 
 <p>有时候，我们希望实现一个选项卡功能，就是切换tab选项，场景中的内容会跟着改变，但是tab选项卡不动。这是用切换场景的方式没办法做到的。

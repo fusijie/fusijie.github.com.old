@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: CCDictionary | Jacky's Blog]]></title>
-  <link href="http://www.jacky.tk/tags/ccdictionary/atom.xml" rel="self"/>
-  <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-26T09:20:52+08:00</updated>
-  <id>http://www.jacky.tk/</id>
+  <link href="http://www.fusijie.com/tags/ccdictionary/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2013-11-28T08:16:02+08:00</updated>
+  <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十六】数据结构CCDictionary]]></title>
-    <link href="http://www.jacky.tk/blog/2013/11/26/play-cocos2dx-26/"/>
+    <link href="http://www.fusijie.com/blog/2013/11/26/play-cocos2dx-26/"/>
     <updated>2013-11-26T09:00:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/11/26/play-cocos2dx-26</id>
+    <id>http://www.fusijie.com/blog/2013/11/26/play-cocos2dx-26</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/16958587">http://blog.csdn.net/jackystudio</a></p>
 
 <p>CCDictionary在cocos2d-x中被大量的应用，比如CCTexureCache，CCSpriteFramCache等等。</p>
@@ -141,7 +141,7 @@ if(pDict-&gt;writeToFile("pdic.plist"))  //整型的value无法写入，会提�
 
 <p>Resource/pdic.plist</p>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_26/1.jpg" alt="" border="0" title="pdic.plist" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_26/1.jpg" alt="" border="0" title="pdic.plist" /><br></br></div>
 
 
 <p></p>
@@ -174,9 +174,9 @@ CCDICT_FOREACH(dict, pElement)
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十七】cocos2d-x中文显示]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/25/play-cocos2dx-17/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/25/play-cocos2dx-17/"/>
     <updated>2013-10-25T16:53:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/25/play-cocos2dx-17</id>
+    <id>http://www.fusijie.com/blog/2013/10/25/play-cocos2dx-17</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13014883">http://blog.csdn.net/jackystudio</a></p>
 
 <p>cocos2d-x的中文显示其实就是一个UTF-8编码在作怪而已，一种简单的方法就是把文本保存为UTF-8编码即可（注意不是UTF-8 + BOM），建议使用UE，Sublime Text或者EditPlus之类的本文编辑器。这里介绍另一种方法：通过读取xml文件显示中文，这种方法更利于软件的国际化，demo顺便实现了中英文切换。</p>

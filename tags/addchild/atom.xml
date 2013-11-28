@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: addChild | Jacky's Blog]]></title>
-  <link href="http://www.jacky.tk/tags/addchild/atom.xml" rel="self"/>
-  <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-26T09:20:52+08:00</updated>
-  <id>http://www.jacky.tk/</id>
+  <link href="http://www.fusijie.com/tags/addchild/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2013-11-28T08:16:02+08:00</updated>
+  <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十】从CCObject看cocos2d-x的内存管理机制]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/31/play-cocos2dx-20/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/31/play-cocos2dx-20/"/>
     <updated>2013-10-31T18:13:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/31/play-cocos2dx-20</id>
+    <id>http://www.fusijie.com/blog/2013/10/31/play-cocos2dx-20</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13765639">http://blog.csdn.net/jackystudio</a></p>
 
 <p>再看CCObject，剔除上节的拷贝相关，以及Lua脚本相关的属性和方法后，CCObject还剩下什么？</p>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: win32 | Jacky's Blog]]></title>
-  <link href="http://www.jacky.tk/tags/win32/atom.xml" rel="self"/>
-  <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-26T09:20:52+08:00</updated>
-  <id>http://www.jacky.tk/</id>
+  <link href="http://www.fusijie.com/tags/win32/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2013-11-28T08:16:02+08:00</updated>
+  <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之四】cocos2d-x怎么实现跨平台]]></title>
-    <link href="http://www.jacky.tk/blog/2013/10/11/play-cocos2dx-04/"/>
+    <link href="http://www.fusijie.com/blog/2013/10/11/play-cocos2dx-04/"/>
     <updated>2013-10-11T21:23:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/10/11/play-cocos2dx-04</id>
+    <id>http://www.fusijie.com/blog/2013/10/11/play-cocos2dx-04</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12610287">http://blog.csdn.net/jackystudio</a></p>
 
 <p>cocos2d-x到底是怎样实现跨平台的呢？这里以Win32和Android为例。</p>
@@ -31,7 +31,7 @@
 
 
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_04/1.jpg" alt="" border="0" title="跨平台项目目录结构" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_04/1.jpg" alt="" border="0" title="跨平台项目目录结构" /><br></br></div>
 
 
 <p>从左边目录可以看到，Classes和Resource已经平台无关了，而Classes中包含了AppDelegate类，因此我们可以认为AppDelegate是与平台最接近的类，在它以上就要区分平台了。</p>
@@ -170,7 +170,7 @@ static {
 
 <p>在这里Cocos2dxActivity做的就是创建Cocos2dxGLSurfaceView，并设置了Cocos2dxRenderer和Cocos2dxEditText，然后添加到FramLayout。具体的各部分实现这里就不贴代码了，画了个图：</p>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_04/2.jpg" alt="" border="0" title="Android调用流程" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_04/2.jpg" alt="" border="0" title="Android调用流程" /><br></br></div>
 
 
 <p>好了，就这样吧。因为我对Android界面开发，特别是OpenGLView这块也不熟，所以只能大概推出是这样子了，有什么错误，还请指出。</p>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: CCDictElement | Jacky's Blog]]></title>
-  <link href="http://www.jacky.tk/tags/ccdictelement/atom.xml" rel="self"/>
-  <link href="http://www.jacky.tk/"/>
-  <updated>2013-11-26T09:20:52+08:00</updated>
-  <id>http://www.jacky.tk/</id>
+  <link href="http://www.fusijie.com/tags/ccdictelement/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2013-11-28T08:16:02+08:00</updated>
+  <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十六】数据结构CCDictionary]]></title>
-    <link href="http://www.jacky.tk/blog/2013/11/26/play-cocos2dx-26/"/>
+    <link href="http://www.fusijie.com/blog/2013/11/26/play-cocos2dx-26/"/>
     <updated>2013-11-26T09:00:00+08:00</updated>
-    <id>http://www.jacky.tk/blog/2013/11/26/play-cocos2dx-26</id>
+    <id>http://www.fusijie.com/blog/2013/11/26/play-cocos2dx-26</id>
     <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/16958587">http://blog.csdn.net/jackystudio</a></p>
 
 <p>CCDictionary在cocos2d-x中被大量的应用，比如CCTexureCache，CCSpriteFramCache等等。</p>
@@ -141,7 +141,7 @@ if(pDict-&gt;writeToFile("pdic.plist"))  //整型的value无法写入，会提�
 
 <p>Resource/pdic.plist</p>
 
-<div align="center"><img src="http://www.jacky.tk/images/Blog/Play_cocos2dx_26/1.jpg" alt="" border="0" title="pdic.plist" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_26/1.jpg" alt="" border="0" title="pdic.plist" /><br></br></div>
 
 
 <p></p>
