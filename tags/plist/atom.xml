@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: plist | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/plist/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-11-28T09:47:21+08:00</updated>
+  <updated>2013-11-28T13:45:47+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -18,9 +18,7 @@
     <link href="http://www.fusijie.com/blog/2013/10/19/play-cocos2dx-12/"/>
     <updated>2013-10-19T09:49:00+08:00</updated>
     <id>http://www.fusijie.com/blog/2013/10/19/play-cocos2dx-12</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12867863">http://blog.csdn.net/jackystudio</a></p>
-
-<p>之前拿了一些别人的图片素材，是用TexturePacker打包合成的，结果写程序的时候不知道每个合成前小png图的名字是什么，只能一个一个从plist文件中找，然后猜测对应的名字，再进行显示，如果不对，还要继续猜。。。坑爹啊，效率大大降低了，时间都耗在找图片名字上了。后来决定动手写一个解析plist的软件，就叫它Anti_TexturePacker吧。</p>
+    <content type="html"><![CDATA[<p>之前拿了一些别人的图片素材，是用TexturePacker打包合成的，结果写程序的时候不知道每个合成前小png图的名字是什么，只能一个一个从plist文件中找，然后猜测对应的名字，再进行显示，如果不对，还要继续猜。。。坑爹啊，效率大大降低了，时间都耗在找图片名字上了。后来决定动手写一个解析plist的软件，就叫它Anti_TexturePacker吧。</p>
 
 <p>Anti_TexurePacker软件基于VS 2008 MFC Dialog。</p>
 

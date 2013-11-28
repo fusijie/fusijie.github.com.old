@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 游戏引擎 | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/you-xi-yin-qing/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-11-28T09:47:21+08:00</updated>
+  <updated>2013-11-28T13:45:47+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -18,9 +18,7 @@
     <link href="http://www.fusijie.com/blog/2013/10/09/play-cocos2dx-02/"/>
     <updated>2013-10-09T16:53:00+08:00</updated>
     <id>http://www.fusijie.com/blog/2013/10/09/play-cocos2dx-02</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12432837">http://blog.csdn.net/jackystudio</a></p>
-
-<h3>1.游戏构成</h3>
+    <content type="html"><![CDATA[<h3>1.游戏构成</h3>
 
 <p>我们以超级马里奥游戏作为蓝本来描述一下一个游戏的构成。</p>
 

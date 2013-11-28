@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: copyWithZone | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/copywithzone/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-11-28T09:47:21+08:00</updated>
+  <updated>2013-11-28T13:45:47+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -18,9 +18,7 @@
     <link href="http://www.fusijie.com/blog/2013/10/30/play-cocos2dx-19/"/>
     <updated>2013-10-30T18:08:00+08:00</updated>
     <id>http://www.fusijie.com/blog/2013/10/30/play-cocos2dx-19</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13295505">http://blog.csdn.net/jackystudio</a></p>
-
-<p>CCObject在之前的文章中出现了N次，它扮演了一个老祖宗的角色，但是它到底是做什么的？先从它看看cocos2d-x的拷贝机制吧。</p>
+    <content type="html"><![CDATA[<p>CCObject在之前的文章中出现了N次，它扮演了一个老祖宗的角色，但是它到底是做什么的？先从它看看cocos2d-x的拷贝机制吧。</p>
 
 <h3>1.CCCopying</h3>
 

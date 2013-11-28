@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 滚动字幕 | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/gun-dong-zi-mu/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-11-28T09:47:21+08:00</updated>
+  <updated>2013-11-28T13:45:47+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -18,9 +18,7 @@
     <link href="http://www.fusijie.com/blog/2013/10/24/play-cocos2dx-16/"/>
     <updated>2013-10-24T16:38:00+08:00</updated>
     <id>http://www.fusijie.com/blog/2013/10/24/play-cocos2dx-16</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12991977">http://blog.csdn.net/jackystudio</a></p>
-
-<p>滚动字幕和公告是游戏中经常使用到的元素，本文大致写一下实现方法，至于例子中具体的坐标值，请不要纠结。。。这和美工关系还是蛮大的。我PS技术太搓了。。。</p>
+    <content type="html"><![CDATA[<p>滚动字幕和公告是游戏中经常使用到的元素，本文大致写一下实现方法，至于例子中具体的坐标值，请不要纠结。。。这和美工关系还是蛮大的。我PS技术太搓了。。。</p>
 
 <h3>1.原理</h3>
 

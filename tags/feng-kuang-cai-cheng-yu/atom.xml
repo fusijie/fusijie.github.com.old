@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 疯狂猜成语 | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/feng-kuang-cai-cheng-yu/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-11-28T09:47:21+08:00</updated>
+  <updated>2013-11-28T13:45:47+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -18,9 +18,7 @@
     <link href="http://www.fusijie.com/blog/2013/10/28/play-cocos2dx-18/"/>
     <updated>2013-10-28T18:00:00+08:00</updated>
     <id>http://www.fusijie.com/blog/2013/10/28/play-cocos2dx-18</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/13287519">http://blog.csdn.net/jackystudio</a></p>
-
-<p>现在各种猜成语猜歌名好学霸之类的游戏火的一塌糊涂。本节就介绍下文字的拖拽和定位。</p>
+    <content type="html"><![CDATA[<p>现在各种猜成语猜歌名好学霸之类的游戏火的一塌糊涂。本节就介绍下文字的拖拽和定位。</p>
 
 <h3>1.基本原理</h3>
 

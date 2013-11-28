@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: CCARRAY_FOREACH | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/ccarray-foreach/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-11-28T09:47:21+08:00</updated>
+  <updated>2013-11-28T13:45:47+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -18,9 +18,7 @@
     <link href="http://www.fusijie.com/blog/2013/11/25/play-cocos2dx-25/"/>
     <updated>2013-11-25T13:53:00+08:00</updated>
     <id>http://www.fusijie.com/blog/2013/11/25/play-cocos2dx-25</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/16938787">http://blog.csdn.net/jackystudio</a></p>
-
-<p>CCArray是从cocos2d中移植过来的，类似于Apple的NSMutableArray，但是比NSMutableArray更为的好用。要注意的是虽然CCArray和CCDictionary可以管理cocos2d-x中绝大多数的类，但是仍然无法替代STL库，STL库更为强有力。</p>
+    <content type="html"><![CDATA[<p>CCArray是从cocos2d中移植过来的，类似于Apple的NSMutableArray，但是比NSMutableArray更为的好用。要注意的是虽然CCArray和CCDictionary可以管理cocos2d-x中绝大多数的类，但是仍然无法替代STL库，STL库更为强有力。</p>
 
 <h3>1.API</h3>
 

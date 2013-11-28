@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: win32 | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/win32/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-11-28T09:47:21+08:00</updated>
+  <updated>2013-11-28T13:45:47+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -18,9 +18,7 @@
     <link href="http://www.fusijie.com/blog/2013/10/11/play-cocos2dx-04/"/>
     <updated>2013-10-11T21:23:00+08:00</updated>
     <id>http://www.fusijie.com/blog/2013/10/11/play-cocos2dx-04</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/12610287">http://blog.csdn.net/jackystudio</a></p>
-
-<p>cocos2d-x到底是怎样实现跨平台的呢？这里以Win32和Android为例。</p>
+    <content type="html"><![CDATA[<p>cocos2d-x到底是怎样实现跨平台的呢？这里以Win32和Android为例。</p>
 
 <h3>1.跨平台项目目录结构</h3>
 

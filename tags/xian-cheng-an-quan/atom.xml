@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 线程安全 | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/xian-cheng-an-quan/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-11-28T09:47:21+08:00</updated>
+  <updated>2013-11-28T13:45:47+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -18,9 +18,7 @@
     <link href="http://www.fusijie.com/blog/2013/11/04/play-cocos2dx-21/"/>
     <updated>2013-11-04T11:01:00+08:00</updated>
     <id>http://www.fusijie.com/blog/2013/11/04/play-cocos2dx-21</id>
-    <content type="html"><![CDATA[<p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/14118939">http://blog.csdn.net/jackystudio</a></p>
-
-<p>和其他框架一样，cocos2d-x允许我们使用多线程进行编程。cocos2d-x v2.2.0使用的是pthread库，是一套用户级线程库，被广泛地使用在跨平台应用上。</p>
+    <content type="html"><![CDATA[<p>和其他框架一样，cocos2d-x允许我们使用多线程进行编程。cocos2d-x v2.2.0使用的是pthread库，是一套用户级线程库，被广泛地使用在跨平台应用上。</p>
 
 <h3>1.配置</h3>
 
