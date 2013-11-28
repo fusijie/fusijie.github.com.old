@@ -9,7 +9,7 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="原创作品，转载请标明：http://blog.csdn.net/jackystudio CCDictionary在cocos2d-x中被大量的应用，比如CCTexureCache，CCSpriteFramCache等等。 1.实现原理 1.1.uthash &hellip;">
+  <meta name="description" content="之前在遇到这么一个问题，在CCSequence中加入CCRepeatForever，发现其他动作执行没问题，就是CCRepeatForever无法执行。代码并没有问题，很奇怪。 ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -85,7 +85,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/11/26/play-cocos2dx-26/">【玩转cocos2d-x之二十六】数据结构CCDictionary</a></h1>
+      <h1 class="entry-title"><a href="/blog/2013/11/28/play-cocos2dx-27/">【玩转cocos2d-x之二十七】CCSequence不能执行CCRepeatForever</a></h1>
     
     
       <p class="meta">
@@ -101,30 +101,20 @@
   
 
 
-<time datetime="2013-11-26T09:00:00+08:00" pubdate data-updated="true">Nov 26<span>th</span>, 2013</time>
+<time datetime="2013-11-28T09:25:00+08:00" pubdate data-updated="true">Nov 28<span>th</span>, 2013</time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>原创作品，转载请标明：<a href="http://blog.csdn.net/jackystudio/article/details/16958587">http://blog.csdn.net/jackystudio</a></p>
-
-<p>CCDictionary在cocos2d-x中被大量的应用，比如CCTexureCache，CCSpriteFramCache等等。</p>
-
-<h3>1.实现原理</h3>
-
-<p><strong>1.1.uthash</strong></p>
-
-<p>CCDictionary是使用uthash实现的，而过时的CCMutableDictionary则是使用STL实现，就效率而言CCDictionary至少提升了两倍，而且CCDictionary并没有使用C++模版，因此也很容易绑定到脚本。</p>
-
-<p>uthash是一个C/C++的哈希表实现，它以宏定义的方式实现了哈希表，不仅加快了运行速度，而且与key类型无关。它的github在<a href="https://github.com/troydhanson/uthash">这里</a>。cocos2d-x的头文件在\cocos2d-x-2.2.0\cocos2dx\support\data_support\uthash.h。</p>
+  <div class="entry-content"><p>之前在遇到这么一个问题，在CCSequence中加入CCRepeatForever，发现其他动作执行没问题，就是CCRepeatForever无法执行。代码并没有问题，很奇怪。</p>
 
 </div>
   
   
     <footer>
-      <a rel="full-article" href="/blog/2013/11/26/play-cocos2dx-26/">Read on &rarr;</a>
+      <a rel="full-article" href="/blog/2013/11/28/play-cocos2dx-27/">Read on &rarr;</a>
     </footer>
   
 
@@ -579,7 +569,7 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2013/11/26/play-cocos2dx-26/">【玩转cocos2d-x之二十六】数据结构CCDictionary</a>
+        <a href="/blog/2013/11/28/play-cocos2dx-27/">【玩转cocos2d-x之二十七】CCSequence不能执行CCRepeatForever</a>
       </li>
     
       <li class="post">

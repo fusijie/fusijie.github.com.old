@@ -1,0 +1,463 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>【玩转cocos2d-x之二十七】CCSequence不能执行CCRepeatForever - Jacky's Blog</title>
+  <meta name="author" content="FuSijie">
+
+  
+  <meta name="description" content="之前在遇到这么一个问题，在CCSequence中加入CCRepeatForever，发现其他动作执行没问题，就是CCRepeatForever无法执行。代码并没有问题，很奇怪。 1.示例 CCBlink* blink=CCBlink::create(0.5f,10);//创建闪烁动画， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.fusijie.com/blog/2013/11/28/play-cocos2dx-27">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jacky's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '45386223']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jacky's Blog</a></h1>
+  
+    <h2>Stay Hungry,Stay Foolish!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.fusijie.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/projects">Projects</a></li>
+  <li><a href="/tag-cloud/">Tags</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">【玩转cocos2d-x之二十七】CCSequence不能执行CCRepeatForever</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-28T09:25:00+08:00" pubdate data-updated="true">Nov 28<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>之前在遇到这么一个问题，在CCSequence中加入CCRepeatForever，发现其他动作执行没问题，就是CCRepeatForever无法执行。代码并没有问题，很奇怪。</p>
+
+<!-- more -->
+
+
+<h3>1.示例</h3>
+
+<pre><code>CCBlink* blink=CCBlink::create(0.5f,10);//创建闪烁动画，duration=0.5s  
+CCAnimation* animation=CCAnimation::create();  
+animation-&gt;addSpriteFrameWithFileName("CloseNormal.png");  
+animation-&gt;addSpriteFrameWithFileName("CloseSelected.png");  
+animation-&gt;setDelayPerUnit(1.0f);//帧间间隔1s  
+CCAnimate* animate=CCAnimate::create(animation);//创建帧动画  
+CCRepeatForever* repeat=CCRepeatForever::create(animate);  
+CCSequence* sequence=CCSequence::create(blink,repeat,NULL);//创建连续动画  
+CCSprite* close=CCSprite::create("CloseNormal.png");  
+close-&gt;setPosition(ccp(240,160));  
+this-&gt;addChild(close);  
+close-&gt;runAction(sequence);//执行连续动画  
+</code></pre>
+
+<p>结果精灵闪烁10次以后，帧动画不执行了。</p>
+
+<h3>2.原因</h3>
+
+<p>先了解一下CCSequence的创建和执行原理。</p>
+
+<p><strong>2.1.CCSequence的创建</strong></p>
+
+<p>创建CCSequence调用</p>
+
+<pre><code>//创建CCSequence  
+CCSequence* CCSequence::create(CCFiniteTimeAction *pAction1, ...)  
+</code></pre>
+
+<p>内部调用了createWithVariableList，从实现可以看出这是一个递归调用。</p>
+
+<pre><code>//获取动作列表，创建CCSequence  
+CCSequence* CCSequence::createWithVariableList(CCFiniteTimeAction *pAction1, va_list args)  
+{  
+    CCFiniteTimeAction *pNow;//当前动作  
+    CCFiniteTimeAction *pPrev = pAction1;//第一个动作  
+    bool bOneAction = true;//只有一个动作的标志位  
+
+    while (pAction1)  
+    {  
+        pNow = va_arg(args, CCFiniteTimeAction*);//获取当前动作  
+        if (pNow)//如果存在  
+        {  
+            pPrev = createWithTwoActions(pPrev, pNow);//用前两个动作创建CCSequence并赋给第一个动作  
+            bOneAction = false;//置false  
+        }  
+        else//如果不存在  
+        {  
+            // If only one action is added to CCSequence, make up a CCSequence by adding a simplest finite time action.  
+            if (bOneAction)//如果只有一个动作  
+            {  
+                pPrev = createWithTwoActions(pPrev, ExtraAction::create());  
+            }  
+        break;//跳出循环  
+        }  
+    }  
+    return ((CCSequence*)pPrev);//返回第一个动作  
+}  
+</code></pre>
+
+<p>假如有3个动作要被串联，则先把第1个和第2个串联一个CCSequence，再把这个CCSequence和第3个动作串联成最终的CCSequence，然后返回。从CCSequence的成员变量可以看到：</p>
+
+<pre><code>CCFiniteTimeAction *m_pActions[2];//表明只包含2个动作对象指针
+</code></pre>
+
+<p>使用递归多少会降低程序的运行效率，但是却可以换来代码的简洁性，同样的CCSpawn也是这么实现的。
+在createWithTwoActions中，调用了initWithTwoActions函数，实现了把两个动作串成一个CCSequence，关键代码如下：</p>
+
+<pre><code>float d = pActionOne-&gt;getDuration() + pActionTwo-&gt;getDuration();//获取两个动作的duration  
+CCActionInterval::initWithDuration(d);//赋给新的CCSequence  
+
+m_pActions[0] = pActionOne;//同时把两个动作赋给m_pActions指针数组  
+pActionOne-&gt;retain();  
+
+m_pActions[1] = pActionTwo;  
+pActionTwo-&gt;retain();  
+</code></pre>
+
+<p><strong>2.2.duration</strong></p>
+
+<p>从示例可以看出，闪烁动画blink的duration是0.5s，那CCRepeatForever呢？1s？当然不是，1s只是帧动画animate的帧间间隔，每个帧动画包含2帧，而CCRepeatForever的duration是0。因此，当示例中的闪烁动画blink和重复动画repeat串联成CCSequence sequence的时候，sequence的duration就变成0.5+0=0.5s，这很重要。</p>
+
+<p><strong>2.3.m_split</strong></p>
+
+<p>CCSequence中有这么一个成员变量</p>
+
+<pre><code>float m_split;//记录了第一个动画时长占总时长的比例，也就是2个动画的时长分界  
+</code></pre>
+
+<p>当执行runAction的时候，CCSequence会调用</p>
+
+<pre><code>void CCSequence::startWithTarget(CCNode *pTarget)  
+{  
+    CCActionInterval::startWithTarget(pTarget);  
+    m_split = m_pActions[0]-&gt;getDuration() / m_fDuration;//获取第一个动画占总时长的比例  
+    m_last = -1;  
+}  
+</code></pre>
+
+<p>而这里由于blink占了0.5s，repeat占了0s，总时长0.5s，所以m_split是0.5/0.5=1。blink占满了整个CCSequence，所以CCSequence无法执行repeat。</p>
+
+<p>这时候再来看CCSequence::update(float dt)函数的执行，就会恍然大悟了。</p>
+
+<pre><code>int found = 0;//当前播放动作索引  
+float new_t = 0.0f;//新播放进度  
+
+if( t &lt; m_split ) {//播放进度&lt;分界进度  
+    found = 0;//设置当前播放的是第一个动作  
+    if( m_split != 0 )//如果第一个动作时长占比!=0  
+        new_t = t / m_split;//计算出第一个动作新的播放进度  
+    else  
+        new_t = 1;//设置第一个已播放完毕  
+
+} else {//播放进度&gt;=分界进度  
+    found = 1;//设置当前播放的是第二个动作  
+    if ( m_split == 1 )//如果第一个动作时长占比==1  
+        new_t = 1;//设置第二个动作已完成  
+    else  
+        new_t = (t-m_split) / (1 - m_split );//计算出第二个动作新的播放进度  
+}  
+</code></pre>
+
+<h3>3.注意</h3>
+
+<p><em>（1）CCSpawn也会有这个问题，所以CCSpawn也无法执行加入其中的CCRepeatForever动作。</em></p>
+
+<p><em>（2）CCRepeatForever的反转动作也是无效了，一个不会停止的动作从什么地方开始反转？当然你可以先把动作反转了再加入CCRepeatForever中，这是没问题的。</em></p>
+
+<h3>4.解决方案</h3>
+
+<p><em>（1）对于同时动作，不使用CCSpawn，采用分别执行</em></p>
+
+<pre><code>close-&gt;runAction(blink);  
+close-&gt;runAction(repeat);  
+</code></pre>
+
+<p><em>（2）对于连续动作，不直接往CCSequence中加入CCRepeatForever，而是把CCRepeatForever放入瞬时动作CCCallFunc中，再把CCCallFunc加入CCSequence中执行。</em></p>
+
+<pre><code>close=CCSprite::create("CloseNormal.png");  
+CCBlink* blink=CCBlink::create(0.5f,10);  
+CCCallFunc* callFunc=CCCallFunc::create(this,callfunc_selector(TestScene::repeatFunc));//创建CCCallFunc对象  
+CCSequence* sequence=CCSequence::create(blink,callFunc,NULL);//把CCCallFunc对象加入CCSequence中  
+close-&gt;setPosition(ccp(240,160));  
+this-&gt;addChild(close);  
+close-&gt;runAction(sequence);  
+
+
+void TestScene::repeatFunc()  
+{  
+    CCAnimation* animation=CCAnimation::create();  
+    animation-&gt;addSpriteFrameWithFileName("CloseNormal.png");  
+    animation-&gt;addSpriteFrameWithFileName("CloseSelected.png");  
+    animation-&gt;setDelayPerUnit(1.0f);  
+    CCAnimate* animate=CCAnimate::create(animation);  
+    CCRepeatForever* repeat=CCRepeatForever::create(animate);  
+    close-&gt;runAction(repeat);  
+}  
+</code></pre>
+
+<p><em>（3）对于CCAnimation帧动画，可以设置循环属性，而不使用CCRepeatForever。</em></p>
+
+<pre><code>animation-&gt;setLoops(-1);  
+</code></pre>
+
+<h3>5.总结</h3>
+
+<p>虽然CCRepeatForever也同样继承于CCActionInterval，理论上是延时动作的子类，但是和一般的延时动作又有很大的不同，所以平时在使用的时候必须很小心，不能当成一般的CCActionInterval使用。而在cocos2d-x动作的分类上是不是应该把它从CCAction继承出来会比较好一点？<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/11/28/play-cocos2dx-27/'><a href="http://www.fusijie.com/blog/2013/11/28/play-cocos2dx-27/">http://www.fusijie.com/blog/2013/11/28/play-cocos2dx-27/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">FuSijie</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-28T09:25:00+08:00" pubdate data-updated="true">Nov 28<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cocos2d-x/'>cocos2d-x</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+      <!-- JiaThis Button BEGIN -->
+  <section>
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share?uid=1859056" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1859056" charset="utf-8"></script>
+</section>
+<!-- JiaThis Button END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+	    <p></p>
+        <a class="basic-alignment left" href="/blog/2013/11/25/play-cocos2dx-25/" title="Previous Post: 【玩转cocos2d-x之二十五】数据结构CCArray">&laquo; 【玩转cocos2d-x之二十五】数据结构CCArray</a>
+      
+      
+    </p>
+  </footer>
+</article>
+  <section>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"fusijie"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->  
+</section>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+		<br>
+		<center><a target="_blank" href="http://blog.csdn.net/jackystudio" style="text-decoration:none" ><img src="\images\aboutme.png" border=0></img></a></center>
+		</br>
+</section><section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (26)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/11/28/play-cocos2dx-27/">【玩转cocos2d-x之二十七】CCSequence不能执行CCRepeatForever</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/25/play-cocos2dx-25/">【玩转cocos2d-x之二十五】数据结构CCArray</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/13/play-cocos2dx-24/">【玩转cocos2d-x之二十四】截图保存功能的实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/11/play-cocos2dx-23/">【玩转cocos2d-x之二十三】cocos2d-x多线程和同步03</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/05/play-cocos2dx-22/">【玩转cocos2d-x之二十二】cocos2d-x多线程和同步02</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+  
+<section>
+  <h1>Sina Weibo</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="450" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=450&fansRow=0&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=0&uid=1307211523&verifier=3619ee9c">
+      </iframe>
+    </li>
+  </ul>
+</section>
+ 
+<section>
+<h1>Visitor</h1>
+<div>
+	<p></p>
+    <center>
+	<a href="http://info.flagcounter.com/3pF8"><img src="http://s08.flagcounter.com/count/3pF8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_12/viewers_3/labels_0/pageviews_1/flags_0/" alt="Flag Counter" border="0"></a>
+	</center>
+</div>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - FuSijie -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
