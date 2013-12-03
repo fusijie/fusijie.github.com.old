@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-11-28T13:45:47+08:00</updated>
+  <updated>2013-12-03T10:09:30+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,152 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十八】cocos2d-x的消息和数据传递]]></title>
+    <link href="http://www.fusijie.com/blog/2013/12/03/play-cocos2dx-28/"/>
+    <updated>2013-12-03T09:57:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2013/12/03/play-cocos2dx-28</id>
+    <content type="html"><![CDATA[<p>如何在层间或者场景间进行消息传递，大概是每个初学者都要面对的问题吧。这里介绍cocos2d-x的一种消息/数据传递方式，内置的观察者模式，也称消息通知中心，CCNotificationCenter。</p>
+
+<h3>1.CCNotificationCenter</h3>
+
+<p>CCNotificationCenter是cocos2d-x提供的一个消息中心，类似于观察者模式，是一个单例类，用于辅助控制消息传递。大概工作原理如下图。</p>
+
+<!-- more -->
+
+
+
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_28/1.jpg" alt="" border="0" title="CCNotificationCenter" /><br></br></div>
+
+
+<p>这里以A，B通讯为例，A，B可以是层间或者场景间。假如A要向B发送带数据的消息。那么</p>
+
+<p><em>（1）B向小心中心注册一个bMsg的消息，告知消息中心，如果消息中心接收到bMsg，必须通知B，以便B采取相应的措施。</em></p>
+
+<p><em>（2）A向消息中心发送bMsg消息。</em></p>
+
+<p><em>（3）消息中心接收到bMsg，查询有谁在它这里注册了这个消息，发现是B，就通知B有人发送了bMsg。</em></p>
+
+<p><em>（4）当然这个消息带有A要传递的数据，而B也不知道到底是谁给它发了bMsg这条消息，除非在传递的数据中指出。</em></p>
+
+<h3>2.相关API</h3>
+
+<pre><code>//获得消息通知中心的一个单例对象  
+static CCNotificationCenter *sharedNotificationCenter(void);  
+
+//销毁通知中心的单例对象  
+static void purgeNotificationCenter(void);  
+
+//添加观察者  
+void addObserver(CCObject *target,   
+                SEL_CallFuncO selector,  
+                const char *name,  
+                CCObject *obj);  
+
+//移除观察者  
+void removeObserver(CCObject *target,const char *name);  
+
+//移除所有观察者  
+int removeAllObservers(CCObject *target);  
+
+//发送消息  
+void postNotification(const char *name);  
+
+//发送带数据的消息  
+void postNotification(const char *name, CCObject *object);  
+</code></pre>
+
+<p>观察者的意思即是等待获取消息的对象，比如上图的B。</p>
+
+<h3>3.原理</h3>
+
+<p>CCNotificationCenter的实现比较简单，它的内部维护了一个CCArray数组，数组的元素是CCNotificationObserver类型的对象，CCNotificationObserver封装了回调的执行者，回调函数，消息名称以及传递的数据。每次注册，也就是添加观察者，其实就是把这个CCNotificationObserver对象加入通知中心的CCArray数组，而每次的消息发送就是将消息传递给通知中心，由通知中心遍历这个数组，找到一致的消息，调用这些回调函数。其实这样看起来，就像是A在调用B的函数。具体的就自己看下源码吧。</p>
+
+<h3>4.示例</h3>
+
+<p>这里做了一个场景，包含了2个层，目的是层A向层B发送带数据的消息，层B收到后打印出这条数据。</p>
+
+<pre><code>//ALayer  
+bool ALayer::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCLayer::init());  
+        CCSize visibleSize = CCDirector::sharedDirector()-&gt;getVisibleSize();  
+        CCMenuItemImage *pCloseItem = CCMenuItemImage::create(  
+            "CloseNormal.png",  
+            "CloseSelected.png",  
+            this,  
+            menu_selector(ALayer::PostMessage));//按钮用于点击发送消息  
+
+        pCloseItem-&gt;setAnchorPoint(ccp(0.5,0.5));  
+        pCloseItem-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
+        CCMenu* pMenu = CCMenu::create(pCloseItem, NULL);  
+        pMenu-&gt;setPosition(CCPointZero);  
+        this-&gt;addChild(pMenu, 1);  
+
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+
+void ALayer::PostMessage(CCObject* pSender)  
+{  
+    CCString* str=CCString::create("Hello BLayer!");  
+    CCNotificationCenter::sharedNotificationCenter()-&gt;postNotification("BMessage",str);//发送带str的消息BMessage  
+}  
+
+//BLayer  
+bool BLayer::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCLayer::init());  
+
+        CCNotificationCenter::sharedNotificationCenter()-&gt;addObserver(this,callfuncO_selector(BLayer::getMessage),"BMessage",NULL);//注册BMessage，如果接收到了，执行getMessage  
+
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+
+void BLayer::getMessage(CCObject* obj)  
+{  
+    CCString* str=static_cast&lt;CCString*&gt;(obj);//打印出传递的数据  
+    CCLog(str-&gt;getCString());  
+}  
+
+BLayer::~BLayer(void)  
+{  
+    CCNotificationCenter::sharedNotificationCenter()-&gt;purgeNotificationCenter();//释放通知中心单例对象  
+}  
+</code></pre>
+
+<h3>5.注意</h3>
+
+<p>使用CCNotificationCenter需要注意以下几点：</p>
+
+<p><em>（1）一个对象可以注册多个消息，一个消息也可以由多个消息注册。</em></p>
+
+<p><em>（2）传递参数，A可以向B传递参数，而B在注册的时候也可以带一个参数，如果这两个数据不是指向同一对象的话，消息不会传递。也就是说要么A传递NULL对象，要么B注册时带NULL对象，要么都不是NULL但必须是同一对象，消息传递才会成功。以下是发送消息执行的判断：</em></p>
+
+<pre><code>if (!strcmp(name,observer-&gt;getName()) &amp;&amp; (observer-&gt;getObject() == object || observer-&gt;getObject() == NULL || object == NULL))  
+</code></pre>
+
+<p><em>（3）局部变量的传递，注意到上例，传递的是CCString的一个局部变量（但还是要autorelease），从CCNotificationCenter的实现上来看，这是没有问题的，因为数据是在postNotification被调用的，也就是整个函数体并没结束，数据不会被销毁。</em></p>
+
+<h3>6.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6647453">下载地址</a></p>
+
+<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/12/03/play-cocos2dx-28/'>http://www.fusijie.com/blog/2013/12/03/play-cocos2dx-28/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十七】CCSequence不能执行CCRepeatForever]]></title>
@@ -2530,189 +2676,6 @@ virtual CCFiniteTimeAction* reverse(void);
 
 <p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/16/play-cocos2dx-09/'>http://www.fusijie.com/blog/2013/10/16/play-cocos2dx-09/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之八】精灵类CCSprite]]></title>
-    <link href="http://www.fusijie.com/blog/2013/10/15/play-cocos2dx-08/"/>
-    <updated>2013-10-15T17:17:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/10/15/play-cocos2dx-08</id>
-    <content type="html"><![CDATA[<p>精灵类CCSprite可以说是游戏的主角了，也是我们平时最常用到的类。</p>
-
-<h3>1.概况</h3>
-
-<!-- more -->
-
-
-
-
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_08/1.jpg" alt="" border="0" title="CCSprite" /><br></br></div>
-
-
-<p>CCSprite本质上就是一个二维图片，是静态的。游戏中的动画只不过是让一张张静态图片快速更换达到的动态效果。CCSprite继承于CCNodeRGBA，并实现了CCTextureProtocol的接口。因此CCNodeRGBA所具有的RGB和透明值这些属性和接口CCSprite都有，而CCTextureProtocol是一个抽象类，定义了和纹理相关的两个标准接口：</p>
-
-<pre><code>//返回当前使用的纹理  
-virtual CCTexture2D* getTexture(void) = 0;  
-
-//设置一个新的纹理，它会被retain  
-virtual void setTexture(CCTexture2D *texture) = 0;  
-</code></pre>
-
-<h3>2.常用接口</h3>
-
-<p><strong>2.1.初始化</strong></p>
-
-<pre><code>//初始化函数  
-virtual bool init(void);  
-
-//用CCTexture2D纹理来初始化，精灵大小即是纹理大小  
-virtual bool initWithTexture(CCTexture2D *pTexture);  
-
-///用CCTexture2D纹理和大小来初始化  
-virtual bool initWithTexture(CCTexture2D *pTexture, const CCRect&amp; rect);  
-
-//用CCTexture2D纹理，大小，旋转来初始化  
-virtual bool initWithTexture(CCTexture2D *pTexture, const CCRect&amp; rect, bool rotated);  
-
-//用CCSpriteFrame精灵帧来初始化  
-virtual bool initWithSpriteFrame(CCSpriteFrame *pSpriteFrame);  
-
-//用CCSpriteFrame精灵帧名来初始化  
-virtual bool initWithSpriteFrameName(const char *pszSpriteFrameName);  
-
-//用外部文件初始化，外部文件会先被创建为纹理，再用纹理初始化精灵  
-virtual bool initWithFile(const char *pszFilename);  
-
-//用外部文件和大小来初始化  
-virtual bool initWithFile(const char *pszFilename, const CCRect&amp; rect);  
-</code></pre>
-
-<p><strong>2.2.继承自CCTextureProtocol</strong></p>
-
-<pre><code>//设置/获取纹理  
-virtual void setTexture(CCTexture2D *texture);  
-virtual CCTexture2D* getTexture(void);  
-
-//设置/获取颜色描绘时混合方案  
-void setBlendFunc(ccBlendFunc blendFunc);  
-ccBlendFunc getBlendFunc(void);  
-</code></pre>
-
-<p><strong>2.3.继承自CCNode</strong></p>
-
-<p>参见CCNode。</p>
-
-<pre><code>virtual void setScaleX(float fScaleX);  
-virtual void setScaleY(float fScaleY);  
-virtual void setPosition(const CCPoint&amp; pos);  
-virtual void setRotation(float fRotation);  
-virtual void setRotationX(float fRotationX);  
-virtual void setRotationY(float fRotationY);  
-virtual void setSkewX(float sx);  
-virtual void setSkewY(float sy);  
-virtual void removeChild(CCNode* pChild, bool bCleanup);  
-virtual void removeAllChildrenWithCleanup(bool bCleanup);  
-virtual void reorderChild(CCNode *pChild, int zOrder);  
-virtual void addChild(CCNode *pChild);  
-virtual void addChild(CCNode *pChild, int zOrder);  
-virtual void addChild(CCNode *pChild, int zOrder, int tag);  
-virtual void sortAllChildren();  
-virtual void setScale(float fScale);  
-virtual void setVertexZ(float fVertexZ);  
-virtual void setAnchorPoint(const CCPoint&amp; anchor);//默认(0.5,0.5)  
-virtual void ignoreAnchorPointForPosition(bool value);  
-virtual void setVisible(bool bVisible);  
-virtual void draw(void);  
-</code></pre>
-
-<p><strong>2.4.继承自CCNodeRGBA</strong></p>
-
-<pre><code>//设置颜色  
-virtual void setColor(const ccColor3B&amp; color3);  
-
-//传递颜色  
-virtual void updateDisplayedColor(const ccColor3B&amp; parentColor);  
-
-//设置透明度  
-virtual void setOpacity(GLubyte opacity);  
-
-//设置/返回透明度是否跟随颜色值变化而变化  
-virtual void setOpacityModifyRGB(bool modify);  
-virtual bool isOpacityModifyRGB(void);  
-
-//传递透明度  
-virtual void updateDisplayedOpacity(GLubyte parentOpacity);  
-</code></pre>
-
-<p><strong>2.5.批节点</strong></p>
-
-<pre><code>//更新4属性：x,y,rotation,scale  
-virtual void updateTransform(void);  
-
-//如果精灵是由批节点CCSpriteBatchNode渲染的，则返回批节点  
-virtual CCSpriteBatchNode* getBatchNode(void);  
-//设置批节点，不推荐使用  
-virtual void setBatchNode(CCSpriteBatchNode *pobSpriteBatchNode);  
-</code></pre>
-
-<p><strong>2.6.纹理</strong></p>
-
-<pre><code>//设置纹理区域  
-virtual void setTextureRect(const CCRect&amp; rect);  
-virtual void setTextureRect(const CCRect&amp; rect, bool rotated, const CCSize&amp; untrimmedSize);  
-virtual void setVertexRect(const CCRect&amp; rect);  
-</code></pre>
-
-<p><strong>2.7.精灵帧和动画</strong></p>
-
-<pre><code>//设置新的精灵帧  
-virtual void setDisplayFrame(CCSpriteFrame *pNewFrame);  
-
-//返回精灵帧是否在使用  
-virtual bool isFrameDisplayed(CCSpriteFrame *pFrame);  
-
-//返回当期使用精灵帧  
-virtual CCSpriteFrame* displayFrame(void);  
-
-//设置动画和显示索引  
-virtual void setDisplayFrameWithAnimationName(const char *animationName, int frameIndex);  
-</code></pre>
-
-<p><strong>2.8.Setter和Getter方法</strong></p>
-
-<p>设置/获取CCSprite属性。</p>
-
-<pre><code>//设置获取是否更新  
-virtual bool isDirty(void);  
-virtual void setDirty(bool bDirty);  
-
-//返回坐标、顶点、颜色信息  
-ccV3F_C4B_T2F_Quad getQuad(void);  
-
-//返回纹理旋转  
-bool isTextureRectRotated(void);  
-
-//返回/设置地图集索引  
-unsigned int getAtlasIndex(void);  
-void setAtlasIndex(unsigned int uAtlasIndex);  
-
-//返回精灵区域，单位为点  
-const CCRect&amp; getTextureRect(void);  
-
-//如果采用批渲染，返回/设置纹理地图集  
-CCTextureAtlas* getTextureAtlas(void);  
-inline void setTextureAtlas(CCTextureAtlas *pobTextureAtlas);  
-
-//获取偏移  
-const CCPoint&amp; getOffsetPosition(void);  
-
-//设置返回翻转  
-bool isFlipX(void);  
-void setFlipX(bool bFlipX);  
-bool isFlipY(void);  
-void setFlipY(bool bFlipY);  &lt;p class='post-footer'&gt;&amp;nbsp;原文地址：&lt;a href='http://www.fusijie.com/blog/2013/10/15/play-cocos2dx-08/'&gt;http://www.fusijie.com/blog/2013/10/15/play-cocos2dx-08/&lt;/a&gt;&lt;br/&gt;&amp;nbsp;版权声明：自由转载-非商用-非衍生-保持署名| &lt;a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'&gt;Creative Commons BY-NC-ND 3.0&lt;/a&gt;&lt;/p&gt;
-</code></pre>
 ]]></content>
   </entry>
   

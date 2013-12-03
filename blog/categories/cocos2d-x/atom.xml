@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/blog/categories/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-11-28T13:45:47+08:00</updated>
+  <updated>2013-12-03T10:09:30+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,149 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十八】cocos2d-x的消息和数据传递]]></title>
+    <link href="http://www.fusijie.com/blog/2013/12/03/play-cocos2dx-28/"/>
+    <updated>2013-12-03T09:57:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2013/12/03/play-cocos2dx-28</id>
+    <content type="html"><![CDATA[<p>如何在层间或者场景间进行消息传递，大概是每个初学者都要面对的问题吧。这里介绍cocos2d-x的一种消息/数据传递方式，内置的观察者模式，也称消息通知中心，CCNotificationCenter。</p>
+
+<h3>1.CCNotificationCenter</h3>
+
+<p>CCNotificationCenter是cocos2d-x提供的一个消息中心，类似于观察者模式，是一个单例类，用于辅助控制消息传递。大概工作原理如下图。</p>
+
+<!-- more -->
+
+
+
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_28/1.jpg" alt="" border="0" title="CCNotificationCenter" /><br></br></div>
+
+
+<p>这里以A，B通讯为例，A，B可以是层间或者场景间。假如A要向B发送带数据的消息。那么</p>
+
+<p><em>（1）B向小心中心注册一个bMsg的消息，告知消息中心，如果消息中心接收到bMsg，必须通知B，以便B采取相应的措施。</em></p>
+
+<p><em>（2）A向消息中心发送bMsg消息。</em></p>
+
+<p><em>（3）消息中心接收到bMsg，查询有谁在它这里注册了这个消息，发现是B，就通知B有人发送了bMsg。</em></p>
+
+<p><em>（4）当然这个消息带有A要传递的数据，而B也不知道到底是谁给它发了bMsg这条消息，除非在传递的数据中指出。</em></p>
+
+<h3>2.相关API</h3>
+
+<pre><code>//获得消息通知中心的一个单例对象  
+static CCNotificationCenter *sharedNotificationCenter(void);  
+
+//销毁通知中心的单例对象  
+static void purgeNotificationCenter(void);  
+
+//添加观察者  
+void addObserver(CCObject *target,   
+                SEL_CallFuncO selector,  
+                const char *name,  
+                CCObject *obj);  
+
+//移除观察者  
+void removeObserver(CCObject *target,const char *name);  
+
+//移除所有观察者  
+int removeAllObservers(CCObject *target);  
+
+//发送消息  
+void postNotification(const char *name);  
+
+//发送带数据的消息  
+void postNotification(const char *name, CCObject *object);  
+</code></pre>
+
+<p>观察者的意思即是等待获取消息的对象，比如上图的B。</p>
+
+<h3>3.原理</h3>
+
+<p>CCNotificationCenter的实现比较简单，它的内部维护了一个CCArray数组，数组的元素是CCNotificationObserver类型的对象，CCNotificationObserver封装了回调的执行者，回调函数，消息名称以及传递的数据。每次注册，也就是添加观察者，其实就是把这个CCNotificationObserver对象加入通知中心的CCArray数组，而每次的消息发送就是将消息传递给通知中心，由通知中心遍历这个数组，找到一致的消息，调用这些回调函数。其实这样看起来，就像是A在调用B的函数。具体的就自己看下源码吧。</p>
+
+<h3>4.示例</h3>
+
+<p>这里做了一个场景，包含了2个层，目的是层A向层B发送带数据的消息，层B收到后打印出这条数据。</p>
+
+<pre><code>//ALayer  
+bool ALayer::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCLayer::init());  
+        CCSize visibleSize = CCDirector::sharedDirector()-&gt;getVisibleSize();  
+        CCMenuItemImage *pCloseItem = CCMenuItemImage::create(  
+            "CloseNormal.png",  
+            "CloseSelected.png",  
+            this,  
+            menu_selector(ALayer::PostMessage));//按钮用于点击发送消息  
+
+        pCloseItem-&gt;setAnchorPoint(ccp(0.5,0.5));  
+        pCloseItem-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
+        CCMenu* pMenu = CCMenu::create(pCloseItem, NULL);  
+        pMenu-&gt;setPosition(CCPointZero);  
+        this-&gt;addChild(pMenu, 1);  
+
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+
+void ALayer::PostMessage(CCObject* pSender)  
+{  
+    CCString* str=CCString::create("Hello BLayer!");  
+    CCNotificationCenter::sharedNotificationCenter()-&gt;postNotification("BMessage",str);//发送带str的消息BMessage  
+}  
+
+//BLayer  
+bool BLayer::init()  
+{  
+    bool bRet=false;  
+    do   
+    {  
+        CC_BREAK_IF(!CCLayer::init());  
+
+        CCNotificationCenter::sharedNotificationCenter()-&gt;addObserver(this,callfuncO_selector(BLayer::getMessage),"BMessage",NULL);//注册BMessage，如果接收到了，执行getMessage  
+
+        bRet=true;  
+    } while (0);  
+    return bRet;  
+}  
+
+void BLayer::getMessage(CCObject* obj)  
+{  
+    CCString* str=static_cast&lt;CCString*&gt;(obj);//打印出传递的数据  
+    CCLog(str-&gt;getCString());  
+}  
+
+BLayer::~BLayer(void)  
+{  
+    CCNotificationCenter::sharedNotificationCenter()-&gt;purgeNotificationCenter();//释放通知中心单例对象  
+}  
+</code></pre>
+
+<h3>5.注意</h3>
+
+<p>使用CCNotificationCenter需要注意以下几点：</p>
+
+<p><em>（1）一个对象可以注册多个消息，一个消息也可以由多个消息注册。</em></p>
+
+<p><em>（2）传递参数，A可以向B传递参数，而B在注册的时候也可以带一个参数，如果这两个数据不是指向同一对象的话，消息不会传递。也就是说要么A传递NULL对象，要么B注册时带NULL对象，要么都不是NULL但必须是同一对象，消息传递才会成功。以下是发送消息执行的判断：</em></p>
+
+<pre><code>if (!strcmp(name,observer-&gt;getName()) &amp;&amp; (observer-&gt;getObject() == object || observer-&gt;getObject() == NULL || object == NULL))  
+</code></pre>
+
+<p><em>（3）局部变量的传递，注意到上例，传递的是CCString的一个局部变量（但还是要autorelease），从CCNotificationCenter的实现上来看，这是没有问题的，因为数据是在postNotification被调用的，也就是整个函数体并没结束，数据不会被销毁。</em></p>
+
+<h3>6.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6647453">下载地址</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十七】CCSequence不能执行CCRepeatForever]]></title>
@@ -323,7 +466,7 @@ if(pDict-&gt;writeToFile("pdic.plist"))  //整型的value无法写入，会提�
 <div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_26/1.jpg" alt="" border="0" title="pdic.plist" /><br></br></div>
 
 
-<blockquote></blockquote>
+<p></p>
 
 <h3>5.CCDICT_FOREACH</h3>
 
@@ -622,178 +765,6 @@ void CTestLayer::SaveScreenShot()
 <h3>4.源码下载</h3>
 
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6538305">下载地址</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之二十三】cocos2d-x多线程和同步03]]></title>
-    <link href="http://www.fusijie.com/blog/2013/11/11/play-cocos2dx-23/"/>
-    <updated>2013-11-11T11:22:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/11/11/play-cocos2dx-23</id>
-    <content type="html"><![CDATA[<p>cocos2d-x中和Android，Windows都一样，如果在主线程中处理一些耗时操作，那么主线程就会出现阻塞现象，表现在界面上就是卡住，未响应等情况。为了避免这种情况的出现，我们需要在后台开辟工作线程进行数据的处理，再采用消息传递或者其他形式来通知主线程进行UI变化。最常见的情况就是游戏进入前的loading。</p>
-
-<h3>1.图片的异步加载</h3>
-
-<p>在多线程和同步的第一篇介绍到使用pthread库的时候，讲到由于CCAutoreleasePool不是线程安全的，所以不能在工作线程中引入cocos2d-x相关的API（其实并不是所有的API都不能使用）。但是cocos2d-x显然考虑到这个问题了，所以它本身就帮我们封装好了一个API，避免了还要手动引入pthread库的尴尬。</p>
-
-<pre><code>void CCTextureCache::addImageAsync(const char *path, CCObject *target, SEL_CallFuncO selector)  
-</code></pre>
-
-<!--more -->
-
-
-<p>其中path是图片的位置，selector是加载完成时的回调函数。很方便，如果需要加载很多图片的话，对每一个进行回调处理，然后在update中更新UI即可。</p>
-
-<h3>2.plist的异步加载</h3>
-
-<p>可是由于内存原因，大部分情况下图片会被合成打包，同时带入plist。这时候如何进行图片的异步加载呢？这个时候就需要对addImageAsync的源码进一步的探究了。</p>
-
-<p><strong>2.1.耗时的是什么？</strong></p>
-
-<p>首先要理解的是耗时的动作是什么，只有把耗时的工作真正抓出来丢到工作线程上，异步加载才有意义。我们知道，图片在内存中是以纹理的形式存在的，而图片的加载，通俗来讲也就是纹理的生成，这就是耗时的原因。那CCTexureCache中addImage（同步加载）和addImageAysnc（异步加载）分别做了什么事？</p>
-
-<p><em>（1）addImage</em>
-可以看出addImage使用同步的方式生成了纹理，也就是在主线程中进行了耗时的加载操作。</p>
-
-<pre><code>//...cocos2d-x维护着一个全局纹理，在判断纹理是否已存在  
-if (! texture)   
-    {  
-        do   
-        {  
-        //...判断图片格式  
-
-            pImage = new CCImage();  
-            CC_BREAK_IF(NULL == pImage);  
-
-            bool bRet = pImage-&gt;initWithImageFile(fullpath.c_str(), eImageFormat);  
-            CC_BREAK_IF(!bRet);  
-
-            texture = new CCTexture2D();    //开辟纹理空间  
-
-            if( texture &amp;&amp;  
-                texture-&gt;initWithImage(pImage) )  //使用CCImage初始化纹理  
-            {  
-#if CC_ENABLE_CACHE_TEXTURE_DATA  
-                // cache the texture file name  
-                VolatileTexture::addImageTexture(texture, fullpath.c_str(), eImageFormat);  
-#endif  
-                m_pTextures-&gt;setObject(texture, pathKey.c_str());  
-                texture-&gt;release();  
-            }  
-            else  
-            {  
-                CCLOG("cocos2d: Couldn't create texture for file:%s in CCTextureCache", path);  
-            }  
-        } while (0);  
-    }  
-//...释放资源，返回纹理  
-</code></pre>
-
-<p><em>（2）addImageAsync</em></p>
-
-<p>addImageAsync则是在工作线程中加载图片，然后通过调度器进行纹理的转换。</p>
-
-<pre><code>//创建工作线程用于后台加载图片  
-pthread_create(&amp;s_loadingThread, NULL, loadImage, NULL);  
-
-//创建调度队列，用来根据已加载的图片进行纹理转换  
-CCDirector::sharedDirector()-&gt;getScheduler()-&gt;scheduleSelector(schedule_selector(CCTextureCache::addImageAsyncCallBack), this, 0, false);  
-
-void CCTextureCache::addImageAsyncCallBack(float dt)  
-{  
-    //...  
-    CCTexture2D *texture = new CCTexture2D();   //开辟纹理空间  
-#if 0 //TODO: (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)  
-    texture-&gt;initWithImage(pImage, kCCResolutioniPhone);  
-#else  
-    texture-&gt;initWithImage(pImage);      //使用CCImage初始化纹理  
-#endif  
-
-#if CC_ENABLE_CACHE_TEXTURE_DATA  
-
-   VolatileTexture::addImageTexture(texture, filename, pImageInfo-&gt;imageType);  
-#endif  
-    //...将加入autorelease，进行加载后的回调函数的调用，释放相关资源  
-}  
-</code></pre>
-
-<p><strong>2.2.plist加载的原理</strong></p>
-
-<p>之前使用plist是这样子的：</p>
-
-<pre><code>void CCSpriteFrameCache::addSpriteFramesWithFile(const char *pszPlist)//传入plist文件即可  
-</code></pre>
-
-<p>在它的实现中，发现了这么一句：</p>
-
-<pre><code>CCTexture2D *pTexture = CCTextureCache::sharedTextureCache()-&gt;addImage(texturePath.c_str());  
-</code></pre>
-
-<p>原来addSpriteFramesWithFile会先查找是否存在纹理，否则会在.plist的目录下寻找同名图片，然后调用同步的addImage函数来生成纹理。这也就是为什么只加载了plist，而纹理就会存在的原因了。</p>
-
-<p><strong>2.3.异步加载plist</strong></p>
-
-<p>知道了这些，那就让addSpriteFramesWithFile调用异步的addImageAsync函数就可以了，当然不需要改源码，因为CCSpriteFrameCache还提供了如下的plist加载方式：</p>
-
-<pre><code>void CCSpriteFrameCache::addSpriteFramesWithFile(const char *pszPlist, CCTexture2D *pobTexture)  
-</code></pre>
-
-<p>所以我们可以手动异步生成纹理后，在回调函数中和.plist一起传入addSpriteFramesWithFile，搞定！还记得刚开始的selector么？生成的纹理会作为参数传入这个回调函数中，完美！</p>
-
-<p><strong>2.4.注意</strong></p>
-
-<p>只要注意一点的是，在使用任何plist中的小图片时，引擎并不会为每一张小图片生成一个纹理，而是共用了大图片的纹理，同时指定了小图片的坐标和长宽。</p>
-
-<h3>3.示例</h3>
-
-<p>其中ui_text.png是大图片，raffle_b_friend.png和raffle_b_diamond.png是两张小图片。</p>
-
-<pre><code>bool CTestLayer::init()  
-{  
-    bool bRet=false;  
-    do   
-    {  
-        CC_BREAK_IF(!CCLayer::init());  
-
-        //addImage or addImageAsync中创建纹理  
-        CCTextureCache::sharedTextureCache()-&gt;addImageAsync("ui_text.png",this,callfuncO_selector(CTestLayer::showSprite));  
-
-        bRet=true;  
-    } while (0);  
-    return bRet;  
-}  
-
-void CTestLayer::showSprite(CCObject* obj)  
-{  
-    CCTexture2D* texture_ui_text=(CCTexture2D*)obj;//传入的obj即是异步生成的纹理  
-    CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;addSpriteFramesWithFile("ui_text.plist",texture_ui_text);//通过纹理和.plist文件加入CCSpriteFrameCache  
-    CCSprite* raffle_b_friend=CCSprite::createWithSpriteFrameName("raffle_b_friend.png");//尽情使用小图片吧  
-    raffle_b_friend-&gt;setPosition(ccp(100,100));  
-    this-&gt;addChild(raffle_b_friend);  
-
-    //错误，只能获取ui_text.png的纹理  
-    //CCTexture2D* raffle_b_diamond_texture=CCTextureCache::sharedTextureCache()-&gt;textureForKey("raffle_b_diamond.png");  
-    //正确，可以用这种先获取精灵帧，再从精灵帧中获取ui_text的纹理，以及大小，来构建CCSprite  
-    CCSpriteFrame* raffle_b_diamond_spriteframe=CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;spriteFrameByName("raffle_b_diamond.png");  
-    CCTexture2D* texture=raffle_b_diamond_spriteframe-&gt;getTexture();  
-    CCRect rect=raffle_b_diamond_spriteframe-&gt;getRect();  
-    CCSprite* raffle_b_diamond=CCSprite::createWithTexture(texture,rect); //如果纹理需要旋转，setRotation吧  
-    raffle_b_diamond-&gt;setRotation(false);  
-    raffle_b_diamond-&gt;setPosition(ccp(300,100));  
-    this-&gt;addChild(raffle_b_diamond);  
-}  
-</code></pre>
-
-<h3>4.效果</h3>
-
-<p>使用异步加载plist方式处理:</p>
-
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_23/1.jpg" alt="" border="0" title="效果图" /><br></br></div>
-
-
-<h3>5.源码下载</h3>
-
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6533293">下载地址</a></p>
 ]]></content>
   </entry>
   
