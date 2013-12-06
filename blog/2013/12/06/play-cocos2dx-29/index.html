@@ -1,0 +1,401 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>【玩转cocos2d-x之二十九】利用CCClipingNode做游戏遮罩 - Jacky's Blog</title>
+  <meta name="author" content="FuSijie">
+
+  
+  <meta name="description" content="新手引导是游戏中必备的（除了奇葩的MT用一段动画开始），也是玩家对游戏的第一印象，重要性不言而喻。一般采用的遮罩的形式来突出引导重点，同时屏蔽其他功能。这里简单的介绍一下游戏遮罩的实现，并给出一个示例。 1.CCClipingNode CCClipingNode是一个可裁剪节点，简单理解： （1） &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jacky's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '45386223']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jacky's Blog</a></h1>
+  
+    <h2>Stay Hungry,Stay Foolish!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.fusijie.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/projects">Projects</a></li>
+  <li><a href="/tag-cloud/">Tags</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">【玩转cocos2d-x之二十九】利用CCClipingNode做游戏遮罩</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-06T10:41:00+08:00" pubdate data-updated="true">Dec 6<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>新手引导是游戏中必备的（除了奇葩的MT用一段动画开始），也是玩家对游戏的第一印象，重要性不言而喻。一般采用的遮罩的形式来突出引导重点，同时屏蔽其他功能。这里简单的介绍一下游戏遮罩的实现，并给出一个示例。</p>
+
+<h3>1.CCClipingNode</h3>
+
+<p>CCClipingNode是一个可裁剪节点，简单理解：</p>
+
+<p><em>（1）首先它是一个节点，继承于CCNode，所以它可以像普通节点一样放入CCLayer，CCScene，CCNode中。</em></p>
+
+<p><em>（2）作为节点，它就可以用作容器，承载其他节点和精灵。我把它叫底板。</em></p>
+
+<p><em>（3）如果想要对一个节点进行裁剪，那需要给出裁剪的部分，这个裁剪区域，我把它叫模版。</em></p>
+
+<!-- more -->
+
+
+<p>所以CCClipingNode裁剪节点在组成上=底板+模版，而在显示上=底板-模版。不知道这样解释会不会好理解一点。</p>
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_29/1.jpg" alt="" border="0" title="CCClipingNode" /><br></br></div>
+
+
+<h3>2.API</h3>
+
+<p>CCClipingNode的使用还是比较简单的，至于显示底板还是模版，alpha值的设定，这些也不好说清楚，自己多试几次就知道是什么意思该怎么用了。</p>
+
+<pre><code>//不带模版地创建一个裁剪节点  
+static CCClippingNode* create();  
+
+//使用一个节点作为模版创建裁剪节点  
+static CCClippingNode* create(CCNode *pStencil);  
+
+//不带模版地初始化一个裁剪节点  
+virtual bool init();  
+
+//使用一个节点作为模版初始化裁剪节点  
+virtual bool init(CCNode *pStencil);  
+
+//设置/获取模版，注意模版需要retain！  
+CCNode* getStencil() const;  
+void setStencil(CCNode *pStencil);  
+
+//设置alpha值（0~1），这个很重要，裁剪是按像素抠图的，所以只有大于这个alpha值的模版像素才会被画出来  
+//默认是1，也就是完全裁剪。  
+GLfloat getAlphaThreshold() const;  
+void setAlphaThreshold(GLfloat fAlphaThreshold);  
+
+//默认是false，用于设置显示底板还是模版  
+bool isInverted() const;  
+void setInverted(bool bInverted);  
+</code></pre>
+
+<h3>3.示例</h3>
+
+<p>在init中实现：</p>
+
+<pre><code>CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+
+CCSprite* background = CCSprite::create("HelloWorld.png");//创建背景  
+background-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
+this-&gt;addChild(background,kTagBackground);  
+
+clip=CCClippingNode::create();//创建裁剪节点，成员变量  
+clip-&gt;setInverted(true);//设置底板可见  
+clip-&gt;setAlphaThreshold(0.0f);//设置alpha为0  
+this-&gt;addChild(clip,kTagClipNode);//添加裁剪节点  
+
+CCLayerColor* back=CCLayerColor::create(ccc4(0,0,0,200));  
+clip-&gt;addChild(back);//为裁剪节点添加一个黑色带透明（看起了是灰色）的底板  
+
+//模版如果要在其他地方使用要记得retain！  
+
+//第一种：以下模型是drawnode遮罩  
+//CCDrawNode* front=CCDrawNode::create();  
+//ccColor4F yellow = {1, 1, 0, 1};  
+//CCPoint rect[4]={ccp(-30,30),ccp(30,30),ccp(30,-30),ccp(-30,-30)};  
+//front-&gt;drawPolygon(rect, 4, yellow, 0, yellow);  
+//front-&gt;setPosition(ccp(visibleSize.width/2, visibleSize.height/2));  
+//clip-&gt;setStencil(front);  
+
+//第二种：以下模型是带图像遮罩  
+CCNode* nodef=CCNode::create();//创建模版  
+CCSprite* close=CCSprite::create("CloseSelected.png");//这里使用的是close的那个图标，所以注意观察效果图2  
+nodef-&gt;addChild(close);//在模版上添加精灵  
+nodef-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
+clip-&gt;setStencil(nodef);//设置模版  
+
+tip = CCSprite::create("tip.png");//一些引导提示  
+tip-&gt;setScale(0.5f);  
+tip-&gt;setRotation(60);  
+tip-&gt;setPosition(ccp(visibleSize.width/2-70,visibleSize.height/2+50));  
+this-&gt;addChild(tip,kTagTip);  
+
+tip-&gt;runAction(CCRepeatForever::create(CCSequence::create(CCScaleBy::create(0.25f,0.95f),CCScaleTo::create(0.25f,0.5),NULL)));  
+
+this-&gt;setTouchEnabled(true);//触摸有效，落点正确时移除裁剪节点和提示，相关处理请看源码  
+</code></pre>
+
+<h3>4.效果</h3>
+
+<p>两种效果：</p>
+
+<div align="center"><img src="http://img.blog.csdn.net/20131206102326578" alt="" border="0" title="1" /><br></br></div>
+
+
+
+
+<div align="center"><img src="http://img.blog.csdn.net/20131206102337937" alt="" border="0" title="2" /><br></br></div>
+
+
+<h3>5.源码</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6667189">下载地址</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29/'><a href="http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29/">http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">FuSijie</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-06T10:41:00+08:00" pubdate data-updated="true">Dec 6<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cocos2d-x/'>cocos2d-x</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+      <!-- JiaThis Button BEGIN -->
+  <section>
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share?uid=1859056" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1859056" charset="utf-8"></script>
+</section>
+<!-- JiaThis Button END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+	    <p></p>
+        <a class="basic-alignment left" href="/blog/2013/12/03/play-cocos2dx-28/" title="Previous Post: 【玩转cocos2d-x之二十八】cocos2d-x的消息和数据传递">&laquo; 【玩转cocos2d-x之二十八】cocos2d-x的消息和数据传递</a>
+      
+      
+    </p>
+  </footer>
+</article>
+  <section>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"fusijie"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->  
+</section>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+		<br>
+		<center><a target="_blank" href="http://blog.csdn.net/jackystudio" style="text-decoration:none" ><img src="\images\aboutme.png" border=0></img></a></center>
+		</br>
+</section><section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (29)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/12/06/play-cocos2dx-29/">【玩转cocos2d-x之二十九】利用CCClipingNode做游戏遮罩</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/03/play-cocos2dx-28/">【玩转cocos2d-x之二十八】cocos2d-x的消息和数据传递</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/28/play-cocos2dx-27/">【玩转cocos2d-x之二十七】CCSequence不能执行CCRepeatForever</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/26/play-cocos2dx-26/">【玩转cocos2d-x之二十六】数据结构CCDictionary</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/25/play-cocos2dx-25/">【玩转cocos2d-x之二十五】数据结构CCArray</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+  
+<section>
+  <h1>Sina Weibo</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="450" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=450&fansRow=0&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=0&uid=1307211523&verifier=3619ee9c">
+      </iframe>
+    </li>
+  </ul>
+</section>
+ 
+<section>
+<h1>Visitor</h1>
+<div>
+	<p></p>
+    <center>
+	<a href="http://info.flagcounter.com/3pF8"><img src="http://s08.flagcounter.com/count/3pF8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_12/viewers_3/labels_0/pageviews_1/flags_0/" alt="Flag Counter" border="0"></a>
+	</center>
+</div>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - FuSijie -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

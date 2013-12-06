@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: CCNotificationCenter | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/ccnotificationcenter/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-03T10:09:30+08:00</updated>
+  <updated>2013-12-06T10:56:48+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -150,7 +150,12 @@ BLayer::~BLayer(void)
 
 <p><em>（3）局部变量的传递，注意到上例，传递的是CCString的一个局部变量（但还是要autorelease），从CCNotificationCenter的实现上来看，这是没有问题的，因为数据是在postNotification被调用的，也就是整个函数体并没结束，数据不会被销毁。</em></p>
 
-<h3>6.源码下载</h3>
+<h3>6.效果图</h3>
+
+<div align="center"><img src="http://img.blog.csdn.net/20131204150850171" alt="" border="0" title="效果" /><br></br></div>
+
+
+<h3>7.源码下载</h3>
 
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6647453">下载地址</a></p>
 ]]></content>

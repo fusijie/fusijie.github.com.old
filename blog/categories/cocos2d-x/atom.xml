@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/blog/categories/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-03T10:09:30+08:00</updated>
+  <updated>2013-12-06T10:56:48+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,125 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十九】利用CCClipingNode做游戏遮罩]]></title>
+    <link href="http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29/"/>
+    <updated>2013-12-06T10:41:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29</id>
+    <content type="html"><![CDATA[<p>新手引导是游戏中必备的（除了奇葩的MT用一段动画开始），也是玩家对游戏的第一印象，重要性不言而喻。一般采用的遮罩的形式来突出引导重点，同时屏蔽其他功能。这里简单的介绍一下游戏遮罩的实现，并给出一个示例。</p>
+
+<h3>1.CCClipingNode</h3>
+
+<p>CCClipingNode是一个可裁剪节点，简单理解：</p>
+
+<p><em>（1）首先它是一个节点，继承于CCNode，所以它可以像普通节点一样放入CCLayer，CCScene，CCNode中。</em></p>
+
+<p><em>（2）作为节点，它就可以用作容器，承载其他节点和精灵。我把它叫底板。</em></p>
+
+<p><em>（3）如果想要对一个节点进行裁剪，那需要给出裁剪的部分，这个裁剪区域，我把它叫模版。</em></p>
+
+<!-- more -->
+
+
+<p>所以CCClipingNode裁剪节点在组成上=底板+模版，而在显示上=底板-模版。不知道这样解释会不会好理解一点。</p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_29/1.jpg" alt="" border="0" title="CCClipingNode" /><br></br></div>
+
+
+<h3>2.API</h3>
+
+<p>CCClipingNode的使用还是比较简单的，至于显示底板还是模版，alpha值的设定，这些也不好说清楚，自己多试几次就知道是什么意思该怎么用了。</p>
+
+<pre><code>//不带模版地创建一个裁剪节点  
+static CCClippingNode* create();  
+
+//使用一个节点作为模版创建裁剪节点  
+static CCClippingNode* create(CCNode *pStencil);  
+
+//不带模版地初始化一个裁剪节点  
+virtual bool init();  
+
+//使用一个节点作为模版初始化裁剪节点  
+virtual bool init(CCNode *pStencil);  
+
+//设置/获取模版，注意模版需要retain！  
+CCNode* getStencil() const;  
+void setStencil(CCNode *pStencil);  
+
+//设置alpha值（0~1），这个很重要，裁剪是按像素抠图的，所以只有大于这个alpha值的模版像素才会被画出来  
+//默认是1，也就是完全裁剪。  
+GLfloat getAlphaThreshold() const;  
+void setAlphaThreshold(GLfloat fAlphaThreshold);  
+
+//默认是false，用于设置显示底板还是模版  
+bool isInverted() const;  
+void setInverted(bool bInverted);  
+</code></pre>
+
+<h3>3.示例</h3>
+
+<p>在init中实现：</p>
+
+<pre><code>CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+
+CCSprite* background = CCSprite::create("HelloWorld.png");//创建背景  
+background-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
+this-&gt;addChild(background,kTagBackground);  
+
+clip=CCClippingNode::create();//创建裁剪节点，成员变量  
+clip-&gt;setInverted(true);//设置底板可见  
+clip-&gt;setAlphaThreshold(0.0f);//设置alpha为0  
+this-&gt;addChild(clip,kTagClipNode);//添加裁剪节点  
+
+CCLayerColor* back=CCLayerColor::create(ccc4(0,0,0,200));  
+clip-&gt;addChild(back);//为裁剪节点添加一个黑色带透明（看起了是灰色）的底板  
+
+//模版如果要在其他地方使用要记得retain！  
+
+//第一种：以下模型是drawnode遮罩  
+//CCDrawNode* front=CCDrawNode::create();  
+//ccColor4F yellow = {1, 1, 0, 1};  
+//CCPoint rect[4]={ccp(-30,30),ccp(30,30),ccp(30,-30),ccp(-30,-30)};  
+//front-&gt;drawPolygon(rect, 4, yellow, 0, yellow);  
+//front-&gt;setPosition(ccp(visibleSize.width/2, visibleSize.height/2));  
+//clip-&gt;setStencil(front);  
+
+//第二种：以下模型是带图像遮罩  
+CCNode* nodef=CCNode::create();//创建模版  
+CCSprite* close=CCSprite::create("CloseSelected.png");//这里使用的是close的那个图标，所以注意观察效果图2  
+nodef-&gt;addChild(close);//在模版上添加精灵  
+nodef-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
+clip-&gt;setStencil(nodef);//设置模版  
+
+tip = CCSprite::create("tip.png");//一些引导提示  
+tip-&gt;setScale(0.5f);  
+tip-&gt;setRotation(60);  
+tip-&gt;setPosition(ccp(visibleSize.width/2-70,visibleSize.height/2+50));  
+this-&gt;addChild(tip,kTagTip);  
+
+tip-&gt;runAction(CCRepeatForever::create(CCSequence::create(CCScaleBy::create(0.25f,0.95f),CCScaleTo::create(0.25f,0.5),NULL)));  
+
+this-&gt;setTouchEnabled(true);//触摸有效，落点正确时移除裁剪节点和提示，相关处理请看源码  
+</code></pre>
+
+<h3>4.效果</h3>
+
+<p>两种效果：</p>
+
+<div align="center"><img src="http://img.blog.csdn.net/20131206102326578" alt="" border="0" title="1" /><br></br></div>
+
+
+
+
+<div align="center"><img src="http://img.blog.csdn.net/20131206102337937" alt="" border="0" title="2" /><br></br></div>
+
+
+<h3>5.源码</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6667189">下载地址</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十八】cocos2d-x的消息和数据传递]]></title>
@@ -150,7 +269,12 @@ BLayer::~BLayer(void)
 
 <p><em>（3）局部变量的传递，注意到上例，传递的是CCString的一个局部变量（但还是要autorelease），从CCNotificationCenter的实现上来看，这是没有问题的，因为数据是在postNotification被调用的，也就是整个函数体并没结束，数据不会被销毁。</em></p>
 
-<h3>6.源码下载</h3>
+<h3>6.效果图</h3>
+
+<div align="center"><img src="http://img.blog.csdn.net/20131204150850171" alt="" border="0" title="效果" /><br></br></div>
+
+
+<h3>7.源码下载</h3>
 
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6647453">下载地址</a></p>
 ]]></content>
@@ -686,85 +810,6 @@ CCArray中容量和个数并不是同一个概念。个数&lt;=容量。从添�
 <h3>7.注意</h3>
 
 <p>一般来说，CCArray不会被add到其他类，所以它的引用计数是1，而且被设置为自动释放。所以创建CCArray对象时要记得调用retain，而且在析构的时候也要调用release来释放内存。真心想吐槽。。。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之二十四】截图保存功能的实现]]></title>
-    <link href="http://www.fusijie.com/blog/2013/11/13/play-cocos2dx-24/"/>
-    <updated>2013-11-13T08:34:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/11/13/play-cocos2dx-24</id>
-    <content type="html"><![CDATA[<p>官方TestCpp有这个demo了，这里还是把它单独拖出来写一下，游戏推广的一个很重要组成就是玩家分享，所以游戏截图就起到很大作用了。截图功能通过CCRenderTexture实现。</p>
-
-<h3>1.CCRenderTexture</h3>
-
-<p>CCRenderTexture是一个通用渲染对象，可以通过构建一个CCRenderTexture对象，进而把要渲染的东西填充进去，在渲染开始前调用call函数，调用cocos的场景的visit函数对其进行渲染，渲染结束后调用end函数。CCRenderTexture继承于CCNode，所以可以简单地把渲染纹理添加到你的场景中，就像处理其它cocos中的节点一样，当然它还提供了保存功能，可以把渲染纹理保存为PNG或JPG格式。</p>
-
-<!-- more -->
-
-
-<h3>2.API</h3>
-
-<pre><code>   //创建和初始化函数  
-   static CCRenderTexture * create(int w ,int h, CCTexture2DPixelFormat eFormat, GLuint uDepthStencilFormat);  
-   static CCRenderTexture * create(int w, int h, CCTexture2DPixelFormat eFormat);  
-   static CCRenderTexture * create(int w, int h);  
-   bool initWithWidthAndHeight(int w, int h, CCTexture2DPixelFormat eFormat);  
-   bool initWithWidthAndHeight(int w, int h, CCTexture2DPixelFormat eFormat, GLuint uDepthStencilFormat);  
-
-   //开始获取  
-   void begin();  
-
-   //开始渲染时清除之前渲染的内容  
-   void beginWithClear(float r, float g, float b, float a);  
-   void beginWithClear(float r, float g, float b, float a, float depthValue);  
-   void beginWithClear(float r, float g, float b, float a, float depthValue, int stencilValue);  
-
-   //结束获取  
-   void end();  
-
-   //清除纹理  
-   void clear(float r, float g, float b, float a);  
-   void clearDepth(float depthValue);  
-   void clearStencil(int stencilValue);  
-
-   //保存纹理为图片文件，可以选择JPG/PNG格式，默认是JPEG格式，成功返回真  
-   bool saveToFile(const char *szFilePath);  
-   bool saveToFile(const char *name, tCCImageFormat format);  
-</code></pre>
-
-<h3>3.示例</h3>
-
-<p>修改HelloWorld中结束菜单的回调函数如下：</p>
-
-<pre><code>void CTestLayer::menuCloseCallback(CCObject* pSender)  
-{  
-    SaveScreenShot();  
-}  
-
-//截图功能  
-void CTestLayer::SaveScreenShot()  
-{  
-    //获取屏幕尺寸  
-    CCSize size = CCDirector::sharedDirector()-&gt;getWinSize();  
-    //使用屏幕尺寸初始化一个空的渲染纹理对象  
-    CCRenderTexture* texture = CCRenderTexture::create((int)size.width, (int)size.height);  
-    //设置位置  
-    texture-&gt;setPosition(ccp(size.width/2, size.height/2));  
-    //开始获取  
-    texture-&gt;begin();  
-    //遍历场景节点对象，填充纹理到texure中  
-    CCDirector::sharedDirector()-&gt;getRunningScene()-&gt;visit();  
-    //结束获取  
-    texture-&gt;end();  
-    //保存为PNG图，Win32/Debug目录下  
-    texture-&gt;saveToFile("screenshot.png", kCCImageFormatPNG);  
-}  
-</code></pre>
-
-<h3>4.源码下载</h3>
-
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6538305">下载地址</a></p>
 ]]></content>
   </entry>
   

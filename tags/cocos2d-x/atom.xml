@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-03T10:09:30+08:00</updated>
+  <updated>2013-12-06T10:56:48+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,125 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十九】利用CCClipingNode做游戏遮罩]]></title>
+    <link href="http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29/"/>
+    <updated>2013-12-06T10:41:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29</id>
+    <content type="html"><![CDATA[<p>新手引导是游戏中必备的（除了奇葩的MT用一段动画开始），也是玩家对游戏的第一印象，重要性不言而喻。一般采用的遮罩的形式来突出引导重点，同时屏蔽其他功能。这里简单的介绍一下游戏遮罩的实现，并给出一个示例。</p>
+
+<h3>1.CCClipingNode</h3>
+
+<p>CCClipingNode是一个可裁剪节点，简单理解：</p>
+
+<p><em>（1）首先它是一个节点，继承于CCNode，所以它可以像普通节点一样放入CCLayer，CCScene，CCNode中。</em></p>
+
+<p><em>（2）作为节点，它就可以用作容器，承载其他节点和精灵。我把它叫底板。</em></p>
+
+<p><em>（3）如果想要对一个节点进行裁剪，那需要给出裁剪的部分，这个裁剪区域，我把它叫模版。</em></p>
+
+<!-- more -->
+
+
+<p>所以CCClipingNode裁剪节点在组成上=底板+模版，而在显示上=底板-模版。不知道这样解释会不会好理解一点。</p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_29/1.jpg" alt="" border="0" title="CCClipingNode" /><br></br></div>
+
+
+<h3>2.API</h3>
+
+<p>CCClipingNode的使用还是比较简单的，至于显示底板还是模版，alpha值的设定，这些也不好说清楚，自己多试几次就知道是什么意思该怎么用了。</p>
+
+<pre><code>//不带模版地创建一个裁剪节点  
+static CCClippingNode* create();  
+
+//使用一个节点作为模版创建裁剪节点  
+static CCClippingNode* create(CCNode *pStencil);  
+
+//不带模版地初始化一个裁剪节点  
+virtual bool init();  
+
+//使用一个节点作为模版初始化裁剪节点  
+virtual bool init(CCNode *pStencil);  
+
+//设置/获取模版，注意模版需要retain！  
+CCNode* getStencil() const;  
+void setStencil(CCNode *pStencil);  
+
+//设置alpha值（0~1），这个很重要，裁剪是按像素抠图的，所以只有大于这个alpha值的模版像素才会被画出来  
+//默认是1，也就是完全裁剪。  
+GLfloat getAlphaThreshold() const;  
+void setAlphaThreshold(GLfloat fAlphaThreshold);  
+
+//默认是false，用于设置显示底板还是模版  
+bool isInverted() const;  
+void setInverted(bool bInverted);  
+</code></pre>
+
+<h3>3.示例</h3>
+
+<p>在init中实现：</p>
+
+<pre><code>CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+
+CCSprite* background = CCSprite::create("HelloWorld.png");//创建背景  
+background-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
+this-&gt;addChild(background,kTagBackground);  
+
+clip=CCClippingNode::create();//创建裁剪节点，成员变量  
+clip-&gt;setInverted(true);//设置底板可见  
+clip-&gt;setAlphaThreshold(0.0f);//设置alpha为0  
+this-&gt;addChild(clip,kTagClipNode);//添加裁剪节点  
+
+CCLayerColor* back=CCLayerColor::create(ccc4(0,0,0,200));  
+clip-&gt;addChild(back);//为裁剪节点添加一个黑色带透明（看起了是灰色）的底板  
+
+//模版如果要在其他地方使用要记得retain！  
+
+//第一种：以下模型是drawnode遮罩  
+//CCDrawNode* front=CCDrawNode::create();  
+//ccColor4F yellow = {1, 1, 0, 1};  
+//CCPoint rect[4]={ccp(-30,30),ccp(30,30),ccp(30,-30),ccp(-30,-30)};  
+//front-&gt;drawPolygon(rect, 4, yellow, 0, yellow);  
+//front-&gt;setPosition(ccp(visibleSize.width/2, visibleSize.height/2));  
+//clip-&gt;setStencil(front);  
+
+//第二种：以下模型是带图像遮罩  
+CCNode* nodef=CCNode::create();//创建模版  
+CCSprite* close=CCSprite::create("CloseSelected.png");//这里使用的是close的那个图标，所以注意观察效果图2  
+nodef-&gt;addChild(close);//在模版上添加精灵  
+nodef-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
+clip-&gt;setStencil(nodef);//设置模版  
+
+tip = CCSprite::create("tip.png");//一些引导提示  
+tip-&gt;setScale(0.5f);  
+tip-&gt;setRotation(60);  
+tip-&gt;setPosition(ccp(visibleSize.width/2-70,visibleSize.height/2+50));  
+this-&gt;addChild(tip,kTagTip);  
+
+tip-&gt;runAction(CCRepeatForever::create(CCSequence::create(CCScaleBy::create(0.25f,0.95f),CCScaleTo::create(0.25f,0.5),NULL)));  
+
+this-&gt;setTouchEnabled(true);//触摸有效，落点正确时移除裁剪节点和提示，相关处理请看源码  
+</code></pre>
+
+<h3>4.效果</h3>
+
+<p>两种效果：</p>
+
+<div align="center"><img src="http://img.blog.csdn.net/20131206102326578" alt="" border="0" title="1" /><br></br></div>
+
+
+
+
+<div align="center"><img src="http://img.blog.csdn.net/20131206102337937" alt="" border="0" title="2" /><br></br></div>
+
+
+<h3>5.源码</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6667189">下载地址</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十二】plist解析工具：Anti_TexturePacker]]></title>
@@ -659,149 +778,6 @@ return true;
 <p>（13）<em>tools</em>，cocos2dx的工具集，创建项目也在里面。</p>
 
 <p>（14）剩下一些各平台的编译文件，创建文件，以及cocos2dx的更新说明，作者说明等等。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之一】V2.2.0版本开发环境配置]]></title>
-    <link href="http://www.fusijie.com/blog/2013/10/08/play-cocos2dx-01/"/>
-    <updated>2013-10-08T16:18:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/10/08/play-cocos2dx-01</id>
-    <content type="html"><![CDATA[<p>现在cocos2d-x处在上升期，各个版本的变化还是比较大的，单从环境配置来看，从v2.0到v2.2就变化了不少。今天配置了一下V2.2.0环境，创建项目，并进行交叉编译，发现比之前麻烦了不少。这里稍微记录一下。
-3.0版本出来了，大概看了下目录和2.2的差不多，环境配置也基本一样。</p>
-
-<h3>1.VS，VA，Cygwin，Java，Eclipse，ADT，SDK，NDK</h3>
-
-<p>这里就不重复啰嗦这些了，<a href="http://blog.csdn.net/jackystudio/article/details/11516435">传送门</a>。不过这里需要使用VS2010以上版本。</p>
-
-<p>这里强烈建议NDK版本为r8c或者r9，试过r7，r8都编译不过。。。</p>
-
-<!-- more -->
-
-
-<h3>2.安装cocos2d-x</h3>
-
-<p>这里使用的是V2.2.0版本，<a href="http://www.cocos2d-x.org/download">传送门</a>，下载完解压即可，运行build-win32.bat进行编译。</p>
-
-<h3>3.配置python</h3>
-
-<p>因为之前没用过python，而现在cocos2d-x的项目创建已经取消了VS模版，改用python创建，所以相比之前用起来还是比较坑爹的。</p>
-
-<p><strong>3.1.清除原有的VS模版</strong></p>
-
-<p>如果之前安装过其他cocos2d-x版本，有可能在VS上会创建cocos2d-x的模版，就会造成在VS中新建项目的时候会创建旧版本的cocos2d-x模版，而使用的却是新版本的cocos2d-x引擎，导致编译出错，没注意的话还真不好找原因。</p>
-
-<p>清除方法：</p>
-
-<p><em>（1）进入目录，VS2010安装路径：</em></p>
-
-<pre><code>VS2010: C:\Program Files\Microsoft Visual Studio 10.0\VC\vcprojects\  
-VC2010Express: C:\Program Files\Microsoft Visual Studio 10.0\VC\Express\VCProjects. 
-</code></pre>
-
-<p><em>（2）删除cocos2d-x文件夹，删除以CCAppWiz和CCXAppWiz开头的两个文件，删除cocos2d-x的图标</em></p>
-
-<p><strong>3.2.安装python</strong></p>
-
-<p>我这里使用的是2.7.5版本，<a href="http://www.python.org/download/releases/2.7.5/">传送门</a>， Windows X86 msi installer。不同的python版本可能会导致后面运行出错。所以建议使用此版本。</p>
-
-<p><strong>3.3.设置环境变量</strong></p>
-
-<p>用过Java的都应该很熟了吧。</p>
-
-<p>我的电脑→右键→属性→高级→环境变量→系统变量→path→加入你的python安装目录。测试一下：进入cmd，输入python，不会提示“不是外部或内部命令balabala&hellip;”就OK。</p>
-
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_01/1.jpg" alt="" border="0" title="设置环境变量" /><br></br></div>
-
-
-<h3>4.创建项目</h3>
-
-<p>进入cocos2d-x-2.2.0\tools\project-creator目录，可以在cmd下执行：</p>
-
-<p><code>python create_project.py -project Test -package com.jacky.test -language cpp//其中Test为工程名称，com.jacky.test为包名</code></p>
-
-<p>也可以创建一个批处理文件.bat，放在project-creator目录下，内容为：</p>
-
-<pre><code>@echo off  
-set /p projectName=请输入项目名称：  
-if "%projectName%"=="" goto inputError  
-set /p packageName=请输入包标示名：  
-if "%packageName%"=="" goto inputError  
-create_project.py -project %projectName% -package %packageName% -language cpp  
-pause  
-exit  
-:inputError  
-@echo 项目名称或者包标示名不能为空！  
-pause  
-</code></pre>
-
-<p>双击运行它就可以了。效果如下：</p>
-
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_01/2.jpg" alt="" border="0" title="创建项目" /><br></br></div>
-
-
-<p>然后在cocos2d-x目录下的project就可以看到Test文件夹，里面包含了各个平台的项目。</p>
-
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_01/3.jpg" alt="" border="0" title="各平台项目" /><br></br></div>
-
-
-<h3>5.导入eclipse，生成apk</h3>
-
-<p><strong>5.1.使用Eclipse NDK交叉编译</strong></p>
-
-<p>这里可以直接采用Eclipse NDK来交叉编译，具体方法为：</p>
-
-<p>（1）导入proj.android项目。</p>
-
-<p>（2）拷贝cocos2dx目录\cocos2dx\platform\android\java\src目录下的org包到android项目的src下。</p>
-
-<p>（3）修改项目属性C/C++ builder的build command和build directory。分别为NDK目录下的ndk-builder和当前项目文件夹。</p>
-
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_01/4.jpg" alt="" border="0" title="设置C++ build" /><br></br></div>
-
-
-<p>（4）添加C/C++→Builder→Environment→NDK_MODULE_PATH，值为cocos2dx目录和cocos2dx目录\cocos2dx\platform\third_party\android\prebuilt。</p>
-
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_01/5.jpg" alt="" border="0" title="设置NDK_MODULE_PATH" /><br></br></div>
-
-
-<p>（5）拷贝Resource目录下的资源到安卓目录下的assets中（如果使用Cygwin编译就不需要拷贝资源，build_native.sh帮我们做了这一步）。</p>
-
-<p>（6）build project ，run as andorid app即可。</p>
-
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_01/6.jpg" alt="" border="0" title="Eclipse编译" /><br></br></div>
-
-
-<p><strong>5.2.Cygwin编译</strong></p>
-
-<p>这个请参见<a href="http://blog.csdn.net/jackystudio/article/details/11516435">传送门</a>。编译完成后导入Eclipse即可。</p>
-
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_01/7.jpg" alt="" border="0" title="CygWin编译" /><br></br></div>
-
-
-<p>如果提示需要定义NDK_ROOT，那么在cygwin安装目录\home\username.bash_profile文件末尾添加：</p>
-
-<pre><code>NDK_ROOT=/cygdrive/d/eclipse/android-ndk-r9  
-export NDK_ROOT   
-</code></pre>
-
-<h3>6.本文环境</h3>
-
-<p>（1）VS2010</p>
-
-<p>（2）VA_X</p>
-
-<p>（3）Cygwin</p>
-
-<p>（4）Jdk1.7.0_11</p>
-
-<p>（5）Eclipse Juno</p>
-
-<p>（6）Andorid SDK2.2</p>
-
-<p>（7）Adroid-ndk-r9</p>
-
-<p>（8）cocos2dx-2.2.0</p>
 ]]></content>
   </entry>
   

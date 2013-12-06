@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-03T10:09:30+08:00</updated>
+  <updated>2013-12-06T10:56:48+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,125 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十九】利用CCClipingNode做游戏遮罩]]></title>
+    <link href="http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29/"/>
+    <updated>2013-12-06T10:41:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29</id>
+    <content type="html"><![CDATA[<p>新手引导是游戏中必备的（除了奇葩的MT用一段动画开始），也是玩家对游戏的第一印象，重要性不言而喻。一般采用的遮罩的形式来突出引导重点，同时屏蔽其他功能。这里简单的介绍一下游戏遮罩的实现，并给出一个示例。</p>
+
+<h3>1.CCClipingNode</h3>
+
+<p>CCClipingNode是一个可裁剪节点，简单理解：</p>
+
+<p><em>（1）首先它是一个节点，继承于CCNode，所以它可以像普通节点一样放入CCLayer，CCScene，CCNode中。</em></p>
+
+<p><em>（2）作为节点，它就可以用作容器，承载其他节点和精灵。我把它叫底板。</em></p>
+
+<p><em>（3）如果想要对一个节点进行裁剪，那需要给出裁剪的部分，这个裁剪区域，我把它叫模版。</em></p>
+
+<!-- more -->
+
+
+<p>所以CCClipingNode裁剪节点在组成上=底板+模版，而在显示上=底板-模版。不知道这样解释会不会好理解一点。</p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_29/1.jpg" alt="" border="0" title="CCClipingNode" /><br></br></div>
+
+
+<h3>2.API</h3>
+
+<p>CCClipingNode的使用还是比较简单的，至于显示底板还是模版，alpha值的设定，这些也不好说清楚，自己多试几次就知道是什么意思该怎么用了。</p>
+
+<pre><code>//不带模版地创建一个裁剪节点  
+static CCClippingNode* create();  
+
+//使用一个节点作为模版创建裁剪节点  
+static CCClippingNode* create(CCNode *pStencil);  
+
+//不带模版地初始化一个裁剪节点  
+virtual bool init();  
+
+//使用一个节点作为模版初始化裁剪节点  
+virtual bool init(CCNode *pStencil);  
+
+//设置/获取模版，注意模版需要retain！  
+CCNode* getStencil() const;  
+void setStencil(CCNode *pStencil);  
+
+//设置alpha值（0~1），这个很重要，裁剪是按像素抠图的，所以只有大于这个alpha值的模版像素才会被画出来  
+//默认是1，也就是完全裁剪。  
+GLfloat getAlphaThreshold() const;  
+void setAlphaThreshold(GLfloat fAlphaThreshold);  
+
+//默认是false，用于设置显示底板还是模版  
+bool isInverted() const;  
+void setInverted(bool bInverted);  
+</code></pre>
+
+<h3>3.示例</h3>
+
+<p>在init中实现：</p>
+
+<pre><code>CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+
+CCSprite* background = CCSprite::create("HelloWorld.png");//创建背景  
+background-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
+this-&gt;addChild(background,kTagBackground);  
+
+clip=CCClippingNode::create();//创建裁剪节点，成员变量  
+clip-&gt;setInverted(true);//设置底板可见  
+clip-&gt;setAlphaThreshold(0.0f);//设置alpha为0  
+this-&gt;addChild(clip,kTagClipNode);//添加裁剪节点  
+
+CCLayerColor* back=CCLayerColor::create(ccc4(0,0,0,200));  
+clip-&gt;addChild(back);//为裁剪节点添加一个黑色带透明（看起了是灰色）的底板  
+
+//模版如果要在其他地方使用要记得retain！  
+
+//第一种：以下模型是drawnode遮罩  
+//CCDrawNode* front=CCDrawNode::create();  
+//ccColor4F yellow = {1, 1, 0, 1};  
+//CCPoint rect[4]={ccp(-30,30),ccp(30,30),ccp(30,-30),ccp(-30,-30)};  
+//front-&gt;drawPolygon(rect, 4, yellow, 0, yellow);  
+//front-&gt;setPosition(ccp(visibleSize.width/2, visibleSize.height/2));  
+//clip-&gt;setStencil(front);  
+
+//第二种：以下模型是带图像遮罩  
+CCNode* nodef=CCNode::create();//创建模版  
+CCSprite* close=CCSprite::create("CloseSelected.png");//这里使用的是close的那个图标，所以注意观察效果图2  
+nodef-&gt;addChild(close);//在模版上添加精灵  
+nodef-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
+clip-&gt;setStencil(nodef);//设置模版  
+
+tip = CCSprite::create("tip.png");//一些引导提示  
+tip-&gt;setScale(0.5f);  
+tip-&gt;setRotation(60);  
+tip-&gt;setPosition(ccp(visibleSize.width/2-70,visibleSize.height/2+50));  
+this-&gt;addChild(tip,kTagTip);  
+
+tip-&gt;runAction(CCRepeatForever::create(CCSequence::create(CCScaleBy::create(0.25f,0.95f),CCScaleTo::create(0.25f,0.5),NULL)));  
+
+this-&gt;setTouchEnabled(true);//触摸有效，落点正确时移除裁剪节点和提示，相关处理请看源码  
+</code></pre>
+
+<h3>4.效果</h3>
+
+<p>两种效果：</p>
+
+<div align="center"><img src="http://img.blog.csdn.net/20131206102326578" alt="" border="0" title="1" /><br></br></div>
+
+
+
+
+<div align="center"><img src="http://img.blog.csdn.net/20131206102337937" alt="" border="0" title="2" /><br></br></div>
+
+
+<h3>5.源码</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6667189">下载地址</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29/'><a href="http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29/">http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十八】cocos2d-x的消息和数据传递]]></title>
@@ -150,7 +269,12 @@ BLayer::~BLayer(void)
 
 <p><em>（3）局部变量的传递，注意到上例，传递的是CCString的一个局部变量（但还是要autorelease），从CCNotificationCenter的实现上来看，这是没有问题的，因为数据是在postNotification被调用的，也就是整个函数体并没结束，数据不会被销毁。</em></p>
 
-<h3>6.源码下载</h3>
+<h3>6.效果图</h3>
+
+<div align="center"><img src="http://img.blog.csdn.net/20131204150850171" alt="" border="0" title="效果" /><br></br></div>
+
+
+<h3>7.源码下载</h3>
 
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6647453">下载地址</a></p>
 
@@ -778,7 +902,7 @@ void CTestLayer::SaveScreenShot()
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之二十三】cocos2d-x多线程和同步03]]></title>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十三】多线程和同步03-图片异步加载]]></title>
     <link href="http://www.fusijie.com/blog/2013/11/11/play-cocos2dx-23/"/>
     <updated>2013-11-11T11:22:00+08:00</updated>
     <id>http://www.fusijie.com/blog/2013/11/11/play-cocos2dx-23</id>
@@ -953,7 +1077,7 @@ void CTestLayer::showSprite(CCObject* obj)
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之二十二】cocos2d-x多线程和同步02]]></title>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十二】多线程和同步02-售票]]></title>
     <link href="http://www.fusijie.com/blog/2013/11/05/play-cocos2dx-22/"/>
     <updated>2013-11-05T11:12:00+08:00</updated>
     <id>http://www.fusijie.com/blog/2013/11/05/play-cocos2dx-22</id>
@@ -1175,7 +1299,7 @@ B Sell 1
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之二十一】cocos2d-x多线程和同步01]]></title>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十一】多线程和同步01-pthread库]]></title>
     <link href="http://www.fusijie.com/blog/2013/11/04/play-cocos2dx-21/"/>
     <updated>2013-11-04T11:01:00+08:00</updated>
     <id>http://www.fusijie.com/blog/2013/11/04/play-cocos2dx-21</id>
@@ -2590,92 +2714,6 @@ CCPoint wp2=big-&gt;convertToWorldSpace(little-&gt;getPosition());//wp2(100,100)
 <pre><code>CCPoint np1=big-&gt;convertToNodeSpace(ccp(200,200));//np1(150,150)  
 CCPoint np2=little-&gt;convertToNodeSpace(ccp(200,200));//np2(100,100)&lt;p class='post-footer'&gt;&amp;nbsp;原文地址：&lt;a href='http://www.fusijie.com/blog/2013/10/17/play-cocos2dx-10/'&gt;http://www.fusijie.com/blog/2013/10/17/play-cocos2dx-10/&lt;/a&gt;&lt;br/&gt;&amp;nbsp;版权声明：自由转载-非商用-非衍生-保持署名| &lt;a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'&gt;Creative Commons BY-NC-ND 3.0&lt;/a&gt;&lt;/p&gt;
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之九】动作类CCAction]]></title>
-    <link href="http://www.fusijie.com/blog/2013/10/16/play-cocos2dx-09/"/>
-    <updated>2013-10-16T14:33:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/10/16/play-cocos2dx-09</id>
-    <content type="html"><![CDATA[<p>精灵也出来了，但是不会动的精灵是木有用的。。。CCAction就是负责来解决精灵运动的问题。</p>
-
-<h3>1.概况</h3>
-
-<p>CCAction直接从CCObject继承而来，注意它代表的是一个动作，是动词。精灵执行了这个动作，而不是名词。CCAction本身并没有什么功能，主要是定义了一些通用函数和虚函数让子类实现多态性。</p>
-
-<!-- more -->
-
-
-
-
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_09/1.jpg" alt="" border="0" title="CCAction" /><br></br></div>
-
-
-<h3>2.接口</h3>
-
-<pre><code>//返回一个描述  
-const char* description();  
-
-//返回动作是否结束  
-virtual bool isDone(void);  
-
-//在动作开始前调用，需要设置目标精灵  
-virtual void startWithTarget(CCNode *pTarget);  
-
-//每帧调用，time在0~1之间，0代表动作刚开始，0.5代表动作执行一半，1代表动作结束  
-virtual void update(float time);  
-
-//返回/设置目标节点  
-CCNode* getTarget(void);  
-void setTarget(CCNode *pTarget);  
-
-//获取/设置上一个节点  
-CCNode* getOriginalTarget(void);  
-void setOriginalTarget(CCNode *pOriginalTarget);  
-
-//获取/设置标签  
-int getTag(void);  
-void setTag(int nTag);  
-
-//创建动作静态方法  
-static CCAction* create();  
-</code></pre>
-
-<h3>3.CCFollow</h3>
-
-<p>CCFollow跟随动作，继承于CCAction，可以实现节点跟随另一个节点动作。它内部封装了一个boundary，也就是跟随范围，初始为CCRectZero。</p>
-
-<pre><code>//创建一个CCFollow对象，create实际上调用了initWithTarget  
-static CCFollow* create(CCNode *pFollowedNode, const CCRect&amp; rect = CCRectZero);  
-bool initWithTarget(CCNode *pFollowedNode, const CCRect&amp; rect = CCRectZero);  
-</code></pre>
-
-<h3>4.CCSpeed</h3>
-
-<p>CCSpeed可调整速度动作类，内部封装了一个速度值，CCSpeed使用很简单，就是传入一个动作和速度，在内部重新copy一个新的动作返回。</p>
-
-<pre><code>//创建一个可变速度动作类，传入速度值  
-static CCSpeed* create(CCActionInterval* pAction, float fSpeed);  
-</code></pre>
-
-<h3>5.CCFiniteTimeAction</h3>
-
-<p>CCFiniteTimeAction有限次动作执行类，继承于CCAction，它有两个子类CCActionInstant和CCActionInterval，前者代表瞬时动作，也就是这个动作基本不需要时间马上就能完成，而后者代表延时，这个动作需要一段时间来运行。它的子类说明看上图吧。
-相比CCAction，它多了一个m_fDuration属性，表示持续时间。</p>
-
-<pre><code>//获取/设置动作持续时间  
-float getDuration(void);  
-void setDuration(float duration);  
-
-//反转动作，类似于倒带效果，返回一个新的动作  
-virtual CCFiniteTimeAction* reverse(void);  
-</code></pre>
-
-<p>好了，游戏的基本元素就写到这里，写API文档很蛋疼的说。。。</p>
-
-<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/16/play-cocos2dx-09/'>http://www.fusijie.com/blog/2013/10/16/play-cocos2dx-09/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
-
 ]]></content>
   </entry>
   

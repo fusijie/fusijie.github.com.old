@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: pthread | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/pthread/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-03T10:09:30+08:00</updated>
+  <updated>2013-12-06T10:56:48+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之二十二】cocos2d-x多线程和同步02]]></title>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十二】多线程和同步02-售票]]></title>
     <link href="http://www.fusijie.com/blog/2013/11/05/play-cocos2dx-22/"/>
     <updated>2013-11-05T11:12:00+08:00</updated>
     <id>http://www.fusijie.com/blog/2013/11/05/play-cocos2dx-22</id>
@@ -236,7 +236,7 @@ B Sell 1
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之二十一】cocos2d-x多线程和同步01]]></title>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十一】多线程和同步01-pthread库]]></title>
     <link href="http://www.fusijie.com/blog/2013/11/04/play-cocos2dx-21/"/>
     <updated>2013-11-04T11:01:00+08:00</updated>
     <id>http://www.fusijie.com/blog/2013/11/04/play-cocos2dx-21</id>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: CCClipingNode | Jacky's Blog]]></title>
+  <link href="http://www.fusijie.com/tags/ccclipingnode/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2013-12-06T10:56:48+08:00</updated>
+  <id>http://www.fusijie.com/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之二十九】利用CCClipingNode做游戏遮罩]]></title>
+    <link href="http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29/"/>
+    <updated>2013-12-06T10:41:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29</id>
+    <content type="html"><![CDATA[<p>新手引导是游戏中必备的（除了奇葩的MT用一段动画开始），也是玩家对游戏的第一印象，重要性不言而喻。一般采用的遮罩的形式来突出引导重点，同时屏蔽其他功能。这里简单的介绍一下游戏遮罩的实现，并给出一个示例。</p>
+
+<h3>1.CCClipingNode</h3>
+
+<p>CCClipingNode是一个可裁剪节点，简单理解：</p>
+
+<p><em>（1）首先它是一个节点，继承于CCNode，所以它可以像普通节点一样放入CCLayer，CCScene，CCNode中。</em></p>
+
+<p><em>（2）作为节点，它就可以用作容器，承载其他节点和精灵。我把它叫底板。</em></p>
+
+<p><em>（3）如果想要对一个节点进行裁剪，那需要给出裁剪的部分，这个裁剪区域，我把它叫模版。</em></p>
+
+<!-- more -->
+
+
+<p>所以CCClipingNode裁剪节点在组成上=底板+模版，而在显示上=底板-模版。不知道这样解释会不会好理解一点。</p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_29/1.jpg" alt="" border="0" title="CCClipingNode" /><br></br></div>
+
+
+<h3>2.API</h3>
+
+<p>CCClipingNode的使用还是比较简单的，至于显示底板还是模版，alpha值的设定，这些也不好说清楚，自己多试几次就知道是什么意思该怎么用了。</p>
+
+<pre><code>//不带模版地创建一个裁剪节点  
+static CCClippingNode* create();  
+
+//使用一个节点作为模版创建裁剪节点  
+static CCClippingNode* create(CCNode *pStencil);  
+
+//不带模版地初始化一个裁剪节点  
+virtual bool init();  
+
+//使用一个节点作为模版初始化裁剪节点  
+virtual bool init(CCNode *pStencil);  
+
+//设置/获取模版，注意模版需要retain！  
+CCNode* getStencil() const;  
+void setStencil(CCNode *pStencil);  
+
+//设置alpha值（0~1），这个很重要，裁剪是按像素抠图的，所以只有大于这个alpha值的模版像素才会被画出来  
+//默认是1，也就是完全裁剪。  
+GLfloat getAlphaThreshold() const;  
+void setAlphaThreshold(GLfloat fAlphaThreshold);  
+
+//默认是false，用于设置显示底板还是模版  
+bool isInverted() const;  
+void setInverted(bool bInverted);  
+</code></pre>
+
+<h3>3.示例</h3>
+
+<p>在init中实现：</p>
+
+<pre><code>CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+
+CCSprite* background = CCSprite::create("HelloWorld.png");//创建背景  
+background-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
+this-&gt;addChild(background,kTagBackground);  
+
+clip=CCClippingNode::create();//创建裁剪节点，成员变量  
+clip-&gt;setInverted(true);//设置底板可见  
+clip-&gt;setAlphaThreshold(0.0f);//设置alpha为0  
+this-&gt;addChild(clip,kTagClipNode);//添加裁剪节点  
+
+CCLayerColor* back=CCLayerColor::create(ccc4(0,0,0,200));  
+clip-&gt;addChild(back);//为裁剪节点添加一个黑色带透明（看起了是灰色）的底板  
+
+//模版如果要在其他地方使用要记得retain！  
+
+//第一种：以下模型是drawnode遮罩  
+//CCDrawNode* front=CCDrawNode::create();  
+//ccColor4F yellow = {1, 1, 0, 1};  
+//CCPoint rect[4]={ccp(-30,30),ccp(30,30),ccp(30,-30),ccp(-30,-30)};  
+//front-&gt;drawPolygon(rect, 4, yellow, 0, yellow);  
+//front-&gt;setPosition(ccp(visibleSize.width/2, visibleSize.height/2));  
+//clip-&gt;setStencil(front);  
+
+//第二种：以下模型是带图像遮罩  
+CCNode* nodef=CCNode::create();//创建模版  
+CCSprite* close=CCSprite::create("CloseSelected.png");//这里使用的是close的那个图标，所以注意观察效果图2  
+nodef-&gt;addChild(close);//在模版上添加精灵  
+nodef-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
+clip-&gt;setStencil(nodef);//设置模版  
+
+tip = CCSprite::create("tip.png");//一些引导提示  
+tip-&gt;setScale(0.5f);  
+tip-&gt;setRotation(60);  
+tip-&gt;setPosition(ccp(visibleSize.width/2-70,visibleSize.height/2+50));  
+this-&gt;addChild(tip,kTagTip);  
+
+tip-&gt;runAction(CCRepeatForever::create(CCSequence::create(CCScaleBy::create(0.25f,0.95f),CCScaleTo::create(0.25f,0.5),NULL)));  
+
+this-&gt;setTouchEnabled(true);//触摸有效，落点正确时移除裁剪节点和提示，相关处理请看源码  
+</code></pre>
+
+<h3>4.效果</h3>
+
+<p>两种效果：</p>
+
+<div align="center"><img src="http://img.blog.csdn.net/20131206102326578" alt="" border="0" title="1" /><br></br></div>
+
+
+
+
+<div align="center"><img src="http://img.blog.csdn.net/20131206102337937" alt="" border="0" title="2" /><br></br></div>
+
+
+<h3>5.源码</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6667189">下载地址</a></p>
+]]></content>
+  </entry>
+  
+</feed>
