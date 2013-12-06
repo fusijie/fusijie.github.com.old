@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "【玩转cocos2d-x之二十三】cocos2d-x多线程和同步03"
+title: "【玩转cocos2d-x之二十三】多线程和同步03-图片异步加载"
 date: 2013-11-11 11:22
 comments: true
 categories: cocos2d-x
