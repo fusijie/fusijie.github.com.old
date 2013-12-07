@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: plist | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/plist/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-06T10:56:48+08:00</updated>
+  <updated>2013-12-07T17:29:22+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -198,10 +198,23 @@ delete pWrapBitmap;
 
 <p>（3）点击裁剪PNG，弹出保存路径，选择保存路径确定,工作线程中处理PNG图的裁剪,PNG图裁剪成功,目录下可以看到裁剪后的小图，按照原来名字命名。</p>
 
-<div align="center"><img src="http://note.youdao.com/yws/res/291/65FF068A33684AFC94C04F4751C2FE32" alt="" border="0" title="6" /><br></br></div>
+<div align="center"><img src="http://note.youdao.com/yws/res/291/65FF068A33684AFC94C04F4751C2FE32" alt="" border="0" title="3" /><br></br></div>
+
+
+<p>（4）直接拖拽PNG或者Plist进对话框，即可打开图像。</p>
+
+<div align="center"><img src="http://img.blog.csdn.net/20131207171220015" alt="" border="0" title="4" /><br></br></div>
 
 
 <h3>7.下载地址</h3>
+
+<p>v.1.3版</p>
+
+<p>更新说明：</p>
+
+<p><em>1.增加了直接拖拽PNG或者Plist进对话框即可打开的功能。</em></p>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6674999">下载地址</a></p>
 
 <p>v.1.2版</p>
 
