@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 中文显示 | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/zhong-wen-xian-shi/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-07T17:29:22+08:00</updated>
+  <updated>2013-12-09T08:44:20+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -62,7 +62,7 @@ this-&gt;addChild(pLabel, 1);
 
 <p>这里我用了2个xml，一个是中文，一个是英文，设置了一个菜单，点击即可调用不同的xml进行中英文的切换，效果如下图。</p>
 
-<div align="center"><img src="http://note.youdao.com/yws/res/344/5BC62BD640604DE3A30FF228633D70D5" alt="" border="0" title="效果" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131209083141593" alt="" border="0" title="效果" /><br></br></div>
 
 
 <h3>4.源码下载</h3>

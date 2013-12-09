@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: update | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/update/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-07T17:29:22+08:00</updated>
+  <updated>2013-12-09T08:44:20+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -100,7 +100,7 @@ void CTestLayer::update(float delta)
 
 <p>这个效果有点小bug，就是文字覆盖到边框上了，这是因为没有把边框做在top层上导致的，实际使用注意这个问题即可。</p>
 
-<div align="center"><img src="http://note.youdao.com/yws/res/342/322D013ED8154EFD821FFA021F6D3DBD" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131209083133296" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
 
 
 <h3>4.源码下载</h3>

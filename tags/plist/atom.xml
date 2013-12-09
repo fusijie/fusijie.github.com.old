@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: plist | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/plist/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-07T17:29:22+08:00</updated>
+  <updated>2013-12-09T08:44:20+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -188,17 +188,17 @@ delete pWrapBitmap;
 
 <p>（1）鼠标移动到小图上，右上角显示当前位置所在的PNG名。单击小图，PNG名自动复制到剪切板。</p>
 
-<div align="center"><img src="http://note.youdao.com/yws/res/290/5653CB6D76534E0D8495D39B0BDFD4C2" alt="" border="0" title="1" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131209081920468" alt="" border="0" title="1" /><br></br></div>
 
 
 <p>（2）在列表中选择小图名字，软件自动显示红框。包裹该小图。</p>
 
-<div align="center"><img src="http://note.youdao.com/yws/res/289/2E20B4600C864388B6049251C2FA320D" alt="" border="0" title="2" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131209081956500" alt="" border="0" title="2" /><br></br></div>
 
 
 <p>（3）点击裁剪PNG，弹出保存路径，选择保存路径确定,工作线程中处理PNG图的裁剪,PNG图裁剪成功,目录下可以看到裁剪后的小图，按照原来名字命名。</p>
 
-<div align="center"><img src="http://note.youdao.com/yws/res/291/65FF068A33684AFC94C04F4751C2FE32" alt="" border="0" title="3" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131209082032718" alt="" border="0" title="3" /><br></br></div>
 
 
 <p>（4）直接拖拽PNG或者Plist进对话框，即可打开图像。</p>
