@@ -103,7 +103,7 @@ tags: [CCTableView, 关卡选择, 数据源, 滚动]
 
 
 ###4.效果图###
-<div align="center"><img src="http://note.youdao.com/yws/res/340/BCFCE344208144AD9280A6A16E8DF093" alt="" border="0" title="关卡1" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131209082656437" alt="" border="0" title="关卡1" /><br></br></div>
 
 ###5.源码下载地址###
 [下载地址](http://download.csdn.net/detail/jackyvincefu/6422401)

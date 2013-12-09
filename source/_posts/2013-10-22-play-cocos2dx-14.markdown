@@ -81,7 +81,7 @@ tags: [CCLayerMultiplex, 菜单选项卡]
 ###3.效果###
 为了让效果明显一点，我让3个布景稍微有点区别。当然菜单是可以做normal，pressed，disable三态的，这里略去。点击不同的选项卡就可以切换到不同的布景层。当然CCLayerMultiplex还可以嵌套使用。
 
-<div align="center"><img src="http://note.youdao.com/yws/res/338/EE8A094840454FCEA5E421711E889FC7" alt="" border="0" title="效果" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131209082526781" alt="" border="0" title="效果" /><br></br></div>
 
 ###4.源码下载地址###
 [下载地址](http://download.csdn.net/detail/jackyvincefu/6421801)
