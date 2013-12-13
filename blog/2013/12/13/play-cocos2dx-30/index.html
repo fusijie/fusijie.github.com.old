@@ -1,0 +1,409 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>【玩转cocos2d-x之三十】点九图和输入框的使用 - Jacky's Blog</title>
+  <meta name="author" content="FuSijie">
+
+  
+  <meta name="description" content="登录界面一个帐号/密码输入框或者主角命名框是少不了的。这节就来了解一下点九图的输入框的使用。这里只是介绍基础知识，并不进行平台的移植，也不处理跨平台可能出现的问题。 1.点九图CCScale9Sprite 1.1.概述 点九图做过移动开发的肯定不会陌生。采用的是PNG点9图， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.fusijie.com/blog/2013/12/13/play-cocos2dx-30">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jacky's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '45386223']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jacky's Blog</a></h1>
+  
+    <h2>Stay Hungry,Stay Foolish!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.fusijie.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/projects">Projects</a></li>
+  <li><a href="/tag-cloud/">Tags</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">【玩转cocos2d-x之三十】点九图和输入框的使用</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-13T11:53:00+08:00" pubdate data-updated="true">Dec 13<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>登录界面一个帐号/密码输入框或者主角命名框是少不了的。这节就来了解一下点九图的输入框的使用。这里只是介绍基础知识，并不进行平台的移植，也不处理跨平台可能出现的问题。</p>
+
+<h3>1.点九图CCScale9Sprite</h3>
+
+<p><strong>1.1.概述</strong></p>
+
+<p>点九图做过移动开发的肯定不会陌生。采用的是PNG点9图，PNG点9图可以自适应各种环境，同时保持伸缩不变形。移动端的UI基本上都是按这个来做的。点9图的制作很简单，用Android SDK的tool下的draw9patch.bat就可以制作。左为原理图，右为效果图。</p>
+
+<!-- more -->
+
+
+
+
+<div align="center"><img src="/images/Blog/Play_cocos2dx_30/1.jpg" alt="" border="0" title="点九图" /><br></br></div>
+
+
+<p><strong>1.2.使用</strong></p>
+
+<p>cocos2d-x采用CCScale9Sprite来处理点九图，CCScale9Sprite为扩展类，所以在使用前需加入如下声明。</p>
+
+<pre><code>#include "cocos-ext.h"  
+USING_NS_CC_EXT;  
+</code></pre>
+
+<p>CCScale9Sprite和CCSprite一样继承于CCNodeRGB，所以基本上可以像使用CCSprite一样使用CCScale9Sprite（有一点小差别CCSprite还继承了CCTextureProtocol接口）。以下用于创建一个二态点九图按钮。</p>
+
+<pre><code>CCScale9Sprite* confirmnormal=CCScale9Sprite::create("btn_style_alert_dialog_button_normal.9.png");//normal态  
+confirmnormal-&gt;setContentSize(CCSizeMake(100,70));//设置大小  
+CCScale9Sprite* confirmpressd=CCScale9Sprite::create("btn_style_alert_dialog_button_pressed.9.png");//pressd态  
+confirmpressd-&gt;setContentSize(CCSizeMake(100,70));//设置大小  
+CCMenuItemSprite* menuitem=CCMenuItemSprite::create(confirmnormal,confirmpressd,this,menu_selector(TestLayer::btncallback));  
+CCMenu* menu=CCMenu::create(menuitem,NULL);//创建menu  
+menu-&gt;setPosition(visibleSize.width/2,visibleSize.height/2);  
+this-&gt;addChild(menu);  
+</code></pre>
+
+<h3>2.输入框CCEditBox</h3>
+
+<p><strong>2.1.概述</strong></p>
+
+<p>CCEditBox也是cocos2d-x的扩展类，所以和上面一样要进行头文件包含和命名空间声明。另外由于要监控输入框的各种状态，所以还必须实现CCEditBoxDelegate类，该类声明了以下接口：</p>
+
+<pre><code>//当键盘弹出编辑框获得焦点时调用  
+virtual void editBoxEditingDidBegin(CCEditBox* editBox) {};  
+//当键盘消失编辑框失去焦点时调用  
+virtual void editBoxEditingDidEnd(CCEditBox* editBox) {};  
+//当编辑框文本改变时调用  
+virtual void editBoxTextChanged(CCEditBox* editBox, const std::string&amp; text) {};  
+//当返回键按下时或者点击了键盘以外的区域时调用  
+virtual void editBoxReturn(CCEditBox* editBox) = 0;  
+</code></pre>
+
+<p><strong>2.2.使用</strong></p>
+
+<p>在TestLayer.cpp的init()中创建编辑框。</p>
+
+<pre><code>//bool TestLayer::init()  
+CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+
+pEditBox = CCEditBox::create(CCSizeMake(250,50), CCScale9Sprite::create("login_edit_normal.9.png"));  
+pEditBox-&gt;setPosition(ccp(visibleSize.width/2, visibleSize.height*3/4));  
+pEditBox-&gt;setFontColor(ccRED);//设置字体颜色  
+pEditBox-&gt;setPlaceHolder("please input:");//设置预置文本  
+pEditBox-&gt;setMaxLength(8);//设置最大长度  
+
+//  kEditBoxInputModeAny: 开启任何文本的输入键盘,包括换行  
+//  kEditBoxInputModeEmailAddr:   开启 邮件地址 输入类型键盘  
+//  kEditBoxInputModeNumeric: 开启 数字符号 输入类型键盘  
+//  kEditBoxInputModePhoneNumber: 开启 电话号码 输入类型键盘  
+//  kEditBoxInputModeUrl: 开启 URL 输入类型键盘  
+//  kEditBoxInputModeDecimal: 开启 数字 输入类型键盘，允许小数点  
+//  kEditBoxInputModeSingleLine:  开启任何文本的输入键盘,不包括换行  
+pEditBox-&gt;setInputMode(kEditBoxInputModeAny);//设置输入类型  
+
+//kEditBoxInputFlagPassword:密码形式输入  
+//kEditBoxInputFlagSensitive:   敏感数据输入、存储输入方案且预测自动完成  
+//kEditBoxInputFlagInitialCapsWord: 每个单词首字母大写,并且伴有提示  
+//kEditBoxInputFlagInitialCapsSentence: 第一句首字母大写,并且伴有提示  
+//kEditBoxInputFlagInitialCapsAllCharacters:所有字符自动大写  
+pEditBox-&gt;setInputFlag(kEditBoxInputFlagPassword);//设置输入标志位  
+
+//  kKeyboardReturnTypeDefault:  默认使用键盘return 类型  
+//  kKeyboardReturnTypeDone: 默认使用键盘return类型为“Done”字样  
+//  kKeyboardReturnTypeSend: 默认使用键盘return类型为“Send”字样  
+//  kKeyboardReturnTypeSearch:   默认使用键盘return类型为“Search”字样  
+//  kKeyboardReturnTypeGo:   默认使用键盘return类型为“Go”字样  
+pEditBox-&gt;setReturnType(kKeyboardReturnTypeDone);//设置返回类型  
+pEditBox-&gt;setDelegate(this);//当前类继承CCEditBoxDelegate类  
+addChild(pEditBox);  
+</code></pre>
+
+<p>当前类继承于CCEditBoxDelegate，实现其所有接口如下：</p>
+
+<pre><code>void TestLayer::editBoxEditingDidBegin(CCEditBox *editBox)  
+{  
+    CCLOG("start edit");  
+}  
+void TestLayer::editBoxEditingDidEnd(CCEditBox *editBox)  
+{  
+    CCLOG("end edit");  
+}  
+void TestLayer::editBoxReturn(CCEditBox *editBox)  
+{  
+    CCLOG("editbox return");  
+}  
+void TestLayer::editBoxTextChanged(CCEditBox *editBox, const std::string &amp;text)  
+{  
+    CCLOG("text changed");  
+}  
+</code></pre>
+
+<h3>3.结合点九图按钮的使用，效果图如下：</h3>
+
+<div align="center"><img src="http://img.blog.csdn.net/20131213102619421" alt="" border="0" title="效果" /><br></br></div>
+
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6707427">下载地址</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/12/13/play-cocos2dx-30/'><a href="http://www.fusijie.com/blog/2013/12/13/play-cocos2dx-30/">http://www.fusijie.com/blog/2013/12/13/play-cocos2dx-30/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">FuSijie</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-13T11:53:00+08:00" pubdate data-updated="true">Dec 13<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cocos2d-x/'>cocos2d-x</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+      <!-- JiaThis Button BEGIN -->
+  <section>
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share?uid=1859056" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1859056" charset="utf-8"></script>
+</section>
+<!-- JiaThis Button END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+	    <p></p>
+        <a class="basic-alignment left" href="/blog/2013/12/06/play-cocos2dx-29/" title="Previous Post: 【玩转cocos2d-x之二十九】利用CCClipingNode做游戏遮罩">&laquo; 【玩转cocos2d-x之二十九】利用CCClipingNode做游戏遮罩</a>
+      
+      
+    </p>
+  </footer>
+</article>
+  <section>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"fusijie"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->  
+</section>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+		<br>
+		<center><a target="_blank" href="http://blog.csdn.net/jackystudio" style="text-decoration:none" ><img src="\images\aboutme.png" border=0></img></a></center>
+		</br>
+</section><section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (30)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/12/13/play-cocos2dx-30/">【玩转cocos2d-x之三十】点九图和输入框的使用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/06/play-cocos2dx-29/">【玩转cocos2d-x之二十九】利用CCClipingNode做游戏遮罩</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/03/play-cocos2dx-28/">【玩转cocos2d-x之二十八】cocos2d-x的消息和数据传递</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/28/play-cocos2dx-27/">【玩转cocos2d-x之二十七】CCSequence不能执行CCRepeatForever</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/26/play-cocos2dx-26/">【玩转cocos2d-x之二十六】数据结构CCDictionary</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+  
+<section>
+  <h1>Sina Weibo</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="450" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=450&fansRow=0&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=0&uid=1307211523&verifier=3619ee9c">
+      </iframe>
+    </li>
+  </ul>
+</section>
+ 
+<section>
+<h1>Visitor</h1>
+<div>
+	<p></p>
+    <center>
+	<a href="http://info.flagcounter.com/3pF8"><img src="http://s08.flagcounter.com/count/3pF8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_12/viewers_3/labels_0/pageviews_1/flags_0/" alt="Flag Counter" border="0"></a>
+	</center>
+</div>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - FuSijie -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/blog/categories/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-09T08:44:20+08:00</updated>
+  <updated>2013-12-13T12:01:38+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,133 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之三十】点九图和输入框的使用]]></title>
+    <link href="http://www.fusijie.com/blog/2013/12/13/play-cocos2dx-30/"/>
+    <updated>2013-12-13T11:53:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2013/12/13/play-cocos2dx-30</id>
+    <content type="html"><![CDATA[<p>登录界面一个帐号/密码输入框或者主角命名框是少不了的。这节就来了解一下点九图的输入框的使用。这里只是介绍基础知识，并不进行平台的移植，也不处理跨平台可能出现的问题。</p>
+
+<h3>1.点九图CCScale9Sprite</h3>
+
+<p><strong>1.1.概述</strong></p>
+
+<p>点九图做过移动开发的肯定不会陌生。采用的是PNG点9图，PNG点9图可以自适应各种环境，同时保持伸缩不变形。移动端的UI基本上都是按这个来做的。点9图的制作很简单，用Android SDK的tool下的draw9patch.bat就可以制作。左为原理图，右为效果图。</p>
+
+<!-- more -->
+
+
+
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_30/1.jpg" alt="" border="0" title="点九图" /><br></br></div>
+
+
+<p><strong>1.2.使用</strong></p>
+
+<p>cocos2d-x采用CCScale9Sprite来处理点九图，CCScale9Sprite为扩展类，所以在使用前需加入如下声明。</p>
+
+<pre><code>#include "cocos-ext.h"  
+USING_NS_CC_EXT;  
+</code></pre>
+
+<p>CCScale9Sprite和CCSprite一样继承于CCNodeRGB，所以基本上可以像使用CCSprite一样使用CCScale9Sprite（有一点小差别CCSprite还继承了CCTextureProtocol接口）。以下用于创建一个二态点九图按钮。</p>
+
+<pre><code>CCScale9Sprite* confirmnormal=CCScale9Sprite::create("btn_style_alert_dialog_button_normal.9.png");//normal态  
+confirmnormal-&gt;setContentSize(CCSizeMake(100,70));//设置大小  
+CCScale9Sprite* confirmpressd=CCScale9Sprite::create("btn_style_alert_dialog_button_pressed.9.png");//pressd态  
+confirmpressd-&gt;setContentSize(CCSizeMake(100,70));//设置大小  
+CCMenuItemSprite* menuitem=CCMenuItemSprite::create(confirmnormal,confirmpressd,this,menu_selector(TestLayer::btncallback));  
+CCMenu* menu=CCMenu::create(menuitem,NULL);//创建menu  
+menu-&gt;setPosition(visibleSize.width/2,visibleSize.height/2);  
+this-&gt;addChild(menu);  
+</code></pre>
+
+<h3>2.输入框CCEditBox</h3>
+
+<p><strong>2.1.概述</strong></p>
+
+<p>CCEditBox也是cocos2d-x的扩展类，所以和上面一样要进行头文件包含和命名空间声明。另外由于要监控输入框的各种状态，所以还必须实现CCEditBoxDelegate类，该类声明了以下接口：</p>
+
+<pre><code>//当键盘弹出编辑框获得焦点时调用  
+virtual void editBoxEditingDidBegin(CCEditBox* editBox) {};  
+//当键盘消失编辑框失去焦点时调用  
+virtual void editBoxEditingDidEnd(CCEditBox* editBox) {};  
+//当编辑框文本改变时调用  
+virtual void editBoxTextChanged(CCEditBox* editBox, const std::string&amp; text) {};  
+//当返回键按下时或者点击了键盘以外的区域时调用  
+virtual void editBoxReturn(CCEditBox* editBox) = 0;  
+</code></pre>
+
+<p><strong>2.2.使用</strong></p>
+
+<p>在TestLayer.cpp的init()中创建编辑框。</p>
+
+<pre><code>//bool TestLayer::init()  
+CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+
+pEditBox = CCEditBox::create(CCSizeMake(250,50), CCScale9Sprite::create("login_edit_normal.9.png"));  
+pEditBox-&gt;setPosition(ccp(visibleSize.width/2, visibleSize.height*3/4));  
+pEditBox-&gt;setFontColor(ccRED);//设置字体颜色  
+pEditBox-&gt;setPlaceHolder("please input:");//设置预置文本  
+pEditBox-&gt;setMaxLength(8);//设置最大长度  
+
+//  kEditBoxInputModeAny: 开启任何文本的输入键盘,包括换行  
+//  kEditBoxInputModeEmailAddr:   开启 邮件地址 输入类型键盘  
+//  kEditBoxInputModeNumeric: 开启 数字符号 输入类型键盘  
+//  kEditBoxInputModePhoneNumber: 开启 电话号码 输入类型键盘  
+//  kEditBoxInputModeUrl: 开启 URL 输入类型键盘  
+//  kEditBoxInputModeDecimal: 开启 数字 输入类型键盘，允许小数点  
+//  kEditBoxInputModeSingleLine:  开启任何文本的输入键盘,不包括换行  
+pEditBox-&gt;setInputMode(kEditBoxInputModeAny);//设置输入类型  
+
+//kEditBoxInputFlagPassword:密码形式输入  
+//kEditBoxInputFlagSensitive:   敏感数据输入、存储输入方案且预测自动完成  
+//kEditBoxInputFlagInitialCapsWord: 每个单词首字母大写,并且伴有提示  
+//kEditBoxInputFlagInitialCapsSentence: 第一句首字母大写,并且伴有提示  
+//kEditBoxInputFlagInitialCapsAllCharacters:所有字符自动大写  
+pEditBox-&gt;setInputFlag(kEditBoxInputFlagPassword);//设置输入标志位  
+
+//  kKeyboardReturnTypeDefault:  默认使用键盘return 类型  
+//  kKeyboardReturnTypeDone: 默认使用键盘return类型为“Done”字样  
+//  kKeyboardReturnTypeSend: 默认使用键盘return类型为“Send”字样  
+//  kKeyboardReturnTypeSearch:   默认使用键盘return类型为“Search”字样  
+//  kKeyboardReturnTypeGo:   默认使用键盘return类型为“Go”字样  
+pEditBox-&gt;setReturnType(kKeyboardReturnTypeDone);//设置返回类型  
+pEditBox-&gt;setDelegate(this);//当前类继承CCEditBoxDelegate类  
+addChild(pEditBox);  
+</code></pre>
+
+<p>当前类继承于CCEditBoxDelegate，实现其所有接口如下：</p>
+
+<pre><code>void TestLayer::editBoxEditingDidBegin(CCEditBox *editBox)  
+{  
+    CCLOG("start edit");  
+}  
+void TestLayer::editBoxEditingDidEnd(CCEditBox *editBox)  
+{  
+    CCLOG("end edit");  
+}  
+void TestLayer::editBoxReturn(CCEditBox *editBox)  
+{  
+    CCLOG("editbox return");  
+}  
+void TestLayer::editBoxTextChanged(CCEditBox *editBox, const std::string &amp;text)  
+{  
+    CCLOG("text changed");  
+}  
+</code></pre>
+
+<h3>3.结合点九图按钮的使用，效果图如下：</h3>
+
+<div align="center"><img src="http://img.blog.csdn.net/20131213102619421" alt="" border="0" title="效果" /><br></br></div>
+
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6707427">下载地址</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十九】利用CCClipingNode做游戏遮罩]]></title>
@@ -615,201 +742,6 @@ CCDICT_FOREACH(dict, pElement)
     // ......  
 }  
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之二十五】数据结构CCArray]]></title>
-    <link href="http://www.fusijie.com/blog/2013/11/25/play-cocos2dx-25/"/>
-    <updated>2013-11-25T13:53:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/11/25/play-cocos2dx-25</id>
-    <content type="html"><![CDATA[<p>CCArray是从cocos2d中移植过来的，类似于Apple的NSMutableArray，但是比NSMutableArray更为的好用。要注意的是虽然CCArray和CCDictionary可以管理cocos2d-x中绝大多数的类，但是仍然无法替代STL库，STL库更为强有力。</p>
-
-<h3>1.API</h3>
-
-<p>先看一下CCArray可以帮我们做什么。</p>
-
-<!-- more -->
-
-
-<p><strong>1.1.创建</strong></p>
-
-<pre><code>//创建array  
-static CCArray* create();  
-//使用一系列CCObject创建array  
-static CCArray* create(CCObject* pObject, …);  
-//使用一个CCObject创建array  
-static CCArray* createWithObject(CCObject* pObject);  
-//创建array并设置容量  
-static CCArray* createWithCapacity(unsigned int capacity);  
-//用一个已存在的array创建另一个array  
-static CCArray* createWithArray(CCArray* otherArray);  
-</code></pre>
-
-<p><strong>1.2.添加</strong></p>
-
-<pre><code>//添加一个元素  
-void addObject(CCObject* object);  
-//添加一个已存在array中所有元素  
-void addObjectsFromArray(CCArray* otherArray);  
-//在指定位置插入元素  
-void insertObject(CCObject* object, unsigned int index);  
-</code></pre>
-
-<p><strong>1.3.删除</strong></p>
-
-<pre><code>//移除最后一个元素  
-void removeLastObject(bool bReleaseObj = true);  
-//移除某个元素  
-void removeObject(CCObject* object, bool bReleaseObj = true);  
-//移除一个指定位置的元素  
-void removeObjectAtIndex(unsigned int index, bool bReleaseObj = true);  
-//移除某个array  
-void removeObjectsInArray(CCArray* otherArray);  
-//移除所有元素  
-void removeAllObjects();  
-//快速移除某个元素  
-void fastRemoveObject(CCObject* object);  
-//快速移除某个指定位置的元素  
-void fastRemoveObjectAtIndex(unsigned int index);  
-</code></pre>
-
-<p><strong>1.4.操作元素</strong></p>
-
-<pre><code>//返回元素个数  
-unsigned int count() const;  
-//返回array容量  
-unsigned int capacity() const;  
-//返回指定CCObject的位置，如果不存在返回UINT_MAX  
-unsigned int indexOfObject(CCObject* object) const;  
-//返回指定位置的CCObject  
-CCObject* objectAtIndex(unsigned int index);  
-//返回最后一个元素  
-CCObject* lastObject();  
-//返回随机元素  
-CCObject* randomObject();  
-//返回某个元素是否存在于array中  
-bool containsObject(CCObject* object) const;  
-//判断array是否相等  
-bool isEqualToArray(CCArray* pOtherArray);  
-</code></pre>
-
-<p><strong>1.5.操作array内容</strong></p>
-
-<pre><code>//交换2个元素  
-void exchangeObject(CCObject* object1, CCObject* object2);  
-//交换2个指定位置元素  
-void exchangeObjectAtIndex(unsigned int index1, unsigned int index2);  
-//用一个对象替代指定位置元素  
-void replaceObjectAtIndex(unsigned int uIndex, CCObject* pObject, bool bReleaseObject = true);  
-//反转array  
-void reverseObjects();  
-//收缩array内存以匹配元素个数  
-void reduceMemoryFootprint();  
-</code></pre>
-
-<h3>2.remove和fastremove</h3>
-
-<p>从<strong>1.3</strong>可以看出删除有两种方式，普通删除和快速删除，它们有什么区别呢？</p>
-
-<p><strong>2.1.普通删除</strong></p>
-
-<pre><code>//普通删除  
-void ccArrayRemoveObjectAtIndex(ccArray *arr, unsigned int index, bool bReleaseObj/* = true*/)  
-{  
-    CCAssert(arr &amp;&amp; arr-&gt;num &gt; 0 &amp;&amp; index &lt; arr-&gt;num, "Invalid index. Out of bounds");  
-    //删除元素内容，位置仍保留着  
-    if (bReleaseObj)  
-    {  
-        CC_SAFE_RELEASE(arr-&gt;arr[index]);  
-    }  
-    //长度减1  
-    arr-&gt;num--;  
-    //获得要删除的元素后的元素个数  
-    unsigned int remaining = arr-&gt;num - index;  
-    if(remaining&gt;0)  
-    {  
-        //将要删除元素后的所有元素逐个向前移动  
-        memmove((void *)&amp;arr-&gt;arr[index], (void *)&amp;arr-&gt;arr[index+1], remaining * sizeof(CCObject*));  
-    }  
-}  
-</code></pre>
-
-<p><strong>2.2.快速删除</strong></p>
-
-<pre><code>//快速删除  
-void ccArrayFastRemoveObjectAtIndex(ccArray *arr, unsigned int index)  
-{  
-    //删除元素内容，位置仍保留着  
-    CC_SAFE_RELEASE(arr-&gt;arr[index]);  
-    //获取最后一个元素  
-    unsigned int last = --arr-&gt;num;  
-    //把最后一个元素插到删除元素的位置上  
-    arr-&gt;arr[index] = arr-&gt;arr[last];  
-}  
-</code></pre>
-
-<p><strong>2.3.总结</strong></p>
-
-<p>如果有array={0,1,2,3,4,5}，如果要删除3，使用普通删除得到的结果{0,1,2,4,5}，使用快速删除得到的结果是{0,1,2,5,4}。可以看出快速删除的效率比普通删除效率高，就差在移动元素的时间复杂度上。</p>
-
-<h3>3.内存分配</h3>
-
-<p><strong>3.1.容量和个数</strong>
-CCArray中容量和个数并不是同一个概念。个数&lt;=容量。从添加元素的源码中可以看到在添加之前会先进行空间分配，所以它是一个动态分配内存的过程。如下</p>
-
-<pre><code>void ccArrayEnsureExtraCapacity(ccArray *arr, unsigned int extra)//确保有额外的空间  
-{  
-    while (arr-&gt;max &lt; arr-&gt;num + extra)//判断空间是否足够  
-    {  
-        ccArrayDoubleCapacity(arr);//增加一倍空间  
-    }  
-}  
-</code></pre>
-
-<p>所以，每次CCArray在插入数据时检测到空间不足会增加一倍空间，再进行检测，直到空间满足分配为止。</p>
-
-<p><strong>3.2.判等</strong></p>
-
-<p>判断2个CCArray是否相等使用isEqualToArray()，判断相等的条件是CCArray中的每个元素相等即可，与CCArray的容量无关。</p>
-
-<h3>4.效率</h3>
-
-<p>比起NSMutableArray，CCArray效率能高出10%左右，原因有三：</p>
-
-<p><em>（1）它使用的是C接口，所以它不有Objective-C消息开销。</em></p>
-
-<p><em>（2）它假定你知道你在做什么，所以它不花时间在安全检查上（如边界溢出，空间需求等）。</em></p>
-
-<p><em>（3）在比较上使用了指针而不是isEqual。</em></p>
-
-<p>除了CCArray，我们还看到了ccCArray，CCArray基本上都是调用了ccCArray的函数，为什么要分为2种？
-仔细看一下CCArray是继承于CCObject，所以CCArray是用于处理cocos2d-x对象的，内存管理上也有cocos2d-x的autorelease等诸多特性。而ccCArray可以直接操作标准的C数据结构和类型。</p>
-
-<h3>5.CCARRAY_FOREACH和CCARRAY_FOREACH_REVERSE</h3>
-
-<p>宏定义，用于正向遍历和反向遍历CCArray元素</p>
-
-<pre><code>#define CCARRAY_FOREACH(__array__, __object__)                                                                         \  
-    if ((__array__) &amp;&amp; (__array__)-&gt;data-&gt;num &gt; 0)                                                                     \  
-    for(CCObject** __arr__ = (__array__)-&gt;data-&gt;arr, **__end__ = (__array__)-&gt;data-&gt;arr + (__array__)-&gt;data-&gt;num-1;    \  
-    __arr__ &lt;= __end__ &amp;&amp; (((__object__) = *__arr__) != NULL/* || true*/);                                             \  
-    __arr__++)  
-
-#define CCARRAY_FOREACH_REVERSE(__array__, __object__)                                                                  \  
-    if ((__array__) &amp;&amp; (__array__)-&gt;data-&gt;num &gt; 0)                                                                      \  
-    for(CCObject** __arr__ = (__array__)-&gt;data-&gt;arr + (__array__)-&gt;data-&gt;num-1, **__end__ = (__array__)-&gt;data-&gt;arr;     \  
-    __arr__ &gt;= __end__ &amp;&amp; (((__object__) = *__arr__) != NULL/* || true*/);                                              \  
-    __arr__--)  
-</code></pre>
-
-<h3>6.示例</h3>
-
-<p>CCArray的使用示例在<a href="http://blog.csdn.net/jackystudio/article/details/11917875">此文</a>中有比较典型的应用，这里就不再详述。</p>
-
-<h3>7.注意</h3>
-
-<p>一般来说，CCArray不会被add到其他类，所以它的引用计数是1，而且被设置为自动释放。所以创建CCArray对象时要记得调用retain，而且在析构的时候也要调用release来释放内存。真心想吐槽。。。</p>
 ]]></content>
   </entry>
   

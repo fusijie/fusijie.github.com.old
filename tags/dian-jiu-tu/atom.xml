@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: 点九图, | Jacky's Blog]]></title>
+  <link href="http://www.fusijie.com/tags/dian-jiu-tu/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2013-12-13T12:01:38+08:00</updated>
+  <id>http://www.fusijie.com/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之三十】点九图和输入框的使用]]></title>
+    <link href="http://www.fusijie.com/blog/2013/12/13/play-cocos2dx-30/"/>
+    <updated>2013-12-13T11:53:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2013/12/13/play-cocos2dx-30</id>
+    <content type="html"><![CDATA[<p>登录界面一个帐号/密码输入框或者主角命名框是少不了的。这节就来了解一下点九图的输入框的使用。这里只是介绍基础知识，并不进行平台的移植，也不处理跨平台可能出现的问题。</p>
+
+<h3>1.点九图CCScale9Sprite</h3>
+
+<p><strong>1.1.概述</strong></p>
+
+<p>点九图做过移动开发的肯定不会陌生。采用的是PNG点9图，PNG点9图可以自适应各种环境，同时保持伸缩不变形。移动端的UI基本上都是按这个来做的。点9图的制作很简单，用Android SDK的tool下的draw9patch.bat就可以制作。左为原理图，右为效果图。</p>
+
+<!-- more -->
+
+
+
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_30/1.jpg" alt="" border="0" title="点九图" /><br></br></div>
+
+
+<p><strong>1.2.使用</strong></p>
+
+<p>cocos2d-x采用CCScale9Sprite来处理点九图，CCScale9Sprite为扩展类，所以在使用前需加入如下声明。</p>
+
+<pre><code>#include "cocos-ext.h"  
+USING_NS_CC_EXT;  
+</code></pre>
+
+<p>CCScale9Sprite和CCSprite一样继承于CCNodeRGB，所以基本上可以像使用CCSprite一样使用CCScale9Sprite（有一点小差别CCSprite还继承了CCTextureProtocol接口）。以下用于创建一个二态点九图按钮。</p>
+
+<pre><code>CCScale9Sprite* confirmnormal=CCScale9Sprite::create("btn_style_alert_dialog_button_normal.9.png");//normal态  
+confirmnormal-&gt;setContentSize(CCSizeMake(100,70));//设置大小  
+CCScale9Sprite* confirmpressd=CCScale9Sprite::create("btn_style_alert_dialog_button_pressed.9.png");//pressd态  
+confirmpressd-&gt;setContentSize(CCSizeMake(100,70));//设置大小  
+CCMenuItemSprite* menuitem=CCMenuItemSprite::create(confirmnormal,confirmpressd,this,menu_selector(TestLayer::btncallback));  
+CCMenu* menu=CCMenu::create(menuitem,NULL);//创建menu  
+menu-&gt;setPosition(visibleSize.width/2,visibleSize.height/2);  
+this-&gt;addChild(menu);  
+</code></pre>
+
+<h3>2.输入框CCEditBox</h3>
+
+<p><strong>2.1.概述</strong></p>
+
+<p>CCEditBox也是cocos2d-x的扩展类，所以和上面一样要进行头文件包含和命名空间声明。另外由于要监控输入框的各种状态，所以还必须实现CCEditBoxDelegate类，该类声明了以下接口：</p>
+
+<pre><code>//当键盘弹出编辑框获得焦点时调用  
+virtual void editBoxEditingDidBegin(CCEditBox* editBox) {};  
+//当键盘消失编辑框失去焦点时调用  
+virtual void editBoxEditingDidEnd(CCEditBox* editBox) {};  
+//当编辑框文本改变时调用  
+virtual void editBoxTextChanged(CCEditBox* editBox, const std::string&amp; text) {};  
+//当返回键按下时或者点击了键盘以外的区域时调用  
+virtual void editBoxReturn(CCEditBox* editBox) = 0;  
+</code></pre>
+
+<p><strong>2.2.使用</strong></p>
+
+<p>在TestLayer.cpp的init()中创建编辑框。</p>
+
+<pre><code>//bool TestLayer::init()  
+CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+
+pEditBox = CCEditBox::create(CCSizeMake(250,50), CCScale9Sprite::create("login_edit_normal.9.png"));  
+pEditBox-&gt;setPosition(ccp(visibleSize.width/2, visibleSize.height*3/4));  
+pEditBox-&gt;setFontColor(ccRED);//设置字体颜色  
+pEditBox-&gt;setPlaceHolder("please input:");//设置预置文本  
+pEditBox-&gt;setMaxLength(8);//设置最大长度  
+
+//  kEditBoxInputModeAny: 开启任何文本的输入键盘,包括换行  
+//  kEditBoxInputModeEmailAddr:   开启 邮件地址 输入类型键盘  
+//  kEditBoxInputModeNumeric: 开启 数字符号 输入类型键盘  
+//  kEditBoxInputModePhoneNumber: 开启 电话号码 输入类型键盘  
+//  kEditBoxInputModeUrl: 开启 URL 输入类型键盘  
+//  kEditBoxInputModeDecimal: 开启 数字 输入类型键盘，允许小数点  
+//  kEditBoxInputModeSingleLine:  开启任何文本的输入键盘,不包括换行  
+pEditBox-&gt;setInputMode(kEditBoxInputModeAny);//设置输入类型  
+
+//kEditBoxInputFlagPassword:密码形式输入  
+//kEditBoxInputFlagSensitive:   敏感数据输入、存储输入方案且预测自动完成  
+//kEditBoxInputFlagInitialCapsWord: 每个单词首字母大写,并且伴有提示  
+//kEditBoxInputFlagInitialCapsSentence: 第一句首字母大写,并且伴有提示  
+//kEditBoxInputFlagInitialCapsAllCharacters:所有字符自动大写  
+pEditBox-&gt;setInputFlag(kEditBoxInputFlagPassword);//设置输入标志位  
+
+//  kKeyboardReturnTypeDefault:  默认使用键盘return 类型  
+//  kKeyboardReturnTypeDone: 默认使用键盘return类型为“Done”字样  
+//  kKeyboardReturnTypeSend: 默认使用键盘return类型为“Send”字样  
+//  kKeyboardReturnTypeSearch:   默认使用键盘return类型为“Search”字样  
+//  kKeyboardReturnTypeGo:   默认使用键盘return类型为“Go”字样  
+pEditBox-&gt;setReturnType(kKeyboardReturnTypeDone);//设置返回类型  
+pEditBox-&gt;setDelegate(this);//当前类继承CCEditBoxDelegate类  
+addChild(pEditBox);  
+</code></pre>
+
+<p>当前类继承于CCEditBoxDelegate，实现其所有接口如下：</p>
+
+<pre><code>void TestLayer::editBoxEditingDidBegin(CCEditBox *editBox)  
+{  
+    CCLOG("start edit");  
+}  
+void TestLayer::editBoxEditingDidEnd(CCEditBox *editBox)  
+{  
+    CCLOG("end edit");  
+}  
+void TestLayer::editBoxReturn(CCEditBox *editBox)  
+{  
+    CCLOG("editbox return");  
+}  
+void TestLayer::editBoxTextChanged(CCEditBox *editBox, const std::string &amp;text)  
+{  
+    CCLOG("text changed");  
+}  
+</code></pre>
+
+<h3>3.结合点九图按钮的使用，效果图如下：</h3>
+
+<div align="center"><img src="http://img.blog.csdn.net/20131213102619421" alt="" border="0" title="效果" /><br></br></div>
+
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6707427">下载地址</a></p>
+]]></content>
+  </entry>
+  
+</feed>
