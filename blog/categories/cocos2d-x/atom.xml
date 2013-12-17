@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/blog/categories/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-14T15:37:05+08:00</updated>
+  <updated>2013-12-17T14:37:54+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,209 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之三十一】服务器的网络通信编程]]></title>
+    <link href="http://www.fusijie.com/blog/2013/12/17/play-cocos2dx-31/"/>
+    <updated>2013-12-17T14:11:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2013/12/17/play-cocos2dx-31</id>
+    <content type="html"><![CDATA[<p>这里采用Apache+php搭建了一个简易服务器，服务端用php语言，客户端采用cocos2d-x的CCHttpClient类通过http方式访问服务端资源。模拟了cocos2d-x提交账户和密码到服务端，服务端校验帐号密码，如果正确返回客户端成功登录，如果错误则返回错误信息，同时在服务端后台保存登录log。第一次接触php，语法上和C/C++还是蛮像的，主要是给出一个cocos2d-x网络实例，代码中并没有做一些防呆纠错措施。</p>
+
+<h3>1.搭建Apache+php网页服务器</h3>
+
+<p>Apche2.2 x86版:<a href="http://pan.baidu.com/s/1vNuLF">下载地址</a></p>
+
+<p>php5.2.17版:<a href="http://pan.baidu.com/s/17sFoN">下载地址</a></p>
+
+<p>搭建过程参见<a href="http://tech.163.com/06/0206/11/299AMBLT0009159K.html">这里</a>，这里就不安装MySQL了。</p>
+
+<!-- more -->
+
+
+<p>搭建成功后，打开<a href="http://127.0.0.1">http://127.0.0.1</a>，就可以看到"<em>It' works!</em>&ldquo;字样。同时打开Apache monitor监控Apache处于运行状态。我这里使用的80端口。</p>
+
+<h3>2.php收集表单的方式</h3>
+
+<p>Http定义了与服务器交互的不同方法，最基本的方法有4种，分别是GET，POST，PUT，DELETE，对应着查改增删，这里介绍GET和POST。</p>
+
+<p>用$_GET获取表单数据，表单数据对任何人都是可见的，比如</p>
+
+<pre><code>http://www.w3school.com.cn/welcome.php?username=jackystudio&amp;password=123
+</code></pre>
+
+<p>用$_POST获取表单数据，表单数据则是不可见的，比如</p>
+
+<pre><code>http://www.w3school.com.cn/welcome.php
+</code></pre>
+
+<p>详细可见<a href="http://www.w3school.com.cn/php">w3school有关php章节</a>。</p>
+
+<h3>3.服务器php处理代码</h3>
+
+<p>这里我直接修改了主页index.html。会C++应该都能看懂，先是打开一个log.txt，接收到username和password，如果是username是jackystudio，password是123的话，把username和password写入log.txt，并返回登录成功，如果username或password错误时返回登录失败。如果未接收到则返回没有用户名密码。</p>
+
+<p><strong>3.1.采用get方式代码</strong></p>
+
+<pre><code>&lt;html&gt;  
+    &lt;body&gt;  
+        &lt;?php  
+        $open=fopen("log.txt","a" ); //Save password  
+        if(isset($_GET["username"]) &amp;&amp; isset($_GET["password"]))  
+        {  
+            if($_GET["username"]=="jackystudio" &amp;&amp; $_GET["password"]=="123")  
+            {  
+                fwrite($open,"Username:".$_GET["username"]);  
+                fwrite($open,"\r\n");  
+                fwrite($open,"Password:".$_GET["password"]);  
+                echo "Login Success"; //return to client  
+            }  
+            else  
+            {  
+                fwrite($open,"Wrong Username or password!");  
+                echo "Login Failed"; //return to client  
+            }  
+        }  
+        else  
+        {  
+            fwrite($open,"No password");  
+            echo "No Username or Password"; //return to client  
+        }  
+        fclose($open);  
+        ?&gt;  
+    &lt;/body&gt;  
+&lt;/html&gt;  
+</code></pre>
+
+<p><strong>3.2.采用post方式代码</strong></p>
+
+<pre><code>&lt;html&gt;  
+    &lt;body&gt;  
+        &lt;?php  
+        $open=fopen("log.txt","a" ); //Save password  
+        if(isset($_POST["username"]) &amp;&amp; isset($_POST["password"]))  
+        {  
+            if($_POST["username"]=="jackystudio" &amp;&amp; $_POST["password"]=="123")  
+            {  
+                fwrite($open,"Username:".$_POST["username"]);  
+                fwrite($open,"\r\n");  
+                fwrite($open,"Password:".$_POST["password"]);  
+                echo "Login Success"; //return to client  
+            }  
+            else  
+            {  
+                fwrite($open,"Wrong Username or password!");  
+                echo "Login Failed"; //return to client  
+            }  
+        }  
+        else  
+        {  
+            fwrite($open,"No password");  
+            echo "No Username or Password"; //return to client  
+        }  
+        fclose($open);  
+        ?&gt;  
+    &lt;/body&gt;  
+&lt;/html&gt;  
+</code></pre>
+
+<h3>4.cocos2d-x使用CCHttpClient类进行网络请求</h3>
+
+<p>CCHttpClient的使用这里也不赘述了，请移步官方文档How_to_use_CCHttpClient。这里在上文编辑框和点九图的基础上进行了修改。2个编辑框，分别是username和password。一个按钮点击发送请求。一个文本显示从服务器返回的结果。</p>
+
+<p><strong>4.1.按钮请求处理</strong></p>
+
+<pre><code>void TestLayer::btncallback( CCObject* pSender )  
+{  
+    bool requestType_is_get=true;//采用get方式或者post方式  
+    if (requestType_is_get)  
+    {  
+        CCHttpRequest* request = new CCHttpRequest();//创建请求对象  
+        string str1 = "127.0.0.1:80/index.html?";  
+        string str2 = p_User_EditBox-&gt;getText();//获取username编辑框内容  
+        string str3 = p_Psw_EditBox-&gt;getText();//获取password编辑框内容  
+        string struser="username=";  
+        string strpsw="&amp;password=";  
+        str1=str1+struser+str2+strpsw+str3;  
+        request-&gt;setUrl(str1.c_str());//设置请求的url，username和password已经包含在url中  
+        request-&gt;setRequestType(CCHttpRequest::kHttpGet);//设置为Get模式  
+        request-&gt;setResponseCallback(this, httpresponse_selector(TestLayer::onHttpRequestCompleted));//设置响应的回调  
+        request-&gt;setTag("GET test");  
+        CCHttpClient::getInstance()-&gt;send(request);//发送请求  
+        request-&gt;release();//释放请求  
+    }  
+    else  
+    {  
+        CCHttpRequest* request = new CCHttpRequest();//创建请求对象  
+        string str1 = "127.0.0.1:80/index.html";  
+        string str2 = p_User_EditBox-&gt;getText();  
+        string str3 = p_Psw_EditBox-&gt;getText();  
+        string struser="username=";  
+        string strpsw="&amp;password=";  
+        str2=struser+str2+strpsw+str3;  
+
+        request-&gt;setUrl(str1.c_str());//设置请求的url，只是请求页面的url，并不包含username和password  
+        request-&gt;setRequestType(CCHttpRequest::kHttpPost);//设置为Post模式  
+        request-&gt;setResponseCallback(this, httpresponse_selector(TestLayer::onHttpRequestCompleted));//设置响应的回调  
+
+        const char* postData = str2.c_str();  
+        request-&gt;setRequestData(postData, strlen(postData));//设置请求数据，也就是username和password  
+
+        request-&gt;setTag("POST test");  
+        CCHttpClient::getInstance()-&gt;send(request);//发送请求  
+        request-&gt;release();//释放请求  
+    }  
+}  
+</code></pre>
+
+<p><strong>4.2.响应回调处理</strong></p>
+
+<pre><code>void TestLayer::onHttpRequestCompleted( CCHttpClient* client, CCHttpResponse* response )  
+{  
+    if (!response-&gt;isSucceed())//如果响应失败，输出错误信息  
+    {    
+        CCString strError;  
+        strError.initWithFormat("Receive Error! \n%s\n",response-&gt;getErrorBuffer());  
+        m_labelStatusCode-&gt;setString(strError.getCString());  
+        return ;     
+    }    
+
+    std::vector&lt;char&gt; *buffer = response-&gt;getResponseData();//接收响应信息  
+    string recieveData;  
+    for (unsigned int i = 0; i &lt; buffer-&gt;size(); i++)  
+    {    
+        recieveData += (*buffer)[i];    
+    }  
+    size_t begin= recieveData.find("&lt;body&gt;")+6;//这里简单处理，获取&lt;body&gt;标签内数据，即是响应内容  
+    size_t end= recieveData.find("&lt;/body&gt;");  
+    string result(recieveData,begin,end-begin);  
+    m_labelStatusCode-&gt;setString(result.c_str());  
+}  
+</code></pre>
+
+<h3>5.效果图</h3>
+
+<p><strong>5.1.Apache运行（Get和Post两种效果都是一样的）</strong></p>
+
+<p><em>（1）帐号密码正确时</em></p>
+
+<div align="center"><img src="http://img.blog.csdn.net/20131214145727843" alt="" border="0" title="登录成功" /><br></br></div>
+
+
+<p><em>（2）帐号密码错误时</em></p>
+
+<div align="center"><img src="http://img.blog.csdn.net/20131214145557531" alt="" border="0" title="登录失败" /><br></br></div>
+
+
+<p><strong>5.2.关闭Apache</strong></p>
+
+<div align="center"><img src="http://img.blog.csdn.net/20131214145740578" alt="" border="0" title="服务器关闭" /><br></br></div>
+
+
+<h3>6.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6713471">下载地址</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十】点九图和输入框的使用]]></title>
@@ -585,163 +788,6 @@ void TestScene::repeatFunc()
 <h3>5.总结</h3>
 
 <p>虽然CCRepeatForever也同样继承于CCActionInterval，理论上是延时动作的子类，但是和一般的延时动作又有很大的不同，所以平时在使用的时候必须很小心，不能当成一般的CCActionInterval使用。而在cocos2d-x动作的分类上是不是应该把它从CCAction继承出来会比较好一点？</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之二十六】数据结构CCDictionary]]></title>
-    <link href="http://www.fusijie.com/blog/2013/11/26/play-cocos2dx-26/"/>
-    <updated>2013-11-26T09:00:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/11/26/play-cocos2dx-26</id>
-    <content type="html"><![CDATA[<p>CCDictionary在cocos2d-x中被大量的应用，比如CCTexureCache，CCSpriteFramCache等等。</p>
-
-<h3>1.实现原理</h3>
-
-<p><strong>1.1.uthash</strong></p>
-
-<p>CCDictionary是使用uthash实现的，而过时的CCMutableDictionary则是使用STL实现，就效率而言CCDictionary至少提升了两倍，而且CCDictionary并没有使用C++模版，因此也很容易绑定到脚本。</p>
-
-<p>uthash是一个C/C++的哈希表实现，它以宏定义的方式实现了哈希表，不仅加快了运行速度，而且与key类型无关。它的github在<a href="https://github.com/troydhanson/uthash">这里</a>。cocos2d-x的头文件在\cocos2d-x-2.2.0\cocos2dx\support\data_support\uthash.h。</p>
-
-<!-- more -->
-
-
-<p>如果想在C++中直接使用也很简单，userguide在<a href="http://troydhanson.github.io/uthash/userguide.html">这里</a>。可以很方便地进行增加，删除，查找，计数，迭代，排序等操作。</p>
-
-<p><strong>1.2.键（key）</strong></p>
-
-<p>uthash支持4种标准类型的键：整型，字符串，指针和结构体，不过到了CCDictionary就只支持整型和字符串型了。</p>
-
-<pre><code>enum CCDictType  
-{  
-    kCCDictUnknown = 0,  
-    kCCDictStr,  
-    kCCDictInt  
-};  
-</code></pre>
-
-<h3>2.CCDictElement</h3>
-
-<p>在了解CCDictionary之前还要看一下CCDictElement，很明显，CCDictElement是CCDictionary的一个元素，包含了一个key-value。key支持整型和字符串，使用的时候要注意在同一个CCDictionary中key类型必须要一致，value可以不一致。</p>
-
-<h3>3.API</h3>
-
-<p><strong>3.1.创建</strong></p>
-
-<pre><code>//创建一个CCDictionary  
-static CCDictionary* create();  
-//用一个已存在的CCDictionary来创建一个新的CCDictionary  
-static CCDictionary* createWithDictionary(CCDictionary* srcDict);  
-//用一个plist来创建CCDictionary  
-static CCDictionary* createWithContentsOfFile(const char *pFileName);  
-//返回一个非autorelease对象的CCDictionary，它讷讷感够确保在新线程中使用  
-//但是你必须手动管理它的生命周期，当你不再需要它的时候，必须调用CC_SAFE_RELEASE  
-static CCDictionary* createWithContentsOfFileThreadSafe(const char *pFileName); 
-</code></pre>
-
-<p><strong>3.2.查找</strong></p>
-
-<pre><code>//返回指定字符串类型key的value，如果CCDictionary的key是整型，会出现断言  
-CCObject* objectForKey(const std::string&amp; key);  
-//返回指定整型key的value，如果CCDictionary的key是字符串型，会出现断言  
-CCObject* objectForKey(intptr_t key);  
-//返回指定字符串类型key的CCString，这里假定value是CCString型，如果不是或者未找到，则返回空串  
-const CCString* valueForKey(const std::string&amp; key);  
-//返回指定整型类型key的CCString，这里假定value是CCString型，如果不是或者未找到，则返回空串  
-const CCString* valueForKey(intptr_t key);  
-</code></pre>
-
-<p><strong>3.3.增加</strong></p>
-
-<pre><code>//插入一个key-value，如果是第一次调用，那么CCDictionary的key类型会被确定为字符串型，之后就不能插入整型key  
-//如果已存在该key，则旧key-value会被释放和移除，被新的替代  
-void setObject(CCObject* pObject, const std::string&amp; key);  
-//插入一个key-value，如果是第一次调用，那么CCDictionary的key类型会被确定为整型，之后就不能插入字符串型key  
-//如果已存在该key，则旧key-value会被释放和移除，被新的替代  
-void setObject(CCObject* pObject, intptr_t key);  
-</code></pre>
-
-<p><strong>3.4.移除</strong></p>
-
-<pre><code>//移除指定key  
-void removeObjectForKey(const std::string&amp; key);  
-void removeObjectForKey(intptr_t key);  
-//移除一个CCArray中keys  
-void removeObjectsForKeys(CCArray* pKeyArray);  
-//通过元素来移除value  
-void removeObjectForElememt(CCDictElement* pElement);  
-//移除所有的key-value  
-void removeAllObjects();
-</code></pre>
-
-<p><strong>3.5.其他</strong></p>
-
-<pre><code>//返回一个随机元素，这个使用得注意，因为value可以不一样，所以返回类型每次都可能不同，在类型转换的时候要非常小心  
-CCObject* randomObject();  
-//返回一个包含所有key的CCArray  
-CCArray* allKeys();  
-//返回指定value的所有key，因为value是可以相同的，内部使用==比较两个value是否相同   
-CCArray* allKeysForObject(CCObject* object);  
-//返回元素个数  
-unsigned int count();  
-//把CCDictionary写到一个plist中，写入的value要求是字符串型  
-bool writeToFile(const char *fullPath);  
-</code></pre>
-
-<h3>4.示例</h3>
-
-<pre><code>// Create a dictionary, return an autorelease object.  
-CCDictionary* pDict = CCDictionary::create();  
-
-// Insert objects to dictionary  
-CCString* pValue1 = CCString::create("100");  
-CCString* pValue2 = CCString::create("120");  
-CCInteger* pValue3 = CCInteger::create(200);  
-pDict-&gt;setObject(pValue1, "key1");  
-pDict-&gt;setObject(pValue2, "key2");  
-pDict-&gt;setObject(pValue3, "key3");  
-
-// Get the object for key  
-CCString* pStr1 = (CCString*)pDict-&gt;objectForKey("key1");  
-CCLog("{ key1: %s }", pStr1-&gt;getCString());  
-CCInteger* pInteger = (CCInteger*)pDict-&gt;objectForKey("key3");  
-CCLog("{ key3: %d }", pInteger-&gt;getValue());  
-CCString* pStr3=static_cast&lt;CCString*&gt;(pDict-&gt;randomObject());//这里有问题了，因为value有不同类型，所以随机返回时类型处理要小心  
-CCLog("{ random key: %s }",pStr3-&gt;getCString());  //如果返回的是整型pValue3，那么会出现断言  
-if(pDict-&gt;writeToFile("pdic.plist"))  //整型的value无法写入，会提示This type cannot appear in property list  
-    CCLog("Write to file success!");  
-</code></pre>
-
-<p>Resource/pdic.plist</p>
-
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_26/1.jpg" alt="" border="0" title="pdic.plist" /><br></br></div>
-
-
-<p></p>
-
-<h3>5.CCDICT_FOREACH</h3>
-
-<p><strong>5.1.概况</strong></p>
-
-<p>宏定义，用于遍历CCDictionary的value。</p>
-
-<pre><code>#define CCDICT_FOREACH(__dict__, __el__) \  
-CCDictElement* pTmp##__dict__##__el__ = NULL; \  
-if (__dict__) \  
-HASH_ITER(hh, (__dict__)-&gt;m_pElements, __el__, pTmp##__dict__##__el__)  
-</code></pre>
-
-<p><strong>5.2.示例</strong></p>
-
-<pre><code>CCDictElement* pElement;  
-CCDICT_FOREACH(dict, pElement)  
-{  
-    const char*key = pElement-&gt;getStrKey();  
-    // You certainly know the type of value, so we assume that it's a CCSprite.  
-    CCSprite* pSprite = (CCSprite*)pElement-&gt;getObject();  
-    // ......  
-}  
-</code></pre>
 ]]></content>
   </entry>
   

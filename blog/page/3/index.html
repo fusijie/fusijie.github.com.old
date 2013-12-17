@@ -9,7 +9,7 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="cocos2d-x采用的是笛卡尔平面坐标系，也就是平面上两条垂直线构成的坐标系，平面上任意一点都可以用（x，y）来表示。 （1）就坐标系方向而言，cocos2d-x分为屏幕坐标系和OpenGL坐标系。 （2）就节点本身而言，cocos2d-x分为绝对坐标系和相对坐标系。 1.屏幕坐标系 屏幕坐标系 &hellip;">
+  <meta name="description" content="如果我们想定时执行一个动作怎么办？CCScheduler帮了我们一个大忙。 1.概况 CCNode内部封装了一个 CCScheduler *m_pScheduler; 正是通过它我们可以很轻松地完成一些定时功能，所以定时器是节点所具备的功能。 定时器分为2种，一种是更新定时器， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +79,58 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/18/play-cocos2dx-11/">【玩转cocos2d-x之十一】定时器schedule</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-18T08:08:00+08:00" pubdate data-updated="true">Oct 18<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>如果我们想定时执行一个动作怎么办？CCScheduler帮了我们一个大忙。</p>
+
+<h3>1.概况</h3>
+
+<p>CCNode内部封装了一个</p>
+
+<pre><code>CCScheduler *m_pScheduler;  
+</code></pre>
+
+<p>正是通过它我们可以很轻松地完成一些定时功能，所以定时器是节点所具备的功能。</p>
+
+<p>定时器分为2种，一种是更新定时器，执行的频率是每帧执行一次，另一种则是自定义回调函数的定时器（最小值是一帧），关于回调函数和函数指针的相关基础可参见<a href="http://blog.csdn.net/jackystudio/article/details/11720325">这里</a>。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/18/play-cocos2dx-11/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -479,55 +531,9 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/10/08/play-cocos2dx-01/">【玩转cocos2d-x之一】V2.2.0版本开发环境配置</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-08T16:18:00+08:00" pubdate data-updated="true">Oct 8<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>现在cocos2d-x处在上升期，各个版本的变化还是比较大的，单从环境配置来看，从v2.0到v2.2就变化了不少。今天配置了一下V2.2.0环境，创建项目，并进行交叉编译，发现比之前麻烦了不少。这里稍微记录一下。
-3.0版本出来了，大概看了下目录和2.2的差不多，环境配置也基本一样。</p>
-
-<h3>1.VS，VA，Cygwin，Java，Eclipse，ADT，SDK，NDK</h3>
-
-<p>这里就不重复啰嗦这些了，<a href="http://blog.csdn.net/jackystudio/article/details/11516435">传送门</a>。不过这里需要使用VS2010以上版本。</p>
-
-<p>这里强烈建议NDK版本为r8c或者r9，试过r7，r8都编译不过。。。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/10/08/play-cocos2dx-01/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/blog/page/4/">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -545,12 +551,16 @@
 </section><section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (30)</a></li>
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (31)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/12/17/play-cocos2dx-31/">【玩转cocos2d-x之三十一】服务器的网络通信编程</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/12/13/play-cocos2dx-30/">【玩转cocos2d-x之三十】点九图和输入框的使用</a>
@@ -566,10 +576,6 @@
     
       <li class="post">
         <a href="/blog/2013/11/28/play-cocos2dx-27/">【玩转cocos2d-x之二十七】CCSequence不能执行CCRepeatForever</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/11/26/play-cocos2dx-26/">【玩转cocos2d-x之二十六】数据结构CCDictionary</a>
       </li>
     
   </ul>

@@ -1,0 +1,485 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>【玩转cocos2d-x之三十一】服务器的网络通信编程 - Jacky's Blog</title>
+  <meta name="author" content="FuSijie">
+
+  
+  <meta name="description" content="这里采用Apache+php搭建了一个简易服务器，服务端用php语言，客户端采用cocos2d-x的CCHttpClient类通过http方式访问服务端资源。模拟了cocos2d-x提交账户和密码到服务端，服务端校验帐号密码，如果正确返回客户端成功登录，如果错误则返回错误信息， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.fusijie.com/blog/2013/12/17/play-cocos2dx-31">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jacky's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '45386223']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jacky's Blog</a></h1>
+  
+    <h2>Stay Hungry,Stay Foolish!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.fusijie.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/projects">Projects</a></li>
+  <li><a href="/tag-cloud/">Tags</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">【玩转cocos2d-x之三十一】服务器的网络通信编程</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-17T14:11:00+08:00" pubdate data-updated="true">Dec 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>这里采用Apache+php搭建了一个简易服务器，服务端用php语言，客户端采用cocos2d-x的CCHttpClient类通过http方式访问服务端资源。模拟了cocos2d-x提交账户和密码到服务端，服务端校验帐号密码，如果正确返回客户端成功登录，如果错误则返回错误信息，同时在服务端后台保存登录log。第一次接触php，语法上和C/C++还是蛮像的，主要是给出一个cocos2d-x网络实例，代码中并没有做一些防呆纠错措施。</p>
+
+<h3>1.搭建Apache+php网页服务器</h3>
+
+<p>Apche2.2 x86版:<a href="http://pan.baidu.com/s/1vNuLF">下载地址</a></p>
+
+<p>php5.2.17版:<a href="http://pan.baidu.com/s/17sFoN">下载地址</a></p>
+
+<p>搭建过程参见<a href="http://tech.163.com/06/0206/11/299AMBLT0009159K.html">这里</a>，这里就不安装MySQL了。</p>
+
+<!-- more -->
+
+
+<p>搭建成功后，打开<a href="http://127.0.0.1">http://127.0.0.1</a>，就可以看到&#8221;<em>It&#8217; works!</em>&ldquo;字样。同时打开Apache monitor监控Apache处于运行状态。我这里使用的80端口。</p>
+
+<h3>2.php收集表单的方式</h3>
+
+<p>Http定义了与服务器交互的不同方法，最基本的方法有4种，分别是GET，POST，PUT，DELETE，对应着查改增删，这里介绍GET和POST。</p>
+
+<p>用$_GET获取表单数据，表单数据对任何人都是可见的，比如</p>
+
+<pre><code>http://www.w3school.com.cn/welcome.php?username=jackystudio&amp;password=123
+</code></pre>
+
+<p>用$_POST获取表单数据，表单数据则是不可见的，比如</p>
+
+<pre><code>http://www.w3school.com.cn/welcome.php
+</code></pre>
+
+<p>详细可见<a href="http://www.w3school.com.cn/php">w3school有关php章节</a>。</p>
+
+<h3>3.服务器php处理代码</h3>
+
+<p>这里我直接修改了主页index.html。会C++应该都能看懂，先是打开一个log.txt，接收到username和password，如果是username是jackystudio，password是123的话，把username和password写入log.txt，并返回登录成功，如果username或password错误时返回登录失败。如果未接收到则返回没有用户名密码。</p>
+
+<p><strong>3.1.采用get方式代码</strong></p>
+
+<pre><code>&lt;html&gt;  
+    &lt;body&gt;  
+        &lt;?php  
+        $open=fopen("log.txt","a" ); //Save password  
+        if(isset($_GET["username"]) &amp;&amp; isset($_GET["password"]))  
+        {  
+            if($_GET["username"]=="jackystudio" &amp;&amp; $_GET["password"]=="123")  
+            {  
+                fwrite($open,"Username:".$_GET["username"]);  
+                fwrite($open,"\r\n");  
+                fwrite($open,"Password:".$_GET["password"]);  
+                echo "Login Success"; //return to client  
+            }  
+            else  
+            {  
+                fwrite($open,"Wrong Username or password!");  
+                echo "Login Failed"; //return to client  
+            }  
+        }  
+        else  
+        {  
+            fwrite($open,"No password");  
+            echo "No Username or Password"; //return to client  
+        }  
+        fclose($open);  
+        ?&gt;  
+    &lt;/body&gt;  
+&lt;/html&gt;  
+</code></pre>
+
+<p><strong>3.2.采用post方式代码</strong></p>
+
+<pre><code>&lt;html&gt;  
+    &lt;body&gt;  
+        &lt;?php  
+        $open=fopen("log.txt","a" ); //Save password  
+        if(isset($_POST["username"]) &amp;&amp; isset($_POST["password"]))  
+        {  
+            if($_POST["username"]=="jackystudio" &amp;&amp; $_POST["password"]=="123")  
+            {  
+                fwrite($open,"Username:".$_POST["username"]);  
+                fwrite($open,"\r\n");  
+                fwrite($open,"Password:".$_POST["password"]);  
+                echo "Login Success"; //return to client  
+            }  
+            else  
+            {  
+                fwrite($open,"Wrong Username or password!");  
+                echo "Login Failed"; //return to client  
+            }  
+        }  
+        else  
+        {  
+            fwrite($open,"No password");  
+            echo "No Username or Password"; //return to client  
+        }  
+        fclose($open);  
+        ?&gt;  
+    &lt;/body&gt;  
+&lt;/html&gt;  
+</code></pre>
+
+<h3>4.cocos2d-x使用CCHttpClient类进行网络请求</h3>
+
+<p>CCHttpClient的使用这里也不赘述了，请移步官方文档How_to_use_CCHttpClient。这里在上文编辑框和点九图的基础上进行了修改。2个编辑框，分别是username和password。一个按钮点击发送请求。一个文本显示从服务器返回的结果。</p>
+
+<p><strong>4.1.按钮请求处理</strong></p>
+
+<pre><code>void TestLayer::btncallback( CCObject* pSender )  
+{  
+    bool requestType_is_get=true;//采用get方式或者post方式  
+    if (requestType_is_get)  
+    {  
+        CCHttpRequest* request = new CCHttpRequest();//创建请求对象  
+        string str1 = "127.0.0.1:80/index.html?";  
+        string str2 = p_User_EditBox-&gt;getText();//获取username编辑框内容  
+        string str3 = p_Psw_EditBox-&gt;getText();//获取password编辑框内容  
+        string struser="username=";  
+        string strpsw="&amp;password=";  
+        str1=str1+struser+str2+strpsw+str3;  
+        request-&gt;setUrl(str1.c_str());//设置请求的url，username和password已经包含在url中  
+        request-&gt;setRequestType(CCHttpRequest::kHttpGet);//设置为Get模式  
+        request-&gt;setResponseCallback(this, httpresponse_selector(TestLayer::onHttpRequestCompleted));//设置响应的回调  
+        request-&gt;setTag("GET test");  
+        CCHttpClient::getInstance()-&gt;send(request);//发送请求  
+        request-&gt;release();//释放请求  
+    }  
+    else  
+    {  
+        CCHttpRequest* request = new CCHttpRequest();//创建请求对象  
+        string str1 = "127.0.0.1:80/index.html";  
+        string str2 = p_User_EditBox-&gt;getText();  
+        string str3 = p_Psw_EditBox-&gt;getText();  
+        string struser="username=";  
+        string strpsw="&amp;password=";  
+        str2=struser+str2+strpsw+str3;  
+
+        request-&gt;setUrl(str1.c_str());//设置请求的url，只是请求页面的url，并不包含username和password  
+        request-&gt;setRequestType(CCHttpRequest::kHttpPost);//设置为Post模式  
+        request-&gt;setResponseCallback(this, httpresponse_selector(TestLayer::onHttpRequestCompleted));//设置响应的回调  
+
+        const char* postData = str2.c_str();  
+        request-&gt;setRequestData(postData, strlen(postData));//设置请求数据，也就是username和password  
+
+        request-&gt;setTag("POST test");  
+        CCHttpClient::getInstance()-&gt;send(request);//发送请求  
+        request-&gt;release();//释放请求  
+    }  
+}  
+</code></pre>
+
+<p><strong>4.2.响应回调处理</strong></p>
+
+<pre><code>void TestLayer::onHttpRequestCompleted( CCHttpClient* client, CCHttpResponse* response )  
+{  
+    if (!response-&gt;isSucceed())//如果响应失败，输出错误信息  
+    {    
+        CCString strError;  
+        strError.initWithFormat("Receive Error! \n%s\n",response-&gt;getErrorBuffer());  
+        m_labelStatusCode-&gt;setString(strError.getCString());  
+        return ;     
+    }    
+
+    std::vector&lt;char&gt; *buffer = response-&gt;getResponseData();//接收响应信息  
+    string recieveData;  
+    for (unsigned int i = 0; i &lt; buffer-&gt;size(); i++)  
+    {    
+        recieveData += (*buffer)[i];    
+    }  
+    size_t begin= recieveData.find("&lt;body&gt;")+6;//这里简单处理，获取&lt;body&gt;标签内数据，即是响应内容  
+    size_t end= recieveData.find("&lt;/body&gt;");  
+    string result(recieveData,begin,end-begin);  
+    m_labelStatusCode-&gt;setString(result.c_str());  
+}  
+</code></pre>
+
+<h3>5.效果图</h3>
+
+<p><strong>5.1.Apache运行（Get和Post两种效果都是一样的）</strong></p>
+
+<p><em>（1）帐号密码正确时</em></p>
+
+<div align="center"><img src="http://img.blog.csdn.net/20131214145727843" alt="" border="0" title="登录成功" /><br></br></div>
+
+
+<p><em>（2）帐号密码错误时</em></p>
+
+<div align="center"><img src="http://img.blog.csdn.net/20131214145557531" alt="" border="0" title="登录失败" /><br></br></div>
+
+
+<p><strong>5.2.关闭Apache</strong></p>
+
+<div align="center"><img src="http://img.blog.csdn.net/20131214145740578" alt="" border="0" title="服务器关闭" /><br></br></div>
+
+
+<h3>6.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6713471">下载地址</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/12/17/play-cocos2dx-31/'><a href="http://www.fusijie.com/blog/2013/12/17/play-cocos2dx-31/">http://www.fusijie.com/blog/2013/12/17/play-cocos2dx-31/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">FuSijie</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-17T14:11:00+08:00" pubdate data-updated="true">Dec 17<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cocos2d-x/'>cocos2d-x</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+      <!-- JiaThis Button BEGIN -->
+  <section>
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share?uid=1859056" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1859056" charset="utf-8"></script>
+</section>
+<!-- JiaThis Button END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+	    <p></p>
+        <a class="basic-alignment left" href="/blog/2013/12/13/play-cocos2dx-30/" title="Previous Post: 【玩转cocos2d-x之三十】点九图和输入框的使用">&laquo; 【玩转cocos2d-x之三十】点九图和输入框的使用</a>
+      
+      
+    </p>
+  </footer>
+</article>
+  <section>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"fusijie"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->  
+</section>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+		<br>
+		<center><a target="_blank" href="http://blog.csdn.net/jackystudio" style="text-decoration:none" ><img src="\images\aboutme.png" border=0></img></a></center>
+		</br>
+</section><section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (31)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/12/17/play-cocos2dx-31/">【玩转cocos2d-x之三十一】服务器的网络通信编程</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/13/play-cocos2dx-30/">【玩转cocos2d-x之三十】点九图和输入框的使用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/06/play-cocos2dx-29/">【玩转cocos2d-x之二十九】利用CCClipingNode做游戏遮罩</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/03/play-cocos2dx-28/">【玩转cocos2d-x之二十八】cocos2d-x的消息和数据传递</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/11/28/play-cocos2dx-27/">【玩转cocos2d-x之二十七】CCSequence不能执行CCRepeatForever</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+  
+<section>
+  <h1>Sina Weibo</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="450" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=450&fansRow=0&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=0&uid=1307211523&verifier=3619ee9c">
+      </iframe>
+    </li>
+  </ul>
+</section>
+ 
+<section>
+<h1>Visitor</h1>
+<div>
+	<p></p>
+    <center>
+	<a href="http://info.flagcounter.com/3pF8"><img src="http://s08.flagcounter.com/count/3pF8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_12/viewers_3/labels_0/pageviews_1/flags_0/" alt="Flag Counter" border="0"></a>
+	</center>
+</div>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - FuSijie -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
