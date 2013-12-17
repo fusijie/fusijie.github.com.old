@@ -1,0 +1,188 @@
+---
+layout: post
+title: "【玩转cocos2d-x之三十一】服务器的网络通信编程"
+date: 2013-12-17 14:11
+comments: true
+categories: cocos2d-x
+tags: [cocos2d-x联网, apache, php, CCHttpClient, 服务器]
+---
+这里采用Apache+php搭建了一个简易服务器，服务端用php语言，客户端采用cocos2d-x的CCHttpClient类通过http方式访问服务端资源。模拟了cocos2d-x提交账户和密码到服务端，服务端校验帐号密码，如果正确返回客户端成功登录，如果错误则返回错误信息，同时在服务端后台保存登录log。第一次接触php，语法上和C/C++还是蛮像的，主要是给出一个cocos2d-x网络实例，代码中并没有做一些防呆纠错措施。
+
+###1.搭建Apache+php网页服务器
+Apche2.2 x86版:[下载地址](http://pan.baidu.com/s/1vNuLF)
+
+php5.2.17版:[下载地址](http://pan.baidu.com/s/17sFoN)
+
+搭建过程参见[这里](http://tech.163.com/06/0206/11/299AMBLT0009159K.html)，这里就不安装MySQL了。
+
+<!-- more -->
+
+搭建成功后，打开[http://127.0.0.1](http://127.0.0.1)，就可以看到"*It' works!*"字样。同时打开Apache monitor监控Apache处于运行状态。我这里使用的80端口。
+
+###2.php收集表单的方式
+Http定义了与服务器交互的不同方法，最基本的方法有4种，分别是GET，POST，PUT，DELETE，对应着查改增删，这里介绍GET和POST。
+
+用$_GET获取表单数据，表单数据对任何人都是可见的，比如
+
+	http://www.w3school.com.cn/welcome.php?username=jackystudio&password=123
+
+用$_POST获取表单数据，表单数据则是不可见的，比如
+
+	http://www.w3school.com.cn/welcome.php
+
+详细可见[w3school有关php章节](http://www.w3school.com.cn/php)。
+
+###3.服务器php处理代码
+
+这里我直接修改了主页index.html。会C++应该都能看懂，先是打开一个log.txt，接收到username和password，如果是username是jackystudio，password是123的话，把username和password写入log.txt，并返回登录成功，如果username或password错误时返回登录失败。如果未接收到则返回没有用户名密码。
+
+**3.1.采用get方式代码**
+
+    <html>  
+    	<body>  
+    		<?php  
+    		$open=fopen("log.txt","a" ); //Save password  
+    		if(isset($_GET["username"]) && isset($_GET["password"]))  
+    		{  
+    			if($_GET["username"]=="jackystudio" && $_GET["password"]=="123")  
+    			{  
+    				fwrite($open,"Username:".$_GET["username"]);  
+    				fwrite($open,"\r\n");  
+    				fwrite($open,"Password:".$_GET["password"]);  
+    				echo "Login Success"; //return to client  
+    			}  
+    			else  
+    			{  
+    				fwrite($open,"Wrong Username or password!");  
+    				echo "Login Failed"; //return to client  
+    			}  
+    		}  
+    		else  
+    		{  
+    			fwrite($open,"No password");  
+    			echo "No Username or Password"; //return to client  
+    		}  
+    		fclose($open);  
+    		?>  
+    	</body>  
+    </html>  
+
+**3.2.采用post方式代码**
+
+    <html>  
+    	<body>  
+    		<?php  
+    		$open=fopen("log.txt","a" ); //Save password  
+    		if(isset($_POST["username"]) && isset($_POST["password"]))  
+    		{  
+    			if($_POST["username"]=="jackystudio" && $_POST["password"]=="123")  
+    			{  
+    				fwrite($open,"Username:".$_POST["username"]);  
+    				fwrite($open,"\r\n");  
+    				fwrite($open,"Password:".$_POST["password"]);  
+    				echo "Login Success"; //return to client  
+    			}  
+    			else  
+    			{  
+    				fwrite($open,"Wrong Username or password!");  
+    				echo "Login Failed"; //return to client  
+    			}  
+    		}  
+    		else  
+    		{  
+    			fwrite($open,"No password");  
+    			echo "No Username or Password"; //return to client  
+    		}  
+    		fclose($open);  
+    		?>  
+    	</body>  
+    </html>  
+
+###4.cocos2d-x使用CCHttpClient类进行网络请求
+CCHttpClient的使用这里也不赘述了，请移步官方文档How_to_use_CCHttpClient。这里在上文编辑框和点九图的基础上进行了修改。2个编辑框，分别是username和password。一个按钮点击发送请求。一个文本显示从服务器返回的结果。
+
+**4.1.按钮请求处理**
+
+    void TestLayer::btncallback( CCObject* pSender )  
+    {  
+    	bool requestType_is_get=true;//采用get方式或者post方式  
+    	if (requestType_is_get)  
+    	{  
+    		CCHttpRequest* request = new CCHttpRequest();//创建请求对象  
+    		string str1 = "127.0.0.1:80/index.html?";  
+    		string str2 = p_User_EditBox->getText();//获取username编辑框内容  
+    		string str3 = p_Psw_EditBox->getText();//获取password编辑框内容  
+    		string struser="username=";  
+    		string strpsw="&password=";  
+    		str1=str1+struser+str2+strpsw+str3;  
+    		request->setUrl(str1.c_str());//设置请求的url，username和password已经包含在url中  
+    		request->setRequestType(CCHttpRequest::kHttpGet);//设置为Get模式  
+    		request->setResponseCallback(this, httpresponse_selector(TestLayer::onHttpRequestCompleted));//设置响应的回调  
+    		request->setTag("GET test");  
+    		CCHttpClient::getInstance()->send(request);//发送请求  
+    		request->release();//释放请求  
+    	}  
+    	else  
+    	{  
+    		CCHttpRequest* request = new CCHttpRequest();//创建请求对象  
+    		string str1 = "127.0.0.1:80/index.html";  
+    		string str2 = p_User_EditBox->getText();  
+    		string str3 = p_Psw_EditBox->getText();  
+    		string struser="username=";  
+    		string strpsw="&password=";  
+    		str2=struser+str2+strpsw+str3;  
+      
+    		request->setUrl(str1.c_str());//设置请求的url，只是请求页面的url，并不包含username和password  
+    		request->setRequestType(CCHttpRequest::kHttpPost);//设置为Post模式  
+    		request->setResponseCallback(this, httpresponse_selector(TestLayer::onHttpRequestCompleted));//设置响应的回调  
+      
+    		const char* postData = str2.c_str();  
+    		request->setRequestData(postData, strlen(postData));//设置请求数据，也就是username和password  
+      
+    		request->setTag("POST test");  
+    		CCHttpClient::getInstance()->send(request);//发送请求  
+    		request->release();//释放请求  
+    	}  
+    }  
+
+**4.2.响应回调处理**
+
+	void TestLayer::onHttpRequestCompleted( CCHttpClient* client, CCHttpResponse* response )  
+	{  
+    	if (!response->isSucceed())//如果响应失败，输出错误信息  
+    	{    
+        	CCString strError;  
+        	strError.initWithFormat("Receive Error! \n%s\n",response->getErrorBuffer());  
+        	m_labelStatusCode->setString(strError.getCString());  
+        	return ;     
+    	}    
+  
+    	std::vector<char> *buffer = response->getResponseData();//接收响应信息  
+    	string recieveData;  
+    	for (unsigned int i = 0; i < buffer->size(); i++)  
+    	{    
+        	recieveData += (*buffer)[i];    
+    	}  
+    	size_t begin= recieveData.find("<body>")+6;//这里简单处理，获取<body>标签内数据，即是响应内容  
+    	size_t end= recieveData.find("</body>");  
+    	string result(recieveData,begin,end-begin);  
+    	m_labelStatusCode->setString(result.c_str());  
+	}  
+
+###5.效果图
+**5.1.Apache运行（Get和Post两种效果都是一样的）**
+
+*（1）帐号密码正确时*
+
+<div align="center"><img src="http://img.blog.csdn.net/20131214145727843" alt="" border="0" title="登录成功" /><br></br></div>
+
+*（2）帐号密码错误时*
+
+<div align="center"><img src="http://img.blog.csdn.net/20131214145557531" alt="" border="0" title="登录失败" /><br></br></div>
+
+**5.2.关闭Apache**
+
+<div align="center"><img src="http://img.blog.csdn.net/20131214145740578" alt="" border="0" title="服务器关闭" /><br></br></div>
+
+###6.源码下载
+[下载地址](http://download.csdn.net/detail/jackyvincefu/6713471)

@@ -4,7 +4,7 @@ title: "【玩转cocos2d-x之三十】点九图和输入框的使用"
 date: 2013-12-13 11:53
 comments: true
 categories: cocos2d-x
-tags: CCEditBox, CCScale9Sprite, 点九图, 输入框
+tags: [CCEditBox, CCScale9Sprite, 点九图, 输入框]
 ---
 登录界面一个帐号/密码输入框或者主角命名框是少不了的。这节就来了解一下点九图的输入框的使用。这里只是介绍基础知识，并不进行平台的移植，也不处理跨平台可能出现的问题。
 
