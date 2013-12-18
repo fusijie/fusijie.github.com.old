@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: RapidXML | Jacky's Blog]]></title>
+  <link href="http://www.fusijie.com/tags/rapidxml/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2013-12-18T10:06:21+08:00</updated>
+  <id>http://www.fusijie.com/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之三十二】xml的解析]]></title>
+    <link href="http://www.fusijie.com/blog/2013/12/18/play-cocos2dx-32/"/>
+    <updated>2013-12-18T09:30:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2013/12/18/play-cocos2dx-32</id>
+    <content type="html"><![CDATA[<p>cocos2d-x中对xml的解析是采用的TinyXML库，而对plist的解析同时结合了CCDictionary来处理，这里简单介绍下cocos2d-x中解析xml的两种方式，也是常用的xml两个C++解析库：TinyXML和RapidXML。xml被设计用于数据存储和传输，重点是数据内容本身，而不像html，用于表现数据。</p>
+
+<h3>1.TinyXML</h3>
+
+<p><strong>1.1.概况</strong></p>
+
+<p>TinyXML的<a href="http://www.grinninglizard.com/tinyxml/">主页</a>，本来不打算介绍这个库的，因为它的解析效率并不高，但是鉴于cocos2d-x采用的就是它，所以也稍微写一下它的用法，cocos2d-x使用的是TinyXML2，Github地址<a href="https://github.com/leethomason/tinyxml2">在这里</a>。就是对TinyXML重新进行了封装，具体的区别在其github上也写的很清楚了。</p>
+
+<!-- more -->
+
+
+<p><strong>1.2.示例</strong></p>
+
+<p>这里不介绍API，因为太多了，在线手册也都有。首先下载TinyXML库，将4个cpp文件和2个h文件加入cocos2d-x中。添加头文件时只需添加"<em>tinyxml.h</em>&ldquo;即可。</p>
+
+<p><strong>1.2.1.xml的创建</strong></p>
+
+<pre><code>void TestLayer::writeTinyXML()  
+{  
+    TiXmlDocument* myTinyXMLDoc=new TiXmlDocument();//创建文档对象  
+
+    TiXmlElement* rootElement=new TiXmlElement("Jacky");//创建根节点并连接到文档  
+    myTinyXMLDoc-&gt;LinkEndChild(rootElement);  
+
+    TiXmlElement* infoElement=new TiXmlElement("Info");//创建info节点并连接到根节点  
+    rootElement-&gt;LinkEndChild(infoElement);  
+
+    infoElement-&gt;SetAttribute("Name","Jacky");//为info节点设置属性  
+    infoElement-&gt;SetAttribute("QQ","754505629");  
+    infoElement-&gt;SetAttribute("E-mail","Geek.Jacky@Gmail.com");  
+
+    TiXmlElement* blogElement=new TiXmlElement("blog");  
+    infoElement-&gt;LinkEndChild(blogElement);//创建blog节点并连接到info节点  
+    TiXmlText* blogtext=new TiXmlText("http://blog.csdn.net/jackystudio");  
+    blogElement-&gt;LinkEndChild(blogtext);//为blog节点添加文本值  
+
+    TiXmlElement* websiteElenment=new TiXmlElement("website");  
+    infoElement-&gt;LinkEndChild(websiteElenment);  
+    TiXmlText* websitetext=new TiXmlText("http://www.fusijie.com");  
+    websiteElenment-&gt;LinkEndChild(websitetext);  
+
+    myTinyXMLDoc-&gt;SaveFile(CCFileUtils::sharedFileUtils()-&gt;fullPathForFilename("testTiny.xml").c_str());//保存xml  
+
+    delete myTinyXMLDoc;  
+}  
+</code></pre>
+
+<p><strong>1.2.2.xml的读取</strong></p>
+
+<pre><code>void TestLayer::readTinyXML()  
+{  
+    TiXmlDocument* myTinyXMLDoc=new TiXmlDocument(CCFileUtils::sharedFileUtils()-&gt;fullPathForFilename("testTiny.xml").c_str());  
+    myTinyXMLDoc-&gt;LoadFile();  
+
+    TiXmlElement* rootElement = myTinyXMLDoc-&gt;RootElement();  //获取根节点  
+    TiXmlElement* infoElement = rootElement-&gt;FirstChildElement();  // 获取Info节点    
+
+    while (infoElement)   
+    {  
+
+        TiXmlAttribute* attributeOfinfo = infoElement-&gt;FirstAttribute();  //获得info的属性    
+        while ( attributeOfinfo )   
+        {    
+            CCLOG("%s : %s",attributeOfinfo-&gt;Name(),attributeOfinfo-&gt;Value());//获取所有属性  
+            attributeOfinfo = attributeOfinfo-&gt;Next();    
+        }  
+
+        TiXmlElement* blogElement = infoElement-&gt;FirstChildElement();//获得blog  
+        CCLOG("blog : %s",blogElement-&gt;GetText());    
+
+        TiXmlElement* websiteElement = blogElement-&gt;NextSiblingElement();//获取website    
+        CCLOG("website : %s",websiteElement-&gt;GetText());    
+
+        infoElement = infoElement-&gt;NextSiblingElement();//查找下一节点    
+    }    
+    delete myTinyXMLDoc;    
+}  
+</code></pre>
+
+<h3>2.RapidXML</h3>
+
+<p><strong>2.1.概况</strong></p>
+
+<p>RapidXML的<a href="http://rapidxml.sourceforge.net/">主页</a>。在其手册中第四节<a href="http://rapidxml.sourceforge.net/manual.html#namespacerapidxml_1performance">comparison with others parsers</a>可以看到在同等条件下它的解析效率是TinyXML的30到60倍，所以如果需要解析大文件的话，RapidXML是不二之选。</p>
+
+<p><strong>2.2.示例</strong></p>
+
+<p>首先下载RapidXML库，将四个hpp文件都加入cocos2d-x中，在包含头文件时，4个hpp都要进行包含。</p>
+
+<p><strong>2.2.1.xml的创建</strong></p>
+
+<pre><code>void TestLayer::writeRapidXML()  
+{  
+    rapidxml::xml_document&lt;&gt; myRapidXMLDoc;  
+
+    rapidxml::xml_node&lt;&gt;* root = myRapidXMLDoc.allocate_node(rapidxml::node_element,"Jacky",NULL);//创建根节点  
+    myRapidXMLDoc.append_node(root);//追加根节点  
+
+    rapidxml::xml_node&lt;&gt;* info = myRapidXMLDoc.allocate_node(rapidxml::node_element,"Info",NULL);//创建info节点  
+    info-&gt;append_attribute(myRapidXMLDoc.allocate_attribute("Name","Jacky"));  
+    info-&gt;append_attribute(myRapidXMLDoc.allocate_attribute("QQ","754505629"));  
+    info-&gt;append_attribute(myRapidXMLDoc.allocate_attribute("E-mail","Geek.Jacky@Gmail.com"));  
+    root-&gt;append_node(info);//追加info节点到root  
+
+    //创建blog和website节点并追加到root  
+    rapidxml::xml_node&lt;&gt;* blog = myRapidXMLDoc.allocate_node(rapidxml::node_element,"blog","http://blog.csdn.net/jackystudio");  
+    info-&gt;append_node(blog);  
+    rapidxml::xml_node&lt;&gt;* website = myRapidXMLDoc.allocate_node(rapidxml::node_element,"website","http://www.fusijie.com");  
+    info-&gt;append_node(website);  
+
+    //保存xml文档  
+    std::string text;  
+    rapidxml::print(std::back_inserter(text), myRapidXMLDoc, 0);  
+    CCLog(text.c_str());  
+    std::ofstream out(CCFileUtils::sharedFileUtils()-&gt;fullPathForFilename("testRapid.xml"));  
+    out &lt;&lt; myRapidXMLDoc;  
+}  
+</code></pre>
+
+<p><strong>2.2.2.xml的读取</strong></p>
+
+<pre><code>void TestLayer::readRapidXML()  
+{  
+    rapidxml::file&lt;&gt; fdoc(CCFileUtils::sharedFileUtils()-&gt;fullPathForFilename("testRapid.xml").c_str());//读取数据  
+    CCLog(fdoc.data());  
+    rapidxml::xml_document&lt;&gt; myRapidXMLDoc;  
+    myRapidXMLDoc.parse&lt;0&gt;(fdoc.data());//将数据写入xml_document  
+
+    rapidxml::xml_node&lt;&gt;* root = myRapidXMLDoc.first_node();//获取根节点  
+
+    rapidxml::xml_node&lt;&gt;* info = root-&gt;first_node();//获取Info节点  
+
+    rapidxml::xml_attribute&lt;&gt;* info_attr = info-&gt;first_attribute();//获取info属性  
+    CCLog("%s:%s",info_attr-&gt;name(),info_attr-&gt;value());  
+    CCLog("%s:%s",info_attr-&gt;next_attribute()-&gt;name(),info_attr-&gt;next_attribute()-&gt;value());  
+    CCLog("%s:%s",info_attr-&gt;next_attribute()-&gt;next_attribute()-&gt;name(),info_attr-&gt;next_attribute()-&gt;next_attribute()-&gt;value());  
+
+    rapidxml::xml_node&lt;&gt;* blog=info-&gt;first_node();//获取blog节点  
+    CCLog("%s:%s",blog-&gt;name(),blog-&gt;value());  
+
+    rapidxml::xml_node&lt;&gt;* website=blog-&gt;next_sibling();//获取website节点  
+    CCLog("%s:%s",website-&gt;name(),website-&gt;value());  
+}  
+</code></pre>
+
+<h3>3.生成xml的文件</h3>
+
+<p>以上2种方式生成的xml文件内容如下：</p>
+
+<pre><code>&lt;Jacky&gt;  
+    &lt;Info Name="Jacky" QQ="754505629" E-mail="Geek.Jacky@Gmail.com"&gt;  
+        &lt;blog&gt;http://blog.csdn.net/jackystudio&lt;/blog&gt;  
+    &lt;website&gt;http://www.fusijie.com&lt;/website&gt;  
+    &lt;/Info&gt;  
+&lt;/Jacky&gt;  
+</code></pre>
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6732361">下载地址</a></p>
+]]></content>
+  </entry>
+  
+</feed>

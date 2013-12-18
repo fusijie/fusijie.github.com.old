@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/blog/categories/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-17T16:47:52+08:00</updated>
+  <updated>2013-12-18T10:06:21+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,174 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之三十二】xml的解析]]></title>
+    <link href="http://www.fusijie.com/blog/2013/12/18/play-cocos2dx-32/"/>
+    <updated>2013-12-18T09:30:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2013/12/18/play-cocos2dx-32</id>
+    <content type="html"><![CDATA[<p>cocos2d-x中对xml的解析是采用的TinyXML库，而对plist的解析同时结合了CCDictionary来处理，这里简单介绍下cocos2d-x中解析xml的两种方式，也是常用的xml两个C++解析库：TinyXML和RapidXML。xml被设计用于数据存储和传输，重点是数据内容本身，而不像html，用于表现数据。</p>
+
+<h3>1.TinyXML</h3>
+
+<p><strong>1.1.概况</strong></p>
+
+<p>TinyXML的<a href="http://www.grinninglizard.com/tinyxml/">主页</a>，本来不打算介绍这个库的，因为它的解析效率并不高，但是鉴于cocos2d-x采用的就是它，所以也稍微写一下它的用法，cocos2d-x使用的是TinyXML2，Github地址<a href="https://github.com/leethomason/tinyxml2">在这里</a>。就是对TinyXML重新进行了封装，具体的区别在其github上也写的很清楚了。</p>
+
+<!-- more -->
+
+
+<p><strong>1.2.示例</strong></p>
+
+<p>这里不介绍API，因为太多了，在线手册也都有。首先下载TinyXML库，将4个cpp文件和2个h文件加入cocos2d-x中。添加头文件时只需添加"<em>tinyxml.h</em>&ldquo;即可。</p>
+
+<p><strong>1.2.1.xml的创建</strong></p>
+
+<pre><code>void TestLayer::writeTinyXML()  
+{  
+    TiXmlDocument* myTinyXMLDoc=new TiXmlDocument();//创建文档对象  
+
+    TiXmlElement* rootElement=new TiXmlElement("Jacky");//创建根节点并连接到文档  
+    myTinyXMLDoc-&gt;LinkEndChild(rootElement);  
+
+    TiXmlElement* infoElement=new TiXmlElement("Info");//创建info节点并连接到根节点  
+    rootElement-&gt;LinkEndChild(infoElement);  
+
+    infoElement-&gt;SetAttribute("Name","Jacky");//为info节点设置属性  
+    infoElement-&gt;SetAttribute("QQ","754505629");  
+    infoElement-&gt;SetAttribute("E-mail","Geek.Jacky@Gmail.com");  
+
+    TiXmlElement* blogElement=new TiXmlElement("blog");  
+    infoElement-&gt;LinkEndChild(blogElement);//创建blog节点并连接到info节点  
+    TiXmlText* blogtext=new TiXmlText("http://blog.csdn.net/jackystudio");  
+    blogElement-&gt;LinkEndChild(blogtext);//为blog节点添加文本值  
+
+    TiXmlElement* websiteElenment=new TiXmlElement("website");  
+    infoElement-&gt;LinkEndChild(websiteElenment);  
+    TiXmlText* websitetext=new TiXmlText("http://www.fusijie.com");  
+    websiteElenment-&gt;LinkEndChild(websitetext);  
+
+    myTinyXMLDoc-&gt;SaveFile(CCFileUtils::sharedFileUtils()-&gt;fullPathForFilename("testTiny.xml").c_str());//保存xml  
+
+    delete myTinyXMLDoc;  
+}  
+</code></pre>
+
+<p><strong>1.2.2.xml的读取</strong></p>
+
+<pre><code>void TestLayer::readTinyXML()  
+{  
+    TiXmlDocument* myTinyXMLDoc=new TiXmlDocument(CCFileUtils::sharedFileUtils()-&gt;fullPathForFilename("testTiny.xml").c_str());  
+    myTinyXMLDoc-&gt;LoadFile();  
+
+    TiXmlElement* rootElement = myTinyXMLDoc-&gt;RootElement();  //获取根节点  
+    TiXmlElement* infoElement = rootElement-&gt;FirstChildElement();  // 获取Info节点    
+
+    while (infoElement)   
+    {  
+
+        TiXmlAttribute* attributeOfinfo = infoElement-&gt;FirstAttribute();  //获得info的属性    
+        while ( attributeOfinfo )   
+        {    
+            CCLOG("%s : %s",attributeOfinfo-&gt;Name(),attributeOfinfo-&gt;Value());//获取所有属性  
+            attributeOfinfo = attributeOfinfo-&gt;Next();    
+        }  
+
+        TiXmlElement* blogElement = infoElement-&gt;FirstChildElement();//获得blog  
+        CCLOG("blog : %s",blogElement-&gt;GetText());    
+
+        TiXmlElement* websiteElement = blogElement-&gt;NextSiblingElement();//获取website    
+        CCLOG("website : %s",websiteElement-&gt;GetText());    
+
+        infoElement = infoElement-&gt;NextSiblingElement();//查找下一节点    
+    }    
+    delete myTinyXMLDoc;    
+}  
+</code></pre>
+
+<h3>2.RapidXML</h3>
+
+<p><strong>2.1.概况</strong></p>
+
+<p>RapidXML的<a href="http://rapidxml.sourceforge.net/">主页</a>。在其手册中第四节<a href="http://rapidxml.sourceforge.net/manual.html#namespacerapidxml_1performance">comparison with others parsers</a>可以看到在同等条件下它的解析效率是TinyXML的30到60倍，所以如果需要解析大文件的话，RapidXML是不二之选。</p>
+
+<p><strong>2.2.示例</strong></p>
+
+<p>首先下载RapidXML库，将四个hpp文件都加入cocos2d-x中，在包含头文件时，4个hpp都要进行包含。</p>
+
+<p><strong>2.2.1.xml的创建</strong></p>
+
+<pre><code>void TestLayer::writeRapidXML()  
+{  
+    rapidxml::xml_document&lt;&gt; myRapidXMLDoc;  
+
+    rapidxml::xml_node&lt;&gt;* root = myRapidXMLDoc.allocate_node(rapidxml::node_element,"Jacky",NULL);//创建根节点  
+    myRapidXMLDoc.append_node(root);//追加根节点  
+
+    rapidxml::xml_node&lt;&gt;* info = myRapidXMLDoc.allocate_node(rapidxml::node_element,"Info",NULL);//创建info节点  
+    info-&gt;append_attribute(myRapidXMLDoc.allocate_attribute("Name","Jacky"));  
+    info-&gt;append_attribute(myRapidXMLDoc.allocate_attribute("QQ","754505629"));  
+    info-&gt;append_attribute(myRapidXMLDoc.allocate_attribute("E-mail","Geek.Jacky@Gmail.com"));  
+    root-&gt;append_node(info);//追加info节点到root  
+
+    //创建blog和website节点并追加到root  
+    rapidxml::xml_node&lt;&gt;* blog = myRapidXMLDoc.allocate_node(rapidxml::node_element,"blog","http://blog.csdn.net/jackystudio");  
+    info-&gt;append_node(blog);  
+    rapidxml::xml_node&lt;&gt;* website = myRapidXMLDoc.allocate_node(rapidxml::node_element,"website","http://www.fusijie.com");  
+    info-&gt;append_node(website);  
+
+    //保存xml文档  
+    std::string text;  
+    rapidxml::print(std::back_inserter(text), myRapidXMLDoc, 0);  
+    CCLog(text.c_str());  
+    std::ofstream out(CCFileUtils::sharedFileUtils()-&gt;fullPathForFilename("testRapid.xml"));  
+    out &lt;&lt; myRapidXMLDoc;  
+}  
+</code></pre>
+
+<p><strong>2.2.2.xml的读取</strong></p>
+
+<pre><code>void TestLayer::readRapidXML()  
+{  
+    rapidxml::file&lt;&gt; fdoc(CCFileUtils::sharedFileUtils()-&gt;fullPathForFilename("testRapid.xml").c_str());//读取数据  
+    CCLog(fdoc.data());  
+    rapidxml::xml_document&lt;&gt; myRapidXMLDoc;  
+    myRapidXMLDoc.parse&lt;0&gt;(fdoc.data());//将数据写入xml_document  
+
+    rapidxml::xml_node&lt;&gt;* root = myRapidXMLDoc.first_node();//获取根节点  
+
+    rapidxml::xml_node&lt;&gt;* info = root-&gt;first_node();//获取Info节点  
+
+    rapidxml::xml_attribute&lt;&gt;* info_attr = info-&gt;first_attribute();//获取info属性  
+    CCLog("%s:%s",info_attr-&gt;name(),info_attr-&gt;value());  
+    CCLog("%s:%s",info_attr-&gt;next_attribute()-&gt;name(),info_attr-&gt;next_attribute()-&gt;value());  
+    CCLog("%s:%s",info_attr-&gt;next_attribute()-&gt;next_attribute()-&gt;name(),info_attr-&gt;next_attribute()-&gt;next_attribute()-&gt;value());  
+
+    rapidxml::xml_node&lt;&gt;* blog=info-&gt;first_node();//获取blog节点  
+    CCLog("%s:%s",blog-&gt;name(),blog-&gt;value());  
+
+    rapidxml::xml_node&lt;&gt;* website=blog-&gt;next_sibling();//获取website节点  
+    CCLog("%s:%s",website-&gt;name(),website-&gt;value());  
+}  
+</code></pre>
+
+<h3>3.生成xml的文件</h3>
+
+<p>以上2种方式生成的xml文件内容如下：</p>
+
+<pre><code>&lt;Jacky&gt;  
+    &lt;Info Name="Jacky" QQ="754505629" E-mail="Geek.Jacky@Gmail.com"&gt;  
+        &lt;blog&gt;http://blog.csdn.net/jackystudio&lt;/blog&gt;  
+    &lt;website&gt;http://www.fusijie.com&lt;/website&gt;  
+    &lt;/Info&gt;  
+&lt;/Jacky&gt;  
+</code></pre>
+
+<h3>4.源码下载</h3>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6732361">下载地址</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十一】服务器的网络通信编程]]></title>
@@ -607,187 +775,6 @@ BLayer::~BLayer(void)
 <h3>7.源码下载</h3>
 
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6647453">下载地址</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之二十七】CCSequence不能执行CCRepeatForever]]></title>
-    <link href="http://www.fusijie.com/blog/2013/11/28/play-cocos2dx-27/"/>
-    <updated>2013-11-28T09:25:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/11/28/play-cocos2dx-27</id>
-    <content type="html"><![CDATA[<p>之前在遇到这么一个问题，在CCSequence中加入CCRepeatForever，发现其他动作执行没问题，就是CCRepeatForever无法执行。代码并没有问题，很奇怪。</p>
-
-<h3>1.示例</h3>
-
-<pre><code>CCBlink* blink=CCBlink::create(0.5f,10);//创建闪烁动画，duration=0.5s  
-CCAnimation* animation=CCAnimation::create();  
-animation-&gt;addSpriteFrameWithFileName("CloseNormal.png");  
-animation-&gt;addSpriteFrameWithFileName("CloseSelected.png");  
-animation-&gt;setDelayPerUnit(1.0f);//帧间间隔1s  
-CCAnimate* animate=CCAnimate::create(animation);//创建帧动画  
-CCRepeatForever* repeat=CCRepeatForever::create(animate);  
-CCSequence* sequence=CCSequence::create(blink,repeat,NULL);//创建连续动画  
-CCSprite* close=CCSprite::create("CloseNormal.png");  
-close-&gt;setPosition(ccp(240,160));  
-this-&gt;addChild(close);  
-close-&gt;runAction(sequence);//执行连续动画  
-</code></pre>
-
-<p>结果精灵闪烁10次以后，帧动画不执行了。</p>
-
-<!-- more -->
-
-
-<h3>2.原因</h3>
-
-<p>先了解一下CCSequence的创建和执行原理。</p>
-
-<p><strong>2.1.CCSequence的创建</strong></p>
-
-<p>创建CCSequence调用</p>
-
-<pre><code>//创建CCSequence  
-CCSequence* CCSequence::create(CCFiniteTimeAction *pAction1, ...)  
-</code></pre>
-
-<p>内部调用了createWithVariableList，从实现可以看出这是一个递归调用。</p>
-
-<pre><code>//获取动作列表，创建CCSequence  
-CCSequence* CCSequence::createWithVariableList(CCFiniteTimeAction *pAction1, va_list args)  
-{  
-    CCFiniteTimeAction *pNow;//当前动作  
-    CCFiniteTimeAction *pPrev = pAction1;//第一个动作  
-    bool bOneAction = true;//只有一个动作的标志位  
-
-    while (pAction1)  
-    {  
-        pNow = va_arg(args, CCFiniteTimeAction*);//获取当前动作  
-        if (pNow)//如果存在  
-        {  
-            pPrev = createWithTwoActions(pPrev, pNow);//用前两个动作创建CCSequence并赋给第一个动作  
-            bOneAction = false;//置false  
-        }  
-        else//如果不存在  
-        {  
-            // If only one action is added to CCSequence, make up a CCSequence by adding a simplest finite time action.  
-            if (bOneAction)//如果只有一个动作  
-            {  
-                pPrev = createWithTwoActions(pPrev, ExtraAction::create());  
-            }  
-        break;//跳出循环  
-        }  
-    }  
-    return ((CCSequence*)pPrev);//返回第一个动作  
-}  
-</code></pre>
-
-<p>假如有3个动作要被串联，则先把第1个和第2个串联一个CCSequence，再把这个CCSequence和第3个动作串联成最终的CCSequence，然后返回。从CCSequence的成员变量可以看到：</p>
-
-<pre><code>CCFiniteTimeAction *m_pActions[2];//表明只包含2个动作对象指针
-</code></pre>
-
-<p>使用递归多少会降低程序的运行效率，但是却可以换来代码的简洁性，同样的CCSpawn也是这么实现的。
-在createWithTwoActions中，调用了initWithTwoActions函数，实现了把两个动作串成一个CCSequence，关键代码如下：</p>
-
-<pre><code>float d = pActionOne-&gt;getDuration() + pActionTwo-&gt;getDuration();//获取两个动作的duration  
-CCActionInterval::initWithDuration(d);//赋给新的CCSequence  
-
-m_pActions[0] = pActionOne;//同时把两个动作赋给m_pActions指针数组  
-pActionOne-&gt;retain();  
-
-m_pActions[1] = pActionTwo;  
-pActionTwo-&gt;retain();  
-</code></pre>
-
-<p><strong>2.2.duration</strong></p>
-
-<p>从示例可以看出，闪烁动画blink的duration是0.5s，那CCRepeatForever呢？1s？当然不是，1s只是帧动画animate的帧间间隔，每个帧动画包含2帧，而CCRepeatForever的duration是0。因此，当示例中的闪烁动画blink和重复动画repeat串联成CCSequence sequence的时候，sequence的duration就变成0.5+0=0.5s，这很重要。</p>
-
-<p><strong>2.3.m_split</strong></p>
-
-<p>CCSequence中有这么一个成员变量</p>
-
-<pre><code>float m_split;//记录了第一个动画时长占总时长的比例，也就是2个动画的时长分界  
-</code></pre>
-
-<p>当执行runAction的时候，CCSequence会调用</p>
-
-<pre><code>void CCSequence::startWithTarget(CCNode *pTarget)  
-{  
-    CCActionInterval::startWithTarget(pTarget);  
-    m_split = m_pActions[0]-&gt;getDuration() / m_fDuration;//获取第一个动画占总时长的比例  
-    m_last = -1;  
-}  
-</code></pre>
-
-<p>而这里由于blink占了0.5s，repeat占了0s，总时长0.5s，所以m_split是0.5/0.5=1。blink占满了整个CCSequence，所以CCSequence无法执行repeat。</p>
-
-<p>这时候再来看CCSequence::update(float dt)函数的执行，就会恍然大悟了。</p>
-
-<pre><code>int found = 0;//当前播放动作索引  
-float new_t = 0.0f;//新播放进度  
-
-if( t &lt; m_split ) {//播放进度&lt;分界进度  
-    found = 0;//设置当前播放的是第一个动作  
-    if( m_split != 0 )//如果第一个动作时长占比!=0  
-        new_t = t / m_split;//计算出第一个动作新的播放进度  
-    else  
-        new_t = 1;//设置第一个已播放完毕  
-
-} else {//播放进度&gt;=分界进度  
-    found = 1;//设置当前播放的是第二个动作  
-    if ( m_split == 1 )//如果第一个动作时长占比==1  
-        new_t = 1;//设置第二个动作已完成  
-    else  
-        new_t = (t-m_split) / (1 - m_split );//计算出第二个动作新的播放进度  
-}  
-</code></pre>
-
-<h3>3.注意</h3>
-
-<p><em>（1）CCSpawn也会有这个问题，所以CCSpawn也无法执行加入其中的CCRepeatForever动作。</em></p>
-
-<p><em>（2）CCRepeatForever的反转动作也是无效了，一个不会停止的动作从什么地方开始反转？当然你可以先把动作反转了再加入CCRepeatForever中，这是没问题的。</em></p>
-
-<h3>4.解决方案</h3>
-
-<p><em>（1）对于同时动作，不使用CCSpawn，采用分别执行</em></p>
-
-<pre><code>close-&gt;runAction(blink);  
-close-&gt;runAction(repeat);  
-</code></pre>
-
-<p><em>（2）对于连续动作，不直接往CCSequence中加入CCRepeatForever，而是把CCRepeatForever放入瞬时动作CCCallFunc中，再把CCCallFunc加入CCSequence中执行。</em></p>
-
-<pre><code>close=CCSprite::create("CloseNormal.png");  
-CCBlink* blink=CCBlink::create(0.5f,10);  
-CCCallFunc* callFunc=CCCallFunc::create(this,callfunc_selector(TestScene::repeatFunc));//创建CCCallFunc对象  
-CCSequence* sequence=CCSequence::create(blink,callFunc,NULL);//把CCCallFunc对象加入CCSequence中  
-close-&gt;setPosition(ccp(240,160));  
-this-&gt;addChild(close);  
-close-&gt;runAction(sequence);  
-
-
-void TestScene::repeatFunc()  
-{  
-    CCAnimation* animation=CCAnimation::create();  
-    animation-&gt;addSpriteFrameWithFileName("CloseNormal.png");  
-    animation-&gt;addSpriteFrameWithFileName("CloseSelected.png");  
-    animation-&gt;setDelayPerUnit(1.0f);  
-    CCAnimate* animate=CCAnimate::create(animation);  
-    CCRepeatForever* repeat=CCRepeatForever::create(animate);  
-    close-&gt;runAction(repeat);  
-}  
-</code></pre>
-
-<p><em>（3）对于CCAnimation帧动画，可以设置循环属性，而不使用CCRepeatForever。</em></p>
-
-<pre><code>animation-&gt;setLoops(-1);  
-</code></pre>
-
-<h3>5.总结</h3>
-
-<p>虽然CCRepeatForever也同样继承于CCActionInterval，理论上是延时动作的子类，但是和一般的延时动作又有很大的不同，所以平时在使用的时候必须很小心，不能当成一般的CCActionInterval使用。而在cocos2d-x动作的分类上是不是应该把它从CCAction继承出来会比较好一点？</p>
 ]]></content>
   </entry>
   
