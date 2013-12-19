@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: RapidXML | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/rapidxml/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-18T10:06:21+08:00</updated>
+  <updated>2013-12-19T16:54:04+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -64,6 +64,8 @@
     delete myTinyXMLDoc;  
 }  
 </code></pre>
+
+<p>是不是很奇怪为什么new了那么多内存，但最后只delete TixmlDocument呢？其实在TinyXML中，子节点的内存管理都由父节点进行维护，所以不必在释放内存时对每个子节点都进行释放，而只需要释放父节点即可。</p>
 
 <p><strong>1.2.2.xml的读取</strong></p>
 

@@ -152,6 +152,8 @@
 }  
 </code></pre>
 
+<p>是不是很奇怪为什么new了那么多内存，但最后只delete TixmlDocument呢？其实在TinyXML中，子节点的内存管理都由父节点进行维护，所以不必在释放内存时对每个子节点都进行释放，而只需要释放父节点即可。</p>
+
 <p><strong>1.2.2.xml的读取</strong></p>
 
 <pre><code>void TestLayer::readTinyXML()  
