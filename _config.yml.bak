@@ -2,7 +2,7 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://www.jacky.tk
+url: http://www.fusijie.com
 title: Jacky's Blog
 subtitle: Stay Hungry,Stay Foolish!
 author: FuSijie
@@ -69,7 +69,7 @@ github_show_profile_link: true
 github_skip_forks: true
 
 # Twitter
-twitter_user:
+twitter_user: 
 twitter_tweet_button: false
 
 # Google +1
