@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: JNI | Jacky's Blog]]></title>
+  <link href="http://www.fusijie.com/tags/jni/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2013-12-26T14:25:39+08:00</updated>
+  <id>http://www.fusijie.com/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之三十三】游戏嵌入Webview网页]]></title>
+    <link href="http://www.fusijie.com/blog/2013/12/26/play-cocos2dx-33/"/>
+    <updated>2013-12-26T14:11:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2013/12/26/play-cocos2dx-33</id>
+    <content type="html"><![CDATA[<p>手游《我叫MT》一开始会弹出一个游戏公告，有玩过的肯定都蛮熟悉的，这就是webview，就是一个网页。由于webview和平台相关，这里就介绍下cocos2d-x如何嵌入andorid的webview控件，在cocos2d-x中显示网页。</p>
+
+<h3>1.Jni</h3>
+
+<p>Jni这里我就不再多说了。可用参考wikipedia，或者微信飞机大战的移植篇。通过Jni，可以实现在cocos2d-x中调用Android的API，当然也可以进行传值。</p>
+
+<h3>2.Android使用webview</h3>
+
+<p>直接上代码。主要是处理布局和webview使用的问题。这里采用代码布局。以下操作在android的主类（cocos2dxActivity）中处理。</p>
+
+<!-- more -->
+
+
+<p><strong>2.1.添加成员变量</strong></p>
+
+<p>整个布局的结构是最底层一个FrameLayout，ImageView控件放置在FrameLayout上。然后之上是一个LinearLayout用来放置关闭按钮，LinearLayout往下是Webview控件。</p>
+
+<pre><code>static Test test  = null;//Test实例  
+WebView m_webView;//WebView控件  
+ImageView m_imageView;//ImageView控件  
+FrameLayout m_webLayout;//FrameLayout布局  
+LinearLayout m_topLayout;//LinearLayout布局  
+Button m_backButton;//关闭按钮  
+</code></pre>
+
+<p><strong>2.2.OnCreate中添加FrameLayout布局</strong></p>
+
+<pre><code>protected void onCreate(Bundle savedInstanceState){  
+    super.onCreate(savedInstanceState);  
+    test=this;  
+
+    //初始化一个空布局  
+    m_webLayout = new FrameLayout(this);  
+    FrameLayout.LayoutParams lytp = new FrameLayout.LayoutParams(800,640);  
+    lytp .gravity = Gravity.CENTER;  
+    addContentView(m_webLayout, lytp);  
+}  
+</code></pre>
+
+<p><strong>2.3.返回实例</strong></p>
+
+<pre><code>public static Test getInstance() {  
+    Log.v("TestJacky","getInstance");  
+    return test;  
+}  
+</code></pre>
+
+<p><strong>2.4.显示webview</strong></p>
+
+<pre><code>public void openWebview() {  
+    Log.v("TestJacky", "openWebView");  
+    this.runOnUiThread(new Runnable() {//在主线程里添加别的控件  
+        public void run() {     
+            //初始化webView  
+            m_webView = new WebView(test);  
+            //设置webView能够执行javascript脚本  
+            m_webView.getSettings().setJavaScriptEnabled(true);              
+            //设置可以支持缩放  
+            m_webView.getSettings().setSupportZoom(true);//设置出现缩放工具  
+            m_webView.getSettings().setBuiltInZoomControls(true);  
+            //载入URL  
+            m_webView.loadUrl("http://m.blog.csdn.net/blog/jackyvincefu/");  
+            //使页面获得焦点  
+            m_webView.requestFocus();  
+            //如果页面中链接，如果希望点击链接继续在当前browser中响应  
+            m_webView.setWebViewClient(new WebViewClient(){         
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {     
+                    if(url.indexOf("tel:")&lt;0){  
+                        view.loadUrl(url);   
+                }  
+                return true;         
+            }      
+        });  
+
+        //背景图  
+        m_imageView = new ImageView(test);  
+        m_imageView.setImageResource(R.drawable.bkgnd);  
+        m_imageView.setScaleType(ImageView.ScaleType.FIT_XY);  
+        //初始化线性布局 里面加按钮和webView  
+        m_topLayout = new LinearLayout(test);        
+        m_topLayout.setOrientation(LinearLayout.VERTICAL);  
+        //初始化返回按钮  
+        m_backButton = new Button(test);  
+        m_backButton.setBackgroundResource(R.drawable.btn);  
+        LinearLayout.LayoutParams lypt=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);  
+        lypt.gravity=Gravity.RIGHT;  
+        m_backButton.setLayoutParams(lypt);              
+        m_backButton.setOnClickListener(new OnClickListener() {                      
+            public void onClick(View v) {  
+                removeWebView();  
+            }  
+        });  
+        //把image加到主布局里  
+        m_webLayout.addView(m_imageView);  
+        //把webView加入到线性布局  
+        m_topLayout.addView(m_backButton);  
+        m_topLayout.addView(m_webView);                  
+        //再把线性布局加入到主布局  
+        m_webLayout.addView(m_topLayout);  
+        }  
+    });  
+}  
+</code></pre>
+
+<p><strong>2.5.移除webview</strong></p>
+
+<pre><code>public void removeWebView() {                
+    m_webLayout.removeView(m_imageView);  
+    m_imageView.destroyDrawingCache();  
+
+    m_webLayout.removeView(m_topLayout);  
+    m_topLayout.destroyDrawingCache();  
+
+    m_topLayout.removeView(m_webView);  
+    m_webView.destroy();  
+
+    m_topLayout.removeView(m_backButton);  
+    m_backButton.destroyDrawingCache();  
+}  
+</code></pre>
+
+<p><strong>2.6.重写返回键</strong></p>
+
+<pre><code>public boolean onKeyDown(int keyCoder,KeyEvent event)  
+{  
+    //如果网页能回退则后退，如果不能后退移除WebView  
+    if(m_webView.canGoBack() &amp;&amp; keyCoder == KeyEvent.KEYCODE_BACK){  
+        m_webView.goBack();  
+    }else{  
+        removeWebView();  
+    }  
+    return false;        
+}  
+</code></pre>
+
+<h3>3.cocos2d-x使用Jni</h3>
+
+<p>这里直接使用HelloWorld的示例，修改了close按钮的回调函数。</p>
+
+<p><strong>3.1.jni头文件</strong></p>
+
+<pre><code>#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)  
+#include &lt;jni.h&gt;  
+#include "platform/android/jni/JniHelper.h"  
+#endif  
+</code></pre>
+
+<p><strong>3.2.Jni调用打开webview</strong></p>
+
+<pre><code>void HelloWorld::menuCloseCallback(CCObject* pSender)  
+{  
+    #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)  
+    JniMethodInfo minfo;  
+    //getStaticMethodInfo，判断Java静态函数是否存在，并且把信息保存到minfo里  
+    //参数1：JniMethodInfo  
+    //参数2：Java类包名+类名  
+    //参数3：Java函数名称  
+    //参数4：函数参数类型和返回值类型  
+    bool isHave = JniHelper::getStaticMethodInfo(minfo,"com/jacky/test/Test","getInstance","()Lcom/jacky/test/Test;");  
+    jobject jobj;//存对象  
+    if (isHave) {  
+        //这里的调用getInstance，返回Test类的对象。  
+        jobj = minfo.env-&gt;CallStaticObjectMethod(minfo.classID, minfo.methodID);  
+
+        isHave = JniHelper::getMethodInfo(minfo,"com/jacky/test/Test","openWebview","()V");  
+        if (isHave) {  
+            //调用openWebview, 参数1：Test对象   参数2：方法ID  
+            minfo.env-&gt;CallVoidMethod(jobj, minfo.methodID);  
+        }  
+    }  
+    #else  
+        CCDirector::sharedDirector()-&gt;end();  
+    #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)  
+        exit(0);  
+    #endif  
+    #endif  
+}  
+</code></pre>
+
+<h3>4.效果图</h3>
+
+<p>爪机截屏的。</p>
+
+<div align="center"><img src="http://img.blog.csdn.net/20131226095754125?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="" /><br></br></div>
+
+
+
+
+<div align="center"><img src="http://img.blog.csdn.net/20131226095821781?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="" /><br></br></div>
+
+
+
+
+<div align="center"><img src="http://img.blog.csdn.net/20131226095849921?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="" /><br></br></div>
+
+
+<p><em>ps：这里没有处理多次打开webview的情况。可以采用Jni方法来通知cocos2d-x，也可以直接在主类中设置一个成员变量标志位，调用openWebview时设置为true，removeWebView时设置为false，在调用openWebview时检测这个标志位来决定是否打开即可。</em></p>
+
+<h3>5.源码下载</h3>
+
+<p>包含win32，android代码，拿掉了android交叉编译生成的obj，保留so和apk文件。</p>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6770315">下载地址</a></p>
+]]></content>
+  </entry>
+  
+</feed>

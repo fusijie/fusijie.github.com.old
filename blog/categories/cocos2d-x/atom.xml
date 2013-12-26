@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/blog/categories/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-22T14:29:01+08:00</updated>
+  <updated>2013-12-26T14:25:39+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,217 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之三十三】游戏嵌入Webview网页]]></title>
+    <link href="http://www.fusijie.com/blog/2013/12/26/play-cocos2dx-33/"/>
+    <updated>2013-12-26T14:11:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2013/12/26/play-cocos2dx-33</id>
+    <content type="html"><![CDATA[<p>手游《我叫MT》一开始会弹出一个游戏公告，有玩过的肯定都蛮熟悉的，这就是webview，就是一个网页。由于webview和平台相关，这里就介绍下cocos2d-x如何嵌入andorid的webview控件，在cocos2d-x中显示网页。</p>
+
+<h3>1.Jni</h3>
+
+<p>Jni这里我就不再多说了。可用参考wikipedia，或者微信飞机大战的移植篇。通过Jni，可以实现在cocos2d-x中调用Android的API，当然也可以进行传值。</p>
+
+<h3>2.Android使用webview</h3>
+
+<p>直接上代码。主要是处理布局和webview使用的问题。这里采用代码布局。以下操作在android的主类（cocos2dxActivity）中处理。</p>
+
+<!-- more -->
+
+
+<p><strong>2.1.添加成员变量</strong></p>
+
+<p>整个布局的结构是最底层一个FrameLayout，ImageView控件放置在FrameLayout上。然后之上是一个LinearLayout用来放置关闭按钮，LinearLayout往下是Webview控件。</p>
+
+<pre><code>static Test test  = null;//Test实例  
+WebView m_webView;//WebView控件  
+ImageView m_imageView;//ImageView控件  
+FrameLayout m_webLayout;//FrameLayout布局  
+LinearLayout m_topLayout;//LinearLayout布局  
+Button m_backButton;//关闭按钮  
+</code></pre>
+
+<p><strong>2.2.OnCreate中添加FrameLayout布局</strong></p>
+
+<pre><code>protected void onCreate(Bundle savedInstanceState){  
+    super.onCreate(savedInstanceState);  
+    test=this;  
+
+    //初始化一个空布局  
+    m_webLayout = new FrameLayout(this);  
+    FrameLayout.LayoutParams lytp = new FrameLayout.LayoutParams(800,640);  
+    lytp .gravity = Gravity.CENTER;  
+    addContentView(m_webLayout, lytp);  
+}  
+</code></pre>
+
+<p><strong>2.3.返回实例</strong></p>
+
+<pre><code>public static Test getInstance() {  
+    Log.v("TestJacky","getInstance");  
+    return test;  
+}  
+</code></pre>
+
+<p><strong>2.4.显示webview</strong></p>
+
+<pre><code>public void openWebview() {  
+    Log.v("TestJacky", "openWebView");  
+    this.runOnUiThread(new Runnable() {//在主线程里添加别的控件  
+        public void run() {     
+            //初始化webView  
+            m_webView = new WebView(test);  
+            //设置webView能够执行javascript脚本  
+            m_webView.getSettings().setJavaScriptEnabled(true);              
+            //设置可以支持缩放  
+            m_webView.getSettings().setSupportZoom(true);//设置出现缩放工具  
+            m_webView.getSettings().setBuiltInZoomControls(true);  
+            //载入URL  
+            m_webView.loadUrl("http://m.blog.csdn.net/blog/jackyvincefu/");  
+            //使页面获得焦点  
+            m_webView.requestFocus();  
+            //如果页面中链接，如果希望点击链接继续在当前browser中响应  
+            m_webView.setWebViewClient(new WebViewClient(){         
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {     
+                    if(url.indexOf("tel:")&lt;0){  
+                        view.loadUrl(url);   
+                }  
+                return true;         
+            }      
+        });  
+
+        //背景图  
+        m_imageView = new ImageView(test);  
+        m_imageView.setImageResource(R.drawable.bkgnd);  
+        m_imageView.setScaleType(ImageView.ScaleType.FIT_XY);  
+        //初始化线性布局 里面加按钮和webView  
+        m_topLayout = new LinearLayout(test);        
+        m_topLayout.setOrientation(LinearLayout.VERTICAL);  
+        //初始化返回按钮  
+        m_backButton = new Button(test);  
+        m_backButton.setBackgroundResource(R.drawable.btn);  
+        LinearLayout.LayoutParams lypt=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);  
+        lypt.gravity=Gravity.RIGHT;  
+        m_backButton.setLayoutParams(lypt);              
+        m_backButton.setOnClickListener(new OnClickListener() {                      
+            public void onClick(View v) {  
+                removeWebView();  
+            }  
+        });  
+        //把image加到主布局里  
+        m_webLayout.addView(m_imageView);  
+        //把webView加入到线性布局  
+        m_topLayout.addView(m_backButton);  
+        m_topLayout.addView(m_webView);                  
+        //再把线性布局加入到主布局  
+        m_webLayout.addView(m_topLayout);  
+        }  
+    });  
+}  
+</code></pre>
+
+<p><strong>2.5.移除webview</strong></p>
+
+<pre><code>public void removeWebView() {                
+    m_webLayout.removeView(m_imageView);  
+    m_imageView.destroyDrawingCache();  
+
+    m_webLayout.removeView(m_topLayout);  
+    m_topLayout.destroyDrawingCache();  
+
+    m_topLayout.removeView(m_webView);  
+    m_webView.destroy();  
+
+    m_topLayout.removeView(m_backButton);  
+    m_backButton.destroyDrawingCache();  
+}  
+</code></pre>
+
+<p><strong>2.6.重写返回键</strong></p>
+
+<pre><code>public boolean onKeyDown(int keyCoder,KeyEvent event)  
+{  
+    //如果网页能回退则后退，如果不能后退移除WebView  
+    if(m_webView.canGoBack() &amp;&amp; keyCoder == KeyEvent.KEYCODE_BACK){  
+        m_webView.goBack();  
+    }else{  
+        removeWebView();  
+    }  
+    return false;        
+}  
+</code></pre>
+
+<h3>3.cocos2d-x使用Jni</h3>
+
+<p>这里直接使用HelloWorld的示例，修改了close按钮的回调函数。</p>
+
+<p><strong>3.1.jni头文件</strong></p>
+
+<pre><code>#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)  
+#include &lt;jni.h&gt;  
+#include "platform/android/jni/JniHelper.h"  
+#endif  
+</code></pre>
+
+<p><strong>3.2.Jni调用打开webview</strong></p>
+
+<pre><code>void HelloWorld::menuCloseCallback(CCObject* pSender)  
+{  
+    #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)  
+    JniMethodInfo minfo;  
+    //getStaticMethodInfo，判断Java静态函数是否存在，并且把信息保存到minfo里  
+    //参数1：JniMethodInfo  
+    //参数2：Java类包名+类名  
+    //参数3：Java函数名称  
+    //参数4：函数参数类型和返回值类型  
+    bool isHave = JniHelper::getStaticMethodInfo(minfo,"com/jacky/test/Test","getInstance","()Lcom/jacky/test/Test;");  
+    jobject jobj;//存对象  
+    if (isHave) {  
+        //这里的调用getInstance，返回Test类的对象。  
+        jobj = minfo.env-&gt;CallStaticObjectMethod(minfo.classID, minfo.methodID);  
+
+        isHave = JniHelper::getMethodInfo(minfo,"com/jacky/test/Test","openWebview","()V");  
+        if (isHave) {  
+            //调用openWebview, 参数1：Test对象   参数2：方法ID  
+            minfo.env-&gt;CallVoidMethod(jobj, minfo.methodID);  
+        }  
+    }  
+    #else  
+        CCDirector::sharedDirector()-&gt;end();  
+    #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)  
+        exit(0);  
+    #endif  
+    #endif  
+}  
+</code></pre>
+
+<h3>4.效果图</h3>
+
+<p>爪机截屏的。</p>
+
+<div align="center"><img src="http://img.blog.csdn.net/20131226095754125?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="" /><br></br></div>
+
+
+
+
+<div align="center"><img src="http://img.blog.csdn.net/20131226095821781?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="" /><br></br></div>
+
+
+
+
+<div align="center"><img src="http://img.blog.csdn.net/20131226095849921?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="" /><br></br></div>
+
+
+<p><em>ps：这里没有处理多次打开webview的情况。可以采用Jni方法来通知cocos2d-x，也可以直接在主类中设置一个成员变量标志位，调用openWebview时设置为true，removeWebView时设置为false，在调用openWebview时检测这个标志位来决定是否打开即可。</em></p>
+
+<h3>5.源码下载</h3>
+
+<p>包含win32，android代码，拿掉了android交叉编译生成的obj，保留so和apk文件。</p>
+
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6770315">下载地址</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十二】xml的解析]]></title>
@@ -629,154 +840,6 @@ this-&gt;setTouchEnabled(true);//触摸有效，落点正确时移除裁剪节�
 <h3>5.源码</h3>
 
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6667189">下载地址</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之二十八】cocos2d-x的消息和数据传递]]></title>
-    <link href="http://www.fusijie.com/blog/2013/12/03/play-cocos2dx-28/"/>
-    <updated>2013-12-03T09:57:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/12/03/play-cocos2dx-28</id>
-    <content type="html"><![CDATA[<p>如何在层间或者场景间进行消息传递，大概是每个初学者都要面对的问题吧。这里介绍cocos2d-x的一种消息/数据传递方式，内置的观察者模式，也称消息通知中心，CCNotificationCenter。</p>
-
-<h3>1.CCNotificationCenter</h3>
-
-<p>CCNotificationCenter是cocos2d-x提供的一个消息中心，类似于观察者模式，是一个单例类，用于辅助控制消息传递。大概工作原理如下图。</p>
-
-<!-- more -->
-
-
-
-
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_28/1.jpg" alt="" border="0" title="CCNotificationCenter" /><br></br></div>
-
-
-<p>这里以A，B通讯为例，A，B可以是层间或者场景间。假如A要向B发送带数据的消息。那么</p>
-
-<p><em>（1）B向小心中心注册一个bMsg的消息，告知消息中心，如果消息中心接收到bMsg，必须通知B，以便B采取相应的措施。</em></p>
-
-<p><em>（2）A向消息中心发送bMsg消息。</em></p>
-
-<p><em>（3）消息中心接收到bMsg，查询有谁在它这里注册了这个消息，发现是B，就通知B有人发送了bMsg。</em></p>
-
-<p><em>（4）当然这个消息带有A要传递的数据，而B也不知道到底是谁给它发了bMsg这条消息，除非在传递的数据中指出。</em></p>
-
-<h3>2.相关API</h3>
-
-<pre><code>//获得消息通知中心的一个单例对象  
-static CCNotificationCenter *sharedNotificationCenter(void);  
-
-//销毁通知中心的单例对象  
-static void purgeNotificationCenter(void);  
-
-//添加观察者  
-void addObserver(CCObject *target,   
-                SEL_CallFuncO selector,  
-                const char *name,  
-                CCObject *obj);  
-
-//移除观察者  
-void removeObserver(CCObject *target,const char *name);  
-
-//移除所有观察者  
-int removeAllObservers(CCObject *target);  
-
-//发送消息  
-void postNotification(const char *name);  
-
-//发送带数据的消息  
-void postNotification(const char *name, CCObject *object);  
-</code></pre>
-
-<p>观察者的意思即是等待获取消息的对象，比如上图的B。</p>
-
-<h3>3.原理</h3>
-
-<p>CCNotificationCenter的实现比较简单，它的内部维护了一个CCArray数组，数组的元素是CCNotificationObserver类型的对象，CCNotificationObserver封装了回调的执行者，回调函数，消息名称以及传递的数据。每次注册，也就是添加观察者，其实就是把这个CCNotificationObserver对象加入通知中心的CCArray数组，而每次的消息发送就是将消息传递给通知中心，由通知中心遍历这个数组，找到一致的消息，调用这些回调函数。其实这样看起来，就像是A在调用B的函数。具体的就自己看下源码吧。</p>
-
-<h3>4.示例</h3>
-
-<p>这里做了一个场景，包含了2个层，目的是层A向层B发送带数据的消息，层B收到后打印出这条数据。</p>
-
-<pre><code>//ALayer  
-bool ALayer::init()  
-{  
-    bool bRet=false;  
-    do   
-    {  
-        CC_BREAK_IF(!CCLayer::init());  
-        CCSize visibleSize = CCDirector::sharedDirector()-&gt;getVisibleSize();  
-        CCMenuItemImage *pCloseItem = CCMenuItemImage::create(  
-            "CloseNormal.png",  
-            "CloseSelected.png",  
-            this,  
-            menu_selector(ALayer::PostMessage));//按钮用于点击发送消息  
-
-        pCloseItem-&gt;setAnchorPoint(ccp(0.5,0.5));  
-        pCloseItem-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
-        CCMenu* pMenu = CCMenu::create(pCloseItem, NULL);  
-        pMenu-&gt;setPosition(CCPointZero);  
-        this-&gt;addChild(pMenu, 1);  
-
-        bRet=true;  
-    } while (0);  
-    return bRet;  
-}  
-
-void ALayer::PostMessage(CCObject* pSender)  
-{  
-    CCString* str=CCString::create("Hello BLayer!");  
-    CCNotificationCenter::sharedNotificationCenter()-&gt;postNotification("BMessage",str);//发送带str的消息BMessage  
-}  
-
-//BLayer  
-bool BLayer::init()  
-{  
-    bool bRet=false;  
-    do   
-    {  
-        CC_BREAK_IF(!CCLayer::init());  
-
-        CCNotificationCenter::sharedNotificationCenter()-&gt;addObserver(this,callfuncO_selector(BLayer::getMessage),"BMessage",NULL);//注册BMessage，如果接收到了，执行getMessage  
-
-        bRet=true;  
-    } while (0);  
-    return bRet;  
-}  
-
-void BLayer::getMessage(CCObject* obj)  
-{  
-    CCString* str=static_cast&lt;CCString*&gt;(obj);//打印出传递的数据  
-    CCLog(str-&gt;getCString());  
-}  
-
-BLayer::~BLayer(void)  
-{  
-    CCNotificationCenter::sharedNotificationCenter()-&gt;purgeNotificationCenter();//释放通知中心单例对象  
-}  
-</code></pre>
-
-<h3>5.注意</h3>
-
-<p>使用CCNotificationCenter需要注意以下几点：</p>
-
-<p><em>（1）一个对象可以注册多个消息，一个消息也可以由多个消息注册。</em></p>
-
-<p><em>（2）传递参数，A可以向B传递参数，而B在注册的时候也可以带一个参数，如果这两个数据不是指向同一对象的话，消息不会传递。也就是说要么A传递NULL对象，要么B注册时带NULL对象，要么都不是NULL但必须是同一对象，消息传递才会成功。以下是发送消息执行的判断：</em></p>
-
-<pre><code>if (!strcmp(name,observer-&gt;getName()) &amp;&amp; (observer-&gt;getObject() == object || observer-&gt;getObject() == NULL || object == NULL))  
-</code></pre>
-
-<p><em>（3）局部变量的传递，注意到上例，传递的是CCString的一个局部变量（但还是要autorelease），从CCNotificationCenter的实现上来看，这是没有问题的，因为数据是在postNotification被调用的，也就是整个函数体并没结束，数据不会被销毁。</em></p>
-
-<h3>6.效果图</h3>
-
-<div align="center"><img src="http://img.blog.csdn.net/20131204150850171" alt="" border="0" title="效果" /><br></br></div>
-
-
-<h3>7.源码下载</h3>
-
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6647453">下载地址</a></p>
 ]]></content>
   </entry>
   
