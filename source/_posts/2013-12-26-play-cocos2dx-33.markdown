@@ -9,7 +9,7 @@ tags: [webview, Android, JNI]
 手游《我叫MT》一开始会弹出一个游戏公告，有玩过的肯定都蛮熟悉的，这就是webview，就是一个网页。由于webview和平台相关，这里就介绍下cocos2d-x如何嵌入andorid的webview控件，在cocos2d-x中显示网页。
 
 ###1.Jni
-Jni这里我就不再多说了。可用参考wikipedia，或者微信飞机大战的移植篇。通过Jni，可以实现在cocos2d-x中调用Android的API，当然也可以进行传值。
+Jni这里我就不再多说了。可用参考[wikipedia](http://en.wikipedia.org/wiki/Java_Native_Interface)，或者[微信飞机大战的移植篇](http://blog.csdn.net/jackystudio/article/details/12150907)。通过Jni，可以实现在cocos2d-x中调用Android的API，当然也可以进行传值。
 
 ###2.Android使用webview
 直接上代码。主要是处理布局和webview使用的问题。这里采用代码布局。以下操作在android的主类（cocos2dxActivity）中处理。
