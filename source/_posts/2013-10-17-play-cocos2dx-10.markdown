@@ -18,12 +18,12 @@ cocos2d-x采用的是笛卡尔平面坐标系，也就是平面上两条垂直�
 
 <!-- more -->
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_10/1.jpg" alt="" border="0" title="屏幕坐标系" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131014101904031?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="屏幕坐标系" /><br></br></div>
 
 ###2.OpenGL坐标系###
 OpenGL坐标系原点在屏幕的左下，x轴向右，y轴向上。cocos2d-x的元素采用的就是OpenGL坐标系。同样的上例，如图坐标值为OpenGL坐标系。
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_10/2.jpg" alt="" border="0" title="OpenGL坐标系" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131014102209000?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="OpenGL坐标系" /><br></br></div>
 
 ###3.屏幕坐标系和OpenGL坐标系的转换###
 它们的转换导演类（CCDirector）已经封装好了两个函数供我们使用。
@@ -42,7 +42,7 @@ cocos2d-x元素是有层次关系的，节点使用的是相对父节点的位�
 ###6.锚点###
 在举例之前有必要先了解一下锚点这个概念。锚点是对节点而言的，它是节点的一个属性，表明了节点位置的一个参考基准点，同样放置一个物体在(300,300)这个位置，不同的锚点会产生不同的效果。节点的默认锚点位置在(0.5,0.5)。锚点和节点的位置值没有关系，锚点只是影响了节点在屏幕上渲染的位置。如下图，虽然精灵的在屏幕上渲染的位置不一样，但是它们的position值是一样的，都是(300,300)。锚点只会影响它本身在父节点中的渲染位置，而不会影响其子节点的相对它本身的位置。
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_10/3.jpg" alt="" border="0" title="锚点" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131014111150000?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="锚点" /><br></br></div>
 
 ###7.绝对坐标系和相对坐标系的关系###
 我们先看一个例子，为了方便演示，节点的锚点都设置为(0,0)。
@@ -58,9 +58,9 @@ cocos2d-x元素是有层次关系的，节点使用的是相对父节点的位�
 
 效果如下：
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_10/4.jpg" alt="" border="0" title="绝对坐标系和相对坐标系的关系" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131014113926234?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="绝对坐标系和相对坐标系的关系" /><br></br></div>
 
-###7.绝对坐标系和相对坐标系的转换###
+###8.绝对坐标系和相对坐标系的转换###
 CCNode提供给我们相对坐标系和绝对坐标系的转换函数。
 
     CCPoint convertToNodeSpace(const CCPoint& worldPoint);  //将世界坐标转换为对象节点内坐标，忽略锚点，以当前父节点左下角坐标为标准  

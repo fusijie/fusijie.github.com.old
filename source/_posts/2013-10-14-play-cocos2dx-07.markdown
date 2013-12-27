@@ -13,7 +13,7 @@ tags: [CCScene, CCLayer, 带颜色的Layer, CCLayerMultiplex]
 
 <!-- more -->
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_07/1.jpg" alt="" border="0" title="CCScene" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131012102822609?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="CCScene" /><br></br></div>
 
 
 CCScene类继承于CCNode，它的实现很简单，就是基本上没添加什么内容。。。它只是作为一个容器（父节点）的抽象概念存在。对比CCNode差别有：
@@ -30,7 +30,7 @@ m_bIgnoreAnchorPointForPosition是CCNode的属性，用于CCScene和CCLayer。
 
 ###2.布景类：CCLayer###
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_07/2.jpg" alt="" border="0" title="CCLayer" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131012102848750?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="CCLayer" /><br></br></div>
 
 CCLayer相对CCScene而言会比较麻烦一点，因为他不仅要作为容器使用，而且还要实现一些游戏功能，所以它继承了CCTouchDelegate，CCAccelerometerDelegate和CCKeypadDelegate，这三个类是用来处理触摸事件，重力感应事件和键盘事件的，默认初始化都是不可用，需要手动设置开启。
 
@@ -96,7 +96,7 @@ CCLayer相对CCScene而言会比较麻烦一点，因为他不仅要作为容器
 
 ###3.颜色布景层：CCLayerRGBA，CCLayerColor和CCLayerGradient###
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_07/3.jpg" alt="" border="0" title="颜色布景层" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131012103010312?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="颜色布景层" /><br></br></div>
 
 （1）CCLayerRGBA和CCNodeRGBA差不多，也是用于设置RGB值和Blend值，同时可以传递到子节点。它的相关接口参见CCNodeRGBA。
 
@@ -106,7 +106,7 @@ CCLayer相对CCScene而言会比较麻烦一点，因为他不仅要作为容器
 
 ###4.多层布景层：CCLayerMultiplex###
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_07/4.jpg" alt="" border="0" title="CCLayerMultiplex" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131012103047015?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="CCLayerMultiplex" /><br></br></div>
 
 CCLayerMultiplex继承与CCLayer，相当于一个层容器，他可以包含多个层，但是同一时间只能显示一个CCLayer。《我叫MT》的第一个界面菜单那一块就是这么处理的。CCLayerMultiplex最重要的函数就是：
 

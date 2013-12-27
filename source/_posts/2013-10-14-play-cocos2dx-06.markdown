@@ -12,7 +12,7 @@ tags: [CCNode, 属性, 常用接口, 特点]
 <!-- more -->
 
 ###1.概况###
-<div align="center"><img src="/images/Blog/Play_cocos2dx_06/1.jpg" alt="" border="0" title="CCNode" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131012102206812?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="CCNode" /><br></br></div>
 
 
 CCNode直接从CCObject继承而来，有如下几个特点：
@@ -248,7 +248,7 @@ CCNode直接从CCObject继承而来，有如下几个特点：
 
 ###4.CCNodeRGBA###
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_06/2.jpg" alt="" border="0" title="CCNodeRGBA" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131012102337687?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="CCNodeRGBA" /><br></br></div>
 
 CCNodeRGBA继承于CCNode，所以它拥有CCNode的所有特性，并且它也继承于CCRGBAProtocol。从名字看来我们就知道它是一个带有颜色和透明度的节点。
 

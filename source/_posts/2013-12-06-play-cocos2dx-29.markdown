@@ -21,7 +21,7 @@ CCClipingNode是一个可裁剪节点，简单理解：
 
 所以CCClipingNode裁剪节点在组成上=底板+模版，而在显示上=底板-模版。不知道这样解释会不会好理解一点。
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_29/1.jpg" alt="" border="0" title="CCClipingNode" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131206093955500?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="CCClipingNode" /><br></br></div>
 
 ###2.API
 CCClipingNode的使用还是比较简单的，至于显示底板还是模版，alpha值的设定，这些也不好说清楚，自己多试几次就知道是什么意思该怎么用了。

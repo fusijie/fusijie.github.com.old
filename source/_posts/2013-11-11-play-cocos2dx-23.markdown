@@ -150,7 +150,7 @@ addImageAsync则是在工作线程中加载图片，然后通过调度器进行�
 ###4.效果###
 使用异步加载plist方式处理:
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_23/1.jpg" alt="" border="0" title="效果图" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131111094358437?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="效果图" /><br></br></div>
 
 ###5.源码下载###
 [下载地址](http://download.csdn.net/detail/jackyvincefu/6533293)

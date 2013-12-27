@@ -13,7 +13,7 @@ tags: [cocos2d-x, CCApplication, CCEGLView, applicationDidFinish]
 
 <!-- more -->
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_03/1.jpg" alt="" border="0" title="结构" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131003153415937?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="结构" /><br></br></div>
 
 ###1.main函数###
 
@@ -190,4 +190,4 @@ tags: [cocos2d-x, CCApplication, CCEGLView, applicationDidFinish]
 
 好了，最后再总结成一张图，cocos2d-x游戏就是这么跑起来的~
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_03/2.jpg" alt="" border="0" title="结构" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131003172159765?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="结构" /><br></br></div>

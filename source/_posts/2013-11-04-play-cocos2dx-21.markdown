@@ -18,7 +18,7 @@ tags: [多线程, pthread, Mutex, 线程安全]
 
 pthread.h放在\cocos2d-x目录\cocos2dx\platform\third_party\win32\pthread\下，右键项目→属性→配置属性→C/C++→附加包含目录添加如下，这里要注意附加包含目录是只包含当前目录下的文件，而不会包含该目录下子目录。
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_21/1.jpg" alt="" border="0" title="添加包含目录" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131104085049640?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="添加包含目录" /><br></br></div>
 
 **1.2.库文件**
 
@@ -40,7 +40,7 @@ pthread库包含了四大部分功能：
 
 **2.2.命名规则**
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_21/2.jpg" alt="" border="0" title="命名规则" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131104102146609?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="命名规则" /><br></br></div>
 
 ###3.线程和互斥对象###
 我们这里主要了解线程和互斥对象，也是最常用到的。

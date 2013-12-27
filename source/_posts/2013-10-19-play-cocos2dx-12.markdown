@@ -26,7 +26,7 @@ Anti_TexurePacker软件基于VS 2008 MFC Dialog。
 ###2.plist文件的读取###
 看一下plist的格式：
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_12/7.jpg" alt="" border="0" title="xml" /><br></br></div>
+<div align="center"><img src="/images/Blog/1.jpg" alt="" border="0" title="4" /><br></br></div>
 
 这样一看，就知道了标准的plist文件中，我们需要的是第7，10，14，20，23，27...行。抓出规律，读取到CStringArray。我没有采用xml的解析库，而是直接无耻的这么做了，用起来倒是没什么问题，但是不要学啊。。。
 

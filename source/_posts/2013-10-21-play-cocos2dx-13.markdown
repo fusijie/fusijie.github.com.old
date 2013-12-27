@@ -19,13 +19,13 @@ CCMenu是cocos2d-x的菜单类，但它本身并不具备菜单具体属性，�
 
 ###2.菜单CCMenu###
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_13/1.jpg" alt="" border="0" title="CCMenu" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131016104259593?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="CCMenu" /><br></br></div>
 
 ###3.子菜单项CCMenuItem###
 
 子菜单项可以是用精灵，图片，标签文本，或者开关都可以，这里不具体解释。请看：
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_13/2.jpg" alt="" border="0" title="CCMenuItem" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131016091825390?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="CCMenuItem" /><br></br></div>
 
 ###4.锚点###
 
@@ -43,7 +43,7 @@ CCMenu继承于CCLayer，所以它具有忽略锚点的属性。而CCMenuItem的
 
 那么再看一下效果，如图2，抽象出来就是图3，因为CCMenuItem的锚点是(0.5,0.5)。
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_13/3.jpg" alt="" border="0" title="" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131016101236812?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="" /><br></br></div>
             
 （3）所以现在可以理解HelloCpp中为什么定义的是CCMenuItem的位置，而不是定义CCMenu的位置了吧。CCMenu包含了多个子菜单项，每个子菜单的位置都不一样，如果定义了CCMenu的位置，那它作为父节点会影响到所有的子菜单的位置，因此我们一般把它设置在原点处，然后通过设置子菜单的位置（也就是相对父节点的偏移量）来定位整个菜单。
 
@@ -69,7 +69,7 @@ CCMenu继承于CCLayer，所以它具有忽略锚点的属性。而CCMenuItem的
     //pMenu->alignItemsVerticallyWithPadding(20);//指定间隔  
     this->addChild(pMenu, 1);  
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_13/4.jpg" alt="" border="0" title="" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131016102601734?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="" /><br></br></div>
 
 *（2）按行排列，按列排列，不能指定间隔，只能自己实现。希望下一版本有这个功能。*
 
@@ -89,4 +89,4 @@ CCMenu继承于CCLayer，所以它具有忽略锚点的属性。而CCMenuItem的
 	//pMenu->alignItemsInColumns(3,2,1,NULL);  
 	this->addChild(pMenu, 1);  
 
-<div align="center"><img src="/images/Blog/Play_cocos2dx_13/5.jpg" alt="" border="0" title="" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131016103617078?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="" /><br></br></div>
