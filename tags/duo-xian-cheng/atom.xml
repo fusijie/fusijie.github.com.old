@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 多线程 | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/duo-xian-cheng/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-26T14:39:00+08:00</updated>
+  <updated>2013-12-27T17:23:33+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -31,7 +31,7 @@
 
 <p>pthread.h放在\cocos2d-x目录\cocos2dx\platform\third_party\win32\pthread\下，右键项目→属性→配置属性→C/C++→附加包含目录添加如下，这里要注意附加包含目录是只包含当前目录下的文件，而不会包含该目录下子目录。</p>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_21/1.jpg" alt="" border="0" title="添加包含目录" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131104085049640?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="添加包含目录" /><br></br></div>
 
 
 <p><strong>1.2.库文件</strong></p>
@@ -54,7 +54,7 @@
 
 <p><strong>2.2.命名规则</strong></p>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_21/2.jpg" alt="" border="0" title="命名规则" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131104102146609?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="命名规则" /><br></br></div>
 
 
 <h3>3.线程和互斥对象</h3>

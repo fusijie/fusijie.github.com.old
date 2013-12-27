@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-26T14:39:00+08:00</updated>
+  <updated>2013-12-27T17:23:33+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -35,7 +35,7 @@
 
 <p>所以CCClipingNode裁剪节点在组成上=底板+模版，而在显示上=底板-模版。不知道这样解释会不会好理解一点。</p>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_29/1.jpg" alt="" border="0" title="CCClipingNode" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131206093955500?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="CCClipingNode" /><br></br></div>
 
 
 <h3>2.API</h3>
@@ -160,7 +160,7 @@ graphics.DrawImage(&amp;image,ORIGIN_DRAW_X,ORIGIN_DRAW_Y,(int)(m_RealWidth*m_Sc
 
 <p>看一下plist的格式：</p>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_12/7.jpg" alt="" border="0" title="xml" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/1.jpg" alt="" border="0" title="4" /><br></br></div>
 
 
 <p>这样一看，就知道了标准的plist文件中，我们需要的是第7，10，14，20，23，27&hellip;行。抓出规律，读取到CStringArray。我没有采用xml的解析库，而是直接无耻的这么做了，用起来倒是没什么问题，但是不要学啊。。。</p>
@@ -381,7 +381,7 @@ delete pWrapBitmap;
 
 
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_04/1.jpg" alt="" border="0" title="跨平台项目目录结构" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131010095420500?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="跨平台项目目录结构" /><br></br></div>
 
 
 <p>从左边目录可以看到，Classes和Resource已经平台无关了，而Classes中包含了AppDelegate类，因此我们可以认为AppDelegate是与平台最接近的类，在它以上就要区分平台了。</p>
@@ -520,7 +520,7 @@ static {
 
 <p>在这里Cocos2dxActivity做的就是创建Cocos2dxGLSurfaceView，并设置了Cocos2dxRenderer和Cocos2dxEditText，然后添加到FramLayout。具体的各部分实现这里就不贴代码了，画了个图：</p>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_04/2.jpg" alt="" border="0" title="Android调用流程" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131010110524765?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="Android调用流程" /><br></br></div>
 
 
 <p>好了，就这样吧。因为我对Android界面开发，特别是OpenGLView这块也不熟，所以只能大概推出是这样子了，有什么错误，还请指出。</p>
@@ -541,7 +541,7 @@ static {
 
 
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_03/1.jpg" alt="" border="0" title="结构" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131003153415937?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="结构" /><br></br></div>
 
 
 <h3>1.main函数</h3>
@@ -723,7 +723,7 @@ return true;
 
 <p>好了，最后再总结成一张图，cocos2d-x游戏就是这么跑起来的~</p>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_03/2.jpg" alt="" border="0" title="结构" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131003172159765?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="结构" /><br></br></div>
 
 ]]></content>
   </entry>
@@ -754,12 +754,12 @@ return true;
 
 <p>用一张图来看看它们的关系。</p>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_02/1.jpg" alt="" border="0" title="游戏构成" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131008150731968?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="游戏构成" /><br></br></div>
 
 
 <h3>2.引擎构成</h3>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_02/2.jpg" alt="" border="0" title="引擎构成" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131008155353093?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="引擎构成" /><br></br></div>
 
 
 <p>引擎目录的具体介绍如下：</p>

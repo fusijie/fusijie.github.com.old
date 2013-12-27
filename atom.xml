@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-26T14:39:00+08:00</updated>
+  <updated>2013-12-27T17:23:33+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -621,7 +621,7 @@ Button m_backButton;//关闭按钮
 
 
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_30/1.jpg" alt="" border="0" title="点九图" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131213100101843?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="点九图" /><br></br></div>
 
 
 <p><strong>1.2.使用</strong></p>
@@ -752,7 +752,7 @@ void TestLayer::editBoxTextChanged(CCEditBox *editBox, const std::string &amp;te
 
 <p>所以CCClipingNode裁剪节点在组成上=底板+模版，而在显示上=底板-模版。不知道这样解释会不会好理解一点。</p>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_29/1.jpg" alt="" border="0" title="CCClipingNode" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131206093955500?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="CCClipingNode" /><br></br></div>
 
 
 <h3>2.API</h3>
@@ -865,7 +865,7 @@ this-&gt;setTouchEnabled(true);//触摸有效，落点正确时移除裁剪节�
 
 
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_28/1.jpg" alt="" border="0" title="CCNotificationCenter" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131203084104765?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="CCNotificationCenter" /><br></br></div>
 
 
 <p>这里以A，B通讯为例，A，B可以是层间或者场景间。假如A要向B发送带数据的消息。那么</p>
@@ -1307,10 +1307,19 @@ if(pDict-&gt;writeToFile("pdic.plist"))  //整型的value无法写入，会提�
 
 <p>Resource/pdic.plist</p>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_26/1.jpg" alt="" border="0" title="pdic.plist" /><br></br></div>
+<p>&lt;?xml version=&ldquo;1.0&rdquo; encoding=&ldquo;UTF-8&rdquo;?><br/>
+&lt;!DOCTYPE plist PUBLIC &ldquo;&ndash;//Apple//DTD PLIST 1.0//EN&rdquo; &ldquo;<a href="http://www.apple.com/DTDs/PropertyList-1.0.dtd">http://www.apple.com/DTDs/PropertyList-1.0.dtd</a>&rdquo;/></p>
 
-
-<p></p>
+<pre><code>&lt;plist version="1.0"&gt;  
+&lt;dict&gt;  
+    &lt;key&gt;key1&lt;/key&gt;  
+    &lt;string&gt;100&lt;/string&gt;  
+    &lt;key&gt;key2&lt;/key&gt;  
+    &lt;string&gt;120&lt;/string&gt;  
+    &lt;key&gt;key3&lt;/key&gt;  &lt;!key3对应整型数据无法写入/&gt;  
+&lt;/dict&gt;  
+&lt;/plist&gt;  
+</code></pre>
 
 <h3>5.CCDICT_FOREACH</h3>
 
@@ -1781,7 +1790,7 @@ void CTestLayer::showSprite(CCObject* obj)
 
 <p>使用异步加载plist方式处理:</p>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_23/1.jpg" alt="" border="0" title="效果图" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131111094358437?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="效果图" /><br></br></div>
 
 
 <h3>5.源码下载</h3>
@@ -2033,7 +2042,7 @@ B Sell 1
 
 <p>pthread.h放在\cocos2d-x目录\cocos2dx\platform\third_party\win32\pthread\下，右键项目→属性→配置属性→C/C++→附加包含目录添加如下，这里要注意附加包含目录是只包含当前目录下的文件，而不会包含该目录下子目录。</p>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_21/1.jpg" alt="" border="0" title="添加包含目录" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131104085049640?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="添加包含目录" /><br></br></div>
 
 
 <p><strong>1.2.库文件</strong></p>
@@ -2056,7 +2065,7 @@ B Sell 1
 
 <p><strong>2.2.命名规则</strong></p>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_21/2.jpg" alt="" border="0" title="命名规则" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131104102146609?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="命名规则" /><br></br></div>
 
 
 <h3>3.线程和互斥对象</h3>
@@ -2585,7 +2594,7 @@ this-&gt;addChild(pLabel, 1);
 
 
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_16/1.jpg" alt="" border="0" title="原理" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131022090909406?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="原理" /><br></br></div>
 
 
 <h3>2.实现</h3>

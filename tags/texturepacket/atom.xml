@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: TexturePacket | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/texturepacket/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-26T14:39:00+08:00</updated>
+  <updated>2013-12-27T17:23:33+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -41,7 +41,7 @@ graphics.DrawImage(&amp;image,ORIGIN_DRAW_X,ORIGIN_DRAW_Y,(int)(m_RealWidth*m_Sc
 
 <p>看一下plist的格式：</p>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_12/7.jpg" alt="" border="0" title="xml" /><br></br></div>
+<div align="center"><img src="http://www.fusijie.com/images/Blog/1.jpg" alt="" border="0" title="4" /><br></br></div>
 
 
 <p>这样一看，就知道了标准的plist文件中，我们需要的是第7，10，14，20，23，27&hellip;行。抓出规律，读取到CStringArray。我没有采用xml的解析库，而是直接无耻的这么做了，用起来倒是没什么问题，但是不要学啊。。。</p>

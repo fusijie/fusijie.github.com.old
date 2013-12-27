@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 游戏loading | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/you-xi-loading/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-26T14:39:00+08:00</updated>
+  <updated>2013-12-27T17:23:33+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -176,7 +176,7 @@ void CTestLayer::showSprite(CCObject* obj)
 
 <p>使用异步加载plist方式处理:</p>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_23/1.jpg" alt="" border="0" title="效果图" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131111094358437?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="效果图" /><br></br></div>
 
 
 <h3>5.源码下载</h3>

@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 锚点排列 | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/mao-dian-pai-lie/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-26T14:39:00+08:00</updated>
+  <updated>2013-12-27T17:23:33+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -31,14 +31,14 @@
 
 <h3>2.菜单CCMenu</h3>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_13/1.jpg" alt="" border="0" title="CCMenu" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131016104259593?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="CCMenu" /><br></br></div>
 
 
 <h3>3.子菜单项CCMenuItem</h3>
 
 <p>子菜单项可以是用精灵，图片，标签文本，或者开关都可以，这里不具体解释。请看：</p>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_13/2.jpg" alt="" border="0" title="CCMenuItem" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131016091825390?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="CCMenuItem" /><br></br></div>
 
 
 <h3>4.锚点</h3>
@@ -59,7 +59,7 @@
 
 <p>那么再看一下效果，如图2，抽象出来就是图3，因为CCMenuItem的锚点是(0.5,0.5)。</p>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_13/3.jpg" alt="" border="0" title="" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131016101236812?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="" /><br></br></div>
 
 
 <p>（3）所以现在可以理解HelloCpp中为什么定义的是CCMenuItem的位置，而不是定义CCMenu的位置了吧。CCMenu包含了多个子菜单项，每个子菜单的位置都不一样，如果定义了CCMenu的位置，那它作为父节点会影响到所有的子菜单的位置，因此我们一般把它设置在原点处，然后通过设置子菜单的位置（也就是相对父节点的偏移量）来定位整个菜单。</p>
@@ -87,7 +87,7 @@ pMenu-&gt;alignItemsHorizontally();//默认间隔是kDefaultPadding=5
 this-&gt;addChild(pMenu, 1);  
 </code></pre>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_13/4.jpg" alt="" border="0" title="" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131016102601734?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="" /><br></br></div>
 
 
 <p><em>（2）按行排列，按列排列，不能指定间隔，只能自己实现。希望下一版本有这个功能。</em></p>
@@ -109,7 +109,7 @@ pMenu-&gt;alignItemsInRows(3,2,1,NULL);
 this-&gt;addChild(pMenu, 1);  
 </code></pre>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_13/5.jpg" alt="" border="0" title="" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131016103617078?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="" /><br></br></div>
 
 ]]></content>
   </entry>

@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 数据传递 | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/shu-ju-chuan-di/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-26T14:39:00+08:00</updated>
+  <updated>2013-12-27T17:23:33+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -29,7 +29,7 @@
 
 
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_28/1.jpg" alt="" border="0" title="CCNotificationCenter" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131203084104765?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="CCNotificationCenter" /><br></br></div>
 
 
 <p>这里以A，B通讯为例，A，B可以是层间或者场景间。假如A要向B发送带数据的消息。那么</p>

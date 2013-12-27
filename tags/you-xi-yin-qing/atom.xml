@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 游戏引擎 | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/you-xi-yin-qing/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-26T14:39:00+08:00</updated>
+  <updated>2013-12-27T17:23:33+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -39,12 +39,12 @@
 
 <p>用一张图来看看它们的关系。</p>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_02/1.jpg" alt="" border="0" title="游戏构成" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131008150731968?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="游戏构成" /><br></br></div>
 
 
 <h3>2.引擎构成</h3>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_02/2.jpg" alt="" border="0" title="引擎构成" /><br></br></div>
+<div align="center"><img src="http://img.blog.csdn.net/20131008155353093?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="引擎构成" /><br></br></div>
 
 
 <p>引擎目录的具体介绍如下：</p>

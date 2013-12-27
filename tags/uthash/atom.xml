@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: uthash | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/uthash/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2013-12-26T14:39:00+08:00</updated>
+  <updated>2013-12-27T17:23:33+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -139,10 +139,19 @@ if(pDict-&gt;writeToFile("pdic.plist"))  //整型的value无法写入，会提�
 
 <p>Resource/pdic.plist</p>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/Play_cocos2dx_26/1.jpg" alt="" border="0" title="pdic.plist" /><br></br></div>
+<p>&lt;?xml version=&ldquo;1.0&rdquo; encoding=&ldquo;UTF-8&rdquo;?><br/>
+&lt;!DOCTYPE plist PUBLIC &ldquo;&ndash;//Apple//DTD PLIST 1.0//EN&rdquo; &ldquo;<a href="http://www.apple.com/DTDs/PropertyList-1.0.dtd">http://www.apple.com/DTDs/PropertyList-1.0.dtd</a>&rdquo;/></p>
 
-
-<p></p>
+<pre><code>&lt;plist version="1.0"&gt;  
+&lt;dict&gt;  
+    &lt;key&gt;key1&lt;/key&gt;  
+    &lt;string&gt;100&lt;/string&gt;  
+    &lt;key&gt;key2&lt;/key&gt;  
+    &lt;string&gt;120&lt;/string&gt;  
+    &lt;key&gt;key3&lt;/key&gt;  &lt;!key3对应整型数据无法写入/&gt;  
+&lt;/dict&gt;  
+&lt;/plist&gt;  
+</code></pre>
 
 <h3>5.CCDICT_FOREACH</h3>
 
