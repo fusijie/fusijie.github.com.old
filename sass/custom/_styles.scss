@@ -26,3 +26,14 @@ body > div > div {
                 @include border-bottom-radius(.4em);
         }
 }
+
+//Blog logo pic
+@media only screen and (min-width: 550px) {
+
+        body > header h1{
+                background: url("/images/titlelogo.png") no-repeat 0 1px;
+                padding-left: 65px;
+        }
+
+        body > header h2 { padding-left: 65px; }
+}
