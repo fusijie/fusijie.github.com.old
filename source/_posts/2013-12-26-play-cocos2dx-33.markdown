@@ -20,14 +20,19 @@ Jni这里我就不再多说了。可用参考[wikipedia](http://en.wikipedia.org
 
 整个布局的结构是最底层一个FrameLayout，ImageView控件放置在FrameLayout上。然后之上是一个LinearLayout用来放置关闭按钮，LinearLayout往下是Webview控件。
 
+``` java 成员变量
+
     static Test test  = null;//Test实例  
     WebView m_webView;//WebView控件  
     ImageView m_imageView;//ImageView控件  
     FrameLayout m_webLayout;//FrameLayout布局  
     LinearLayout m_topLayout;//LinearLayout布局  
     Button m_backButton;//关闭按钮  
+```
 
 **2.2.OnCreate中添加FrameLayout布局**
+
+``` java 添加FrameLayout布局
 
 	protected void onCreate(Bundle savedInstanceState){  
     	super.onCreate(savedInstanceState);  
@@ -38,16 +43,22 @@ Jni这里我就不再多说了。可用参考[wikipedia](http://en.wikipedia.org
        	FrameLayout.LayoutParams lytp = new FrameLayout.LayoutParams(800,640);  
        	lytp .gravity = Gravity.CENTER;  
        	addContentView(m_webLayout, lytp);  
-	}  
+	}
+```  
 
 **2.3.返回实例**
+
+``` java 返回实例
 
 	public static Test getInstance() {  
     	Log.v("TestJacky","getInstance");  
     	return test;  
 	}  
+```
 
 **2.4.显示webview**
+
+``` java 显示webview
 
 	public void openWebview() {  
     	Log.v("TestJacky", "openWebView");  
@@ -101,9 +112,12 @@ Jni这里我就不再多说了。可用参考[wikipedia](http://en.wikipedia.org
             m_webLayout.addView(m_topLayout);  
         	}  
     	});  
-	}  
+	}
+```  
 
 **2.5.移除webview**
+
+``` java 移除webview
 
 	public void removeWebView() {                
     	m_webLayout.removeView(m_imageView);  
@@ -118,8 +132,11 @@ Jni这里我就不再多说了。可用参考[wikipedia](http://en.wikipedia.org
     	m_topLayout.removeView(m_backButton);  
     	m_backButton.destroyDrawingCache();  
 	}  
+```
 
 **2.6.重写返回键**
+
+``` java 重写返回键
 
 	public boolean onKeyDown(int keyCoder,KeyEvent event)  
 	{  
@@ -131,19 +148,24 @@ Jni这里我就不再多说了。可用参考[wikipedia](http://en.wikipedia.org
     	}  
     	return false;        
 	}  
+```
 
 ###3.cocos2d-x使用Jni
 这里直接使用HelloWorld的示例，修改了close按钮的回调函数。
 
 **3.1.jni头文件**
 
+``` cpp jni头文件
+
 	#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)  
 	#include <jni.h>  
 	#include "platform/android/jni/JniHelper.h"  
 	#endif  
+```
 
 **3.2.Jni调用打开webview**
 
+``` cpp Jni调用打开webview
 	void HelloWorld::menuCloseCallback(CCObject* pSender)  
 	{  
 		#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)  
@@ -172,6 +194,7 @@ Jni这里我就不再多说了。可用参考[wikipedia](http://en.wikipedia.org
 		#endif  
 		#endif  
 	}  
+```
 
 ###4.效果图
 爪机截屏的。
