@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: webview | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/webview/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-01-16T16:21:10+08:00</updated>
+  <updated>2014-01-21T15:55:27+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -35,6 +35,8 @@
 
 <p>整个布局的结构是最底层一个FrameLayout，ImageView控件放置在FrameLayout上。然后之上是一个LinearLayout用来放置关闭按钮，LinearLayout往下是Webview控件。</p>
 
+<p>``` java 成员变量</p>
+
 <pre><code>static Test test  = null;//Test实例  
 WebView m_webView;//WebView控件  
 ImageView m_imageView;//ImageView控件  
@@ -43,7 +45,11 @@ LinearLayout m_topLayout;//LinearLayout布局
 Button m_backButton;//关闭按钮  
 </code></pre>
 
+<p>```</p>
+
 <p><strong>2.2.OnCreate中添加FrameLayout布局</strong></p>
+
+<p>``` java 添加FrameLayout布局</p>
 
 <pre><code>protected void onCreate(Bundle savedInstanceState){  
     super.onCreate(savedInstanceState);  
@@ -54,10 +60,14 @@ Button m_backButton;//关闭按钮
     FrameLayout.LayoutParams lytp = new FrameLayout.LayoutParams(800,640);  
     lytp .gravity = Gravity.CENTER;  
     addContentView(m_webLayout, lytp);  
-}  
+}
 </code></pre>
 
+<p>```</p>
+
 <p><strong>2.3.返回实例</strong></p>
+
+<p>``` java 返回实例</p>
 
 <pre><code>public static Test getInstance() {  
     Log.v("TestJacky","getInstance");  
@@ -65,7 +75,11 @@ Button m_backButton;//关闭按钮
 }  
 </code></pre>
 
+<p>```</p>
+
 <p><strong>2.4.显示webview</strong></p>
+
+<p>``` java 显示webview</p>
 
 <pre><code>public void openWebview() {  
     Log.v("TestJacky", "openWebView");  
@@ -119,10 +133,14 @@ Button m_backButton;//关闭按钮
         m_webLayout.addView(m_topLayout);  
         }  
     });  
-}  
+}
 </code></pre>
 
+<p>```</p>
+
 <p><strong>2.5.移除webview</strong></p>
+
+<p>``` java 移除webview</p>
 
 <pre><code>public void removeWebView() {                
     m_webLayout.removeView(m_imageView);  
@@ -139,7 +157,11 @@ Button m_backButton;//关闭按钮
 }  
 </code></pre>
 
+<p>```</p>
+
 <p><strong>2.6.重写返回键</strong></p>
+
+<p>``` java 重写返回键</p>
 
 <pre><code>public boolean onKeyDown(int keyCoder,KeyEvent event)  
 {  
@@ -153,11 +175,15 @@ Button m_backButton;//关闭按钮
 }  
 </code></pre>
 
+<p>```</p>
+
 <h3>3.cocos2d-x使用Jni</h3>
 
 <p>这里直接使用HelloWorld的示例，修改了close按钮的回调函数。</p>
 
 <p><strong>3.1.jni头文件</strong></p>
+
+<p>``` cpp jni头文件</p>
 
 <pre><code>#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)  
 #include &lt;jni.h&gt;  
@@ -165,7 +191,11 @@ Button m_backButton;//关闭按钮
 #endif  
 </code></pre>
 
+<p>```</p>
+
 <p><strong>3.2.Jni调用打开webview</strong></p>
+
+<p>``` cpp Jni调用打开webview</p>
 
 <pre><code>void HelloWorld::menuCloseCallback(CCObject* pSender)  
 {  
@@ -196,6 +226,8 @@ Button m_backButton;//关闭按钮
     #endif  
 }  
 </code></pre>
+
+<p>```</p>
 
 <h3>4.效果图</h3>
 

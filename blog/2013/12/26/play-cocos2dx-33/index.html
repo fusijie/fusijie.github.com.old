@@ -125,123 +125,229 @@
 
 <p>整个布局的结构是最底层一个FrameLayout，ImageView控件放置在FrameLayout上。然后之上是一个LinearLayout用来放置关闭按钮，LinearLayout往下是Webview控件。</p>
 
-<pre><code>static Test test  = null;//Test实例  
-WebView m_webView;//WebView控件  
-ImageView m_imageView;//ImageView控件  
-FrameLayout m_webLayout;//FrameLayout布局  
-LinearLayout m_topLayout;//LinearLayout布局  
-Button m_backButton;//关闭按钮  
-</code></pre>
+<figure class='code'><figcaption><span>成员变量</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">static</span> <span class="n">Test</span> <span class="n">test</span>  <span class="o">=</span> <span class="kc">null</span><span class="o">;</span><span class="c1">//Test实例  </span>
+</span><span class='line'>    <span class="n">WebView</span> <span class="n">m_webView</span><span class="o">;</span><span class="c1">//WebView控件  </span>
+</span><span class='line'>    <span class="n">ImageView</span> <span class="n">m_imageView</span><span class="o">;</span><span class="c1">//ImageView控件  </span>
+</span><span class='line'>    <span class="n">FrameLayout</span> <span class="n">m_webLayout</span><span class="o">;</span><span class="c1">//FrameLayout布局  </span>
+</span><span class='line'>    <span class="n">LinearLayout</span> <span class="n">m_topLayout</span><span class="o">;</span><span class="c1">//LinearLayout布局  </span>
+</span><span class='line'>    <span class="n">Button</span> <span class="n">m_backButton</span><span class="o">;</span><span class="c1">//关闭按钮  </span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>2.2.OnCreate中添加FrameLayout布局</strong></p>
 
-<pre><code>protected void onCreate(Bundle savedInstanceState){  
-    super.onCreate(savedInstanceState);  
-    test=this;  
+<figure class='code'><figcaption><span>添加FrameLayout布局</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">){</span>
+</span><span class='line'>      <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
+</span><span class='line'>          <span class="n">test</span><span class="o">=</span><span class="k">this</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="c1">//初始化一个空布局  </span>
+</span><span class='line'>          <span class="n">m_webLayout</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FrameLayout</span><span class="o">(</span><span class="k">this</span><span class="o">);</span>
+</span><span class='line'>          <span class="n">FrameLayout</span><span class="o">.</span><span class="na">LayoutParams</span> <span class="n">lytp</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FrameLayout</span><span class="o">.</span><span class="na">LayoutParams</span><span class="o">(</span><span class="mi">800</span><span class="o">,</span><span class="mi">640</span><span class="o">);</span>
+</span><span class='line'>          <span class="n">lytp</span> <span class="o">.</span><span class="na">gravity</span> <span class="o">=</span> <span class="n">Gravity</span><span class="o">.</span><span class="na">CENTER</span><span class="o">;</span>
+</span><span class='line'>          <span class="n">addContentView</span><span class="o">(</span><span class="n">m_webLayout</span><span class="o">,</span> <span class="n">lytp</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    //初始化一个空布局  
-    m_webLayout = new FrameLayout(this);  
-    FrameLayout.LayoutParams lytp = new FrameLayout.LayoutParams(800,640);  
-    lytp .gravity = Gravity.CENTER;  
-    addContentView(m_webLayout, lytp);  
-}  
-</code></pre>
+
+<p></p>
 
 <p><strong>2.3.返回实例</strong></p>
 
-<pre><code>public static Test getInstance() {  
-    Log.v("TestJacky","getInstance");  
-    return test;  
-}  
-</code></pre>
+<figure class='code'><figcaption><span>返回实例</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="kd">public</span> <span class="kd">static</span> <span class="n">Test</span> <span class="nf">getInstance</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">Log</span><span class="o">.</span><span class="na">v</span><span class="o">(</span><span class="s">&quot;TestJacky&quot;</span><span class="o">,</span><span class="s">&quot;getInstance&quot;</span><span class="o">);</span>
+</span><span class='line'>      <span class="k">return</span> <span class="n">test</span><span class="o">;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>2.4.显示webview</strong></p>
 
-<pre><code>public void openWebview() {  
-    Log.v("TestJacky", "openWebView");  
-    this.runOnUiThread(new Runnable() {//在主线程里添加别的控件  
-        public void run() {     
-            //初始化webView  
-            m_webView = new WebView(test);  
-            //设置webView能够执行javascript脚本  
-            m_webView.getSettings().setJavaScriptEnabled(true);              
-            //设置可以支持缩放  
-            m_webView.getSettings().setSupportZoom(true);//设置出现缩放工具  
-            m_webView.getSettings().setBuiltInZoomControls(true);  
-            //载入URL  
-            m_webView.loadUrl("http://m.blog.csdn.net/blog/jackyvincefu/");  
-            //使页面获得焦点  
-            m_webView.requestFocus();  
-            //如果页面中链接，如果希望点击链接继续在当前browser中响应  
-            m_webView.setWebViewClient(new WebViewClient(){         
-                public boolean shouldOverrideUrlLoading(WebView view, String url) {     
-                    if(url.indexOf("tel:")&lt;0){  
-                        view.loadUrl(url);   
-                }  
-                return true;         
-            }      
-        });  
+<figure class='code'><figcaption><span>显示webview</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">openWebview</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">Log</span><span class="o">.</span><span class="na">v</span><span class="o">(</span><span class="s">&quot;TestJacky&quot;</span><span class="o">,</span> <span class="s">&quot;openWebView&quot;</span><span class="o">);</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">.</span><span class="na">runOnUiThread</span><span class="o">(</span><span class="k">new</span> <span class="n">Runnable</span><span class="o">()</span> <span class="o">{</span><span class="c1">//在主线程里添加别的控件  </span>
+</span><span class='line'>          <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>              <span class="c1">//初始化webView  </span>
+</span><span class='line'>              <span class="n">m_webView</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WebView</span><span class="o">(</span><span class="n">test</span><span class="o">);</span>
+</span><span class='line'>              <span class="c1">//设置webView能够执行javascript脚本  </span>
+</span><span class='line'>              <span class="n">m_webView</span><span class="o">.</span><span class="na">getSettings</span><span class="o">().</span><span class="na">setJavaScriptEnabled</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+</span><span class='line'>              <span class="c1">//设置可以支持缩放  </span>
+</span><span class='line'>              <span class="n">m_webView</span><span class="o">.</span><span class="na">getSettings</span><span class="o">().</span><span class="na">setSupportZoom</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span><span class="c1">//设置出现缩放工具  </span>
+</span><span class='line'>              <span class="n">m_webView</span><span class="o">.</span><span class="na">getSettings</span><span class="o">().</span><span class="na">setBuiltInZoomControls</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+</span><span class='line'>              <span class="c1">//载入URL  </span>
+</span><span class='line'>              <span class="n">m_webView</span><span class="o">.</span><span class="na">loadUrl</span><span class="o">(</span><span class="s">&quot;http://m.blog.csdn.net/blog/jackyvincefu/&quot;</span><span class="o">);</span>
+</span><span class='line'>              <span class="c1">//使页面获得焦点  </span>
+</span><span class='line'>              <span class="n">m_webView</span><span class="o">.</span><span class="na">requestFocus</span><span class="o">();</span>
+</span><span class='line'>              <span class="c1">//如果页面中链接，如果希望点击链接继续在当前browser中响应  </span>
+</span><span class='line'>              <span class="n">m_webView</span><span class="o">.</span><span class="na">setWebViewClient</span><span class="o">(</span><span class="k">new</span> <span class="n">WebViewClient</span><span class="o">(){</span>
+</span><span class='line'>                  <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">shouldOverrideUrlLoading</span><span class="o">(</span><span class="n">WebView</span> <span class="n">view</span><span class="o">,</span> <span class="n">String</span> <span class="n">url</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                      <span class="k">if</span><span class="o">(</span><span class="n">url</span><span class="o">.</span><span class="na">indexOf</span><span class="o">(</span><span class="s">&quot;tel:&quot;</span><span class="o">)&lt;</span><span class="mi">0</span><span class="o">){</span>
+</span><span class='line'>                          <span class="n">view</span><span class="o">.</span><span class="na">loadUrl</span><span class="o">(</span><span class="n">url</span><span class="o">);</span>
+</span><span class='line'>                    <span class="o">}</span>
+</span><span class='line'>                    <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+</span><span class='line'>                <span class="o">}</span>
+</span><span class='line'>            <span class="o">});</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="c1">//背景图  </span>
+</span><span class='line'>            <span class="n">m_imageView</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ImageView</span><span class="o">(</span><span class="n">test</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">m_imageView</span><span class="o">.</span><span class="na">setImageResource</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">drawable</span><span class="o">.</span><span class="na">bkgnd</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">m_imageView</span><span class="o">.</span><span class="na">setScaleType</span><span class="o">(</span><span class="n">ImageView</span><span class="o">.</span><span class="na">ScaleType</span><span class="o">.</span><span class="na">FIT_XY</span><span class="o">);</span>
+</span><span class='line'>            <span class="c1">//初始化线性布局 里面加按钮和webView  </span>
+</span><span class='line'>            <span class="n">m_topLayout</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinearLayout</span><span class="o">(</span><span class="n">test</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">m_topLayout</span><span class="o">.</span><span class="na">setOrientation</span><span class="o">(</span><span class="n">LinearLayout</span><span class="o">.</span><span class="na">VERTICAL</span><span class="o">);</span>
+</span><span class='line'>            <span class="c1">//初始化返回按钮  </span>
+</span><span class='line'>            <span class="n">m_backButton</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Button</span><span class="o">(</span><span class="n">test</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">m_backButton</span><span class="o">.</span><span class="na">setBackgroundResource</span><span class="o">(</span><span class="n">R</span><span class="o">.</span><span class="na">drawable</span><span class="o">.</span><span class="na">btn</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">LinearLayout</span><span class="o">.</span><span class="na">LayoutParams</span> <span class="n">lypt</span><span class="o">=</span><span class="k">new</span> <span class="n">LinearLayout</span><span class="o">.</span><span class="na">LayoutParams</span><span class="o">(</span><span class="n">LinearLayout</span><span class="o">.</span><span class="na">LayoutParams</span><span class="o">.</span><span class="na">WRAP_CONTENT</span><span class="o">,</span> <span class="n">LinearLayout</span><span class="o">.</span><span class="na">LayoutParams</span><span class="o">.</span><span class="na">WRAP_CONTENT</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">lypt</span><span class="o">.</span><span class="na">gravity</span><span class="o">=</span><span class="n">Gravity</span><span class="o">.</span><span class="na">RIGHT</span><span class="o">;</span>
+</span><span class='line'>            <span class="n">m_backButton</span><span class="o">.</span><span class="na">setLayoutParams</span><span class="o">(</span><span class="n">lypt</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">m_backButton</span><span class="o">.</span><span class="na">setOnClickListener</span><span class="o">(</span><span class="k">new</span> <span class="n">OnClickListener</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>                <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onClick</span><span class="o">(</span><span class="n">View</span> <span class="n">v</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                    <span class="n">removeWebView</span><span class="o">();</span>
+</span><span class='line'>                <span class="o">}</span>
+</span><span class='line'>            <span class="o">});</span>
+</span><span class='line'>            <span class="c1">//把image加到主布局里  </span>
+</span><span class='line'>            <span class="n">m_webLayout</span><span class="o">.</span><span class="na">addView</span><span class="o">(</span><span class="n">m_imageView</span><span class="o">);</span>
+</span><span class='line'>            <span class="c1">//把webView加入到线性布局  </span>
+</span><span class='line'>            <span class="n">m_topLayout</span><span class="o">.</span><span class="na">addView</span><span class="o">(</span><span class="n">m_backButton</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">m_topLayout</span><span class="o">.</span><span class="na">addView</span><span class="o">(</span><span class="n">m_webView</span><span class="o">);</span>
+</span><span class='line'>            <span class="c1">//再把线性布局加入到主布局  </span>
+</span><span class='line'>            <span class="n">m_webLayout</span><span class="o">.</span><span class="na">addView</span><span class="o">(</span><span class="n">m_topLayout</span><span class="o">);</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>      <span class="o">});</span>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-        //背景图  
-        m_imageView = new ImageView(test);  
-        m_imageView.setImageResource(R.drawable.bkgnd);  
-        m_imageView.setScaleType(ImageView.ScaleType.FIT_XY);  
-        //初始化线性布局 里面加按钮和webView  
-        m_topLayout = new LinearLayout(test);        
-        m_topLayout.setOrientation(LinearLayout.VERTICAL);  
-        //初始化返回按钮  
-        m_backButton = new Button(test);  
-        m_backButton.setBackgroundResource(R.drawable.btn);  
-        LinearLayout.LayoutParams lypt=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);  
-        lypt.gravity=Gravity.RIGHT;  
-        m_backButton.setLayoutParams(lypt);              
-        m_backButton.setOnClickListener(new OnClickListener() {                      
-            public void onClick(View v) {  
-                removeWebView();  
-            }  
-        });  
-        //把image加到主布局里  
-        m_webLayout.addView(m_imageView);  
-        //把webView加入到线性布局  
-        m_topLayout.addView(m_backButton);  
-        m_topLayout.addView(m_webView);                  
-        //再把线性布局加入到主布局  
-        m_webLayout.addView(m_topLayout);  
-        }  
-    });  
-}  
-</code></pre>
+
+<p></p>
 
 <p><strong>2.5.移除webview</strong></p>
 
-<pre><code>public void removeWebView() {                
-    m_webLayout.removeView(m_imageView);  
-    m_imageView.destroyDrawingCache();  
+<figure class='code'><figcaption><span>移除webview</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">removeWebView</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">m_webLayout</span><span class="o">.</span><span class="na">removeView</span><span class="o">(</span><span class="n">m_imageView</span><span class="o">);</span>
+</span><span class='line'>      <span class="n">m_imageView</span><span class="o">.</span><span class="na">destroyDrawingCache</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">m_webLayout</span><span class="o">.</span><span class="na">removeView</span><span class="o">(</span><span class="n">m_topLayout</span><span class="o">);</span>
+</span><span class='line'>      <span class="n">m_topLayout</span><span class="o">.</span><span class="na">destroyDrawingCache</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">m_topLayout</span><span class="o">.</span><span class="na">removeView</span><span class="o">(</span><span class="n">m_webView</span><span class="o">);</span>
+</span><span class='line'>      <span class="n">m_webView</span><span class="o">.</span><span class="na">destroy</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">m_topLayout</span><span class="o">.</span><span class="na">removeView</span><span class="o">(</span><span class="n">m_backButton</span><span class="o">);</span>
+</span><span class='line'>      <span class="n">m_backButton</span><span class="o">.</span><span class="na">destroyDrawingCache</span><span class="o">();</span>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    m_webLayout.removeView(m_topLayout);  
-    m_topLayout.destroyDrawingCache();  
-
-    m_topLayout.removeView(m_webView);  
-    m_webView.destroy();  
-
-    m_topLayout.removeView(m_backButton);  
-    m_backButton.destroyDrawingCache();  
-}  
-</code></pre>
 
 <p><strong>2.6.重写返回键</strong></p>
 
-<pre><code>public boolean onKeyDown(int keyCoder,KeyEvent event)  
-{  
-    //如果网页能回退则后退，如果不能后退移除WebView  
-    if(m_webView.canGoBack() &amp;&amp; keyCoder == KeyEvent.KEYCODE_BACK){  
-        m_webView.goBack();  
-    }else{  
-        removeWebView();  
-    }  
-    return false;        
-}  
-</code></pre>
+<figure class='code'><figcaption><span>重写返回键</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">onKeyDown</span><span class="o">(</span><span class="kt">int</span> <span class="n">keyCoder</span><span class="o">,</span><span class="n">KeyEvent</span> <span class="n">event</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">{</span>
+</span><span class='line'>      <span class="c1">//如果网页能回退则后退，如果不能后退移除WebView  </span>
+</span><span class='line'>      <span class="k">if</span><span class="o">(</span><span class="n">m_webView</span><span class="o">.</span><span class="na">canGoBack</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="n">keyCoder</span> <span class="o">==</span> <span class="n">KeyEvent</span><span class="o">.</span><span class="na">KEYCODE_BACK</span><span class="o">){</span>
+</span><span class='line'>          <span class="n">m_webView</span><span class="o">.</span><span class="na">goBack</span><span class="o">();</span>
+</span><span class='line'>      <span class="o">}</span><span class="k">else</span><span class="o">{</span>
+</span><span class='line'>          <span class="n">removeWebView</span><span class="o">();</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>      <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h3>3.cocos2d-x使用Jni</h3>
 
@@ -249,43 +355,77 @@ Button m_backButton;//关闭按钮
 
 <p><strong>3.1.jni头文件</strong></p>
 
-<pre><code>#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)  
-#include &lt;jni.h&gt;  
-#include "platform/android/jni/JniHelper.h"  
-#endif  
-</code></pre>
+<figure class='code'><figcaption><span>jni头文件</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="err">#</span><span class="k">if</span> <span class="p">(</span><span class="n">CC_TARGET_PLATFORM</span> <span class="o">==</span> <span class="n">CC_PLATFORM_ANDROID</span><span class="p">)</span>
+</span><span class='line'>  <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">jni</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="err">#</span><span class="n">include</span> <span class="s">&quot;platform/android/jni/JniHelper.h&quot;</span>
+</span><span class='line'>  <span class="err">#</span><span class="n">endif</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>3.2.Jni调用打开webview</strong></p>
 
-<pre><code>void HelloWorld::menuCloseCallback(CCObject* pSender)  
-{  
-    #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)  
-    JniMethodInfo minfo;  
-    //getStaticMethodInfo，判断Java静态函数是否存在，并且把信息保存到minfo里  
-    //参数1：JniMethodInfo  
-    //参数2：Java类包名+类名  
-    //参数3：Java函数名称  
-    //参数4：函数参数类型和返回值类型  
-    bool isHave = JniHelper::getStaticMethodInfo(minfo,"com/jacky/test/Test","getInstance","()Lcom/jacky/test/Test;");  
-    jobject jobj;//存对象  
-    if (isHave) {  
-        //这里的调用getInstance，返回Test类的对象。  
-        jobj = minfo.env-&gt;CallStaticObjectMethod(minfo.classID, minfo.methodID);  
+<figure class='code'><figcaption><span>Jni调用打开webview</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="kt">void</span> <span class="n">HelloWorld</span><span class="o">::</span><span class="n">menuCloseCallback</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">pSender</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="err">#</span><span class="k">if</span> <span class="p">(</span><span class="n">CC_TARGET_PLATFORM</span> <span class="o">==</span> <span class="n">CC_PLATFORM_ANDROID</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">JniMethodInfo</span> <span class="n">minfo</span><span class="p">;</span>
+</span><span class='line'>  <span class="c1">//getStaticMethodInfo，判断Java静态函数是否存在，并且把信息保存到minfo里  </span>
+</span><span class='line'>  <span class="c1">//参数1：JniMethodInfo  </span>
+</span><span class='line'>  <span class="c1">//参数2：Java类包名+类名  </span>
+</span><span class='line'>  <span class="c1">//参数3：Java函数名称  </span>
+</span><span class='line'>  <span class="c1">//参数4：函数参数类型和返回值类型  </span>
+</span><span class='line'>  <span class="kt">bool</span> <span class="n">isHave</span> <span class="o">=</span> <span class="n">JniHelper</span><span class="o">::</span><span class="n">getStaticMethodInfo</span><span class="p">(</span><span class="n">minfo</span><span class="p">,</span><span class="s">&quot;com/jacky/test/Test&quot;</span><span class="p">,</span><span class="s">&quot;getInstance&quot;</span><span class="p">,</span><span class="s">&quot;()Lcom/jacky/test/Test;&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">jobject</span> <span class="n">jobj</span><span class="p">;</span><span class="c1">//存对象  </span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">isHave</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="c1">//这里的调用getInstance，返回Test类的对象。  </span>
+</span><span class='line'>      <span class="n">jobj</span> <span class="o">=</span> <span class="n">minfo</span><span class="p">.</span><span class="n">env</span><span class="o">-&gt;</span><span class="n">CallStaticObjectMethod</span><span class="p">(</span><span class="n">minfo</span><span class="p">.</span><span class="n">classID</span><span class="p">,</span> <span class="n">minfo</span><span class="p">.</span><span class="n">methodID</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">isHave</span> <span class="o">=</span> <span class="n">JniHelper</span><span class="o">::</span><span class="n">getMethodInfo</span><span class="p">(</span><span class="n">minfo</span><span class="p">,</span><span class="s">&quot;com/jacky/test/Test&quot;</span><span class="p">,</span><span class="s">&quot;openWebview&quot;</span><span class="p">,</span><span class="s">&quot;()V&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">isHave</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="c1">//调用openWebview, 参数1：Test对象   参数2：方法ID  </span>
+</span><span class='line'>          <span class="n">minfo</span><span class="p">.</span><span class="n">env</span><span class="o">-&gt;</span><span class="n">CallVoidMethod</span><span class="p">(</span><span class="n">jobj</span><span class="p">,</span> <span class="n">minfo</span><span class="p">.</span><span class="n">methodID</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="err">#</span><span class="k">else</span>
+</span><span class='line'>      <span class="n">CCDirector</span><span class="o">::</span><span class="n">sharedDirector</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">end</span><span class="p">();</span>
+</span><span class='line'>  <span class="err">#</span><span class="k">if</span> <span class="p">(</span><span class="n">CC_TARGET_PLATFORM</span> <span class="o">==</span> <span class="n">CC_PLATFORM_IOS</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>  <span class="err">#</span><span class="n">endif</span>
+</span><span class='line'>  <span class="err">#</span><span class="n">endif</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-        isHave = JniHelper::getMethodInfo(minfo,"com/jacky/test/Test","openWebview","()V");  
-        if (isHave) {  
-            //调用openWebview, 参数1：Test对象   参数2：方法ID  
-            minfo.env-&gt;CallVoidMethod(jobj, minfo.methodID);  
-        }  
-    }  
-    #else  
-        CCDirector::sharedDirector()-&gt;end();  
-    #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)  
-        exit(0);  
-    #endif  
-    #endif  
-}  
-</code></pre>
 
 <h3>4.效果图</h3>
 
