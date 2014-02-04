@@ -22,6 +22,8 @@ TinyXML的[主页](http://www.grinninglizard.com/tinyxml/)，本来不打算介�
 
 **1.2.1.xml的创建**
 
+``` cpp xml的创建
+
 	void TestLayer::writeTinyXML()  
 	{  
     	TiXmlDocument* myTinyXMLDoc=new TiXmlDocument();//创建文档对象  
@@ -50,10 +52,13 @@ TinyXML的[主页](http://www.grinninglizard.com/tinyxml/)，本来不打算介�
   
     	delete myTinyXMLDoc;  
 	}  
+```
 
 是不是很奇怪为什么new了那么多内存，但最后只delete TixmlDocument呢？其实在TinyXML中，子节点的内存管理都由父节点进行维护，所以不必在释放内存时对每个子节点都进行释放，而只需要释放父节点即可。
 
 **1.2.2.xml的读取**
+
+``` cpp xml的读取
 
 	void TestLayer::readTinyXML()  
 	{  
@@ -82,7 +87,9 @@ TinyXML的[主页](http://www.grinninglizard.com/tinyxml/)，本来不打算介�
         	infoElement = infoElement->NextSiblingElement();//查找下一节点    
     	}    
     	delete myTinyXMLDoc;    
-	}  
+	} 
+
+``` 
 
 ###2.RapidXML
 
@@ -95,6 +102,8 @@ RapidXML的[主页](http://rapidxml.sourceforge.net/)。在其手册中第四节
 首先下载RapidXML库，将四个hpp文件都加入cocos2d-x中，在包含头文件时，4个hpp都要进行包含。
 
 **2.2.1.xml的创建**
+
+``` cpp xml的创建
 
 	void TestLayer::writeRapidXML()  
 	{  
@@ -121,9 +130,13 @@ RapidXML的[主页](http://rapidxml.sourceforge.net/)。在其手册中第四节
     	CCLog(text.c_str());  
     	std::ofstream out(CCFileUtils::sharedFileUtils()->fullPathForFilename("testRapid.xml"));  
     	out << myRapidXMLDoc;  
-	}  
+	}
+
+```  
 
 **2.2.2.xml的读取**
+
+``` cpp xml的读取
 
 	void TestLayer::readRapidXML()  
 	{  
@@ -148,8 +161,12 @@ RapidXML的[主页](http://rapidxml.sourceforge.net/)。在其手册中第四节
     	CCLog("%s:%s",website->name(),website->value());  
 	}  
 
+```
+
 ###3.生成xml的文件
 以上2种方式生成的xml文件内容如下：
+
+``` xml 生成的xml文件
 
 	<Jacky>  
     	<Info Name="Jacky" QQ="754505629" E-mail="Geek.Jacky@Gmail.com">  
@@ -157,6 +174,8 @@ RapidXML的[主页](http://rapidxml.sourceforge.net/)。在其手册中第四节
         <website>http://www.fusijie.com</website>  
     	</Info>  
 	</Jacky>  
+
+```
 
 ###4.源码下载
 [下载地址](http://download.csdn.net/detail/jackyvincefu/6732361)
