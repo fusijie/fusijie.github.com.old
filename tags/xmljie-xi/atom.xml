@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: xml解析 | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/xmljie-xi/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-01-21T15:55:27+08:00</updated>
+  <updated>2014-02-04T14:29:17+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -34,6 +34,8 @@
 <p>这里不介绍API，因为太多了，在线手册也都有。首先下载TinyXML库，将4个cpp文件和2个h文件加入cocos2d-x中。添加头文件时只需添加"<em>tinyxml.h</em>&ldquo;即可。</p>
 
 <p><strong>1.2.1.xml的创建</strong></p>
+
+<p>``` cpp xml的创建</p>
 
 <pre><code>void TestLayer::writeTinyXML()  
 {  
@@ -65,9 +67,13 @@
 }  
 </code></pre>
 
+<p>```</p>
+
 <p>是不是很奇怪为什么new了那么多内存，但最后只delete TixmlDocument呢？其实在TinyXML中，子节点的内存管理都由父节点进行维护，所以不必在释放内存时对每个子节点都进行释放，而只需要释放父节点即可。</p>
 
 <p><strong>1.2.2.xml的读取</strong></p>
+
+<p>``` cpp xml的读取</p>
 
 <pre><code>void TestLayer::readTinyXML()  
 {  
@@ -96,8 +102,10 @@
         infoElement = infoElement-&gt;NextSiblingElement();//查找下一节点    
     }    
     delete myTinyXMLDoc;    
-}  
+} 
 </code></pre>
+
+<p>```</p>
 
 <h3>2.RapidXML</h3>
 
@@ -110,6 +118,8 @@
 <p>首先下载RapidXML库，将四个hpp文件都加入cocos2d-x中，在包含头文件时，4个hpp都要进行包含。</p>
 
 <p><strong>2.2.1.xml的创建</strong></p>
+
+<p>``` cpp xml的创建</p>
 
 <pre><code>void TestLayer::writeRapidXML()  
 {  
@@ -136,10 +146,14 @@
     CCLog(text.c_str());  
     std::ofstream out(CCFileUtils::sharedFileUtils()-&gt;fullPathForFilename("testRapid.xml"));  
     out &lt;&lt; myRapidXMLDoc;  
-}  
+}
 </code></pre>
 
+<p>```</p>
+
 <p><strong>2.2.2.xml的读取</strong></p>
+
+<p>``` cpp xml的读取</p>
 
 <pre><code>void TestLayer::readRapidXML()  
 {  
@@ -165,9 +179,13 @@
 }  
 </code></pre>
 
+<p>```</p>
+
 <h3>3.生成xml的文件</h3>
 
 <p>以上2种方式生成的xml文件内容如下：</p>
+
+<p>``` xml 生成的xml文件</p>
 
 <pre><code>&lt;Jacky&gt;  
     &lt;Info Name="Jacky" QQ="754505629" E-mail="Geek.Jacky@Gmail.com"&gt;  
@@ -176,6 +194,8 @@
     &lt;/Info&gt;  
 &lt;/Jacky&gt;  
 </code></pre>
+
+<p>```</p>
 
 <h3>4.源码下载</h3>
 

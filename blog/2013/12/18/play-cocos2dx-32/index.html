@@ -125,69 +125,129 @@
 
 <p><strong>1.2.1.xml的创建</strong></p>
 
-<pre><code>void TestLayer::writeTinyXML()  
-{  
-    TiXmlDocument* myTinyXMLDoc=new TiXmlDocument();//创建文档对象  
+<figure class='code'><figcaption><span>xml的创建</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="kt">void</span> <span class="n">TestLayer</span><span class="o">::</span><span class="n">writeTinyXML</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">TiXmlDocument</span><span class="o">*</span> <span class="n">myTinyXMLDoc</span><span class="o">=</span><span class="k">new</span> <span class="n">TiXmlDocument</span><span class="p">();</span><span class="c1">//创建文档对象  </span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">TiXmlElement</span><span class="o">*</span> <span class="n">rootElement</span><span class="o">=</span><span class="k">new</span> <span class="n">TiXmlElement</span><span class="p">(</span><span class="s">&quot;Jacky&quot;</span><span class="p">);</span><span class="c1">//创建根节点并连接到文档  </span>
+</span><span class='line'>      <span class="n">myTinyXMLDoc</span><span class="o">-&gt;</span><span class="n">LinkEndChild</span><span class="p">(</span><span class="n">rootElement</span><span class="p">);</span>
+</span><span class='line'>      
+</span><span class='line'>      <span class="n">TiXmlElement</span><span class="o">*</span> <span class="n">infoElement</span><span class="o">=</span><span class="k">new</span> <span class="n">TiXmlElement</span><span class="p">(</span><span class="s">&quot;Info&quot;</span><span class="p">);</span><span class="c1">//创建info节点并连接到根节点  </span>
+</span><span class='line'>      <span class="n">rootElement</span><span class="o">-&gt;</span><span class="n">LinkEndChild</span><span class="p">(</span><span class="n">infoElement</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">infoElement</span><span class="o">-&gt;</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s">&quot;Name&quot;</span><span class="p">,</span><span class="s">&quot;Jacky&quot;</span><span class="p">);</span><span class="c1">//为info节点设置属性  </span>
+</span><span class='line'>      <span class="n">infoElement</span><span class="o">-&gt;</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s">&quot;QQ&quot;</span><span class="p">,</span><span class="s">&quot;754505629&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">infoElement</span><span class="o">-&gt;</span><span class="n">SetAttribute</span><span class="p">(</span><span class="s">&quot;E-mail&quot;</span><span class="p">,</span><span class="s">&quot;Geek.Jacky@Gmail.com&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">TiXmlElement</span><span class="o">*</span> <span class="n">blogElement</span><span class="o">=</span><span class="k">new</span> <span class="n">TiXmlElement</span><span class="p">(</span><span class="s">&quot;blog&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">infoElement</span><span class="o">-&gt;</span><span class="n">LinkEndChild</span><span class="p">(</span><span class="n">blogElement</span><span class="p">);</span><span class="c1">//创建blog节点并连接到info节点  </span>
+</span><span class='line'>      <span class="n">TiXmlText</span><span class="o">*</span> <span class="n">blogtext</span><span class="o">=</span><span class="k">new</span> <span class="n">TiXmlText</span><span class="p">(</span><span class="s">&quot;http://blog.csdn.net/jackystudio&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">blogElement</span><span class="o">-&gt;</span><span class="n">LinkEndChild</span><span class="p">(</span><span class="n">blogtext</span><span class="p">);</span><span class="c1">//为blog节点添加文本值  </span>
+</span><span class='line'>      
+</span><span class='line'>      <span class="n">TiXmlElement</span><span class="o">*</span> <span class="n">websiteElenment</span><span class="o">=</span><span class="k">new</span> <span class="n">TiXmlElement</span><span class="p">(</span><span class="s">&quot;website&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">infoElement</span><span class="o">-&gt;</span><span class="n">LinkEndChild</span><span class="p">(</span><span class="n">websiteElenment</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">TiXmlText</span><span class="o">*</span> <span class="n">websitetext</span><span class="o">=</span><span class="k">new</span> <span class="n">TiXmlText</span><span class="p">(</span><span class="s">&quot;http://www.fusijie.com&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">websiteElenment</span><span class="o">-&gt;</span><span class="n">LinkEndChild</span><span class="p">(</span><span class="n">websitetext</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">myTinyXMLDoc</span><span class="o">-&gt;</span><span class="n">SaveFile</span><span class="p">(</span><span class="n">CCFileUtils</span><span class="o">::</span><span class="n">sharedFileUtils</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">fullPathForFilename</span><span class="p">(</span><span class="s">&quot;testTiny.xml&quot;</span><span class="p">).</span><span class="n">c_str</span><span class="p">());</span><span class="c1">//保存xml  </span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">delete</span> <span class="n">myTinyXMLDoc</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    TiXmlElement* rootElement=new TiXmlElement("Jacky");//创建根节点并连接到文档  
-    myTinyXMLDoc-&gt;LinkEndChild(rootElement);  
-
-    TiXmlElement* infoElement=new TiXmlElement("Info");//创建info节点并连接到根节点  
-    rootElement-&gt;LinkEndChild(infoElement);  
-
-    infoElement-&gt;SetAttribute("Name","Jacky");//为info节点设置属性  
-    infoElement-&gt;SetAttribute("QQ","754505629");  
-    infoElement-&gt;SetAttribute("E-mail","Geek.Jacky@Gmail.com");  
-
-    TiXmlElement* blogElement=new TiXmlElement("blog");  
-    infoElement-&gt;LinkEndChild(blogElement);//创建blog节点并连接到info节点  
-    TiXmlText* blogtext=new TiXmlText("http://blog.csdn.net/jackystudio");  
-    blogElement-&gt;LinkEndChild(blogtext);//为blog节点添加文本值  
-
-    TiXmlElement* websiteElenment=new TiXmlElement("website");  
-    infoElement-&gt;LinkEndChild(websiteElenment);  
-    TiXmlText* websitetext=new TiXmlText("http://www.fusijie.com");  
-    websiteElenment-&gt;LinkEndChild(websitetext);  
-
-    myTinyXMLDoc-&gt;SaveFile(CCFileUtils::sharedFileUtils()-&gt;fullPathForFilename("testTiny.xml").c_str());//保存xml  
-
-    delete myTinyXMLDoc;  
-}  
-</code></pre>
 
 <p>是不是很奇怪为什么new了那么多内存，但最后只delete TixmlDocument呢？其实在TinyXML中，子节点的内存管理都由父节点进行维护，所以不必在释放内存时对每个子节点都进行释放，而只需要释放父节点即可。</p>
 
 <p><strong>1.2.2.xml的读取</strong></p>
 
-<pre><code>void TestLayer::readTinyXML()  
-{  
-    TiXmlDocument* myTinyXMLDoc=new TiXmlDocument(CCFileUtils::sharedFileUtils()-&gt;fullPathForFilename("testTiny.xml").c_str());  
-    myTinyXMLDoc-&gt;LoadFile();  
+<figure class='code'><figcaption><span>xml的读取</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="kt">void</span> <span class="n">TestLayer</span><span class="o">::</span><span class="n">readTinyXML</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">TiXmlDocument</span><span class="o">*</span> <span class="n">myTinyXMLDoc</span><span class="o">=</span><span class="k">new</span> <span class="n">TiXmlDocument</span><span class="p">(</span><span class="n">CCFileUtils</span><span class="o">::</span><span class="n">sharedFileUtils</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">fullPathForFilename</span><span class="p">(</span><span class="s">&quot;testTiny.xml&quot;</span><span class="p">).</span><span class="n">c_str</span><span class="p">());</span>
+</span><span class='line'>      <span class="n">myTinyXMLDoc</span><span class="o">-&gt;</span><span class="n">LoadFile</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">TiXmlElement</span><span class="o">*</span> <span class="n">rootElement</span> <span class="o">=</span> <span class="n">myTinyXMLDoc</span><span class="o">-&gt;</span><span class="n">RootElement</span><span class="p">();</span>  <span class="c1">//获取根节点  </span>
+</span><span class='line'>      <span class="n">TiXmlElement</span><span class="o">*</span> <span class="n">infoElement</span> <span class="o">=</span> <span class="n">rootElement</span><span class="o">-&gt;</span><span class="n">FirstChildElement</span><span class="p">();</span>  <span class="c1">// 获取Info节点    </span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">while</span> <span class="p">(</span><span class="n">infoElement</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="n">TiXmlAttribute</span><span class="o">*</span> <span class="n">attributeOfinfo</span> <span class="o">=</span> <span class="n">infoElement</span><span class="o">-&gt;</span><span class="n">FirstAttribute</span><span class="p">();</span>  <span class="c1">//获得info的属性    </span>
+</span><span class='line'>          <span class="k">while</span> <span class="p">(</span> <span class="n">attributeOfinfo</span> <span class="p">)</span>
+</span><span class='line'>          <span class="p">{</span>
+</span><span class='line'>              <span class="n">CCLOG</span><span class="p">(</span><span class="s">&quot;%s : %s&quot;</span><span class="p">,</span><span class="n">attributeOfinfo</span><span class="o">-&gt;</span><span class="n">Name</span><span class="p">(),</span><span class="n">attributeOfinfo</span><span class="o">-&gt;</span><span class="n">Value</span><span class="p">());</span><span class="c1">//获取所有属性  </span>
+</span><span class='line'>              <span class="n">attributeOfinfo</span> <span class="o">=</span> <span class="n">attributeOfinfo</span><span class="o">-&gt;</span><span class="n">Next</span><span class="p">();</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="n">TiXmlElement</span><span class="o">*</span> <span class="n">blogElement</span> <span class="o">=</span> <span class="n">infoElement</span><span class="o">-&gt;</span><span class="n">FirstChildElement</span><span class="p">();</span><span class="c1">//获得blog  </span>
+</span><span class='line'>          <span class="n">CCLOG</span><span class="p">(</span><span class="s">&quot;blog : %s&quot;</span><span class="p">,</span><span class="n">blogElement</span><span class="o">-&gt;</span><span class="n">GetText</span><span class="p">());</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="n">TiXmlElement</span><span class="o">*</span> <span class="n">websiteElement</span> <span class="o">=</span> <span class="n">blogElement</span><span class="o">-&gt;</span><span class="n">NextSiblingElement</span><span class="p">();</span><span class="c1">//获取website    </span>
+</span><span class='line'>          <span class="n">CCLOG</span><span class="p">(</span><span class="s">&quot;website : %s&quot;</span><span class="p">,</span><span class="n">websiteElement</span><span class="o">-&gt;</span><span class="n">GetText</span><span class="p">());</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="n">infoElement</span> <span class="o">=</span> <span class="n">infoElement</span><span class="o">-&gt;</span><span class="n">NextSiblingElement</span><span class="p">();</span><span class="c1">//查找下一节点    </span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">delete</span> <span class="n">myTinyXMLDoc</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    TiXmlElement* rootElement = myTinyXMLDoc-&gt;RootElement();  //获取根节点  
-    TiXmlElement* infoElement = rootElement-&gt;FirstChildElement();  // 获取Info节点    
 
-    while (infoElement)   
-    {  
-
-        TiXmlAttribute* attributeOfinfo = infoElement-&gt;FirstAttribute();  //获得info的属性    
-        while ( attributeOfinfo )   
-        {    
-            CCLOG("%s : %s",attributeOfinfo-&gt;Name(),attributeOfinfo-&gt;Value());//获取所有属性  
-            attributeOfinfo = attributeOfinfo-&gt;Next();    
-        }  
-
-        TiXmlElement* blogElement = infoElement-&gt;FirstChildElement();//获得blog  
-        CCLOG("blog : %s",blogElement-&gt;GetText());    
-
-        TiXmlElement* websiteElement = blogElement-&gt;NextSiblingElement();//获取website    
-        CCLOG("website : %s",websiteElement-&gt;GetText());    
-
-        infoElement = infoElement-&gt;NextSiblingElement();//查找下一节点    
-    }    
-    delete myTinyXMLDoc;    
-}  
-</code></pre>
+<p></p>
 
 <h3>2.RapidXML</h3>
 
@@ -201,71 +261,130 @@
 
 <p><strong>2.2.1.xml的创建</strong></p>
 
-<pre><code>void TestLayer::writeRapidXML()  
-{  
-    rapidxml::xml_document&lt;&gt; myRapidXMLDoc;  
+<figure class='code'><figcaption><span>xml的创建</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="kt">void</span> <span class="n">TestLayer</span><span class="o">::</span><span class="n">writeRapidXML</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">rapidxml</span><span class="o">::</span><span class="n">xml_document</span><span class="o">&lt;&gt;</span> <span class="n">myRapidXMLDoc</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">rapidxml</span><span class="o">::</span><span class="n">xml_node</span><span class="o">&lt;&gt;*</span> <span class="n">root</span> <span class="o">=</span> <span class="n">myRapidXMLDoc</span><span class="p">.</span><span class="n">allocate_node</span><span class="p">(</span><span class="n">rapidxml</span><span class="o">::</span><span class="n">node_element</span><span class="p">,</span><span class="s">&quot;Jacky&quot;</span><span class="p">,</span><span class="nb">NULL</span><span class="p">);</span><span class="c1">//创建根节点  </span>
+</span><span class='line'>      <span class="n">myRapidXMLDoc</span><span class="p">.</span><span class="n">append_node</span><span class="p">(</span><span class="n">root</span><span class="p">);</span><span class="c1">//追加根节点  </span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">rapidxml</span><span class="o">::</span><span class="n">xml_node</span><span class="o">&lt;&gt;*</span> <span class="n">info</span> <span class="o">=</span> <span class="n">myRapidXMLDoc</span><span class="p">.</span><span class="n">allocate_node</span><span class="p">(</span><span class="n">rapidxml</span><span class="o">::</span><span class="n">node_element</span><span class="p">,</span><span class="s">&quot;Info&quot;</span><span class="p">,</span><span class="nb">NULL</span><span class="p">);</span><span class="c1">//创建info节点  </span>
+</span><span class='line'>      <span class="n">info</span><span class="o">-&gt;</span><span class="n">append_attribute</span><span class="p">(</span><span class="n">myRapidXMLDoc</span><span class="p">.</span><span class="n">allocate_attribute</span><span class="p">(</span><span class="s">&quot;Name&quot;</span><span class="p">,</span><span class="s">&quot;Jacky&quot;</span><span class="p">));</span>
+</span><span class='line'>      <span class="n">info</span><span class="o">-&gt;</span><span class="n">append_attribute</span><span class="p">(</span><span class="n">myRapidXMLDoc</span><span class="p">.</span><span class="n">allocate_attribute</span><span class="p">(</span><span class="s">&quot;QQ&quot;</span><span class="p">,</span><span class="s">&quot;754505629&quot;</span><span class="p">));</span>
+</span><span class='line'>      <span class="n">info</span><span class="o">-&gt;</span><span class="n">append_attribute</span><span class="p">(</span><span class="n">myRapidXMLDoc</span><span class="p">.</span><span class="n">allocate_attribute</span><span class="p">(</span><span class="s">&quot;E-mail&quot;</span><span class="p">,</span><span class="s">&quot;Geek.Jacky@Gmail.com&quot;</span><span class="p">));</span>
+</span><span class='line'>      <span class="n">root</span><span class="o">-&gt;</span><span class="n">append_node</span><span class="p">(</span><span class="n">info</span><span class="p">);</span><span class="c1">//追加info节点到root  </span>
+</span><span class='line'>
+</span><span class='line'>      <span class="c1">//创建blog和website节点并追加到root  </span>
+</span><span class='line'>      <span class="n">rapidxml</span><span class="o">::</span><span class="n">xml_node</span><span class="o">&lt;&gt;*</span> <span class="n">blog</span> <span class="o">=</span> <span class="n">myRapidXMLDoc</span><span class="p">.</span><span class="n">allocate_node</span><span class="p">(</span><span class="n">rapidxml</span><span class="o">::</span><span class="n">node_element</span><span class="p">,</span><span class="s">&quot;blog&quot;</span><span class="p">,</span><span class="s">&quot;http://blog.csdn.net/jackystudio&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">info</span><span class="o">-&gt;</span><span class="n">append_node</span><span class="p">(</span><span class="n">blog</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">rapidxml</span><span class="o">::</span><span class="n">xml_node</span><span class="o">&lt;&gt;*</span> <span class="n">website</span> <span class="o">=</span> <span class="n">myRapidXMLDoc</span><span class="p">.</span><span class="n">allocate_node</span><span class="p">(</span><span class="n">rapidxml</span><span class="o">::</span><span class="n">node_element</span><span class="p">,</span><span class="s">&quot;website&quot;</span><span class="p">,</span><span class="s">&quot;http://www.fusijie.com&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">info</span><span class="o">-&gt;</span><span class="n">append_node</span><span class="p">(</span><span class="n">website</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="c1">//保存xml文档  </span>
+</span><span class='line'>      <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">text</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">rapidxml</span><span class="o">::</span><span class="n">print</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">back_inserter</span><span class="p">(</span><span class="n">text</span><span class="p">),</span> <span class="n">myRapidXMLDoc</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">CCLog</span><span class="p">(</span><span class="n">text</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+</span><span class='line'>      <span class="n">std</span><span class="o">::</span><span class="n">ofstream</span> <span class="n">out</span><span class="p">(</span><span class="n">CCFileUtils</span><span class="o">::</span><span class="n">sharedFileUtils</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">fullPathForFilename</span><span class="p">(</span><span class="s">&quot;testRapid.xml&quot;</span><span class="p">));</span>
+</span><span class='line'>      <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">myRapidXMLDoc</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    rapidxml::xml_node&lt;&gt;* root = myRapidXMLDoc.allocate_node(rapidxml::node_element,"Jacky",NULL);//创建根节点  
-    myRapidXMLDoc.append_node(root);//追加根节点  
 
-    rapidxml::xml_node&lt;&gt;* info = myRapidXMLDoc.allocate_node(rapidxml::node_element,"Info",NULL);//创建info节点  
-    info-&gt;append_attribute(myRapidXMLDoc.allocate_attribute("Name","Jacky"));  
-    info-&gt;append_attribute(myRapidXMLDoc.allocate_attribute("QQ","754505629"));  
-    info-&gt;append_attribute(myRapidXMLDoc.allocate_attribute("E-mail","Geek.Jacky@Gmail.com"));  
-    root-&gt;append_node(info);//追加info节点到root  
-
-    //创建blog和website节点并追加到root  
-    rapidxml::xml_node&lt;&gt;* blog = myRapidXMLDoc.allocate_node(rapidxml::node_element,"blog","http://blog.csdn.net/jackystudio");  
-    info-&gt;append_node(blog);  
-    rapidxml::xml_node&lt;&gt;* website = myRapidXMLDoc.allocate_node(rapidxml::node_element,"website","http://www.fusijie.com");  
-    info-&gt;append_node(website);  
-
-    //保存xml文档  
-    std::string text;  
-    rapidxml::print(std::back_inserter(text), myRapidXMLDoc, 0);  
-    CCLog(text.c_str());  
-    std::ofstream out(CCFileUtils::sharedFileUtils()-&gt;fullPathForFilename("testRapid.xml"));  
-    out &lt;&lt; myRapidXMLDoc;  
-}  
-</code></pre>
+<p></p>
 
 <p><strong>2.2.2.xml的读取</strong></p>
 
-<pre><code>void TestLayer::readRapidXML()  
-{  
-    rapidxml::file&lt;&gt; fdoc(CCFileUtils::sharedFileUtils()-&gt;fullPathForFilename("testRapid.xml").c_str());//读取数据  
-    CCLog(fdoc.data());  
-    rapidxml::xml_document&lt;&gt; myRapidXMLDoc;  
-    myRapidXMLDoc.parse&lt;0&gt;(fdoc.data());//将数据写入xml_document  
+<figure class='code'><figcaption><span>xml的读取</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="kt">void</span> <span class="n">TestLayer</span><span class="o">::</span><span class="n">readRapidXML</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">rapidxml</span><span class="o">::</span><span class="n">file</span><span class="o">&lt;&gt;</span> <span class="n">fdoc</span><span class="p">(</span><span class="n">CCFileUtils</span><span class="o">::</span><span class="n">sharedFileUtils</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">fullPathForFilename</span><span class="p">(</span><span class="s">&quot;testRapid.xml&quot;</span><span class="p">).</span><span class="n">c_str</span><span class="p">());</span><span class="c1">//读取数据  </span>
+</span><span class='line'>      <span class="n">CCLog</span><span class="p">(</span><span class="n">fdoc</span><span class="p">.</span><span class="n">data</span><span class="p">());</span>
+</span><span class='line'>      <span class="n">rapidxml</span><span class="o">::</span><span class="n">xml_document</span><span class="o">&lt;&gt;</span> <span class="n">myRapidXMLDoc</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">myRapidXMLDoc</span><span class="p">.</span><span class="n">parse</span><span class="o">&lt;</span><span class="mi">0</span><span class="o">&gt;</span><span class="p">(</span><span class="n">fdoc</span><span class="p">.</span><span class="n">data</span><span class="p">());</span><span class="c1">//将数据写入xml_document  </span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">rapidxml</span><span class="o">::</span><span class="n">xml_node</span><span class="o">&lt;&gt;*</span> <span class="n">root</span> <span class="o">=</span> <span class="n">myRapidXMLDoc</span><span class="p">.</span><span class="n">first_node</span><span class="p">();</span><span class="c1">//获取根节点  </span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">rapidxml</span><span class="o">::</span><span class="n">xml_node</span><span class="o">&lt;&gt;*</span> <span class="n">info</span> <span class="o">=</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">first_node</span><span class="p">();</span><span class="c1">//获取Info节点  </span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">rapidxml</span><span class="o">::</span><span class="n">xml_attribute</span><span class="o">&lt;&gt;*</span> <span class="n">info_attr</span> <span class="o">=</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">first_attribute</span><span class="p">();</span><span class="c1">//获取info属性  </span>
+</span><span class='line'>      <span class="n">CCLog</span><span class="p">(</span><span class="s">&quot;%s:%s&quot;</span><span class="p">,</span><span class="n">info_attr</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">(),</span><span class="n">info_attr</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">());</span>
+</span><span class='line'>      <span class="n">CCLog</span><span class="p">(</span><span class="s">&quot;%s:%s&quot;</span><span class="p">,</span><span class="n">info_attr</span><span class="o">-&gt;</span><span class="n">next_attribute</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">(),</span><span class="n">info_attr</span><span class="o">-&gt;</span><span class="n">next_attribute</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">());</span>
+</span><span class='line'>      <span class="n">CCLog</span><span class="p">(</span><span class="s">&quot;%s:%s&quot;</span><span class="p">,</span><span class="n">info_attr</span><span class="o">-&gt;</span><span class="n">next_attribute</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">next_attribute</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">(),</span><span class="n">info_attr</span><span class="o">-&gt;</span><span class="n">next_attribute</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">next_attribute</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">());</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">rapidxml</span><span class="o">::</span><span class="n">xml_node</span><span class="o">&lt;&gt;*</span> <span class="n">blog</span><span class="o">=</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">first_node</span><span class="p">();</span><span class="c1">//获取blog节点  </span>
+</span><span class='line'>      <span class="n">CCLog</span><span class="p">(</span><span class="s">&quot;%s:%s&quot;</span><span class="p">,</span><span class="n">blog</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">(),</span><span class="n">blog</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">());</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">rapidxml</span><span class="o">::</span><span class="n">xml_node</span><span class="o">&lt;&gt;*</span> <span class="n">website</span><span class="o">=</span><span class="n">blog</span><span class="o">-&gt;</span><span class="n">next_sibling</span><span class="p">();</span><span class="c1">//获取website节点  </span>
+</span><span class='line'>      <span class="n">CCLog</span><span class="p">(</span><span class="s">&quot;%s:%s&quot;</span><span class="p">,</span><span class="n">website</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">(),</span><span class="n">website</span><span class="o">-&gt;</span><span class="n">value</span><span class="p">());</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    rapidxml::xml_node&lt;&gt;* root = myRapidXMLDoc.first_node();//获取根节点  
-
-    rapidxml::xml_node&lt;&gt;* info = root-&gt;first_node();//获取Info节点  
-
-    rapidxml::xml_attribute&lt;&gt;* info_attr = info-&gt;first_attribute();//获取info属性  
-    CCLog("%s:%s",info_attr-&gt;name(),info_attr-&gt;value());  
-    CCLog("%s:%s",info_attr-&gt;next_attribute()-&gt;name(),info_attr-&gt;next_attribute()-&gt;value());  
-    CCLog("%s:%s",info_attr-&gt;next_attribute()-&gt;next_attribute()-&gt;name(),info_attr-&gt;next_attribute()-&gt;next_attribute()-&gt;value());  
-
-    rapidxml::xml_node&lt;&gt;* blog=info-&gt;first_node();//获取blog节点  
-    CCLog("%s:%s",blog-&gt;name(),blog-&gt;value());  
-
-    rapidxml::xml_node&lt;&gt;* website=blog-&gt;next_sibling();//获取website节点  
-    CCLog("%s:%s",website-&gt;name(),website-&gt;value());  
-}  
-</code></pre>
 
 <h3>3.生成xml的文件</h3>
 
 <p>以上2种方式生成的xml文件内容如下：</p>
 
-<pre><code>&lt;Jacky&gt;  
-    &lt;Info Name="Jacky" QQ="754505629" E-mail="Geek.Jacky@Gmail.com"&gt;  
-        &lt;blog&gt;http://blog.csdn.net/jackystudio&lt;/blog&gt;  
-    &lt;website&gt;http://www.fusijie.com&lt;/website&gt;  
-    &lt;/Info&gt;  
-&lt;/Jacky&gt;  
-</code></pre>
+<figure class='code'><figcaption><span>生成的xml文件</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'>  <span class="nt">&lt;Jacky&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;Info</span> <span class="na">Name=</span><span class="s">&quot;Jacky&quot;</span> <span class="na">QQ=</span><span class="s">&quot;754505629&quot;</span> <span class="na">E-mail=</span><span class="s">&quot;Geek.Jacky@Gmail.com&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>          <span class="nt">&lt;blog&gt;</span>http://blog.csdn.net/jackystudio<span class="nt">&lt;/blog&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;website&gt;</span>http://www.fusijie.com<span class="nt">&lt;/website&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/Info&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/Jacky&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h3>4.源码下载</h3>
 
