@@ -1,0 +1,116 @@
+---
+layout: post
+title: "【玩转cocos2d-x之三十四】绘图：CCDrawingPrimitives和CCDrawNode"
+date: 2014-02-08 16:10
+comments: true
+categories: cocos2d-x
+tags: [绘图, CCDrawingPrimitives, CCDrawNode]
+---
+最近忙出翔了，这年过的也揪心。好久没来更新博客了，今天就来写一写cocos2d-x中图形的绘制。
+
+###1.概述
+其实cocos2d-x封装了大量的opengl的绘图函数，我们可以很轻松的在游戏中调用。但是实际上我们很少会这么做，因为编码绘图的方式效率实在太低了，尤其是诸如一些高阶贝塞尔曲线之类的，官方也不建议这么做，使用图像能更有效的提高绘图效率，同时也会更为的美观，也减少了一些精灵遮挡问题和边缘锯齿问题。cocos2d-x中绘图主要有两种方式：CCDrawingPrimitives和CCDrawNode。它们都在cocos2dx\draw_nodes目录下。
+
+<!-- more -->
+
+###2.CCDrawingPrimitives（原生绘图）
+
+**2.1.特点**
+
+CCDrawingPrimitives必须在节点的draw函数中调用，draw函数每帧被调用一次，主要做一些绘制的工作。但这并不意味着它就是静态不可改变的，我们完全可以通过修改描绘内容的方式来动态绘图。比如可以直接在用触摸的方式在屏幕上绘图。
+
+另外，使用CCDrawingPrimitives绘图默认的Z-Order是0，所以可能会被其他节点覆盖，因为它无法设置Z-Order，所以只能通过设置其他节点的Z-Order为负值使得绘图在最前端得以看见。
+
+**2.2.API**
+
+``` cpp CCDrawingPrimitives API
+
+    //绘制一个给定x，y值的点  
+    void CC_DLL ccDrawPoint( const CCPoint& point );  
+      
+    //绘制一组点  
+    void CC_DLL ccDrawPoints( const CCPoint *points, unsigned int numberOfPoints );  
+      
+    //绘制一条给定起始点和目标点的直线  
+    void CC_DLL ccDrawLine( const CCPoint& origin, const CCPoint& destination );  
+      
+    //绘制一个给定起始点和目标点的矩形  
+    void CC_DLL ccDrawRect( CCPoint origin, CCPoint destination );  
+      
+    //绘制一个给定起始点和目标点和颜色的矩形  
+    void CC_DLL ccDrawSolidRect( CCPoint origin, CCPoint destination, ccColor4F color );  
+      
+    //绘制一个给定一组点的多边形，可以是闭合或开放  
+    void CC_DLL ccDrawPoly( const CCPoint *vertices, unsigned int numOfVertices, bool closePolygon );  
+      
+    //绘制一个给定一组点和颜色的多边形  
+    void CC_DLL ccDrawSolidPoly( const CCPoint *poli, unsigned int numberOfPoints, ccColor4F color );  
+      
+    //绘制一个给定中心，半径，分段数的圆  
+    void CC_DLL ccDrawCircle( const CCPoint& center, float radius, float angle, unsigned int segments, bool drawLineToCenter, float scaleX, float scaleY);  
+    void CC_DLL ccDrawCircle( const CCPoint& center, float radius, float angle, unsigned int segments, bool drawLineToCenter);  
+      
+    //绘制一个带一个控制点的贝塞尔曲线（二次）  
+    void CC_DLL ccDrawQuadBezier(const CCPoint& origin, const CCPoint& control, const CCPoint& destination, unsigned int segments);  
+      
+    //绘制一个带两个控制点的贝塞尔曲线（高阶）  
+    void CC_DLL ccDrawCubicBezier(const CCPoint& origin, const CCPoint& control1, const CCPoint& control2, const CCPoint& destination, unsigned int segments);  
+      
+    //绘制默认曲率的基数样条  
+    void CC_DLL ccDrawCatmullRom( CCPointArray *arrayOfControlPoints, unsigned int segments );  
+      
+    //绘制指定曲率的基数样条  
+    void CC_DLL ccDrawCardinalSpline( CCPointArray *config, float tension,  unsigned int segments );  
+      
+    //设置绘制颜色，4个byte型  
+    void CC_DLL ccDrawColor4B( GLubyte r, GLubyte g, GLubyte b, GLubyte a );  
+      
+    //设置绘制颜色，4个float型  
+    void CC_DLL ccDrawColor4F( GLfloat r, GLfloat g, GLfloat b, GLfloat a );  
+      
+    //设置点大小，默认为1  
+    void CC_DLL ccPointSize( GLfloat pointSize );  
+
+```
+
+**2.3.示例**
+
+代码使用的是TestCpp中代码。
+
+<div align="center"><img src="http://img.blog.csdn.net/20140207170619906?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="" /><br></br></div>
+
+###3.CCDrawNode（绘图节点）
+
+**3.1.特点**
+
+CCDrawNode从CCNode继承而来，是一个图形绘制的节点类，它提供了几个常用的点线面函数方便绘图，其实在之前的游戏遮罩一文中就有写过。相较于CCDrawingPrimitives，这里更推荐使用CCDrawNode。
+
+*（1）它将绘图封装为普通节点的方式进行处理，符合cocos2d-x树状编程的思想，同时也避免了一些遮盖的问题。*
+
+*（2）不需要在draw函数中调用。*
+
+*（3）使用批处理绘图，提高了绘图效率。*
+
+**3.2.API**
+
+``` cpp CCDrawNode API
+
+    //绘制一个指定位置，大小，颜色的点  
+    void drawDot(const CCPoint &pos, float radius, const ccColor4F &color);  
+     
+    //绘制一个指定起点终点，大小，颜色的点  
+    void drawSegment(const CCPoint &from, const CCPoint &to, float radius, const ccColor4F &color);  
+     
+    //绘制一个指定点，填充颜色，边框颜色的，边框宽度的多边形  
+    void drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor);  
+
+```
+
+**3.3.示例**
+
+代码也是TestCpp中的代码。
+
+<div align="center"><img src="http://img.blog.csdn.net/20140207170658078?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="" /><br></br></div>
+
+###4.源码下载
+可以自己看TestCpp示例，也可以从[这里](http://download.csdn.net/detail/jackyvincefu/6903357)下载。
