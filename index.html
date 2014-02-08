@@ -9,7 +9,7 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="手游《我叫MT》一开始会弹出一个游戏公告，有玩过的肯定都蛮熟悉的，这就是webview，就是一个网页。由于webview和平台相关，这里就介绍下cocos2d-x如何嵌入andorid的webview控件，在cocos2d-x中显示网页。 1.Jni Jni这里我就不再多说了。 &hellip;">
+  <meta name="description" content="最近忙出翔了，这年过的也揪心。好久没来更新博客了，今天就来写一写cocos2d-x中图形的绘制。 1.概述 其实cocos2d-x封装了大量的opengl的绘图函数，我们可以很轻松的在游戏中调用。但是实际上我们很少会这么做，因为编码绘图的方式效率实在太低了，尤其是诸如一些高阶贝塞尔曲线之类的， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -82,6 +82,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/08/play-cocos2dx-34/">【玩转cocos2d-x之三十四】绘图：CCDrawingPrimitives和CCDrawNode</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-08T16:10:00+08:00" pubdate data-updated="true">Feb 8<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近忙出翔了，这年过的也揪心。好久没来更新博客了，今天就来写一写cocos2d-x中图形的绘制。</p>
+
+<h3>1.概述</h3>
+
+<p>其实cocos2d-x封装了大量的opengl的绘图函数，我们可以很轻松的在游戏中调用。但是实际上我们很少会这么做，因为编码绘图的方式效率实在太低了，尤其是诸如一些高阶贝塞尔曲线之类的，官方也不建议这么做，使用图像能更有效的提高绘图效率，同时也会更为的美观，也减少了一些精灵遮挡问题和边缘锯齿问题。cocos2d-x中绘图主要有两种方式：CCDrawingPrimitives和CCDrawNode。它们都在cocos2dx\draw_nodes目录下。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/02/08/play-cocos2dx-34/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -524,51 +569,6 @@ close-&gt;runAction(sequence);//执行连续动画
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/11/13/play-cocos2dx-24/">【玩转cocos2d-x之二十四】截图保存功能的实现</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-11-13T08:34:00+08:00" pubdate data-updated="true">Nov 13<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>官方TestCpp有这个demo了，这里还是把它单独拖出来写一下，游戏推广的一个很重要组成就是玩家分享，所以游戏截图就起到很大作用了。截图功能通过CCRenderTexture实现。</p>
-
-<h3>1.CCRenderTexture</h3>
-
-<p>CCRenderTexture是一个通用渲染对象，可以通过构建一个CCRenderTexture对象，进而把要渲染的东西填充进去，在渲染开始前调用call函数，调用cocos的场景的visit函数对其进行渲染，渲染结束后调用end函数。CCRenderTexture继承于CCNode，所以可以简单地把渲染纹理添加到你的场景中，就像处理其它cocos中的节点一样，当然它还提供了保存功能，可以把渲染纹理保存为PNG或JPG格式。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/11/13/play-cocos2dx-24/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -587,12 +587,16 @@ close-&gt;runAction(sequence);//执行连续动画
 </section><section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (33)</a></li>
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (34)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/08/play-cocos2dx-34/">【玩转cocos2d-x之三十四】绘图：CCDrawingPrimitives和CCDrawNode</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/12/26/play-cocos2dx-33/">【玩转cocos2d-x之三十三】游戏嵌入Webview网页</a>
@@ -608,10 +612,6 @@ close-&gt;runAction(sequence);//执行连续动画
     
       <li class="post">
         <a href="/blog/2013/12/13/play-cocos2dx-30/">【玩转cocos2d-x之三十】点九图和输入框的使用</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/12/06/play-cocos2dx-29/">【玩转cocos2d-x之二十九】利用CCClipingNode做游戏遮罩</a>
       </li>
     
   </ul>

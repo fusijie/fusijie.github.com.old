@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-02-04T14:29:17+08:00</updated>
+  <updated>2014-02-08T16:22:04+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,176 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之三十四】绘图：CCDrawingPrimitives和CCDrawNode]]></title>
+    <link href="http://www.fusijie.com/blog/2014/02/08/play-cocos2dx-34/"/>
+    <updated>2014-02-08T16:10:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2014/02/08/play-cocos2dx-34</id>
+    <content type="html"><![CDATA[<p>最近忙出翔了，这年过的也揪心。好久没来更新博客了，今天就来写一写cocos2d-x中图形的绘制。</p>
+
+<h3>1.概述</h3>
+
+<p>其实cocos2d-x封装了大量的opengl的绘图函数，我们可以很轻松的在游戏中调用。但是实际上我们很少会这么做，因为编码绘图的方式效率实在太低了，尤其是诸如一些高阶贝塞尔曲线之类的，官方也不建议这么做，使用图像能更有效的提高绘图效率，同时也会更为的美观，也减少了一些精灵遮挡问题和边缘锯齿问题。cocos2d-x中绘图主要有两种方式：CCDrawingPrimitives和CCDrawNode。它们都在cocos2dx\draw_nodes目录下。</p>
+
+<!-- more -->
+
+
+<h3>2.CCDrawingPrimitives（原生绘图）</h3>
+
+<p><strong>2.1.特点</strong></p>
+
+<p>CCDrawingPrimitives必须在节点的draw函数中调用，draw函数每帧被调用一次，主要做一些绘制的工作。但这并不意味着它就是静态不可改变的，我们完全可以通过修改描绘内容的方式来动态绘图。比如可以直接在用触摸的方式在屏幕上绘图。</p>
+
+<p>另外，使用CCDrawingPrimitives绘图默认的Z-Order是0，所以可能会被其他节点覆盖，因为它无法设置Z-Order，所以只能通过设置其他节点的Z-Order为负值使得绘图在最前端得以看见。</p>
+
+<p><strong>2.2.API</strong></p>
+
+<figure class='code'><figcaption><span>CCDrawingPrimitives API</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//绘制一个给定x，y值的点  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">CC_DLL</span> <span class="n">ccDrawPoint</span><span class="p">(</span> <span class="k">const</span> <span class="n">CCPoint</span><span class="o">&amp;</span> <span class="n">point</span> <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//绘制一组点  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">CC_DLL</span> <span class="n">ccDrawPoints</span><span class="p">(</span> <span class="k">const</span> <span class="n">CCPoint</span> <span class="o">*</span><span class="n">points</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">numberOfPoints</span> <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//绘制一条给定起始点和目标点的直线  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">CC_DLL</span> <span class="n">ccDrawLine</span><span class="p">(</span> <span class="k">const</span> <span class="n">CCPoint</span><span class="o">&amp;</span> <span class="n">origin</span><span class="p">,</span> <span class="k">const</span> <span class="n">CCPoint</span><span class="o">&amp;</span> <span class="n">destination</span> <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//绘制一个给定起始点和目标点的矩形  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">CC_DLL</span> <span class="n">ccDrawRect</span><span class="p">(</span> <span class="n">CCPoint</span> <span class="n">origin</span><span class="p">,</span> <span class="n">CCPoint</span> <span class="n">destination</span> <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//绘制一个给定起始点和目标点和颜色的矩形  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">CC_DLL</span> <span class="n">ccDrawSolidRect</span><span class="p">(</span> <span class="n">CCPoint</span> <span class="n">origin</span><span class="p">,</span> <span class="n">CCPoint</span> <span class="n">destination</span><span class="p">,</span> <span class="n">ccColor4F</span> <span class="n">color</span> <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//绘制一个给定一组点的多边形，可以是闭合或开放  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">CC_DLL</span> <span class="n">ccDrawPoly</span><span class="p">(</span> <span class="k">const</span> <span class="n">CCPoint</span> <span class="o">*</span><span class="n">vertices</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">numOfVertices</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">closePolygon</span> <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//绘制一个给定一组点和颜色的多边形  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">CC_DLL</span> <span class="n">ccDrawSolidPoly</span><span class="p">(</span> <span class="k">const</span> <span class="n">CCPoint</span> <span class="o">*</span><span class="n">poli</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">numberOfPoints</span><span class="p">,</span> <span class="n">ccColor4F</span> <span class="n">color</span> <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//绘制一个给定中心，半径，分段数的圆  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">CC_DLL</span> <span class="n">ccDrawCircle</span><span class="p">(</span> <span class="k">const</span> <span class="n">CCPoint</span><span class="o">&amp;</span> <span class="n">center</span><span class="p">,</span> <span class="kt">float</span> <span class="n">radius</span><span class="p">,</span> <span class="kt">float</span> <span class="n">angle</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">segments</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">drawLineToCenter</span><span class="p">,</span> <span class="kt">float</span> <span class="n">scaleX</span><span class="p">,</span> <span class="kt">float</span> <span class="n">scaleY</span><span class="p">);</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">CC_DLL</span> <span class="n">ccDrawCircle</span><span class="p">(</span> <span class="k">const</span> <span class="n">CCPoint</span><span class="o">&amp;</span> <span class="n">center</span><span class="p">,</span> <span class="kt">float</span> <span class="n">radius</span><span class="p">,</span> <span class="kt">float</span> <span class="n">angle</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">segments</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">drawLineToCenter</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//绘制一个带一个控制点的贝塞尔曲线（二次）  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">CC_DLL</span> <span class="n">ccDrawQuadBezier</span><span class="p">(</span><span class="k">const</span> <span class="n">CCPoint</span><span class="o">&amp;</span> <span class="n">origin</span><span class="p">,</span> <span class="k">const</span> <span class="n">CCPoint</span><span class="o">&amp;</span> <span class="n">control</span><span class="p">,</span> <span class="k">const</span> <span class="n">CCPoint</span><span class="o">&amp;</span> <span class="n">destination</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">segments</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//绘制一个带两个控制点的贝塞尔曲线（高阶）  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">CC_DLL</span> <span class="n">ccDrawCubicBezier</span><span class="p">(</span><span class="k">const</span> <span class="n">CCPoint</span><span class="o">&amp;</span> <span class="n">origin</span><span class="p">,</span> <span class="k">const</span> <span class="n">CCPoint</span><span class="o">&amp;</span> <span class="n">control1</span><span class="p">,</span> <span class="k">const</span> <span class="n">CCPoint</span><span class="o">&amp;</span> <span class="n">control2</span><span class="p">,</span> <span class="k">const</span> <span class="n">CCPoint</span><span class="o">&amp;</span> <span class="n">destination</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">segments</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//绘制默认曲率的基数样条  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">CC_DLL</span> <span class="n">ccDrawCatmullRom</span><span class="p">(</span> <span class="n">CCPointArray</span> <span class="o">*</span><span class="n">arrayOfControlPoints</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">segments</span> <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//绘制指定曲率的基数样条  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">CC_DLL</span> <span class="n">ccDrawCardinalSpline</span><span class="p">(</span> <span class="n">CCPointArray</span> <span class="o">*</span><span class="n">config</span><span class="p">,</span> <span class="kt">float</span> <span class="n">tension</span><span class="p">,</span>  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">segments</span> <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//设置绘制颜色，4个byte型  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">CC_DLL</span> <span class="n">ccDrawColor4B</span><span class="p">(</span> <span class="n">GLubyte</span> <span class="n">r</span><span class="p">,</span> <span class="n">GLubyte</span> <span class="n">g</span><span class="p">,</span> <span class="n">GLubyte</span> <span class="n">b</span><span class="p">,</span> <span class="n">GLubyte</span> <span class="n">a</span> <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//设置绘制颜色，4个float型  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">CC_DLL</span> <span class="n">ccDrawColor4F</span><span class="p">(</span> <span class="n">GLfloat</span> <span class="n">r</span><span class="p">,</span> <span class="n">GLfloat</span> <span class="n">g</span><span class="p">,</span> <span class="n">GLfloat</span> <span class="n">b</span><span class="p">,</span> <span class="n">GLfloat</span> <span class="n">a</span> <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//设置点大小，默认为1  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">CC_DLL</span> <span class="n">ccPointSize</span><span class="p">(</span> <span class="n">GLfloat</span> <span class="n">pointSize</span> <span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>2.3.示例</strong></p>
+
+<p>代码使用的是TestCpp中代码。</p>
+
+<div align="center"><img src="http://img.blog.csdn.net/20140207170619906?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="" /><br></br></div>
+
+
+<h3>3.CCDrawNode（绘图节点）</h3>
+
+<p><strong>3.1.特点</strong></p>
+
+<p>CCDrawNode从CCNode继承而来，是一个图形绘制的节点类，它提供了几个常用的点线面函数方便绘图，其实在之前的游戏遮罩一文中就有写过。相较于CCDrawingPrimitives，这里更推荐使用CCDrawNode。</p>
+
+<p><em>（1）它将绘图封装为普通节点的方式进行处理，符合cocos2d-x树状编程的思想，同时也避免了一些遮盖的问题。</em></p>
+
+<p><em>（2）不需要在draw函数中调用。</em></p>
+
+<p><em>（3）使用批处理绘图，提高了绘图效率。</em></p>
+
+<p><strong>3.2.API</strong></p>
+
+<figure class='code'><figcaption><span>CCDrawNode API</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//绘制一个指定位置，大小，颜色的点  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">drawDot</span><span class="p">(</span><span class="k">const</span> <span class="n">CCPoint</span> <span class="o">&amp;</span><span class="n">pos</span><span class="p">,</span> <span class="kt">float</span> <span class="n">radius</span><span class="p">,</span> <span class="k">const</span> <span class="n">ccColor4F</span> <span class="o">&amp;</span><span class="n">color</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//绘制一个指定起点终点，大小，颜色的点  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">drawSegment</span><span class="p">(</span><span class="k">const</span> <span class="n">CCPoint</span> <span class="o">&amp;</span><span class="n">from</span><span class="p">,</span> <span class="k">const</span> <span class="n">CCPoint</span> <span class="o">&amp;</span><span class="n">to</span><span class="p">,</span> <span class="kt">float</span> <span class="n">radius</span><span class="p">,</span> <span class="k">const</span> <span class="n">ccColor4F</span> <span class="o">&amp;</span><span class="n">color</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//绘制一个指定点，填充颜色，边框颜色的，边框宽度的多边形  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">drawPolygon</span><span class="p">(</span><span class="n">CCPoint</span> <span class="o">*</span><span class="n">verts</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">count</span><span class="p">,</span> <span class="k">const</span> <span class="n">ccColor4F</span> <span class="o">&amp;</span><span class="n">fillColor</span><span class="p">,</span> <span class="kt">float</span> <span class="n">borderWidth</span><span class="p">,</span> <span class="k">const</span> <span class="n">ccColor4F</span> <span class="o">&amp;</span><span class="n">borderColor</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>3.3.示例</strong></p>
+
+<p>代码也是TestCpp中的代码。</p>
+
+<div align="center"><img src="http://img.blog.csdn.net/20140207170658078?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="" /><br></br></div>
+
+
+<h3>4.源码下载</h3>
+
+<p>可以自己看TestCpp示例，也可以从<a href="http://download.csdn.net/detail/jackyvincefu/6903357">这里</a>下载。<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/02/08/play-cocos2dx-34/'><a href="http://www.fusijie.com/blog/2014/02/08/play-cocos2dx-34/">http://www.fusijie.com/blog/2014/02/08/play-cocos2dx-34/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十三】游戏嵌入Webview网页]]></title>
@@ -3051,100 +3221,6 @@ tableView-&gt;reloadData();
 <h3>5.源码下载地址</h3>
 
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6422401">下载地址</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/23/play-cocos2dx-15/'><a href="http://www.fusijie.com/blog/2013/10/23/play-cocos2dx-15/">http://www.fusijie.com/blog/2013/10/23/play-cocos2dx-15/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之十四】菜单选项卡的实现]]></title>
-    <link href="http://www.fusijie.com/blog/2013/10/22/play-cocos2dx-14/"/>
-    <updated>2013-10-22T10:34:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/10/22/play-cocos2dx-14</id>
-    <content type="html"><![CDATA[<p>有时候，我们希望实现一个选项卡功能，就是切换tab选项，场景中的内容会跟着改变，但是tab选项卡不动。这是用切换场景的方式没办法做到的。
-这里我们就可以使用CCLayerMultiplex来实现这个功能。</p>
-
-<h3>1.创建布景</h3>
-
-<p>这里创建3个布景来做示范。分别是Laye1，Layer2和Layer3。代码就不贴了，布景内容可以直接使用HelloWorld的代码。</p>
-
-<!-- more -->
-
-
-<h3>2.创建主场景</h3>
-
-<p>主场景的初始化函数如下：</p>
-
-<pre><code>bool CCMainScene::init()  
-{  
-    bool bRet=false;  
-    do   
-    {  
-        CC_BREAK_IF(!CCScene::init());  
-
-        _layer1=CCLayer1::create();//创建3个层的实例  
-        _layer2=CCLayer2::create();  
-        _layer3=CCLayer3::create();  
-
-        _layerMuticomplex=CCLayerMultiplex::create(_layer1,_layer2,_layer3,NULL);//创建多层布景层  
-        this-&gt;addChild(_layerMuticomplex);//添加到场景，默认显示第一个布景  
-
-        CCSize visibleSize = CCDirector::sharedDirector()-&gt;getVisibleSize();  
-        CCPoint origin = CCDirector::sharedDirector()-&gt;getVisibleOrigin();  
-
-        CCMenuItemImage *pCloseItem1 = CCMenuItemImage::create(//创建3个tab菜单，用于切换布景  
-            "w_b.png",  
-            "w_b.png",  
-            this,  
-            menu_selector(CCMainScene::menuCallback));  
-
-        CCMenuItemImage *pCloseItem2 = CCMenuItemImage::create(  
-            "r_b.png",  
-            "r_b.png",  
-            this,  
-            menu_selector(CCMainScene::menuCallback));  
-
-        CCMenuItemImage *pCloseItem3 = CCMenuItemImage::create(  
-            "g_b.png",  
-            "g_b.png",  
-            this,  
-            menu_selector(CCMainScene::menuCallback));  
-
-        // create menu, it's an autorelease object  
-        pCloseItem1-&gt;setTag(0);//给tab按钮设置tag，方便回调函数中的获取  
-        pCloseItem2-&gt;setTag(1);  
-        pCloseItem3-&gt;setTag(2);  
-        CCMenu* pMenu = CCMenu::create(pCloseItem1, pCloseItem2, pCloseItem3, NULL);//创建菜单  
-        pMenu-&gt;alignItemsHorizontallyWithPadding(-1);//设置菜单项间隔  
-        pMenu-&gt;setPosition(visibleSize.width/2,25);  
-        this-&gt;addChild(pMenu, 1);//注意哦，菜单要在场景中添加而不是在布景中了！而且z轴要高于多层布景，保证可见。  
-        bRet=true;  
-    } while (0);  
-    return bRet;  
-}  
-</code></pre>
-
-<p>回调函数如下：</p>
-
-<pre><code>void CCMainScene::menuCallback(CCObject* pSender)  
-{  
-    int item=((CCMenuItemImage*)pSender)-&gt;getTag();//获取选择项  
-    if (item!=curLayerPos)  
-    {  
-        _layerMuticomplex-&gt;switchTo(item);//切换布景，如果使用switchToAndReleaseMe会释放掉当前布景  
-        curLayerPos=item;  
-    }  
-}  
-</code></pre>
-
-<h3>3.效果</h3>
-
-<p>为了让效果明显一点，我让3个布景稍微有点区别。当然菜单是可以做normal，pressed，disable三态的，这里略去。点击不同的选项卡就可以切换到不同的布景层。当然CCLayerMultiplex还可以嵌套使用。</p>
-
-<div align="center"><img src="http://img.blog.csdn.net/20131209082526781" alt="" border="0" title="效果" /><br></br></div>
-
-
-<h3>4.源码下载地址</h3>
-
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6421801">下载地址</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/22/play-cocos2dx-14/'><a href="http://www.fusijie.com/blog/2013/10/22/play-cocos2dx-14/">http://www.fusijie.com/blog/2013/10/22/play-cocos2dx-14/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   

@@ -9,7 +9,7 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="cocos2d-x中和Android，Windows都一样，如果在主线程中处理一些耗时操作，那么主线程就会出现阻塞现象，表现在界面上就是卡住，未响应等情况。为了避免这种情况的出现，我们需要在后台开辟工作线程进行数据的处理，再采用消息传递或者其他形式来通知主线程进行UI变化。 &hellip;">
+  <meta name="description" content="官方TestCpp有这个demo了，这里还是把它单独拖出来写一下，游戏推广的一个很重要组成就是玩家分享，所以游戏截图就起到很大作用了。截图功能通过CCRenderTexture实现。 1.CCRenderTexture CCRenderTexture是一个通用渲染对象， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -82,6 +82,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/11/13/play-cocos2dx-24/">【玩转cocos2d-x之二十四】截图保存功能的实现</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-13T08:34:00+08:00" pubdate data-updated="true">Nov 13<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>官方TestCpp有这个demo了，这里还是把它单独拖出来写一下，游戏推广的一个很重要组成就是玩家分享，所以游戏截图就起到很大作用了。截图功能通过CCRenderTexture实现。</p>
+
+<h3>1.CCRenderTexture</h3>
+
+<p>CCRenderTexture是一个通用渲染对象，可以通过构建一个CCRenderTexture对象，进而把要渲染的东西填充进去，在渲染开始前调用call函数，调用cocos的场景的visit函数对其进行渲染，渲染结束后调用end函数。CCRenderTexture继承于CCNode，所以可以简单地把渲染纹理添加到你的场景中，就像处理其它cocos中的节点一样，当然它还提供了保存功能，可以把渲染纹理保存为PNG或JPG格式。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/11/13/play-cocos2dx-24/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -491,52 +536,6 @@ USING_NS_CC_EXT;
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/10/22/play-cocos2dx-14/">【玩转cocos2d-x之十四】菜单选项卡的实现</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-22T10:34:00+08:00" pubdate data-updated="true">Oct 22<span>nd</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>有时候，我们希望实现一个选项卡功能，就是切换tab选项，场景中的内容会跟着改变，但是tab选项卡不动。这是用切换场景的方式没办法做到的。
-这里我们就可以使用CCLayerMultiplex来实现这个功能。</p>
-
-<h3>1.创建布景</h3>
-
-<p>这里创建3个布景来做示范。分别是Laye1，Layer2和Layer3。代码就不贴了，布景内容可以直接使用HelloWorld的代码。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/10/22/play-cocos2dx-14/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -557,12 +556,16 @@ USING_NS_CC_EXT;
 </section><section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (33)</a></li>
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (34)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/08/play-cocos2dx-34/">【玩转cocos2d-x之三十四】绘图：CCDrawingPrimitives和CCDrawNode</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/12/26/play-cocos2dx-33/">【玩转cocos2d-x之三十三】游戏嵌入Webview网页</a>
@@ -578,10 +581,6 @@ USING_NS_CC_EXT;
     
       <li class="post">
         <a href="/blog/2013/12/13/play-cocos2dx-30/">【玩转cocos2d-x之三十】点九图和输入框的使用</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/12/06/play-cocos2dx-29/">【玩转cocos2d-x之二十九】利用CCClipingNode做游戏遮罩</a>
       </li>
     
   </ul>

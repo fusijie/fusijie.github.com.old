@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/blog/categories/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-02-04T14:29:17+08:00</updated>
+  <updated>2014-02-08T16:22:04+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,129 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之三十四】绘图：CCDrawingPrimitives和CCDrawNode]]></title>
+    <link href="http://www.fusijie.com/blog/2014/02/08/play-cocos2dx-34/"/>
+    <updated>2014-02-08T16:10:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2014/02/08/play-cocos2dx-34</id>
+    <content type="html"><![CDATA[<p>最近忙出翔了，这年过的也揪心。好久没来更新博客了，今天就来写一写cocos2d-x中图形的绘制。</p>
+
+<h3>1.概述</h3>
+
+<p>其实cocos2d-x封装了大量的opengl的绘图函数，我们可以很轻松的在游戏中调用。但是实际上我们很少会这么做，因为编码绘图的方式效率实在太低了，尤其是诸如一些高阶贝塞尔曲线之类的，官方也不建议这么做，使用图像能更有效的提高绘图效率，同时也会更为的美观，也减少了一些精灵遮挡问题和边缘锯齿问题。cocos2d-x中绘图主要有两种方式：CCDrawingPrimitives和CCDrawNode。它们都在cocos2dx\draw_nodes目录下。</p>
+
+<!-- more -->
+
+
+<h3>2.CCDrawingPrimitives（原生绘图）</h3>
+
+<p><strong>2.1.特点</strong></p>
+
+<p>CCDrawingPrimitives必须在节点的draw函数中调用，draw函数每帧被调用一次，主要做一些绘制的工作。但这并不意味着它就是静态不可改变的，我们完全可以通过修改描绘内容的方式来动态绘图。比如可以直接在用触摸的方式在屏幕上绘图。</p>
+
+<p>另外，使用CCDrawingPrimitives绘图默认的Z-Order是0，所以可能会被其他节点覆盖，因为它无法设置Z-Order，所以只能通过设置其他节点的Z-Order为负值使得绘图在最前端得以看见。</p>
+
+<p><strong>2.2.API</strong></p>
+
+<p>``` cpp CCDrawingPrimitives API</p>
+
+<pre><code>//绘制一个给定x，y值的点  
+void CC_DLL ccDrawPoint( const CCPoint&amp; point );  
+
+//绘制一组点  
+void CC_DLL ccDrawPoints( const CCPoint *points, unsigned int numberOfPoints );  
+
+//绘制一条给定起始点和目标点的直线  
+void CC_DLL ccDrawLine( const CCPoint&amp; origin, const CCPoint&amp; destination );  
+
+//绘制一个给定起始点和目标点的矩形  
+void CC_DLL ccDrawRect( CCPoint origin, CCPoint destination );  
+
+//绘制一个给定起始点和目标点和颜色的矩形  
+void CC_DLL ccDrawSolidRect( CCPoint origin, CCPoint destination, ccColor4F color );  
+
+//绘制一个给定一组点的多边形，可以是闭合或开放  
+void CC_DLL ccDrawPoly( const CCPoint *vertices, unsigned int numOfVertices, bool closePolygon );  
+
+//绘制一个给定一组点和颜色的多边形  
+void CC_DLL ccDrawSolidPoly( const CCPoint *poli, unsigned int numberOfPoints, ccColor4F color );  
+
+//绘制一个给定中心，半径，分段数的圆  
+void CC_DLL ccDrawCircle( const CCPoint&amp; center, float radius, float angle, unsigned int segments, bool drawLineToCenter, float scaleX, float scaleY);  
+void CC_DLL ccDrawCircle( const CCPoint&amp; center, float radius, float angle, unsigned int segments, bool drawLineToCenter);  
+
+//绘制一个带一个控制点的贝塞尔曲线（二次）  
+void CC_DLL ccDrawQuadBezier(const CCPoint&amp; origin, const CCPoint&amp; control, const CCPoint&amp; destination, unsigned int segments);  
+
+//绘制一个带两个控制点的贝塞尔曲线（高阶）  
+void CC_DLL ccDrawCubicBezier(const CCPoint&amp; origin, const CCPoint&amp; control1, const CCPoint&amp; control2, const CCPoint&amp; destination, unsigned int segments);  
+
+//绘制默认曲率的基数样条  
+void CC_DLL ccDrawCatmullRom( CCPointArray *arrayOfControlPoints, unsigned int segments );  
+
+//绘制指定曲率的基数样条  
+void CC_DLL ccDrawCardinalSpline( CCPointArray *config, float tension,  unsigned int segments );  
+
+//设置绘制颜色，4个byte型  
+void CC_DLL ccDrawColor4B( GLubyte r, GLubyte g, GLubyte b, GLubyte a );  
+
+//设置绘制颜色，4个float型  
+void CC_DLL ccDrawColor4F( GLfloat r, GLfloat g, GLfloat b, GLfloat a );  
+
+//设置点大小，默认为1  
+void CC_DLL ccPointSize( GLfloat pointSize );  
+</code></pre>
+
+<p>```</p>
+
+<p><strong>2.3.示例</strong></p>
+
+<p>代码使用的是TestCpp中代码。</p>
+
+<div align="center"><img src="http://img.blog.csdn.net/20140207170619906?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="" /><br></br></div>
+
+
+<h3>3.CCDrawNode（绘图节点）</h3>
+
+<p><strong>3.1.特点</strong></p>
+
+<p>CCDrawNode从CCNode继承而来，是一个图形绘制的节点类，它提供了几个常用的点线面函数方便绘图，其实在之前的游戏遮罩一文中就有写过。相较于CCDrawingPrimitives，这里更推荐使用CCDrawNode。</p>
+
+<p><em>（1）它将绘图封装为普通节点的方式进行处理，符合cocos2d-x树状编程的思想，同时也避免了一些遮盖的问题。</em></p>
+
+<p><em>（2）不需要在draw函数中调用。</em></p>
+
+<p><em>（3）使用批处理绘图，提高了绘图效率。</em></p>
+
+<p><strong>3.2.API</strong></p>
+
+<p>``` cpp CCDrawNode API</p>
+
+<pre><code>//绘制一个指定位置，大小，颜色的点  
+void drawDot(const CCPoint &amp;pos, float radius, const ccColor4F &amp;color);  
+
+//绘制一个指定起点终点，大小，颜色的点  
+void drawSegment(const CCPoint &amp;from, const CCPoint &amp;to, float radius, const ccColor4F &amp;color);  
+
+//绘制一个指定点，填充颜色，边框颜色的，边框宽度的多边形  
+void drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &amp;fillColor, float borderWidth, const ccColor4F &amp;borderColor);  
+</code></pre>
+
+<p>```</p>
+
+<p><strong>3.3.示例</strong></p>
+
+<p>代码也是TestCpp中的代码。</p>
+
+<div align="center"><img src="http://img.blog.csdn.net/20140207170658078?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="" /><br></br></div>
+
+
+<h3>4.源码下载</h3>
+
+<p>可以自己看TestCpp示例，也可以从<a href="http://download.csdn.net/detail/jackyvincefu/6903357">这里</a>下载。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十三】游戏嵌入Webview网页]]></title>
@@ -773,125 +896,6 @@ void TestLayer::editBoxTextChanged(CCEditBox *editBox, const std::string &amp;te
 <h3>4.源码下载</h3>
 
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6707427">下载地址</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之二十九】利用CCClipingNode做游戏遮罩]]></title>
-    <link href="http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29/"/>
-    <updated>2013-12-06T10:41:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29</id>
-    <content type="html"><![CDATA[<p>新手引导是游戏中必备的（除了奇葩的MT用一段动画开始），也是玩家对游戏的第一印象，重要性不言而喻。一般采用的遮罩的形式来突出引导重点，同时屏蔽其他功能。这里简单的介绍一下游戏遮罩的实现，并给出一个示例。</p>
-
-<h3>1.CCClipingNode</h3>
-
-<p>CCClipingNode是一个可裁剪节点，简单理解：</p>
-
-<p><em>（1）首先它是一个节点，继承于CCNode，所以它可以像普通节点一样放入CCLayer，CCScene，CCNode中。</em></p>
-
-<p><em>（2）作为节点，它就可以用作容器，承载其他节点和精灵。我把它叫底板。</em></p>
-
-<p><em>（3）如果想要对一个节点进行裁剪，那需要给出裁剪的部分，这个裁剪区域，我把它叫模版。</em></p>
-
-<!-- more -->
-
-
-<p>所以CCClipingNode裁剪节点在组成上=底板+模版，而在显示上=底板-模版。不知道这样解释会不会好理解一点。</p>
-
-<div align="center"><img src="http://img.blog.csdn.net/20131206093955500?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="CCClipingNode" /><br></br></div>
-
-
-<h3>2.API</h3>
-
-<p>CCClipingNode的使用还是比较简单的，至于显示底板还是模版，alpha值的设定，这些也不好说清楚，自己多试几次就知道是什么意思该怎么用了。</p>
-
-<pre><code>//不带模版地创建一个裁剪节点  
-static CCClippingNode* create();  
-
-//使用一个节点作为模版创建裁剪节点  
-static CCClippingNode* create(CCNode *pStencil);  
-
-//不带模版地初始化一个裁剪节点  
-virtual bool init();  
-
-//使用一个节点作为模版初始化裁剪节点  
-virtual bool init(CCNode *pStencil);  
-
-//设置/获取模版，注意模版需要retain！  
-CCNode* getStencil() const;  
-void setStencil(CCNode *pStencil);  
-
-//设置alpha值（0~1），这个很重要，裁剪是按像素抠图的，所以只有大于这个alpha值的模版像素才会被画出来  
-//默认是1，也就是完全裁剪。  
-GLfloat getAlphaThreshold() const;  
-void setAlphaThreshold(GLfloat fAlphaThreshold);  
-
-//默认是false，用于设置显示底板还是模版  
-bool isInverted() const;  
-void setInverted(bool bInverted);  
-</code></pre>
-
-<h3>3.示例</h3>
-
-<p>在init中实现：</p>
-
-<pre><code>CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
-
-CCSprite* background = CCSprite::create("HelloWorld.png");//创建背景  
-background-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
-this-&gt;addChild(background,kTagBackground);  
-
-clip=CCClippingNode::create();//创建裁剪节点，成员变量  
-clip-&gt;setInverted(true);//设置底板可见  
-clip-&gt;setAlphaThreshold(0.0f);//设置alpha为0  
-this-&gt;addChild(clip,kTagClipNode);//添加裁剪节点  
-
-CCLayerColor* back=CCLayerColor::create(ccc4(0,0,0,200));  
-clip-&gt;addChild(back);//为裁剪节点添加一个黑色带透明（看起了是灰色）的底板  
-
-//模版如果要在其他地方使用要记得retain！  
-
-//第一种：以下模型是drawnode遮罩  
-//CCDrawNode* front=CCDrawNode::create();  
-//ccColor4F yellow = {1, 1, 0, 1};  
-//CCPoint rect[4]={ccp(-30,30),ccp(30,30),ccp(30,-30),ccp(-30,-30)};  
-//front-&gt;drawPolygon(rect, 4, yellow, 0, yellow);  
-//front-&gt;setPosition(ccp(visibleSize.width/2, visibleSize.height/2));  
-//clip-&gt;setStencil(front);  
-
-//第二种：以下模型是带图像遮罩  
-CCNode* nodef=CCNode::create();//创建模版  
-CCSprite* close=CCSprite::create("CloseSelected.png");//这里使用的是close的那个图标，所以注意观察效果图2  
-nodef-&gt;addChild(close);//在模版上添加精灵  
-nodef-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
-clip-&gt;setStencil(nodef);//设置模版  
-
-tip = CCSprite::create("tip.png");//一些引导提示  
-tip-&gt;setScale(0.5f);  
-tip-&gt;setRotation(60);  
-tip-&gt;setPosition(ccp(visibleSize.width/2-70,visibleSize.height/2+50));  
-this-&gt;addChild(tip,kTagTip);  
-
-tip-&gt;runAction(CCRepeatForever::create(CCSequence::create(CCScaleBy::create(0.25f,0.95f),CCScaleTo::create(0.25f,0.5),NULL)));  
-
-this-&gt;setTouchEnabled(true);//触摸有效，落点正确时移除裁剪节点和提示，相关处理请看源码  
-</code></pre>
-
-<h3>4.效果</h3>
-
-<p>两种效果：</p>
-
-<div align="center"><img src="http://img.blog.csdn.net/20131206102326578" alt="" border="0" title="1" /><br></br></div>
-
-
-
-
-<div align="center"><img src="http://img.blog.csdn.net/20131206102337937" alt="" border="0" title="2" /><br></br></div>
-
-
-<h3>5.源码</h3>
-
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6667189">下载地址</a></p>
 ]]></content>
   </entry>
   
