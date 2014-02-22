@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: CCNotificationCenter | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/ccnotificationcenter/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-02-08T16:22:04+08:00</updated>
+  <updated>2014-02-22T08:54:13+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -44,6 +44,8 @@
 
 <h3>2.相关API</h3>
 
+<p>``` cpp CCNotificationCenter API</p>
+
 <pre><code>//获得消息通知中心的一个单例对象  
 static CCNotificationCenter *sharedNotificationCenter(void);  
 
@@ -69,6 +71,8 @@ void postNotification(const char *name);
 void postNotification(const char *name, CCObject *object);  
 </code></pre>
 
+<p>```</p>
+
 <p>观察者的意思即是等待获取消息的对象，比如上图的B。</p>
 
 <h3>3.原理</h3>
@@ -78,6 +82,8 @@ void postNotification(const char *name, CCObject *object);
 <h3>4.示例</h3>
 
 <p>这里做了一个场景，包含了2个层，目的是层A向层B发送带数据的消息，层B收到后打印出这条数据。</p>
+
+<p>``` cpp CCNotificationCenter的示例</p>
 
 <pre><code>//ALayer  
 bool ALayer::init()  
@@ -137,6 +143,8 @@ BLayer::~BLayer(void)
 }  
 </code></pre>
 
+<p>```</p>
+
 <h3>5.注意</h3>
 
 <p>使用CCNotificationCenter需要注意以下几点：</p>
@@ -145,8 +153,12 @@ BLayer::~BLayer(void)
 
 <p><em>（2）传递参数，A可以向B传递参数，而B在注册的时候也可以带一个参数，如果这两个数据不是指向同一对象的话，消息不会传递。也就是说要么A传递NULL对象，要么B注册时带NULL对象，要么都不是NULL但必须是同一对象，消息传递才会成功。以下是发送消息执行的判断：</em></p>
 
+<p>``` cpp 消息发送的判断</p>
+
 <pre><code>if (!strcmp(name,observer-&gt;getName()) &amp;&amp; (observer-&gt;getObject() == object || observer-&gt;getObject() == NULL || object == NULL))  
 </code></pre>
+
+<p>```</p>
 
 <p><em>（3）局部变量的传递，注意到上例，传递的是CCString的一个局部变量（但还是要autorelease），从CCNotificationCenter的实现上来看，这是没有问题的，因为数据是在postNotification被调用的，也就是整个函数体并没结束，数据不会被销毁。</em></p>
 

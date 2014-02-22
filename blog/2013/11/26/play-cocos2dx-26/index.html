@@ -127,13 +127,20 @@
 
 <p>uthash支持4种标准类型的键：整型，字符串，指针和结构体，不过到了CCDictionary就只支持整型和字符串型了。</p>
 
-<pre><code>enum CCDictType  
-{  
-    kCCDictUnknown = 0,  
-    kCCDictStr,  
-    kCCDictInt  
-};  
-</code></pre>
+<figure class='code'><figcaption><span>CCDictType</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="k">enum</span> <span class="n">CCDictType</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">kCCDictUnknown</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span class='line'>      <span class="n">kCCDictStr</span><span class="p">,</span>
+</span><span class='line'>      <span class="n">kCCDictInt</span>
+</span><span class='line'>  <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h3>2.CCDictElement</h3>
 
@@ -143,105 +150,186 @@
 
 <p><strong>3.1.创建</strong></p>
 
-<pre><code>//创建一个CCDictionary  
-static CCDictionary* create();  
-//用一个已存在的CCDictionary来创建一个新的CCDictionary  
-static CCDictionary* createWithDictionary(CCDictionary* srcDict);  
-//用一个plist来创建CCDictionary  
-static CCDictionary* createWithContentsOfFile(const char *pFileName);  
-//返回一个非autorelease对象的CCDictionary，它讷讷感够确保在新线程中使用  
-//但是你必须手动管理它的生命周期，当你不再需要它的时候，必须调用CC_SAFE_RELEASE  
-static CCDictionary* createWithContentsOfFileThreadSafe(const char *pFileName); 
-</code></pre>
+<figure class='code'><figcaption><span>创建</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//创建一个CCDictionary  </span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">CCDictionary</span><span class="o">*</span> <span class="n">create</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">//用一个已存在的CCDictionary来创建一个新的CCDictionary  </span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">CCDictionary</span><span class="o">*</span> <span class="n">createWithDictionary</span><span class="p">(</span><span class="n">CCDictionary</span><span class="o">*</span> <span class="n">srcDict</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//用一个plist来创建CCDictionary  </span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">CCDictionary</span><span class="o">*</span> <span class="n">createWithContentsOfFile</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">pFileName</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//返回一个非autorelease对象的CCDictionary，它讷讷感够确保在新线程中使用  </span>
+</span><span class='line'>    <span class="c1">//但是你必须手动管理它的生命周期，当你不再需要它的时候，必须调用CC_SAFE_RELEASE  </span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">CCDictionary</span><span class="o">*</span> <span class="n">createWithContentsOfFileThreadSafe</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">pFileName</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>3.2.查找</strong></p>
 
-<pre><code>//返回指定字符串类型key的value，如果CCDictionary的key是整型，会出现断言  
-CCObject* objectForKey(const std::string&amp; key);  
-//返回指定整型key的value，如果CCDictionary的key是字符串型，会出现断言  
-CCObject* objectForKey(intptr_t key);  
-//返回指定字符串类型key的CCString，这里假定value是CCString型，如果不是或者未找到，则返回空串  
-const CCString* valueForKey(const std::string&amp; key);  
-//返回指定整型类型key的CCString，这里假定value是CCString型，如果不是或者未找到，则返回空串  
-const CCString* valueForKey(intptr_t key);  
-</code></pre>
+<figure class='code'><figcaption><span>查找</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//返回指定字符串类型key的value，如果CCDictionary的key是整型，会出现断言  </span>
+</span><span class='line'>    <span class="n">CCObject</span><span class="o">*</span> <span class="n">objectForKey</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//返回指定整型key的value，如果CCDictionary的key是字符串型，会出现断言  </span>
+</span><span class='line'>    <span class="n">CCObject</span><span class="o">*</span> <span class="n">objectForKey</span><span class="p">(</span><span class="n">intptr_t</span> <span class="n">key</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//返回指定字符串类型key的CCString，这里假定value是CCString型，如果不是或者未找到，则返回空串  </span>
+</span><span class='line'>    <span class="k">const</span> <span class="n">CCString</span><span class="o">*</span> <span class="n">valueForKey</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//返回指定整型类型key的CCString，这里假定value是CCString型，如果不是或者未找到，则返回空串  </span>
+</span><span class='line'>    <span class="k">const</span> <span class="n">CCString</span><span class="o">*</span> <span class="n">valueForKey</span><span class="p">(</span><span class="n">intptr_t</span> <span class="n">key</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>3.3.增加</strong></p>
 
-<pre><code>//插入一个key-value，如果是第一次调用，那么CCDictionary的key类型会被确定为字符串型，之后就不能插入整型key  
-//如果已存在该key，则旧key-value会被释放和移除，被新的替代  
-void setObject(CCObject* pObject, const std::string&amp; key);  
-//插入一个key-value，如果是第一次调用，那么CCDictionary的key类型会被确定为整型，之后就不能插入字符串型key  
-//如果已存在该key，则旧key-value会被释放和移除，被新的替代  
-void setObject(CCObject* pObject, intptr_t key);  
-</code></pre>
+<figure class='code'><figcaption><span>增加</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//插入一个key-value，如果是第一次调用，那么CCDictionary的key类型会被确定为字符串型，之后就不能插入整型key  </span>
+</span><span class='line'>    <span class="c1">//如果已存在该key，则旧key-value会被释放和移除，被新的替代  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">setObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">pObject</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//插入一个key-value，如果是第一次调用，那么CCDictionary的key类型会被确定为整型，之后就不能插入字符串型key  </span>
+</span><span class='line'>    <span class="c1">//如果已存在该key，则旧key-value会被释放和移除，被新的替代  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">setObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">pObject</span><span class="p">,</span> <span class="n">intptr_t</span> <span class="n">key</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>3.4.移除</strong></p>
 
-<pre><code>//移除指定key  
-void removeObjectForKey(const std::string&amp; key);  
-void removeObjectForKey(intptr_t key);  
-//移除一个CCArray中keys  
-void removeObjectsForKeys(CCArray* pKeyArray);  
-//通过元素来移除value  
-void removeObjectForElememt(CCDictElement* pElement);  
-//移除所有的key-value  
-void removeAllObjects();
-</code></pre>
+<figure class='code'><figcaption><span>移除</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//移除指定key  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeObjectForKey</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">);</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeObjectForKey</span><span class="p">(</span><span class="n">intptr_t</span> <span class="n">key</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//移除一个CCArray中keys  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeObjectsForKeys</span><span class="p">(</span><span class="n">CCArray</span><span class="o">*</span> <span class="n">pKeyArray</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//通过元素来移除value  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeObjectForElememt</span><span class="p">(</span><span class="n">CCDictElement</span><span class="o">*</span> <span class="n">pElement</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//移除所有的key-value  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeAllObjects</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>3.5.其他</strong></p>
 
-<pre><code>//返回一个随机元素，这个使用得注意，因为value可以不一样，所以返回类型每次都可能不同，在类型转换的时候要非常小心  
-CCObject* randomObject();  
-//返回一个包含所有key的CCArray  
-CCArray* allKeys();  
-//返回指定value的所有key，因为value是可以相同的，内部使用==比较两个value是否相同   
-CCArray* allKeysForObject(CCObject* object);  
-//返回元素个数  
-unsigned int count();  
-//把CCDictionary写到一个plist中，写入的value要求是字符串型  
-bool writeToFile(const char *fullPath);  
-</code></pre>
+<figure class='code'><figcaption><span>其他</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//返回一个随机元素，这个使用得注意，因为value可以不一样，所以返回类型每次都可能不同，在类型转换的时候要非常小心  </span>
+</span><span class='line'>    <span class="n">CCObject</span><span class="o">*</span> <span class="n">randomObject</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">//返回一个包含所有key的CCArray  </span>
+</span><span class='line'>    <span class="n">CCArray</span><span class="o">*</span> <span class="n">allKeys</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">//返回指定value的所有key，因为value是可以相同的，内部使用==比较两个value是否相同   </span>
+</span><span class='line'>    <span class="n">CCArray</span><span class="o">*</span> <span class="n">allKeysForObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">object</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//返回元素个数  </span>
+</span><span class='line'>    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">count</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">//把CCDictionary写到一个plist中，写入的value要求是字符串型  </span>
+</span><span class='line'>    <span class="kt">bool</span> <span class="n">writeToFile</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">fullPath</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h3>4.示例</h3>
 
-<pre><code>// Create a dictionary, return an autorelease object.  
-CCDictionary* pDict = CCDictionary::create();  
+<figure class='code'><figcaption><span>示例</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">// Create a dictionary, return an autorelease object.  </span>
+</span><span class='line'>    <span class="n">CCDictionary</span><span class="o">*</span> <span class="n">pDict</span> <span class="o">=</span> <span class="n">CCDictionary</span><span class="o">::</span><span class="n">create</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Insert objects to dictionary  </span>
+</span><span class='line'>    <span class="n">CCString</span><span class="o">*</span> <span class="n">pValue1</span> <span class="o">=</span> <span class="n">CCString</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;100&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CCString</span><span class="o">*</span> <span class="n">pValue2</span> <span class="o">=</span> <span class="n">CCString</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;120&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CCInteger</span><span class="o">*</span> <span class="n">pValue3</span> <span class="o">=</span> <span class="n">CCInteger</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">pDict</span><span class="o">-&gt;</span><span class="n">setObject</span><span class="p">(</span><span class="n">pValue1</span><span class="p">,</span> <span class="s">&quot;key1&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">pDict</span><span class="o">-&gt;</span><span class="n">setObject</span><span class="p">(</span><span class="n">pValue2</span><span class="p">,</span> <span class="s">&quot;key2&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">pDict</span><span class="o">-&gt;</span><span class="n">setObject</span><span class="p">(</span><span class="n">pValue3</span><span class="p">,</span> <span class="s">&quot;key3&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Get the object for key  </span>
+</span><span class='line'>    <span class="n">CCString</span><span class="o">*</span> <span class="n">pStr1</span> <span class="o">=</span> <span class="p">(</span><span class="n">CCString</span><span class="o">*</span><span class="p">)</span><span class="n">pDict</span><span class="o">-&gt;</span><span class="n">objectForKey</span><span class="p">(</span><span class="s">&quot;key1&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CCLog</span><span class="p">(</span><span class="s">&quot;{ key1: %s }&quot;</span><span class="p">,</span> <span class="n">pStr1</span><span class="o">-&gt;</span><span class="n">getCString</span><span class="p">());</span>
+</span><span class='line'>    <span class="n">CCInteger</span><span class="o">*</span> <span class="n">pInteger</span> <span class="o">=</span> <span class="p">(</span><span class="n">CCInteger</span><span class="o">*</span><span class="p">)</span><span class="n">pDict</span><span class="o">-&gt;</span><span class="n">objectForKey</span><span class="p">(</span><span class="s">&quot;key3&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CCLog</span><span class="p">(</span><span class="s">&quot;{ key3: %d }&quot;</span><span class="p">,</span> <span class="n">pInteger</span><span class="o">-&gt;</span><span class="n">getValue</span><span class="p">());</span>
+</span><span class='line'>    <span class="n">CCString</span><span class="o">*</span> <span class="n">pStr3</span><span class="o">=</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">CCString</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">pDict</span><span class="o">-&gt;</span><span class="n">randomObject</span><span class="p">());</span><span class="c1">//这里有问题了，因为value有不同类型，所以随机返回时类型处理要小心  </span>
+</span><span class='line'>    <span class="n">CCLog</span><span class="p">(</span><span class="s">&quot;{ random key: %s }&quot;</span><span class="p">,</span><span class="n">pStr3</span><span class="o">-&gt;</span><span class="n">getCString</span><span class="p">());</span>  <span class="c1">//如果返回的是整型pValue3，那么会出现断言  </span>
+</span><span class='line'>    <span class="k">if</span><span class="p">(</span><span class="n">pDict</span><span class="o">-&gt;</span><span class="n">writeToFile</span><span class="p">(</span><span class="s">&quot;pdic.plist&quot;</span><span class="p">))</span>  <span class="c1">//整型的value无法写入，会提示This type cannot appear in property list  </span>
+</span><span class='line'>      <span class="n">CCLog</span><span class="p">(</span><span class="s">&quot;Write to file success!&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
-// Insert objects to dictionary  
-CCString* pValue1 = CCString::create("100");  
-CCString* pValue2 = CCString::create("120");  
-CCInteger* pValue3 = CCInteger::create(200);  
-pDict-&gt;setObject(pValue1, "key1");  
-pDict-&gt;setObject(pValue2, "key2");  
-pDict-&gt;setObject(pValue3, "key3");  
-
-// Get the object for key  
-CCString* pStr1 = (CCString*)pDict-&gt;objectForKey("key1");  
-CCLog("{ key1: %s }", pStr1-&gt;getCString());  
-CCInteger* pInteger = (CCInteger*)pDict-&gt;objectForKey("key3");  
-CCLog("{ key3: %d }", pInteger-&gt;getValue());  
-CCString* pStr3=static_cast&lt;CCString*&gt;(pDict-&gt;randomObject());//这里有问题了，因为value有不同类型，所以随机返回时类型处理要小心  
-CCLog("{ random key: %s }",pStr3-&gt;getCString());  //如果返回的是整型pValue3，那么会出现断言  
-if(pDict-&gt;writeToFile("pdic.plist"))  //整型的value无法写入，会提示This type cannot appear in property list  
-    CCLog("Write to file success!");  
-</code></pre>
 
 <p>Resource/pdic.plist</p>
 
-<p>&lt;?xml version=&ldquo;1.0&rdquo; encoding=&ldquo;UTF-8&rdquo;?><br/>
-&lt;!DOCTYPE plist PUBLIC &ldquo;&ndash;//Apple//DTD PLIST 1.0//EN&rdquo; &ldquo;<a href="http://www.apple.com/DTDs/PropertyList-1.0.dtd">http://www.apple.com/DTDs/PropertyList-1.0.dtd</a>&rdquo;/></p>
+<figure class='code'><figcaption><span>pdic.plist</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'> <span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+</span><span class='line'>  <span class="cp">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;/&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;plist</span> <span class="na">version=</span><span class="s">&quot;1.0&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;dict&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;key&gt;</span>key1<span class="nt">&lt;/key&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;string&gt;</span>100<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;key&gt;</span>key2<span class="nt">&lt;/key&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;string&gt;</span>120<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;key&gt;</span>key3<span class="nt">&lt;/key&gt;</span>  <span class="cp">&lt;!key3对应整型数据无法写入/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/dict&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/plist&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<pre><code>&lt;plist version="1.0"&gt;  
-&lt;dict&gt;  
-    &lt;key&gt;key1&lt;/key&gt;  
-    &lt;string&gt;100&lt;/string&gt;  
-    &lt;key&gt;key2&lt;/key&gt;  
-    &lt;string&gt;120&lt;/string&gt;  
-    &lt;key&gt;key3&lt;/key&gt;  &lt;!key3对应整型数据无法写入/&gt;  
-&lt;/dict&gt;  
-&lt;/plist&gt;  
-</code></pre>
 
 <h3>5.CCDICT_FOREACH</h3>
 
@@ -249,23 +337,37 @@ if(pDict-&gt;writeToFile("pdic.plist"))  //整型的value无法写入，会提�
 
 <p>宏定义，用于遍历CCDictionary的value。</p>
 
-<pre><code>#define CCDICT_FOREACH(__dict__, __el__) \  
-CCDictElement* pTmp##__dict__##__el__ = NULL; \  
-if (__dict__) \  
-HASH_ITER(hh, (__dict__)-&gt;m_pElements, __el__, pTmp##__dict__##__el__)  
-</code></pre>
+<figure class='code'><figcaption><span>CCDICT_FOREACH宏定义</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="err">#</span><span class="n">define</span> <span class="n">CCDICT_FOREACH</span><span class="p">(</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">__el__</span><span class="p">)</span> <span class="err">\</span>
+</span><span class='line'>    <span class="n">CCDictElement</span><span class="o">*</span> <span class="n">pTmp</span><span class="err">##</span><span class="n">__dict__</span><span class="err">##</span><span class="n">__el__</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span> <span class="err">\</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">__dict__</span><span class="p">)</span> <span class="err">\</span>
+</span><span class='line'>    <span class="n">HASH_ITER</span><span class="p">(</span><span class="n">hh</span><span class="p">,</span> <span class="p">(</span><span class="n">__dict__</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">m_pElements</span><span class="p">,</span> <span class="n">__el__</span><span class="p">,</span> <span class="n">pTmp</span><span class="err">##</span><span class="n">__dict__</span><span class="err">##</span><span class="n">__el__</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>5.2.示例</strong></p>
 
-<pre><code>CCDictElement* pElement;  
-CCDICT_FOREACH(dict, pElement)  
-{  
-    const char*key = pElement-&gt;getStrKey();  
-    // You certainly know the type of value, so we assume that it's a CCSprite.  
-    CCSprite* pSprite = (CCSprite*)pElement-&gt;getObject();  
-    // ......  
-}  
-</code></pre>
+<figure class='code'><figcaption><span>CCDICT_FOREACH示例</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="n">CCDictElement</span><span class="o">*</span> <span class="n">pElement</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">CCDICT_FOREACH</span><span class="p">(</span><span class="n">dict</span><span class="p">,</span> <span class="n">pElement</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="n">key</span> <span class="o">=</span> <span class="n">pElement</span><span class="o">-&gt;</span><span class="n">getStrKey</span><span class="p">();</span>
+</span><span class='line'>      <span class="c1">// You certainly know the type of value, so we assume that it&#39;s a CCSprite.  </span>
+</span><span class='line'>      <span class="n">CCSprite</span><span class="o">*</span> <span class="n">pSprite</span> <span class="o">=</span> <span class="p">(</span><span class="n">CCSprite</span><span class="o">*</span><span class="p">)</span><span class="n">pElement</span><span class="o">-&gt;</span><span class="n">getObject</span><span class="p">();</span>
+</span><span class='line'>      <span class="c1">// ......  </span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/11/26/play-cocos2dx-26/'>http://www.fusijie.com/blog/2013/11/26/play-cocos2dx-26/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
 

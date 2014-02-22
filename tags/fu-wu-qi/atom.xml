@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 服务器 | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/fu-wu-qi/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-02-08T16:22:04+08:00</updated>
+  <updated>2014-02-22T08:54:13+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -55,6 +55,8 @@
 
 <p><strong>3.1.采用get方式代码</strong></p>
 
+<p>``` html Get方式</p>
+
 <pre><code>&lt;html&gt;  
     &lt;body&gt;  
         &lt;?php  
@@ -85,7 +87,11 @@
 &lt;/html&gt;  
 </code></pre>
 
+<p>```</p>
+
 <p><strong>3.2.采用post方式代码</strong></p>
+
+<p>``` html Post方式</p>
 
 <pre><code>&lt;html&gt;  
     &lt;body&gt;  
@@ -117,11 +123,15 @@
 &lt;/html&gt;  
 </code></pre>
 
+<p>```</p>
+
 <h3>4.cocos2d-x使用CCHttpClient类进行网络请求</h3>
 
 <p>CCHttpClient的使用这里也不赘述了，请移步官方文档How_to_use_CCHttpClient。这里在上文编辑框和点九图的基础上进行了修改。2个编辑框，分别是username和password。一个按钮点击发送请求。一个文本显示从服务器返回的结果。</p>
 
 <p><strong>4.1.按钮请求处理</strong></p>
+
+<p>``` cpp 按钮请求处理</p>
 
 <pre><code>void TestLayer::btncallback( CCObject* pSender )  
 {  
@@ -166,7 +176,11 @@
 }  
 </code></pre>
 
+<p>```</p>
+
 <p><strong>4.2.响应回调处理</strong></p>
+
+<p>``` cpp 响应回调处理</p>
 
 <pre><code>void TestLayer::onHttpRequestCompleted( CCHttpClient* client, CCHttpResponse* response )  
 {  
@@ -190,6 +204,8 @@
     m_labelStatusCode-&gt;setString(result.c_str());  
 }  
 </code></pre>
+
+<p>```</p>
 
 <h3>5.效果图</h3>
 

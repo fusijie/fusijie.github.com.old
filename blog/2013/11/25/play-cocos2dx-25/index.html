@@ -119,79 +119,140 @@
 
 <p><strong>1.1.创建</strong></p>
 
-<pre><code>//创建array  
-static CCArray* create();  
-//使用一系列CCObject创建array  
-static CCArray* create(CCObject* pObject, …);  
-//使用一个CCObject创建array  
-static CCArray* createWithObject(CCObject* pObject);  
-//创建array并设置容量  
-static CCArray* createWithCapacity(unsigned int capacity);  
-//用一个已存在的array创建另一个array  
-static CCArray* createWithArray(CCArray* otherArray);  
-</code></pre>
+<figure class='code'><figcaption><span>创建</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//创建array  </span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">CCArray</span><span class="o">*</span> <span class="n">create</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">//使用一系列CCObject创建array  </span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">CCArray</span><span class="o">*</span> <span class="n">create</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">pObject</span><span class="p">,</span> <span class="err">…</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//使用一个CCObject创建array  </span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">CCArray</span><span class="o">*</span> <span class="n">createWithObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">pObject</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//创建array并设置容量  </span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">CCArray</span><span class="o">*</span> <span class="n">createWithCapacity</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">capacity</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//用一个已存在的array创建另一个array  </span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">CCArray</span><span class="o">*</span> <span class="n">createWithArray</span><span class="p">(</span><span class="n">CCArray</span><span class="o">*</span> <span class="n">otherArray</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>1.2.添加</strong></p>
 
-<pre><code>//添加一个元素  
-void addObject(CCObject* object);  
-//添加一个已存在array中所有元素  
-void addObjectsFromArray(CCArray* otherArray);  
-//在指定位置插入元素  
-void insertObject(CCObject* object, unsigned int index);  
-</code></pre>
+<figure class='code'><figcaption><span>添加</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//添加一个元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">addObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">object</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//添加一个已存在array中所有元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">addObjectsFromArray</span><span class="p">(</span><span class="n">CCArray</span><span class="o">*</span> <span class="n">otherArray</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//在指定位置插入元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">insertObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">object</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">index</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>1.3.删除</strong></p>
 
-<pre><code>//移除最后一个元素  
-void removeLastObject(bool bReleaseObj = true);  
-//移除某个元素  
-void removeObject(CCObject* object, bool bReleaseObj = true);  
-//移除一个指定位置的元素  
-void removeObjectAtIndex(unsigned int index, bool bReleaseObj = true);  
-//移除某个array  
-void removeObjectsInArray(CCArray* otherArray);  
-//移除所有元素  
-void removeAllObjects();  
-//快速移除某个元素  
-void fastRemoveObject(CCObject* object);  
-//快速移除某个指定位置的元素  
-void fastRemoveObjectAtIndex(unsigned int index);  
-</code></pre>
+<figure class='code'><figcaption><span>删除</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//移除最后一个元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeLastObject</span><span class="p">(</span><span class="kt">bool</span> <span class="n">bReleaseObj</span> <span class="o">=</span> <span class="kc">true</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//移除某个元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">object</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">bReleaseObj</span> <span class="o">=</span> <span class="kc">true</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//移除一个指定位置的元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeObjectAtIndex</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">bReleaseObj</span> <span class="o">=</span> <span class="kc">true</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//移除某个array  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeObjectsInArray</span><span class="p">(</span><span class="n">CCArray</span><span class="o">*</span> <span class="n">otherArray</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//移除所有元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeAllObjects</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">//快速移除某个元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">fastRemoveObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">object</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//快速移除某个指定位置的元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">fastRemoveObjectAtIndex</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">index</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>1.4.操作元素</strong></p>
 
-<pre><code>//返回元素个数  
-unsigned int count() const;  
-//返回array容量  
-unsigned int capacity() const;  
-//返回指定CCObject的位置，如果不存在返回UINT_MAX  
-unsigned int indexOfObject(CCObject* object) const;  
-//返回指定位置的CCObject  
-CCObject* objectAtIndex(unsigned int index);  
-//返回最后一个元素  
-CCObject* lastObject();  
-//返回随机元素  
-CCObject* randomObject();  
-//返回某个元素是否存在于array中  
-bool containsObject(CCObject* object) const;  
-//判断array是否相等  
-bool isEqualToArray(CCArray* pOtherArray);  
-</code></pre>
+<figure class='code'><figcaption><span>操作元素</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//返回元素个数  </span>
+</span><span class='line'>    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">count</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">//返回array容量  </span>
+</span><span class='line'>    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">capacity</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">//返回指定CCObject的位置，如果不存在返回UINT_MAX  </span>
+</span><span class='line'>    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">indexOfObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">object</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">//返回指定位置的CCObject  </span>
+</span><span class='line'>    <span class="n">CCObject</span><span class="o">*</span> <span class="n">objectAtIndex</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">index</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//返回最后一个元素  </span>
+</span><span class='line'>    <span class="n">CCObject</span><span class="o">*</span> <span class="n">lastObject</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">//返回随机元素  </span>
+</span><span class='line'>    <span class="n">CCObject</span><span class="o">*</span> <span class="n">randomObject</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">//返回某个元素是否存在于array中  </span>
+</span><span class='line'>    <span class="kt">bool</span> <span class="n">containsObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">object</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">//判断array是否相等  </span>
+</span><span class='line'>    <span class="kt">bool</span> <span class="n">isEqualToArray</span><span class="p">(</span><span class="n">CCArray</span><span class="o">*</span> <span class="n">pOtherArray</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>1.5.操作array内容</strong></p>
 
-<pre><code>//交换2个元素  
-void exchangeObject(CCObject* object1, CCObject* object2);  
-//交换2个指定位置元素  
-void exchangeObjectAtIndex(unsigned int index1, unsigned int index2);  
-//用一个对象替代指定位置元素  
-void replaceObjectAtIndex(unsigned int uIndex, CCObject* pObject, bool bReleaseObject = true);  
-//反转array  
-void reverseObjects();  
-//收缩array内存以匹配元素个数  
-void reduceMemoryFootprint();  
-</code></pre>
+<figure class='code'><figcaption><span>操作array内容</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//交换2个元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">exchangeObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">object1</span><span class="p">,</span> <span class="n">CCObject</span><span class="o">*</span> <span class="n">object2</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//交换2个指定位置元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">exchangeObjectAtIndex</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">index1</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">index2</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//用一个对象替代指定位置元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">replaceObjectAtIndex</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">uIndex</span><span class="p">,</span> <span class="n">CCObject</span><span class="o">*</span> <span class="n">pObject</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">bReleaseObject</span> <span class="o">=</span> <span class="kc">true</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//反转array  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">reverseObjects</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">//收缩array内存以匹配元素个数  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">reduceMemoryFootprint</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h3>2.remove和fastremove</h3>
 
@@ -199,40 +260,73 @@ void reduceMemoryFootprint();
 
 <p><strong>2.1.普通删除</strong></p>
 
-<pre><code>//普通删除  
-void ccArrayRemoveObjectAtIndex(ccArray *arr, unsigned int index, bool bReleaseObj/* = true*/)  
-{  
-    CCAssert(arr &amp;&amp; arr-&gt;num &gt; 0 &amp;&amp; index &lt; arr-&gt;num, "Invalid index. Out of bounds");  
-    //删除元素内容，位置仍保留着  
-    if (bReleaseObj)  
-    {  
-        CC_SAFE_RELEASE(arr-&gt;arr[index]);  
-    }  
-    //长度减1  
-    arr-&gt;num--;  
-    //获得要删除的元素后的元素个数  
-    unsigned int remaining = arr-&gt;num - index;  
-    if(remaining&gt;0)  
-    {  
-        //将要删除元素后的所有元素逐个向前移动  
-        memmove((void *)&amp;arr-&gt;arr[index], (void *)&amp;arr-&gt;arr[index+1], remaining * sizeof(CCObject*));  
-    }  
-}  
-</code></pre>
+<figure class='code'><figcaption><span>普通删除</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>
+</span><span class='line'>    <span class="c1">//普通删除  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">ccArrayRemoveObjectAtIndex</span><span class="p">(</span><span class="n">ccArray</span> <span class="o">*</span><span class="n">arr</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">bReleaseObj</span><span class="cm">/* = true*/</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="n">CCAssert</span><span class="p">(</span><span class="n">arr</span> <span class="o">&amp;&amp;</span> <span class="n">arr</span><span class="o">-&gt;</span><span class="n">num</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="o">-&gt;</span><span class="n">num</span><span class="p">,</span> <span class="s">&quot;Invalid index. Out of bounds&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="c1">//删除元素内容，位置仍保留着  </span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">bReleaseObj</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">CC_SAFE_RELEASE</span><span class="p">(</span><span class="n">arr</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">index</span><span class="p">]);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="c1">//长度减1  </span>
+</span><span class='line'>      <span class="n">arr</span><span class="o">-&gt;</span><span class="n">num</span><span class="o">--</span><span class="p">;</span>
+</span><span class='line'>      <span class="c1">//获得要删除的元素后的元素个数  </span>
+</span><span class='line'>      <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">remaining</span> <span class="o">=</span> <span class="n">arr</span><span class="o">-&gt;</span><span class="n">num</span> <span class="o">-</span> <span class="n">index</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="n">remaining</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="c1">//将要删除元素后的所有元素逐个向前移动  </span>
+</span><span class='line'>          <span class="n">memmove</span><span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">arr</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">arr</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">remaining</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span><span class="p">));</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>2.2.快速删除</strong></p>
 
-<pre><code>//快速删除  
-void ccArrayFastRemoveObjectAtIndex(ccArray *arr, unsigned int index)  
-{  
-    //删除元素内容，位置仍保留着  
-    CC_SAFE_RELEASE(arr-&gt;arr[index]);  
-    //获取最后一个元素  
-    unsigned int last = --arr-&gt;num;  
-    //把最后一个元素插到删除元素的位置上  
-    arr-&gt;arr[index] = arr-&gt;arr[last];  
-}  
-</code></pre>
+<figure class='code'><figcaption><span>快速删除</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//快速删除  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">ccArrayFastRemoveObjectAtIndex</span><span class="p">(</span><span class="n">ccArray</span> <span class="o">*</span><span class="n">arr</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">index</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="c1">//删除元素内容，位置仍保留着  </span>
+</span><span class='line'>      <span class="n">CC_SAFE_RELEASE</span><span class="p">(</span><span class="n">arr</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">index</span><span class="p">]);</span>
+</span><span class='line'>      <span class="c1">//获取最后一个元素  </span>
+</span><span class='line'>      <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">last</span> <span class="o">=</span> <span class="o">--</span><span class="n">arr</span><span class="o">-&gt;</span><span class="n">num</span><span class="p">;</span>
+</span><span class='line'>      <span class="c1">//把最后一个元素插到删除元素的位置上  </span>
+</span><span class='line'>      <span class="n">arr</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">last</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>2.3.总结</strong></p>
 
@@ -243,14 +337,22 @@ void ccArrayFastRemoveObjectAtIndex(ccArray *arr, unsigned int index)
 <p><strong>3.1.容量和个数</strong>
 CCArray中容量和个数并不是同一个概念。个数&lt;=容量。从添加元素的源码中可以看到在添加之前会先进行空间分配，所以它是一个动态分配内存的过程。如下</p>
 
-<pre><code>void ccArrayEnsureExtraCapacity(ccArray *arr, unsigned int extra)//确保有额外的空间  
-{  
-    while (arr-&gt;max &lt; arr-&gt;num + extra)//判断空间是否足够  
-    {  
-        ccArrayDoubleCapacity(arr);//增加一倍空间  
-    }  
-}  
-</code></pre>
+<figure class='code'><figcaption><span>内存分配</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="kt">void</span> <span class="n">ccArrayEnsureExtraCapacity</span><span class="p">(</span><span class="n">ccArray</span> <span class="o">*</span><span class="n">arr</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">extra</span><span class="p">)</span><span class="c1">//确保有额外的空间  </span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="k">while</span> <span class="p">(</span><span class="n">arr</span><span class="o">-&gt;</span><span class="n">max</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="o">-&gt;</span><span class="n">num</span> <span class="o">+</span> <span class="n">extra</span><span class="p">)</span><span class="c1">//判断空间是否足够  </span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">ccArrayDoubleCapacity</span><span class="p">(</span><span class="n">arr</span><span class="p">);</span><span class="c1">//增加一倍空间  </span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>所以，每次CCArray在插入数据时检测到空间不足会增加一倍空间，再进行检测，直到空间满足分配为止。</p>
 
@@ -275,18 +377,30 @@ CCArray中容量和个数并不是同一个概念。个数&lt;=容量。从添�
 
 <p>宏定义，用于正向遍历和反向遍历CCArray元素</p>
 
-<pre><code>#define CCARRAY_FOREACH(__array__, __object__)                                                                         \  
-    if ((__array__) &amp;&amp; (__array__)-&gt;data-&gt;num &gt; 0)                                                                     \  
-    for(CCObject** __arr__ = (__array__)-&gt;data-&gt;arr, **__end__ = (__array__)-&gt;data-&gt;arr + (__array__)-&gt;data-&gt;num-1;    \  
-    __arr__ &lt;= __end__ &amp;&amp; (((__object__) = *__arr__) != NULL/* || true*/);                                             \  
-    __arr__++)  
+<figure class='code'><figcaption><span>正反向遍历CCArray</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="err">#</span><span class="n">define</span> <span class="n">CCARRAY_FOREACH</span><span class="p">(</span><span class="n">__array__</span><span class="p">,</span> <span class="n">__object__</span><span class="p">)</span>                                                                         <span class="err">\</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">((</span><span class="n">__array__</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">__array__</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">num</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>                                                                     <span class="err">\</span>
+</span><span class='line'>      <span class="k">for</span><span class="p">(</span><span class="n">CCObject</span><span class="o">**</span> <span class="n">__arr__</span> <span class="o">=</span> <span class="p">(</span><span class="n">__array__</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">,</span> <span class="o">**</span><span class="n">__end__</span> <span class="o">=</span> <span class="p">(</span><span class="n">__array__</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">arr</span> <span class="o">+</span> <span class="p">(</span><span class="n">__array__</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">num</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>    <span class="err">\</span>
+</span><span class='line'>      <span class="n">__arr__</span> <span class="o">&lt;=</span> <span class="n">__end__</span> <span class="o">&amp;&amp;</span> <span class="p">(((</span><span class="n">__object__</span><span class="p">)</span> <span class="o">=</span> <span class="o">*</span><span class="n">__arr__</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="cm">/* || true*/</span><span class="p">);</span>                                             <span class="err">\</span>
+</span><span class='line'>      <span class="n">__arr__</span><span class="o">++</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="err">#</span><span class="n">define</span> <span class="n">CCARRAY_FOREACH_REVERSE</span><span class="p">(</span><span class="n">__array__</span><span class="p">,</span> <span class="n">__object__</span><span class="p">)</span>                                                                  <span class="err">\</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">((</span><span class="n">__array__</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">__array__</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">num</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>                                                                      <span class="err">\</span>
+</span><span class='line'>      <span class="k">for</span><span class="p">(</span><span class="n">CCObject</span><span class="o">**</span> <span class="n">__arr__</span> <span class="o">=</span> <span class="p">(</span><span class="n">__array__</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">arr</span> <span class="o">+</span> <span class="p">(</span><span class="n">__array__</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">num</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">__end__</span> <span class="o">=</span> <span class="p">(</span><span class="n">__array__</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">;</span>     <span class="err">\</span>
+</span><span class='line'>      <span class="n">__arr__</span> <span class="o">&gt;=</span> <span class="n">__end__</span> <span class="o">&amp;&amp;</span> <span class="p">(((</span><span class="n">__object__</span><span class="p">)</span> <span class="o">=</span> <span class="o">*</span><span class="n">__arr__</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="cm">/* || true*/</span><span class="p">);</span>                                              <span class="err">\</span>
+</span><span class='line'>      <span class="n">__arr__</span><span class="o">--</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
-#define CCARRAY_FOREACH_REVERSE(__array__, __object__)                                                                  \  
-    if ((__array__) &amp;&amp; (__array__)-&gt;data-&gt;num &gt; 0)                                                                      \  
-    for(CCObject** __arr__ = (__array__)-&gt;data-&gt;arr + (__array__)-&gt;data-&gt;num-1, **__end__ = (__array__)-&gt;data-&gt;arr;     \  
-    __arr__ &gt;= __end__ &amp;&amp; (((__object__) = *__arr__) != NULL/* || true*/);                                              \  
-    __arr__--)  
-</code></pre>
 
 <h3>6.示例</h3>
 

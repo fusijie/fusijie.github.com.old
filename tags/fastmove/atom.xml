@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: fastmove | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/fastmove/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-02-08T16:22:04+08:00</updated>
+  <updated>2014-02-22T08:54:13+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -29,6 +29,8 @@
 
 <p><strong>1.1.创建</strong></p>
 
+<p>``` cpp 创建</p>
+
 <pre><code>//创建array  
 static CCArray* create();  
 //使用一系列CCObject创建array  
@@ -41,7 +43,11 @@ static CCArray* createWithCapacity(unsigned int capacity);
 static CCArray* createWithArray(CCArray* otherArray);  
 </code></pre>
 
+<p>```</p>
+
 <p><strong>1.2.添加</strong></p>
+
+<p>``` cpp 添加</p>
 
 <pre><code>//添加一个元素  
 void addObject(CCObject* object);  
@@ -51,7 +57,11 @@ void addObjectsFromArray(CCArray* otherArray);
 void insertObject(CCObject* object, unsigned int index);  
 </code></pre>
 
+<p>```</p>
+
 <p><strong>1.3.删除</strong></p>
+
+<p>``` cpp 删除</p>
 
 <pre><code>//移除最后一个元素  
 void removeLastObject(bool bReleaseObj = true);  
@@ -69,7 +79,11 @@ void fastRemoveObject(CCObject* object);
 void fastRemoveObjectAtIndex(unsigned int index);  
 </code></pre>
 
+<p>```</p>
+
 <p><strong>1.4.操作元素</strong></p>
+
+<p>``` cpp 操作元素</p>
 
 <pre><code>//返回元素个数  
 unsigned int count() const;  
@@ -89,7 +103,11 @@ bool containsObject(CCObject* object) const;
 bool isEqualToArray(CCArray* pOtherArray);  
 </code></pre>
 
+<p>```</p>
+
 <p><strong>1.5.操作array内容</strong></p>
+
+<p>``` cpp 操作array内容</p>
 
 <pre><code>//交换2个元素  
 void exchangeObject(CCObject* object1, CCObject* object2);  
@@ -103,11 +121,15 @@ void reverseObjects();
 void reduceMemoryFootprint();  
 </code></pre>
 
+<p>```</p>
+
 <h3>2.remove和fastremove</h3>
 
 <p>从<strong>1.3</strong>可以看出删除有两种方式，普通删除和快速删除，它们有什么区别呢？</p>
 
 <p><strong>2.1.普通删除</strong></p>
+
+<p>``` cpp 普通删除</p>
 
 <pre><code>//普通删除  
 void ccArrayRemoveObjectAtIndex(ccArray *arr, unsigned int index, bool bReleaseObj/* = true*/)  
@@ -130,7 +152,11 @@ void ccArrayRemoveObjectAtIndex(ccArray *arr, unsigned int index, bool bReleaseO
 }  
 </code></pre>
 
+<p>```</p>
+
 <p><strong>2.2.快速删除</strong></p>
+
+<p>``` cpp 快速删除</p>
 
 <pre><code>//快速删除  
 void ccArrayFastRemoveObjectAtIndex(ccArray *arr, unsigned int index)  
@@ -144,6 +170,8 @@ void ccArrayFastRemoveObjectAtIndex(ccArray *arr, unsigned int index)
 }  
 </code></pre>
 
+<p>```</p>
+
 <p><strong>2.3.总结</strong></p>
 
 <p>如果有array={0,1,2,3,4,5}，如果要删除3，使用普通删除得到的结果{0,1,2,4,5}，使用快速删除得到的结果是{0,1,2,5,4}。可以看出快速删除的效率比普通删除效率高，就差在移动元素的时间复杂度上。</p>
@@ -153,6 +181,8 @@ void ccArrayFastRemoveObjectAtIndex(ccArray *arr, unsigned int index)
 <p><strong>3.1.容量和个数</strong>
 CCArray中容量和个数并不是同一个概念。个数&lt;=容量。从添加元素的源码中可以看到在添加之前会先进行空间分配，所以它是一个动态分配内存的过程。如下</p>
 
+<p>``` cpp 内存分配</p>
+
 <pre><code>void ccArrayEnsureExtraCapacity(ccArray *arr, unsigned int extra)//确保有额外的空间  
 {  
     while (arr-&gt;max &lt; arr-&gt;num + extra)//判断空间是否足够  
@@ -161,6 +191,8 @@ CCArray中容量和个数并不是同一个概念。个数&lt;=容量。从添�
     }  
 }  
 </code></pre>
+
+<p>```</p>
 
 <p>所以，每次CCArray在插入数据时检测到空间不足会增加一倍空间，再进行检测，直到空间满足分配为止。</p>
 
@@ -185,6 +217,8 @@ CCArray中容量和个数并不是同一个概念。个数&lt;=容量。从添�
 
 <p>宏定义，用于正向遍历和反向遍历CCArray元素</p>
 
+<p>``` cpp 正反向遍历CCArray</p>
+
 <pre><code>#define CCARRAY_FOREACH(__array__, __object__)                                                                         \  
     if ((__array__) &amp;&amp; (__array__)-&gt;data-&gt;num &gt; 0)                                                                     \  
     for(CCObject** __arr__ = (__array__)-&gt;data-&gt;arr, **__end__ = (__array__)-&gt;data-&gt;arr + (__array__)-&gt;data-&gt;num-1;    \  
@@ -197,6 +231,8 @@ CCArray中容量和个数并不是同一个概念。个数&lt;=容量。从添�
     __arr__ &gt;= __end__ &amp;&amp; (((__object__) = *__arr__) != NULL/* || true*/);                                              \  
     __arr__--)  
 </code></pre>
+
+<p>```</p>
 
 <h3>6.示例</h3>
 

@@ -448,19 +448,32 @@
 
 <h3>1.示例</h3>
 
-<pre><code>CCBlink* blink=CCBlink::create(0.5f,10);//创建闪烁动画，duration=0.5s  
-CCAnimation* animation=CCAnimation::create();  
-animation-&gt;addSpriteFrameWithFileName("CloseNormal.png");  
-animation-&gt;addSpriteFrameWithFileName("CloseSelected.png");  
-animation-&gt;setDelayPerUnit(1.0f);//帧间间隔1s  
-CCAnimate* animate=CCAnimate::create(animation);//创建帧动画  
-CCRepeatForever* repeat=CCRepeatForever::create(animate);  
-CCSequence* sequence=CCSequence::create(blink,repeat,NULL);//创建连续动画  
-CCSprite* close=CCSprite::create("CloseNormal.png");  
-close-&gt;setPosition(ccp(240,160));  
-this-&gt;addChild(close);  
-close-&gt;runAction(sequence);//执行连续动画  
-</code></pre>
+<figure class='code'><figcaption><span>示例</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="n">CCBlink</span><span class="o">*</span> <span class="n">blink</span><span class="o">=</span><span class="n">CCBlink</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="mf">0.5f</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span><span class="c1">//创建闪烁动画，duration=0.5s  </span>
+</span><span class='line'>    <span class="n">CCAnimation</span><span class="o">*</span> <span class="n">animation</span><span class="o">=</span><span class="n">CCAnimation</span><span class="o">::</span><span class="n">create</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">animation</span><span class="o">-&gt;</span><span class="n">addSpriteFrameWithFileName</span><span class="p">(</span><span class="s">&quot;CloseNormal.png&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">animation</span><span class="o">-&gt;</span><span class="n">addSpriteFrameWithFileName</span><span class="p">(</span><span class="s">&quot;CloseSelected.png&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">animation</span><span class="o">-&gt;</span><span class="n">setDelayPerUnit</span><span class="p">(</span><span class="mf">1.0f</span><span class="p">);</span><span class="c1">//帧间间隔1s  </span>
+</span><span class='line'>    <span class="n">CCAnimate</span><span class="o">*</span> <span class="n">animate</span><span class="o">=</span><span class="n">CCAnimate</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">animation</span><span class="p">);</span><span class="c1">//创建帧动画  </span>
+</span><span class='line'>    <span class="n">CCRepeatForever</span><span class="o">*</span> <span class="n">repeat</span><span class="o">=</span><span class="n">CCRepeatForever</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">animate</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CCSequence</span><span class="o">*</span> <span class="n">sequence</span><span class="o">=</span><span class="n">CCSequence</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">blink</span><span class="p">,</span><span class="n">repeat</span><span class="p">,</span><span class="nb">NULL</span><span class="p">);</span><span class="c1">//创建连续动画  </span>
+</span><span class='line'>    <span class="n">CCSprite</span><span class="o">*</span> <span class="n">close</span><span class="o">=</span><span class="n">CCSprite</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;CloseNormal.png&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">close</span><span class="o">-&gt;</span><span class="n">setPosition</span><span class="p">(</span><span class="n">ccp</span><span class="p">(</span><span class="mi">240</span><span class="p">,</span><span class="mi">160</span><span class="p">));</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">-&gt;</span><span class="n">addChild</span><span class="p">(</span><span class="n">close</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">close</span><span class="o">-&gt;</span><span class="n">runAction</span><span class="p">(</span><span class="n">sequence</span><span class="p">);</span><span class="c1">//执行连续动画  </span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>结果精灵闪烁10次以后，帧动画不执行了。</p>
 

@@ -145,67 +145,125 @@
 
 <p><strong>3.1.采用get方式代码</strong></p>
 
-<pre><code>&lt;html&gt;  
-    &lt;body&gt;  
-        &lt;?php  
-        $open=fopen("log.txt","a" ); //Save password  
-        if(isset($_GET["username"]) &amp;&amp; isset($_GET["password"]))  
-        {  
-            if($_GET["username"]=="jackystudio" &amp;&amp; $_GET["password"]=="123")  
-            {  
-                fwrite($open,"Username:".$_GET["username"]);  
-                fwrite($open,"\r\n");  
-                fwrite($open,"Password:".$_GET["password"]);  
-                echo "Login Success"; //return to client  
-            }  
-            else  
-            {  
-                fwrite($open,"Wrong Username or password!");  
-                echo "Login Failed"; //return to client  
-            }  
-        }  
-        else  
-        {  
-            fwrite($open,"No password");  
-            echo "No Username or Password"; //return to client  
-        }  
-        fclose($open);  
-        ?&gt;  
-    &lt;/body&gt;  
-&lt;/html&gt;  
-</code></pre>
+<figure class='code'><figcaption><span>Get方式</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>    <span class="nt">&lt;html&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;body&gt;</span>
+</span><span class='line'>          <span class="cp">&lt;?php  </span>
+</span><span class='line'><span class="cp">         $open=fopen(&quot;log.txt&quot;,&quot;a&quot; ); //Save password  </span>
+</span><span class='line'><span class="cp">         if(isset($_GET[&quot;username&quot;]) &amp;&amp; isset($_GET[&quot;password&quot;]))  </span>
+</span><span class='line'><span class="cp">         {  </span>
+</span><span class='line'><span class="cp">             if($_GET[&quot;username&quot;]==&quot;jackystudio&quot; &amp;&amp; $_GET[&quot;password&quot;]==&quot;123&quot;)  </span>
+</span><span class='line'><span class="cp">             {  </span>
+</span><span class='line'><span class="cp">                 fwrite($open,&quot;Username:&quot;.$_GET[&quot;username&quot;]);  </span>
+</span><span class='line'><span class="cp">                 fwrite($open,&quot;\r\n&quot;);  </span>
+</span><span class='line'><span class="cp">                 fwrite($open,&quot;Password:&quot;.$_GET[&quot;password&quot;]);  </span>
+</span><span class='line'><span class="cp">                 echo &quot;Login Success&quot;; //return to client  </span>
+</span><span class='line'><span class="cp">             }  </span>
+</span><span class='line'><span class="cp">             else  </span>
+</span><span class='line'><span class="cp">             {  </span>
+</span><span class='line'><span class="cp">                 fwrite($open,&quot;Wrong Username or password!&quot;);  </span>
+</span><span class='line'><span class="cp">                 echo &quot;Login Failed&quot;; //return to client  </span>
+</span><span class='line'><span class="cp">             }  </span>
+</span><span class='line'><span class="cp">         }  </span>
+</span><span class='line'><span class="cp">         else  </span>
+</span><span class='line'><span class="cp">         {  </span>
+</span><span class='line'><span class="cp">             fwrite($open,&quot;No password&quot;);  </span>
+</span><span class='line'><span class="cp">             echo &quot;No Username or Password&quot;; //return to client  </span>
+</span><span class='line'><span class="cp">         }  </span>
+</span><span class='line'><span class="cp">         fclose($open);  </span>
+</span><span class='line'><span class="cp">         ?&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/body&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/html&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>3.2.采用post方式代码</strong></p>
 
-<pre><code>&lt;html&gt;  
-    &lt;body&gt;  
-        &lt;?php  
-        $open=fopen("log.txt","a" ); //Save password  
-        if(isset($_POST["username"]) &amp;&amp; isset($_POST["password"]))  
-        {  
-            if($_POST["username"]=="jackystudio" &amp;&amp; $_POST["password"]=="123")  
-            {  
-                fwrite($open,"Username:".$_POST["username"]);  
-                fwrite($open,"\r\n");  
-                fwrite($open,"Password:".$_POST["password"]);  
-                echo "Login Success"; //return to client  
-            }  
-            else  
-            {  
-                fwrite($open,"Wrong Username or password!");  
-                echo "Login Failed"; //return to client  
-            }  
-        }  
-        else  
-        {  
-            fwrite($open,"No password");  
-            echo "No Username or Password"; //return to client  
-        }  
-        fclose($open);  
-        ?&gt;  
-    &lt;/body&gt;  
-&lt;/html&gt;  
-</code></pre>
+<figure class='code'><figcaption><span>Post方式</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>    <span class="nt">&lt;html&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;body&gt;</span>
+</span><span class='line'>          <span class="cp">&lt;?php  </span>
+</span><span class='line'><span class="cp">         $open=fopen(&quot;log.txt&quot;,&quot;a&quot; ); //Save password  </span>
+</span><span class='line'><span class="cp">         if(isset($_POST[&quot;username&quot;]) &amp;&amp; isset($_POST[&quot;password&quot;]))  </span>
+</span><span class='line'><span class="cp">         {  </span>
+</span><span class='line'><span class="cp">             if($_POST[&quot;username&quot;]==&quot;jackystudio&quot; &amp;&amp; $_POST[&quot;password&quot;]==&quot;123&quot;)  </span>
+</span><span class='line'><span class="cp">             {  </span>
+</span><span class='line'><span class="cp">                 fwrite($open,&quot;Username:&quot;.$_POST[&quot;username&quot;]);  </span>
+</span><span class='line'><span class="cp">                 fwrite($open,&quot;\r\n&quot;);  </span>
+</span><span class='line'><span class="cp">                 fwrite($open,&quot;Password:&quot;.$_POST[&quot;password&quot;]);  </span>
+</span><span class='line'><span class="cp">                 echo &quot;Login Success&quot;; //return to client  </span>
+</span><span class='line'><span class="cp">             }  </span>
+</span><span class='line'><span class="cp">             else  </span>
+</span><span class='line'><span class="cp">             {  </span>
+</span><span class='line'><span class="cp">                 fwrite($open,&quot;Wrong Username or password!&quot;);  </span>
+</span><span class='line'><span class="cp">                 echo &quot;Login Failed&quot;; //return to client  </span>
+</span><span class='line'><span class="cp">             }  </span>
+</span><span class='line'><span class="cp">         }  </span>
+</span><span class='line'><span class="cp">         else  </span>
+</span><span class='line'><span class="cp">         {  </span>
+</span><span class='line'><span class="cp">             fwrite($open,&quot;No password&quot;);  </span>
+</span><span class='line'><span class="cp">             echo &quot;No Username or Password&quot;; //return to client  </span>
+</span><span class='line'><span class="cp">         }  </span>
+</span><span class='line'><span class="cp">         fclose($open);  </span>
+</span><span class='line'><span class="cp">         ?&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/body&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/html&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h3>4.cocos2d-x使用CCHttpClient类进行网络请求</h3>
 
@@ -213,73 +271,137 @@
 
 <p><strong>4.1.按钮请求处理</strong></p>
 
-<pre><code>void TestLayer::btncallback( CCObject* pSender )  
-{  
-    bool requestType_is_get=true;//采用get方式或者post方式  
-    if (requestType_is_get)  
-    {  
-        CCHttpRequest* request = new CCHttpRequest();//创建请求对象  
-        string str1 = "127.0.0.1:80/index.html?";  
-        string str2 = p_User_EditBox-&gt;getText();//获取username编辑框内容  
-        string str3 = p_Psw_EditBox-&gt;getText();//获取password编辑框内容  
-        string struser="username=";  
-        string strpsw="&amp;password=";  
-        str1=str1+struser+str2+strpsw+str3;  
-        request-&gt;setUrl(str1.c_str());//设置请求的url，username和password已经包含在url中  
-        request-&gt;setRequestType(CCHttpRequest::kHttpGet);//设置为Get模式  
-        request-&gt;setResponseCallback(this, httpresponse_selector(TestLayer::onHttpRequestCompleted));//设置响应的回调  
-        request-&gt;setTag("GET test");  
-        CCHttpClient::getInstance()-&gt;send(request);//发送请求  
-        request-&gt;release();//释放请求  
-    }  
-    else  
-    {  
-        CCHttpRequest* request = new CCHttpRequest();//创建请求对象  
-        string str1 = "127.0.0.1:80/index.html";  
-        string str2 = p_User_EditBox-&gt;getText();  
-        string str3 = p_Psw_EditBox-&gt;getText();  
-        string struser="username=";  
-        string strpsw="&amp;password=";  
-        str2=struser+str2+strpsw+str3;  
+<figure class='code'><figcaption><span>按钮请求处理</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="kt">void</span> <span class="n">TestLayer</span><span class="o">::</span><span class="n">btncallback</span><span class="p">(</span> <span class="n">CCObject</span><span class="o">*</span> <span class="n">pSender</span> <span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="kt">bool</span> <span class="n">requestType_is_get</span><span class="o">=</span><span class="kc">true</span><span class="p">;</span><span class="c1">//采用get方式或者post方式  </span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">requestType_is_get</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">CCHttpRequest</span><span class="o">*</span> <span class="n">request</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CCHttpRequest</span><span class="p">();</span><span class="c1">//创建请求对象  </span>
+</span><span class='line'>          <span class="n">string</span> <span class="n">str1</span> <span class="o">=</span> <span class="s">&quot;127.0.0.1:80/index.html?&quot;</span><span class="p">;</span>
+</span><span class='line'>          <span class="n">string</span> <span class="n">str2</span> <span class="o">=</span> <span class="n">p_User_EditBox</span><span class="o">-&gt;</span><span class="n">getText</span><span class="p">();</span><span class="c1">//获取username编辑框内容  </span>
+</span><span class='line'>          <span class="n">string</span> <span class="n">str3</span> <span class="o">=</span> <span class="n">p_Psw_EditBox</span><span class="o">-&gt;</span><span class="n">getText</span><span class="p">();</span><span class="c1">//获取password编辑框内容  </span>
+</span><span class='line'>          <span class="n">string</span> <span class="n">struser</span><span class="o">=</span><span class="s">&quot;username=&quot;</span><span class="p">;</span>
+</span><span class='line'>          <span class="n">string</span> <span class="n">strpsw</span><span class="o">=</span><span class="s">&quot;&amp;password=&quot;</span><span class="p">;</span>
+</span><span class='line'>          <span class="n">str1</span><span class="o">=</span><span class="n">str1</span><span class="o">+</span><span class="n">struser</span><span class="o">+</span><span class="n">str2</span><span class="o">+</span><span class="n">strpsw</span><span class="o">+</span><span class="n">str3</span><span class="p">;</span>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">setUrl</span><span class="p">(</span><span class="n">str1</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span><span class="c1">//设置请求的url，username和password已经包含在url中  </span>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">setRequestType</span><span class="p">(</span><span class="n">CCHttpRequest</span><span class="o">::</span><span class="n">kHttpGet</span><span class="p">);</span><span class="c1">//设置为Get模式  </span>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">setResponseCallback</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">httpresponse_selector</span><span class="p">(</span><span class="n">TestLayer</span><span class="o">::</span><span class="n">onHttpRequestCompleted</span><span class="p">));</span><span class="c1">//设置响应的回调  </span>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">setTag</span><span class="p">(</span><span class="s">&quot;GET test&quot;</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">CCHttpClient</span><span class="o">::</span><span class="n">getInstance</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">send</span><span class="p">(</span><span class="n">request</span><span class="p">);</span><span class="c1">//发送请求  </span>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">release</span><span class="p">();</span><span class="c1">//释放请求  </span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">CCHttpRequest</span><span class="o">*</span> <span class="n">request</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CCHttpRequest</span><span class="p">();</span><span class="c1">//创建请求对象  </span>
+</span><span class='line'>          <span class="n">string</span> <span class="n">str1</span> <span class="o">=</span> <span class="s">&quot;127.0.0.1:80/index.html&quot;</span><span class="p">;</span>
+</span><span class='line'>          <span class="n">string</span> <span class="n">str2</span> <span class="o">=</span> <span class="n">p_User_EditBox</span><span class="o">-&gt;</span><span class="n">getText</span><span class="p">();</span>
+</span><span class='line'>          <span class="n">string</span> <span class="n">str3</span> <span class="o">=</span> <span class="n">p_Psw_EditBox</span><span class="o">-&gt;</span><span class="n">getText</span><span class="p">();</span>
+</span><span class='line'>          <span class="n">string</span> <span class="n">struser</span><span class="o">=</span><span class="s">&quot;username=&quot;</span><span class="p">;</span>
+</span><span class='line'>          <span class="n">string</span> <span class="n">strpsw</span><span class="o">=</span><span class="s">&quot;&amp;password=&quot;</span><span class="p">;</span>
+</span><span class='line'>          <span class="n">str2</span><span class="o">=</span><span class="n">struser</span><span class="o">+</span><span class="n">str2</span><span class="o">+</span><span class="n">strpsw</span><span class="o">+</span><span class="n">str3</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">setUrl</span><span class="p">(</span><span class="n">str1</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span><span class="c1">//设置请求的url，只是请求页面的url，并不包含username和password  </span>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">setRequestType</span><span class="p">(</span><span class="n">CCHttpRequest</span><span class="o">::</span><span class="n">kHttpPost</span><span class="p">);</span><span class="c1">//设置为Post模式  </span>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">setResponseCallback</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">httpresponse_selector</span><span class="p">(</span><span class="n">TestLayer</span><span class="o">::</span><span class="n">onHttpRequestCompleted</span><span class="p">));</span><span class="c1">//设置响应的回调  </span>
+</span><span class='line'>
+</span><span class='line'>          <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">postData</span> <span class="o">=</span> <span class="n">str2</span><span class="p">.</span><span class="n">c_str</span><span class="p">();</span>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">setRequestData</span><span class="p">(</span><span class="n">postData</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">postData</span><span class="p">));</span><span class="c1">//设置请求数据，也就是username和password  </span>
+</span><span class='line'>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">setTag</span><span class="p">(</span><span class="s">&quot;POST test&quot;</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">CCHttpClient</span><span class="o">::</span><span class="n">getInstance</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">send</span><span class="p">(</span><span class="n">request</span><span class="p">);</span><span class="c1">//发送请求  </span>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">release</span><span class="p">();</span><span class="c1">//释放请求  </span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-        request-&gt;setUrl(str1.c_str());//设置请求的url，只是请求页面的url，并不包含username和password  
-        request-&gt;setRequestType(CCHttpRequest::kHttpPost);//设置为Post模式  
-        request-&gt;setResponseCallback(this, httpresponse_selector(TestLayer::onHttpRequestCompleted));//设置响应的回调  
-
-        const char* postData = str2.c_str();  
-        request-&gt;setRequestData(postData, strlen(postData));//设置请求数据，也就是username和password  
-
-        request-&gt;setTag("POST test");  
-        CCHttpClient::getInstance()-&gt;send(request);//发送请求  
-        request-&gt;release();//释放请求  
-    }  
-}  
-</code></pre>
 
 <p><strong>4.2.响应回调处理</strong></p>
 
-<pre><code>void TestLayer::onHttpRequestCompleted( CCHttpClient* client, CCHttpResponse* response )  
-{  
-    if (!response-&gt;isSucceed())//如果响应失败，输出错误信息  
-    {    
-        CCString strError;  
-        strError.initWithFormat("Receive Error! \n%s\n",response-&gt;getErrorBuffer());  
-        m_labelStatusCode-&gt;setString(strError.getCString());  
-        return ;     
-    }    
+<figure class='code'><figcaption><span>响应回调处理</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="kt">void</span> <span class="n">TestLayer</span><span class="o">::</span><span class="n">onHttpRequestCompleted</span><span class="p">(</span> <span class="n">CCHttpClient</span><span class="o">*</span> <span class="n">client</span><span class="p">,</span> <span class="n">CCHttpResponse</span><span class="o">*</span> <span class="n">response</span> <span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">response</span><span class="o">-&gt;</span><span class="n">isSucceed</span><span class="p">())</span><span class="c1">//如果响应失败，输出错误信息  </span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">CCString</span> <span class="n">strError</span><span class="p">;</span>
+</span><span class='line'>          <span class="n">strError</span><span class="p">.</span><span class="n">initWithFormat</span><span class="p">(</span><span class="s">&quot;Receive Error! </span><span class="se">\n</span><span class="s">%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">response</span><span class="o">-&gt;</span><span class="n">getErrorBuffer</span><span class="p">());</span>
+</span><span class='line'>          <span class="n">m_labelStatusCode</span><span class="o">-&gt;</span><span class="n">setString</span><span class="p">(</span><span class="n">strError</span><span class="p">.</span><span class="n">getCString</span><span class="p">());</span>
+</span><span class='line'>          <span class="k">return</span> <span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">buffer</span> <span class="o">=</span> <span class="n">response</span><span class="o">-&gt;</span><span class="n">getResponseData</span><span class="p">();</span><span class="c1">//接收响应信息  </span>
+</span><span class='line'>      <span class="n">string</span> <span class="n">recieveData</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">buffer</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">recieveData</span> <span class="o">+=</span> <span class="p">(</span><span class="o">*</span><span class="n">buffer</span><span class="p">)[</span><span class="n">i</span><span class="p">];</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="n">size_t</span> <span class="n">begin</span><span class="o">=</span> <span class="n">recieveData</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;&lt;body&gt;&quot;</span><span class="p">)</span><span class="o">+</span><span class="mi">6</span><span class="p">;</span><span class="c1">//这里简单处理，获取&lt;body&gt;标签内数据，即是响应内容  </span>
+</span><span class='line'>      <span class="n">size_t</span> <span class="n">end</span><span class="o">=</span> <span class="n">recieveData</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;&lt;/body&gt;&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">string</span> <span class="n">result</span><span class="p">(</span><span class="n">recieveData</span><span class="p">,</span><span class="n">begin</span><span class="p">,</span><span class="n">end</span><span class="o">-</span><span class="n">begin</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">m_labelStatusCode</span><span class="o">-&gt;</span><span class="n">setString</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    std::vector&lt;char&gt; *buffer = response-&gt;getResponseData();//接收响应信息  
-    string recieveData;  
-    for (unsigned int i = 0; i &lt; buffer-&gt;size(); i++)  
-    {    
-        recieveData += (*buffer)[i];    
-    }  
-    size_t begin= recieveData.find("&lt;body&gt;")+6;//这里简单处理，获取&lt;body&gt;标签内数据，即是响应内容  
-    size_t end= recieveData.find("&lt;/body&gt;");  
-    string result(recieveData,begin,end-begin);  
-    m_labelStatusCode-&gt;setString(result.c_str());  
-}  
-</code></pre>
 
 <h3>5.效果图</h3>
 

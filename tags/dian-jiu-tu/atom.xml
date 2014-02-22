@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 点九图 | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/dian-jiu-tu/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-02-08T16:22:04+08:00</updated>
+  <updated>2014-02-22T08:54:13+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -38,11 +38,17 @@
 
 <p>cocos2d-x采用CCScale9Sprite来处理点九图，CCScale9Sprite为扩展类，所以在使用前需加入如下声明。</p>
 
+<p>``` cpp 头文件和空间</p>
+
 <pre><code>#include "cocos-ext.h"  
 USING_NS_CC_EXT;
 </code></pre>
 
+<p>```</p>
+
 <p>CCScale9Sprite和CCSprite一样继承于CCNodeRGB，所以基本上可以像使用CCSprite一样使用CCScale9Sprite（有一点小差别CCSprite还继承了CCTextureProtocol接口）。以下用于创建一个二态点九图按钮。</p>
+
+<p>``` cpp 创建点九图按钮</p>
 
 <pre><code>CCScale9Sprite* confirmnormal=CCScale9Sprite::create("btn_style_alert_dialog_button_normal.9.png");//normal态  
 confirmnormal-&gt;setContentSize(CCSizeMake(100,70));//设置大小  
@@ -54,11 +60,15 @@ menu-&gt;setPosition(visibleSize.width/2,visibleSize.height/2);
 this-&gt;addChild(menu);  
 </code></pre>
 
+<p>```</p>
+
 <h3>2.输入框CCEditBox</h3>
 
 <p><strong>2.1.概述</strong></p>
 
 <p>CCEditBox也是cocos2d-x的扩展类，所以和上面一样要进行头文件包含和命名空间声明。另外由于要监控输入框的各种状态，所以还必须实现CCEditBoxDelegate类，该类声明了以下接口：</p>
+
+<p>``` cpp CCEditBoxDelegate接口</p>
 
 <pre><code>//当键盘弹出编辑框获得焦点时调用  
 virtual void editBoxEditingDidBegin(CCEditBox* editBox) {};  
@@ -70,9 +80,13 @@ virtual void editBoxTextChanged(CCEditBox* editBox, const std::string&amp; text)
 virtual void editBoxReturn(CCEditBox* editBox) = 0;  
 </code></pre>
 
+<p>```</p>
+
 <p><strong>2.2.使用</strong></p>
 
 <p>在TestLayer.cpp的init()中创建编辑框。</p>
+
+<p>``` cpp 编辑框的使用</p>
 
 <pre><code>//bool TestLayer::init()  
 CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
@@ -109,7 +123,11 @@ pEditBox-&gt;setDelegate(this);//当前类继承CCEditBoxDelegate类
 addChild(pEditBox);  
 </code></pre>
 
+<p>```</p>
+
 <p>当前类继承于CCEditBoxDelegate，实现其所有接口如下：</p>
+
+<p>``` cpp CCEditBoxDelegate接口实现</p>
 
 <pre><code>void TestLayer::editBoxEditingDidBegin(CCEditBox *editBox)  
 {  
@@ -128,6 +146,8 @@ void TestLayer::editBoxTextChanged(CCEditBox *editBox, const std::string &amp;te
     CCLOG("text changed");  
 }  
 </code></pre>
+
+<p>```</p>
 
 <h3>3.结合点九图按钮的使用，效果图如下：</h3>
 

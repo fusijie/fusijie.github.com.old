@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-02-08T16:22:04+08:00</updated>
+  <updated>2014-02-22T08:54:13+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -871,67 +871,125 @@
 
 <p><strong>3.1.采用get方式代码</strong></p>
 
-<pre><code>&lt;html&gt;  
-    &lt;body&gt;  
-        &lt;?php  
-        $open=fopen("log.txt","a" ); //Save password  
-        if(isset($_GET["username"]) &amp;&amp; isset($_GET["password"]))  
-        {  
-            if($_GET["username"]=="jackystudio" &amp;&amp; $_GET["password"]=="123")  
-            {  
-                fwrite($open,"Username:".$_GET["username"]);  
-                fwrite($open,"\r\n");  
-                fwrite($open,"Password:".$_GET["password"]);  
-                echo "Login Success"; //return to client  
-            }  
-            else  
-            {  
-                fwrite($open,"Wrong Username or password!");  
-                echo "Login Failed"; //return to client  
-            }  
-        }  
-        else  
-        {  
-            fwrite($open,"No password");  
-            echo "No Username or Password"; //return to client  
-        }  
-        fclose($open);  
-        ?&gt;  
-    &lt;/body&gt;  
-&lt;/html&gt;  
-</code></pre>
+<figure class='code'><figcaption><span>Get方式</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>    <span class="nt">&lt;html&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;body&gt;</span>
+</span><span class='line'>          <span class="cp">&lt;?php  </span>
+</span><span class='line'><span class="cp">         $open=fopen(&quot;log.txt&quot;,&quot;a&quot; ); //Save password  </span>
+</span><span class='line'><span class="cp">         if(isset($_GET[&quot;username&quot;]) &amp;&amp; isset($_GET[&quot;password&quot;]))  </span>
+</span><span class='line'><span class="cp">         {  </span>
+</span><span class='line'><span class="cp">             if($_GET[&quot;username&quot;]==&quot;jackystudio&quot; &amp;&amp; $_GET[&quot;password&quot;]==&quot;123&quot;)  </span>
+</span><span class='line'><span class="cp">             {  </span>
+</span><span class='line'><span class="cp">                 fwrite($open,&quot;Username:&quot;.$_GET[&quot;username&quot;]);  </span>
+</span><span class='line'><span class="cp">                 fwrite($open,&quot;\r\n&quot;);  </span>
+</span><span class='line'><span class="cp">                 fwrite($open,&quot;Password:&quot;.$_GET[&quot;password&quot;]);  </span>
+</span><span class='line'><span class="cp">                 echo &quot;Login Success&quot;; //return to client  </span>
+</span><span class='line'><span class="cp">             }  </span>
+</span><span class='line'><span class="cp">             else  </span>
+</span><span class='line'><span class="cp">             {  </span>
+</span><span class='line'><span class="cp">                 fwrite($open,&quot;Wrong Username or password!&quot;);  </span>
+</span><span class='line'><span class="cp">                 echo &quot;Login Failed&quot;; //return to client  </span>
+</span><span class='line'><span class="cp">             }  </span>
+</span><span class='line'><span class="cp">         }  </span>
+</span><span class='line'><span class="cp">         else  </span>
+</span><span class='line'><span class="cp">         {  </span>
+</span><span class='line'><span class="cp">             fwrite($open,&quot;No password&quot;);  </span>
+</span><span class='line'><span class="cp">             echo &quot;No Username or Password&quot;; //return to client  </span>
+</span><span class='line'><span class="cp">         }  </span>
+</span><span class='line'><span class="cp">         fclose($open);  </span>
+</span><span class='line'><span class="cp">         ?&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/body&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/html&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>3.2.采用post方式代码</strong></p>
 
-<pre><code>&lt;html&gt;  
-    &lt;body&gt;  
-        &lt;?php  
-        $open=fopen("log.txt","a" ); //Save password  
-        if(isset($_POST["username"]) &amp;&amp; isset($_POST["password"]))  
-        {  
-            if($_POST["username"]=="jackystudio" &amp;&amp; $_POST["password"]=="123")  
-            {  
-                fwrite($open,"Username:".$_POST["username"]);  
-                fwrite($open,"\r\n");  
-                fwrite($open,"Password:".$_POST["password"]);  
-                echo "Login Success"; //return to client  
-            }  
-            else  
-            {  
-                fwrite($open,"Wrong Username or password!");  
-                echo "Login Failed"; //return to client  
-            }  
-        }  
-        else  
-        {  
-            fwrite($open,"No password");  
-            echo "No Username or Password"; //return to client  
-        }  
-        fclose($open);  
-        ?&gt;  
-    &lt;/body&gt;  
-&lt;/html&gt;  
-</code></pre>
+<figure class='code'><figcaption><span>Post方式</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>    <span class="nt">&lt;html&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;body&gt;</span>
+</span><span class='line'>          <span class="cp">&lt;?php  </span>
+</span><span class='line'><span class="cp">         $open=fopen(&quot;log.txt&quot;,&quot;a&quot; ); //Save password  </span>
+</span><span class='line'><span class="cp">         if(isset($_POST[&quot;username&quot;]) &amp;&amp; isset($_POST[&quot;password&quot;]))  </span>
+</span><span class='line'><span class="cp">         {  </span>
+</span><span class='line'><span class="cp">             if($_POST[&quot;username&quot;]==&quot;jackystudio&quot; &amp;&amp; $_POST[&quot;password&quot;]==&quot;123&quot;)  </span>
+</span><span class='line'><span class="cp">             {  </span>
+</span><span class='line'><span class="cp">                 fwrite($open,&quot;Username:&quot;.$_POST[&quot;username&quot;]);  </span>
+</span><span class='line'><span class="cp">                 fwrite($open,&quot;\r\n&quot;);  </span>
+</span><span class='line'><span class="cp">                 fwrite($open,&quot;Password:&quot;.$_POST[&quot;password&quot;]);  </span>
+</span><span class='line'><span class="cp">                 echo &quot;Login Success&quot;; //return to client  </span>
+</span><span class='line'><span class="cp">             }  </span>
+</span><span class='line'><span class="cp">             else  </span>
+</span><span class='line'><span class="cp">             {  </span>
+</span><span class='line'><span class="cp">                 fwrite($open,&quot;Wrong Username or password!&quot;);  </span>
+</span><span class='line'><span class="cp">                 echo &quot;Login Failed&quot;; //return to client  </span>
+</span><span class='line'><span class="cp">             }  </span>
+</span><span class='line'><span class="cp">         }  </span>
+</span><span class='line'><span class="cp">         else  </span>
+</span><span class='line'><span class="cp">         {  </span>
+</span><span class='line'><span class="cp">             fwrite($open,&quot;No password&quot;);  </span>
+</span><span class='line'><span class="cp">             echo &quot;No Username or Password&quot;; //return to client  </span>
+</span><span class='line'><span class="cp">         }  </span>
+</span><span class='line'><span class="cp">         fclose($open);  </span>
+</span><span class='line'><span class="cp">         ?&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;/body&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/html&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h3>4.cocos2d-x使用CCHttpClient类进行网络请求</h3>
 
@@ -939,73 +997,137 @@
 
 <p><strong>4.1.按钮请求处理</strong></p>
 
-<pre><code>void TestLayer::btncallback( CCObject* pSender )  
-{  
-    bool requestType_is_get=true;//采用get方式或者post方式  
-    if (requestType_is_get)  
-    {  
-        CCHttpRequest* request = new CCHttpRequest();//创建请求对象  
-        string str1 = "127.0.0.1:80/index.html?";  
-        string str2 = p_User_EditBox-&gt;getText();//获取username编辑框内容  
-        string str3 = p_Psw_EditBox-&gt;getText();//获取password编辑框内容  
-        string struser="username=";  
-        string strpsw="&amp;password=";  
-        str1=str1+struser+str2+strpsw+str3;  
-        request-&gt;setUrl(str1.c_str());//设置请求的url，username和password已经包含在url中  
-        request-&gt;setRequestType(CCHttpRequest::kHttpGet);//设置为Get模式  
-        request-&gt;setResponseCallback(this, httpresponse_selector(TestLayer::onHttpRequestCompleted));//设置响应的回调  
-        request-&gt;setTag("GET test");  
-        CCHttpClient::getInstance()-&gt;send(request);//发送请求  
-        request-&gt;release();//释放请求  
-    }  
-    else  
-    {  
-        CCHttpRequest* request = new CCHttpRequest();//创建请求对象  
-        string str1 = "127.0.0.1:80/index.html";  
-        string str2 = p_User_EditBox-&gt;getText();  
-        string str3 = p_Psw_EditBox-&gt;getText();  
-        string struser="username=";  
-        string strpsw="&amp;password=";  
-        str2=struser+str2+strpsw+str3;  
+<figure class='code'><figcaption><span>按钮请求处理</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="kt">void</span> <span class="n">TestLayer</span><span class="o">::</span><span class="n">btncallback</span><span class="p">(</span> <span class="n">CCObject</span><span class="o">*</span> <span class="n">pSender</span> <span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="kt">bool</span> <span class="n">requestType_is_get</span><span class="o">=</span><span class="kc">true</span><span class="p">;</span><span class="c1">//采用get方式或者post方式  </span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">requestType_is_get</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">CCHttpRequest</span><span class="o">*</span> <span class="n">request</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CCHttpRequest</span><span class="p">();</span><span class="c1">//创建请求对象  </span>
+</span><span class='line'>          <span class="n">string</span> <span class="n">str1</span> <span class="o">=</span> <span class="s">&quot;127.0.0.1:80/index.html?&quot;</span><span class="p">;</span>
+</span><span class='line'>          <span class="n">string</span> <span class="n">str2</span> <span class="o">=</span> <span class="n">p_User_EditBox</span><span class="o">-&gt;</span><span class="n">getText</span><span class="p">();</span><span class="c1">//获取username编辑框内容  </span>
+</span><span class='line'>          <span class="n">string</span> <span class="n">str3</span> <span class="o">=</span> <span class="n">p_Psw_EditBox</span><span class="o">-&gt;</span><span class="n">getText</span><span class="p">();</span><span class="c1">//获取password编辑框内容  </span>
+</span><span class='line'>          <span class="n">string</span> <span class="n">struser</span><span class="o">=</span><span class="s">&quot;username=&quot;</span><span class="p">;</span>
+</span><span class='line'>          <span class="n">string</span> <span class="n">strpsw</span><span class="o">=</span><span class="s">&quot;&amp;password=&quot;</span><span class="p">;</span>
+</span><span class='line'>          <span class="n">str1</span><span class="o">=</span><span class="n">str1</span><span class="o">+</span><span class="n">struser</span><span class="o">+</span><span class="n">str2</span><span class="o">+</span><span class="n">strpsw</span><span class="o">+</span><span class="n">str3</span><span class="p">;</span>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">setUrl</span><span class="p">(</span><span class="n">str1</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span><span class="c1">//设置请求的url，username和password已经包含在url中  </span>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">setRequestType</span><span class="p">(</span><span class="n">CCHttpRequest</span><span class="o">::</span><span class="n">kHttpGet</span><span class="p">);</span><span class="c1">//设置为Get模式  </span>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">setResponseCallback</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">httpresponse_selector</span><span class="p">(</span><span class="n">TestLayer</span><span class="o">::</span><span class="n">onHttpRequestCompleted</span><span class="p">));</span><span class="c1">//设置响应的回调  </span>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">setTag</span><span class="p">(</span><span class="s">&quot;GET test&quot;</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">CCHttpClient</span><span class="o">::</span><span class="n">getInstance</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">send</span><span class="p">(</span><span class="n">request</span><span class="p">);</span><span class="c1">//发送请求  </span>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">release</span><span class="p">();</span><span class="c1">//释放请求  </span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">CCHttpRequest</span><span class="o">*</span> <span class="n">request</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CCHttpRequest</span><span class="p">();</span><span class="c1">//创建请求对象  </span>
+</span><span class='line'>          <span class="n">string</span> <span class="n">str1</span> <span class="o">=</span> <span class="s">&quot;127.0.0.1:80/index.html&quot;</span><span class="p">;</span>
+</span><span class='line'>          <span class="n">string</span> <span class="n">str2</span> <span class="o">=</span> <span class="n">p_User_EditBox</span><span class="o">-&gt;</span><span class="n">getText</span><span class="p">();</span>
+</span><span class='line'>          <span class="n">string</span> <span class="n">str3</span> <span class="o">=</span> <span class="n">p_Psw_EditBox</span><span class="o">-&gt;</span><span class="n">getText</span><span class="p">();</span>
+</span><span class='line'>          <span class="n">string</span> <span class="n">struser</span><span class="o">=</span><span class="s">&quot;username=&quot;</span><span class="p">;</span>
+</span><span class='line'>          <span class="n">string</span> <span class="n">strpsw</span><span class="o">=</span><span class="s">&quot;&amp;password=&quot;</span><span class="p">;</span>
+</span><span class='line'>          <span class="n">str2</span><span class="o">=</span><span class="n">struser</span><span class="o">+</span><span class="n">str2</span><span class="o">+</span><span class="n">strpsw</span><span class="o">+</span><span class="n">str3</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">setUrl</span><span class="p">(</span><span class="n">str1</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span><span class="c1">//设置请求的url，只是请求页面的url，并不包含username和password  </span>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">setRequestType</span><span class="p">(</span><span class="n">CCHttpRequest</span><span class="o">::</span><span class="n">kHttpPost</span><span class="p">);</span><span class="c1">//设置为Post模式  </span>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">setResponseCallback</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">httpresponse_selector</span><span class="p">(</span><span class="n">TestLayer</span><span class="o">::</span><span class="n">onHttpRequestCompleted</span><span class="p">));</span><span class="c1">//设置响应的回调  </span>
+</span><span class='line'>
+</span><span class='line'>          <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">postData</span> <span class="o">=</span> <span class="n">str2</span><span class="p">.</span><span class="n">c_str</span><span class="p">();</span>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">setRequestData</span><span class="p">(</span><span class="n">postData</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">postData</span><span class="p">));</span><span class="c1">//设置请求数据，也就是username和password  </span>
+</span><span class='line'>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">setTag</span><span class="p">(</span><span class="s">&quot;POST test&quot;</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">CCHttpClient</span><span class="o">::</span><span class="n">getInstance</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">send</span><span class="p">(</span><span class="n">request</span><span class="p">);</span><span class="c1">//发送请求  </span>
+</span><span class='line'>          <span class="n">request</span><span class="o">-&gt;</span><span class="n">release</span><span class="p">();</span><span class="c1">//释放请求  </span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-        request-&gt;setUrl(str1.c_str());//设置请求的url，只是请求页面的url，并不包含username和password  
-        request-&gt;setRequestType(CCHttpRequest::kHttpPost);//设置为Post模式  
-        request-&gt;setResponseCallback(this, httpresponse_selector(TestLayer::onHttpRequestCompleted));//设置响应的回调  
-
-        const char* postData = str2.c_str();  
-        request-&gt;setRequestData(postData, strlen(postData));//设置请求数据，也就是username和password  
-
-        request-&gt;setTag("POST test");  
-        CCHttpClient::getInstance()-&gt;send(request);//发送请求  
-        request-&gt;release();//释放请求  
-    }  
-}  
-</code></pre>
 
 <p><strong>4.2.响应回调处理</strong></p>
 
-<pre><code>void TestLayer::onHttpRequestCompleted( CCHttpClient* client, CCHttpResponse* response )  
-{  
-    if (!response-&gt;isSucceed())//如果响应失败，输出错误信息  
-    {    
-        CCString strError;  
-        strError.initWithFormat("Receive Error! \n%s\n",response-&gt;getErrorBuffer());  
-        m_labelStatusCode-&gt;setString(strError.getCString());  
-        return ;     
-    }    
+<figure class='code'><figcaption><span>响应回调处理</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="kt">void</span> <span class="n">TestLayer</span><span class="o">::</span><span class="n">onHttpRequestCompleted</span><span class="p">(</span> <span class="n">CCHttpClient</span><span class="o">*</span> <span class="n">client</span><span class="p">,</span> <span class="n">CCHttpResponse</span><span class="o">*</span> <span class="n">response</span> <span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">response</span><span class="o">-&gt;</span><span class="n">isSucceed</span><span class="p">())</span><span class="c1">//如果响应失败，输出错误信息  </span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">CCString</span> <span class="n">strError</span><span class="p">;</span>
+</span><span class='line'>          <span class="n">strError</span><span class="p">.</span><span class="n">initWithFormat</span><span class="p">(</span><span class="s">&quot;Receive Error! </span><span class="se">\n</span><span class="s">%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">response</span><span class="o">-&gt;</span><span class="n">getErrorBuffer</span><span class="p">());</span>
+</span><span class='line'>          <span class="n">m_labelStatusCode</span><span class="o">-&gt;</span><span class="n">setString</span><span class="p">(</span><span class="n">strError</span><span class="p">.</span><span class="n">getCString</span><span class="p">());</span>
+</span><span class='line'>          <span class="k">return</span> <span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">buffer</span> <span class="o">=</span> <span class="n">response</span><span class="o">-&gt;</span><span class="n">getResponseData</span><span class="p">();</span><span class="c1">//接收响应信息  </span>
+</span><span class='line'>      <span class="n">string</span> <span class="n">recieveData</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">buffer</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">recieveData</span> <span class="o">+=</span> <span class="p">(</span><span class="o">*</span><span class="n">buffer</span><span class="p">)[</span><span class="n">i</span><span class="p">];</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="n">size_t</span> <span class="n">begin</span><span class="o">=</span> <span class="n">recieveData</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;&lt;body&gt;&quot;</span><span class="p">)</span><span class="o">+</span><span class="mi">6</span><span class="p">;</span><span class="c1">//这里简单处理，获取&lt;body&gt;标签内数据，即是响应内容  </span>
+</span><span class='line'>      <span class="n">size_t</span> <span class="n">end</span><span class="o">=</span> <span class="n">recieveData</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;&lt;/body&gt;&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">string</span> <span class="n">result</span><span class="p">(</span><span class="n">recieveData</span><span class="p">,</span><span class="n">begin</span><span class="p">,</span><span class="n">end</span><span class="o">-</span><span class="n">begin</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">m_labelStatusCode</span><span class="o">-&gt;</span><span class="n">setString</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    std::vector&lt;char&gt; *buffer = response-&gt;getResponseData();//接收响应信息  
-    string recieveData;  
-    for (unsigned int i = 0; i &lt; buffer-&gt;size(); i++)  
-    {    
-        recieveData += (*buffer)[i];    
-    }  
-    size_t begin= recieveData.find("&lt;body&gt;")+6;//这里简单处理，获取&lt;body&gt;标签内数据，即是响应内容  
-    size_t end= recieveData.find("&lt;/body&gt;");  
-    string result(recieveData,begin,end-begin);  
-    m_labelStatusCode-&gt;setString(result.c_str());  
-}  
-</code></pre>
 
 <h3>5.效果图</h3>
 
@@ -1057,21 +1179,33 @@
 
 <p>cocos2d-x采用CCScale9Sprite来处理点九图，CCScale9Sprite为扩展类，所以在使用前需加入如下声明。</p>
 
-<pre><code>#include "cocos-ext.h"  
-USING_NS_CC_EXT;
-</code></pre>
+<figure class='code'><figcaption><span>头文件和空间</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="err">#</span><span class="n">include</span> <span class="s">&quot;cocos-ext.h&quot;</span>
+</span><span class='line'>  <span class="n">USING_NS_CC_EXT</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>CCScale9Sprite和CCSprite一样继承于CCNodeRGB，所以基本上可以像使用CCSprite一样使用CCScale9Sprite（有一点小差别CCSprite还继承了CCTextureProtocol接口）。以下用于创建一个二态点九图按钮。</p>
 
-<pre><code>CCScale9Sprite* confirmnormal=CCScale9Sprite::create("btn_style_alert_dialog_button_normal.9.png");//normal态  
-confirmnormal-&gt;setContentSize(CCSizeMake(100,70));//设置大小  
-CCScale9Sprite* confirmpressd=CCScale9Sprite::create("btn_style_alert_dialog_button_pressed.9.png");//pressd态  
-confirmpressd-&gt;setContentSize(CCSizeMake(100,70));//设置大小  
-CCMenuItemSprite* menuitem=CCMenuItemSprite::create(confirmnormal,confirmpressd,this,menu_selector(TestLayer::btncallback));  
-CCMenu* menu=CCMenu::create(menuitem,NULL);//创建menu  
-menu-&gt;setPosition(visibleSize.width/2,visibleSize.height/2);  
-this-&gt;addChild(menu);  
-</code></pre>
+<figure class='code'><figcaption><span>创建点九图按钮</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="n">CCScale9Sprite</span><span class="o">*</span> <span class="n">confirmnormal</span><span class="o">=</span><span class="n">CCScale9Sprite</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;btn_style_alert_dialog_button_normal.9.png&quot;</span><span class="p">);</span><span class="c1">//normal态  </span>
+</span><span class='line'>    <span class="n">confirmnormal</span><span class="o">-&gt;</span><span class="n">setContentSize</span><span class="p">(</span><span class="n">CCSizeMake</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">70</span><span class="p">));</span><span class="c1">//设置大小  </span>
+</span><span class='line'>    <span class="n">CCScale9Sprite</span><span class="o">*</span> <span class="n">confirmpressd</span><span class="o">=</span><span class="n">CCScale9Sprite</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;btn_style_alert_dialog_button_pressed.9.png&quot;</span><span class="p">);</span><span class="c1">//pressd态  </span>
+</span><span class='line'>    <span class="n">confirmpressd</span><span class="o">-&gt;</span><span class="n">setContentSize</span><span class="p">(</span><span class="n">CCSizeMake</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">70</span><span class="p">));</span><span class="c1">//设置大小  </span>
+</span><span class='line'>    <span class="n">CCMenuItemSprite</span><span class="o">*</span> <span class="n">menuitem</span><span class="o">=</span><span class="n">CCMenuItemSprite</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">confirmnormal</span><span class="p">,</span><span class="n">confirmpressd</span><span class="p">,</span><span class="k">this</span><span class="p">,</span><span class="n">menu_selector</span><span class="p">(</span><span class="n">TestLayer</span><span class="o">::</span><span class="n">btncallback</span><span class="p">));</span>
+</span><span class='line'>    <span class="n">CCMenu</span><span class="o">*</span> <span class="n">menu</span><span class="o">=</span><span class="n">CCMenu</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">menuitem</span><span class="p">,</span><span class="nb">NULL</span><span class="p">);</span><span class="c1">//创建menu  </span>
+</span><span class='line'>    <span class="n">menu</span><span class="o">-&gt;</span><span class="n">setPosition</span><span class="p">(</span><span class="n">visibleSize</span><span class="p">.</span><span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="n">visibleSize</span><span class="p">.</span><span class="n">height</span><span class="o">/</span><span class="mi">2</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">-&gt;</span><span class="n">addChild</span><span class="p">(</span><span class="n">menu</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h3>2.输入框CCEditBox</h3>
 
@@ -1079,74 +1213,134 @@ this-&gt;addChild(menu);
 
 <p>CCEditBox也是cocos2d-x的扩展类，所以和上面一样要进行头文件包含和命名空间声明。另外由于要监控输入框的各种状态，所以还必须实现CCEditBoxDelegate类，该类声明了以下接口：</p>
 
-<pre><code>//当键盘弹出编辑框获得焦点时调用  
-virtual void editBoxEditingDidBegin(CCEditBox* editBox) {};  
-//当键盘消失编辑框失去焦点时调用  
-virtual void editBoxEditingDidEnd(CCEditBox* editBox) {};  
-//当编辑框文本改变时调用  
-virtual void editBoxTextChanged(CCEditBox* editBox, const std::string&amp; text) {};  
-//当返回键按下时或者点击了键盘以外的区域时调用  
-virtual void editBoxReturn(CCEditBox* editBox) = 0;  
-</code></pre>
+<figure class='code'><figcaption><span>CCEditBoxDelegate接口</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//当键盘弹出编辑框获得焦点时调用  </span>
+</span><span class='line'>    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">editBoxEditingDidBegin</span><span class="p">(</span><span class="n">CCEditBox</span><span class="o">*</span> <span class="n">editBox</span><span class="p">)</span> <span class="p">{};</span>
+</span><span class='line'>    <span class="c1">//当键盘消失编辑框失去焦点时调用  </span>
+</span><span class='line'>    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">editBoxEditingDidEnd</span><span class="p">(</span><span class="n">CCEditBox</span><span class="o">*</span> <span class="n">editBox</span><span class="p">)</span> <span class="p">{};</span>
+</span><span class='line'>    <span class="c1">//当编辑框文本改变时调用  </span>
+</span><span class='line'>    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">editBoxTextChanged</span><span class="p">(</span><span class="n">CCEditBox</span><span class="o">*</span> <span class="n">editBox</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">text</span><span class="p">)</span> <span class="p">{};</span>
+</span><span class='line'>    <span class="c1">//当返回键按下时或者点击了键盘以外的区域时调用  </span>
+</span><span class='line'>    <span class="k">virtual</span> <span class="kt">void</span> <span class="n">editBoxReturn</span><span class="p">(</span><span class="n">CCEditBox</span><span class="o">*</span> <span class="n">editBox</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>2.2.使用</strong></p>
 
 <p>在TestLayer.cpp的init()中创建编辑框。</p>
 
-<pre><code>//bool TestLayer::init()  
-CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+<figure class='code'><figcaption><span>编辑框的使用</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//bool TestLayer::init()  </span>
+</span><span class='line'>    <span class="n">CCSize</span> <span class="n">visibleSize</span><span class="o">=</span><span class="n">CCDirector</span><span class="o">::</span><span class="n">sharedDirector</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">getVisibleSize</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">pEditBox</span> <span class="o">=</span> <span class="n">CCEditBox</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">CCSizeMake</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span><span class="mi">50</span><span class="p">),</span> <span class="n">CCScale9Sprite</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;login_edit_normal.9.png&quot;</span><span class="p">));</span>
+</span><span class='line'>    <span class="n">pEditBox</span><span class="o">-&gt;</span><span class="n">setPosition</span><span class="p">(</span><span class="n">ccp</span><span class="p">(</span><span class="n">visibleSize</span><span class="p">.</span><span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">visibleSize</span><span class="p">.</span><span class="n">height</span><span class="o">*</span><span class="mi">3</span><span class="o">/</span><span class="mi">4</span><span class="p">));</span>
+</span><span class='line'>    <span class="n">pEditBox</span><span class="o">-&gt;</span><span class="n">setFontColor</span><span class="p">(</span><span class="n">ccRED</span><span class="p">);</span><span class="c1">//设置字体颜色  </span>
+</span><span class='line'>    <span class="n">pEditBox</span><span class="o">-&gt;</span><span class="n">setPlaceHolder</span><span class="p">(</span><span class="s">&quot;please input:&quot;</span><span class="p">);</span><span class="c1">//设置预置文本  </span>
+</span><span class='line'>    <span class="n">pEditBox</span><span class="o">-&gt;</span><span class="n">setMaxLength</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span><span class="c1">//设置最大长度  </span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//  kEditBoxInputModeAny: 开启任何文本的输入键盘,包括换行  </span>
+</span><span class='line'>    <span class="c1">//  kEditBoxInputModeEmailAddr:   开启 邮件地址 输入类型键盘  </span>
+</span><span class='line'>    <span class="c1">//  kEditBoxInputModeNumeric: 开启 数字符号 输入类型键盘  </span>
+</span><span class='line'>    <span class="c1">//  kEditBoxInputModePhoneNumber: 开启 电话号码 输入类型键盘  </span>
+</span><span class='line'>    <span class="c1">//  kEditBoxInputModeUrl: 开启 URL 输入类型键盘  </span>
+</span><span class='line'>    <span class="c1">//  kEditBoxInputModeDecimal: 开启 数字 输入类型键盘，允许小数点  </span>
+</span><span class='line'>    <span class="c1">//  kEditBoxInputModeSingleLine:  开启任何文本的输入键盘,不包括换行  </span>
+</span><span class='line'>    <span class="n">pEditBox</span><span class="o">-&gt;</span><span class="n">setInputMode</span><span class="p">(</span><span class="n">kEditBoxInputModeAny</span><span class="p">);</span><span class="c1">//设置输入类型  </span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//kEditBoxInputFlagPassword:密码形式输入  </span>
+</span><span class='line'>    <span class="c1">//kEditBoxInputFlagSensitive:   敏感数据输入、存储输入方案且预测自动完成  </span>
+</span><span class='line'>    <span class="c1">//kEditBoxInputFlagInitialCapsWord: 每个单词首字母大写,并且伴有提示  </span>
+</span><span class='line'>    <span class="c1">//kEditBoxInputFlagInitialCapsSentence: 第一句首字母大写,并且伴有提示  </span>
+</span><span class='line'>    <span class="c1">//kEditBoxInputFlagInitialCapsAllCharacters:所有字符自动大写  </span>
+</span><span class='line'>    <span class="n">pEditBox</span><span class="o">-&gt;</span><span class="n">setInputFlag</span><span class="p">(</span><span class="n">kEditBoxInputFlagPassword</span><span class="p">);</span><span class="c1">//设置输入标志位  </span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//  kKeyboardReturnTypeDefault:  默认使用键盘return 类型  </span>
+</span><span class='line'>    <span class="c1">//  kKeyboardReturnTypeDone: 默认使用键盘return类型为“Done”字样  </span>
+</span><span class='line'>    <span class="c1">//  kKeyboardReturnTypeSend: 默认使用键盘return类型为“Send”字样  </span>
+</span><span class='line'>    <span class="c1">//  kKeyboardReturnTypeSearch:   默认使用键盘return类型为“Search”字样  </span>
+</span><span class='line'>    <span class="c1">//  kKeyboardReturnTypeGo:   默认使用键盘return类型为“Go”字样  </span>
+</span><span class='line'>    <span class="n">pEditBox</span><span class="o">-&gt;</span><span class="n">setReturnType</span><span class="p">(</span><span class="n">kKeyboardReturnTypeDone</span><span class="p">);</span><span class="c1">//设置返回类型  </span>
+</span><span class='line'>    <span class="n">pEditBox</span><span class="o">-&gt;</span><span class="n">setDelegate</span><span class="p">(</span><span class="k">this</span><span class="p">);</span><span class="c1">//当前类继承CCEditBoxDelegate类  </span>
+</span><span class='line'>    <span class="n">addChild</span><span class="p">(</span><span class="n">pEditBox</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
-pEditBox = CCEditBox::create(CCSizeMake(250,50), CCScale9Sprite::create("login_edit_normal.9.png"));  
-pEditBox-&gt;setPosition(ccp(visibleSize.width/2, visibleSize.height*3/4));  
-pEditBox-&gt;setFontColor(ccRED);//设置字体颜色  
-pEditBox-&gt;setPlaceHolder("please input:");//设置预置文本  
-pEditBox-&gt;setMaxLength(8);//设置最大长度  
-
-//  kEditBoxInputModeAny: 开启任何文本的输入键盘,包括换行  
-//  kEditBoxInputModeEmailAddr:   开启 邮件地址 输入类型键盘  
-//  kEditBoxInputModeNumeric: 开启 数字符号 输入类型键盘  
-//  kEditBoxInputModePhoneNumber: 开启 电话号码 输入类型键盘  
-//  kEditBoxInputModeUrl: 开启 URL 输入类型键盘  
-//  kEditBoxInputModeDecimal: 开启 数字 输入类型键盘，允许小数点  
-//  kEditBoxInputModeSingleLine:  开启任何文本的输入键盘,不包括换行  
-pEditBox-&gt;setInputMode(kEditBoxInputModeAny);//设置输入类型  
-
-//kEditBoxInputFlagPassword:密码形式输入  
-//kEditBoxInputFlagSensitive:   敏感数据输入、存储输入方案且预测自动完成  
-//kEditBoxInputFlagInitialCapsWord: 每个单词首字母大写,并且伴有提示  
-//kEditBoxInputFlagInitialCapsSentence: 第一句首字母大写,并且伴有提示  
-//kEditBoxInputFlagInitialCapsAllCharacters:所有字符自动大写  
-pEditBox-&gt;setInputFlag(kEditBoxInputFlagPassword);//设置输入标志位  
-
-//  kKeyboardReturnTypeDefault:  默认使用键盘return 类型  
-//  kKeyboardReturnTypeDone: 默认使用键盘return类型为“Done”字样  
-//  kKeyboardReturnTypeSend: 默认使用键盘return类型为“Send”字样  
-//  kKeyboardReturnTypeSearch:   默认使用键盘return类型为“Search”字样  
-//  kKeyboardReturnTypeGo:   默认使用键盘return类型为“Go”字样  
-pEditBox-&gt;setReturnType(kKeyboardReturnTypeDone);//设置返回类型  
-pEditBox-&gt;setDelegate(this);//当前类继承CCEditBoxDelegate类  
-addChild(pEditBox);  
-</code></pre>
 
 <p>当前类继承于CCEditBoxDelegate，实现其所有接口如下：</p>
 
-<pre><code>void TestLayer::editBoxEditingDidBegin(CCEditBox *editBox)  
-{  
-    CCLOG("start edit");  
-}  
-void TestLayer::editBoxEditingDidEnd(CCEditBox *editBox)  
-{  
-    CCLOG("end edit");  
-}  
-void TestLayer::editBoxReturn(CCEditBox *editBox)  
-{  
-    CCLOG("editbox return");  
-}  
-void TestLayer::editBoxTextChanged(CCEditBox *editBox, const std::string &amp;text)  
-{  
-    CCLOG("text changed");  
-}  
-</code></pre>
+<figure class='code'><figcaption><span>CCEditBoxDelegate接口实现</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="kt">void</span> <span class="n">TestLayer</span><span class="o">::</span><span class="n">editBoxEditingDidBegin</span><span class="p">(</span><span class="n">CCEditBox</span> <span class="o">*</span><span class="n">editBox</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="n">CCLOG</span><span class="p">(</span><span class="s">&quot;start edit&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">TestLayer</span><span class="o">::</span><span class="n">editBoxEditingDidEnd</span><span class="p">(</span><span class="n">CCEditBox</span> <span class="o">*</span><span class="n">editBox</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="n">CCLOG</span><span class="p">(</span><span class="s">&quot;end edit&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">TestLayer</span><span class="o">::</span><span class="n">editBoxReturn</span><span class="p">(</span><span class="n">CCEditBox</span> <span class="o">*</span><span class="n">editBox</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="n">CCLOG</span><span class="p">(</span><span class="s">&quot;editbox return&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">TestLayer</span><span class="o">::</span><span class="n">editBoxTextChanged</span><span class="p">(</span><span class="n">CCEditBox</span> <span class="o">*</span><span class="n">editBox</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="o">&amp;</span><span class="n">text</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="n">CCLOG</span><span class="p">(</span><span class="s">&quot;text changed&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h3>3.结合点九图按钮的使用，效果图如下：</h3>
 
@@ -1188,77 +1382,143 @@ void TestLayer::editBoxTextChanged(CCEditBox *editBox, const std::string &amp;te
 
 <p>CCClipingNode的使用还是比较简单的，至于显示底板还是模版，alpha值的设定，这些也不好说清楚，自己多试几次就知道是什么意思该怎么用了。</p>
 
-<pre><code>//不带模版地创建一个裁剪节点  
-static CCClippingNode* create();  
+<figure class='code'><figcaption><span>CCClipingNode API</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//不带模版地创建一个裁剪节点  </span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">CCClippingNode</span><span class="o">*</span> <span class="n">create</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//使用一个节点作为模版创建裁剪节点  </span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">CCClippingNode</span><span class="o">*</span> <span class="n">create</span><span class="p">(</span><span class="n">CCNode</span> <span class="o">*</span><span class="n">pStencil</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//不带模版地初始化一个裁剪节点  </span>
+</span><span class='line'>    <span class="k">virtual</span> <span class="kt">bool</span> <span class="n">init</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//使用一个节点作为模版初始化裁剪节点  </span>
+</span><span class='line'>    <span class="k">virtual</span> <span class="kt">bool</span> <span class="n">init</span><span class="p">(</span><span class="n">CCNode</span> <span class="o">*</span><span class="n">pStencil</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//设置/获取模版，注意模版需要retain！  </span>
+</span><span class='line'>    <span class="n">CCNode</span><span class="o">*</span> <span class="n">getStencil</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">setStencil</span><span class="p">(</span><span class="n">CCNode</span> <span class="o">*</span><span class="n">pStencil</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//设置alpha值（0~1），这个很重要，裁剪是按像素抠图的，所以只有大于这个alpha值的模版像素才会被画出来  </span>
+</span><span class='line'>    <span class="c1">//默认是1，也就是完全裁剪。  </span>
+</span><span class='line'>    <span class="n">GLfloat</span> <span class="n">getAlphaThreshold</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">setAlphaThreshold</span><span class="p">(</span><span class="n">GLfloat</span> <span class="n">fAlphaThreshold</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//默认是false，用于设置显示底板还是模版  </span>
+</span><span class='line'>    <span class="kt">bool</span> <span class="n">isInverted</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">setInverted</span><span class="p">(</span><span class="kt">bool</span> <span class="n">bInverted</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
-//使用一个节点作为模版创建裁剪节点  
-static CCClippingNode* create(CCNode *pStencil);  
-
-//不带模版地初始化一个裁剪节点  
-virtual bool init();  
-
-//使用一个节点作为模版初始化裁剪节点  
-virtual bool init(CCNode *pStencil);  
-
-//设置/获取模版，注意模版需要retain！  
-CCNode* getStencil() const;  
-void setStencil(CCNode *pStencil);  
-
-//设置alpha值（0~1），这个很重要，裁剪是按像素抠图的，所以只有大于这个alpha值的模版像素才会被画出来  
-//默认是1，也就是完全裁剪。  
-GLfloat getAlphaThreshold() const;  
-void setAlphaThreshold(GLfloat fAlphaThreshold);  
-
-//默认是false，用于设置显示底板还是模版  
-bool isInverted() const;  
-void setInverted(bool bInverted);  
-</code></pre>
 
 <h3>3.示例</h3>
 
 <p>在init中实现：</p>
 
-<pre><code>CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
+<figure class='code'><figcaption><span>CCClipingNode的使用</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="n">CCSize</span> <span class="n">visibleSize</span><span class="o">=</span><span class="n">CCDirector</span><span class="o">::</span><span class="n">sharedDirector</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">getVisibleSize</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">CCSprite</span><span class="o">*</span> <span class="n">background</span> <span class="o">=</span> <span class="n">CCSprite</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;HelloWorld.png&quot;</span><span class="p">);</span><span class="c1">//创建背景  </span>
+</span><span class='line'>    <span class="n">background</span><span class="o">-&gt;</span><span class="n">setPosition</span><span class="p">(</span><span class="n">ccp</span><span class="p">(</span><span class="n">visibleSize</span><span class="p">.</span><span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="n">visibleSize</span><span class="p">.</span><span class="n">height</span><span class="o">/</span><span class="mi">2</span><span class="p">));</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">-&gt;</span><span class="n">addChild</span><span class="p">(</span><span class="n">background</span><span class="p">,</span><span class="n">kTagBackground</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">clip</span><span class="o">=</span><span class="n">CCClippingNode</span><span class="o">::</span><span class="n">create</span><span class="p">();</span><span class="c1">//创建裁剪节点，成员变量  </span>
+</span><span class='line'>    <span class="n">clip</span><span class="o">-&gt;</span><span class="n">setInverted</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="c1">//设置底板可见  </span>
+</span><span class='line'>    <span class="n">clip</span><span class="o">-&gt;</span><span class="n">setAlphaThreshold</span><span class="p">(</span><span class="mf">0.0f</span><span class="p">);</span><span class="c1">//设置alpha为0  </span>
+</span><span class='line'>    <span class="k">this</span><span class="o">-&gt;</span><span class="n">addChild</span><span class="p">(</span><span class="n">clip</span><span class="p">,</span><span class="n">kTagClipNode</span><span class="p">);</span><span class="c1">//添加裁剪节点  </span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">CCLayerColor</span><span class="o">*</span> <span class="n">back</span><span class="o">=</span><span class="n">CCLayerColor</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">ccc4</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">200</span><span class="p">));</span>
+</span><span class='line'>    <span class="n">clip</span><span class="o">-&gt;</span><span class="n">addChild</span><span class="p">(</span><span class="n">back</span><span class="p">);</span><span class="c1">//为裁剪节点添加一个黑色带透明（看起了是灰色）的底板  </span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//模版如果要在其他地方使用要记得retain！  </span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//第一种：以下模型是drawnode遮罩  </span>
+</span><span class='line'>    <span class="c1">//CCDrawNode* front=CCDrawNode::create();  </span>
+</span><span class='line'>    <span class="c1">//ccColor4F yellow = {1, 1, 0, 1};  </span>
+</span><span class='line'>    <span class="c1">//CCPoint rect[4]={ccp(-30,30),ccp(30,30),ccp(30,-30),ccp(-30,-30)};  </span>
+</span><span class='line'>    <span class="c1">//front-&gt;drawPolygon(rect, 4, yellow, 0, yellow);  </span>
+</span><span class='line'>    <span class="c1">//front-&gt;setPosition(ccp(visibleSize.width/2, visibleSize.height/2));  </span>
+</span><span class='line'>    <span class="c1">//clip-&gt;setStencil(front);  </span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//第二种：以下模型是带图像遮罩  </span>
+</span><span class='line'>    <span class="n">CCNode</span><span class="o">*</span> <span class="n">nodef</span><span class="o">=</span><span class="n">CCNode</span><span class="o">::</span><span class="n">create</span><span class="p">();</span><span class="c1">//创建模版  </span>
+</span><span class='line'>    <span class="n">CCSprite</span><span class="o">*</span> <span class="n">close</span><span class="o">=</span><span class="n">CCSprite</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;CloseSelected.png&quot;</span><span class="p">);</span><span class="c1">//这里使用的是close的那个图标，所以注意观察效果图2  </span>
+</span><span class='line'>    <span class="n">nodef</span><span class="o">-&gt;</span><span class="n">addChild</span><span class="p">(</span><span class="n">close</span><span class="p">);</span><span class="c1">//在模版上添加精灵  </span>
+</span><span class='line'>    <span class="n">nodef</span><span class="o">-&gt;</span><span class="n">setPosition</span><span class="p">(</span><span class="n">ccp</span><span class="p">(</span><span class="n">visibleSize</span><span class="p">.</span><span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="n">visibleSize</span><span class="p">.</span><span class="n">height</span><span class="o">/</span><span class="mi">2</span><span class="p">));</span>
+</span><span class='line'>    <span class="n">clip</span><span class="o">-&gt;</span><span class="n">setStencil</span><span class="p">(</span><span class="n">nodef</span><span class="p">);</span><span class="c1">//设置模版  </span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">tip</span> <span class="o">=</span> <span class="n">CCSprite</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;tip.png&quot;</span><span class="p">);</span><span class="c1">//一些引导提示  </span>
+</span><span class='line'>    <span class="n">tip</span><span class="o">-&gt;</span><span class="n">setScale</span><span class="p">(</span><span class="mf">0.5f</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">tip</span><span class="o">-&gt;</span><span class="n">setRotation</span><span class="p">(</span><span class="mi">60</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">tip</span><span class="o">-&gt;</span><span class="n">setPosition</span><span class="p">(</span><span class="n">ccp</span><span class="p">(</span><span class="n">visibleSize</span><span class="p">.</span><span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="mi">70</span><span class="p">,</span><span class="n">visibleSize</span><span class="p">.</span><span class="n">height</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="mi">50</span><span class="p">));</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">-&gt;</span><span class="n">addChild</span><span class="p">(</span><span class="n">tip</span><span class="p">,</span><span class="n">kTagTip</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">tip</span><span class="o">-&gt;</span><span class="n">runAction</span><span class="p">(</span><span class="n">CCRepeatForever</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">CCSequence</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">CCScaleBy</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="mf">0.25f</span><span class="p">,</span><span class="mf">0.95f</span><span class="p">),</span><span class="n">CCScaleTo</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="mf">0.25f</span><span class="p">,</span><span class="mf">0.5</span><span class="p">),</span><span class="nb">NULL</span><span class="p">)));</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">this</span><span class="o">-&gt;</span><span class="n">setTouchEnabled</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="c1">//触摸有效，落点正确时移除裁剪节点和提示，相关处理请看源码  </span>
+</span></code></pre></td></tr></table></div></figure>
 
-CCSprite* background = CCSprite::create("HelloWorld.png");//创建背景  
-background-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
-this-&gt;addChild(background,kTagBackground);  
-
-clip=CCClippingNode::create();//创建裁剪节点，成员变量  
-clip-&gt;setInverted(true);//设置底板可见  
-clip-&gt;setAlphaThreshold(0.0f);//设置alpha为0  
-this-&gt;addChild(clip,kTagClipNode);//添加裁剪节点  
-
-CCLayerColor* back=CCLayerColor::create(ccc4(0,0,0,200));  
-clip-&gt;addChild(back);//为裁剪节点添加一个黑色带透明（看起了是灰色）的底板  
-
-//模版如果要在其他地方使用要记得retain！  
-
-//第一种：以下模型是drawnode遮罩  
-//CCDrawNode* front=CCDrawNode::create();  
-//ccColor4F yellow = {1, 1, 0, 1};  
-//CCPoint rect[4]={ccp(-30,30),ccp(30,30),ccp(30,-30),ccp(-30,-30)};  
-//front-&gt;drawPolygon(rect, 4, yellow, 0, yellow);  
-//front-&gt;setPosition(ccp(visibleSize.width/2, visibleSize.height/2));  
-//clip-&gt;setStencil(front);  
-
-//第二种：以下模型是带图像遮罩  
-CCNode* nodef=CCNode::create();//创建模版  
-CCSprite* close=CCSprite::create("CloseSelected.png");//这里使用的是close的那个图标，所以注意观察效果图2  
-nodef-&gt;addChild(close);//在模版上添加精灵  
-nodef-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
-clip-&gt;setStencil(nodef);//设置模版  
-
-tip = CCSprite::create("tip.png");//一些引导提示  
-tip-&gt;setScale(0.5f);  
-tip-&gt;setRotation(60);  
-tip-&gt;setPosition(ccp(visibleSize.width/2-70,visibleSize.height/2+50));  
-this-&gt;addChild(tip,kTagTip);  
-
-tip-&gt;runAction(CCRepeatForever::create(CCSequence::create(CCScaleBy::create(0.25f,0.95f),CCScaleTo::create(0.25f,0.5),NULL)));  
-
-this-&gt;setTouchEnabled(true);//触摸有效，落点正确时移除裁剪节点和提示，相关处理请看源码  
-</code></pre>
 
 <h3>4.效果</h3>
 
@@ -1309,30 +1569,54 @@ this-&gt;setTouchEnabled(true);//触摸有效，落点正确时移除裁剪节�
 
 <h3>2.相关API</h3>
 
-<pre><code>//获得消息通知中心的一个单例对象  
-static CCNotificationCenter *sharedNotificationCenter(void);  
+<figure class='code'><figcaption><span>CCNotificationCenter API</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="c1">//获得消息通知中心的一个单例对象  </span>
+</span><span class='line'>  <span class="k">static</span> <span class="n">CCNotificationCenter</span> <span class="o">*</span><span class="n">sharedNotificationCenter</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//销毁通知中心的单例对象  </span>
+</span><span class='line'>  <span class="k">static</span> <span class="kt">void</span> <span class="n">purgeNotificationCenter</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//添加观察者  </span>
+</span><span class='line'>  <span class="kt">void</span> <span class="n">addObserver</span><span class="p">(</span><span class="n">CCObject</span> <span class="o">*</span><span class="n">target</span><span class="p">,</span>
+</span><span class='line'>                  <span class="n">SEL_CallFuncO</span> <span class="n">selector</span><span class="p">,</span>
+</span><span class='line'>                  <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span>
+</span><span class='line'>                  <span class="n">CCObject</span> <span class="o">*</span><span class="n">obj</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//移除观察者  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeObserver</span><span class="p">(</span><span class="n">CCObject</span> <span class="o">*</span><span class="n">target</span><span class="p">,</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//移除所有观察者  </span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">removeAllObservers</span><span class="p">(</span><span class="n">CCObject</span> <span class="o">*</span><span class="n">target</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//发送消息  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">postNotification</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//发送带数据的消息  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">postNotification</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="n">CCObject</span> <span class="o">*</span><span class="n">object</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
-//销毁通知中心的单例对象  
-static void purgeNotificationCenter(void);  
-
-//添加观察者  
-void addObserver(CCObject *target,   
-                SEL_CallFuncO selector,  
-                const char *name,  
-                CCObject *obj);  
-
-//移除观察者  
-void removeObserver(CCObject *target,const char *name);  
-
-//移除所有观察者  
-int removeAllObservers(CCObject *target);  
-
-//发送消息  
-void postNotification(const char *name);  
-
-//发送带数据的消息  
-void postNotification(const char *name, CCObject *object);  
-</code></pre>
 
 <p>观察者的意思即是等待获取消息的对象，比如上图的B。</p>
 
@@ -1344,63 +1628,120 @@ void postNotification(const char *name, CCObject *object);
 
 <p>这里做了一个场景，包含了2个层，目的是层A向层B发送带数据的消息，层B收到后打印出这条数据。</p>
 
-<pre><code>//ALayer  
-bool ALayer::init()  
-{  
-    bool bRet=false;  
-    do   
-    {  
-        CC_BREAK_IF(!CCLayer::init());  
-        CCSize visibleSize = CCDirector::sharedDirector()-&gt;getVisibleSize();  
-        CCMenuItemImage *pCloseItem = CCMenuItemImage::create(  
-            "CloseNormal.png",  
-            "CloseSelected.png",  
-            this,  
-            menu_selector(ALayer::PostMessage));//按钮用于点击发送消息  
+<figure class='code'><figcaption><span>CCNotificationCenter的示例</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="c1">//ALayer  </span>
+</span><span class='line'>  <span class="kt">bool</span> <span class="n">ALayer</span><span class="o">::</span><span class="n">init</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="kt">bool</span> <span class="n">bRet</span><span class="o">=</span><span class="kc">false</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">do</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">CC_BREAK_IF</span><span class="p">(</span><span class="o">!</span><span class="n">CCLayer</span><span class="o">::</span><span class="n">init</span><span class="p">());</span>
+</span><span class='line'>          <span class="n">CCSize</span> <span class="n">visibleSize</span> <span class="o">=</span> <span class="n">CCDirector</span><span class="o">::</span><span class="n">sharedDirector</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">getVisibleSize</span><span class="p">();</span>
+</span><span class='line'>          <span class="n">CCMenuItemImage</span> <span class="o">*</span><span class="n">pCloseItem</span> <span class="o">=</span> <span class="n">CCMenuItemImage</span><span class="o">::</span><span class="n">create</span><span class="p">(</span>
+</span><span class='line'>              <span class="s">&quot;CloseNormal.png&quot;</span><span class="p">,</span>
+</span><span class='line'>              <span class="s">&quot;CloseSelected.png&quot;</span><span class="p">,</span>
+</span><span class='line'>              <span class="k">this</span><span class="p">,</span>
+</span><span class='line'>              <span class="n">menu_selector</span><span class="p">(</span><span class="n">ALayer</span><span class="o">::</span><span class="n">PostMessage</span><span class="p">));</span><span class="c1">//按钮用于点击发送消息  </span>
+</span><span class='line'>
+</span><span class='line'>          <span class="n">pCloseItem</span><span class="o">-&gt;</span><span class="n">setAnchorPoint</span><span class="p">(</span><span class="n">ccp</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">));</span>
+</span><span class='line'>          <span class="n">pCloseItem</span><span class="o">-&gt;</span><span class="n">setPosition</span><span class="p">(</span><span class="n">ccp</span><span class="p">(</span><span class="n">visibleSize</span><span class="p">.</span><span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="n">visibleSize</span><span class="p">.</span><span class="n">height</span><span class="o">/</span><span class="mi">2</span><span class="p">));</span>
+</span><span class='line'>          <span class="n">CCMenu</span><span class="o">*</span> <span class="n">pMenu</span> <span class="o">=</span> <span class="n">CCMenu</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">pCloseItem</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">pMenu</span><span class="o">-&gt;</span><span class="n">setPosition</span><span class="p">(</span><span class="n">CCPointZero</span><span class="p">);</span>
+</span><span class='line'>          <span class="k">this</span><span class="o">-&gt;</span><span class="n">addChild</span><span class="p">(</span><span class="n">pMenu</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="n">bRet</span><span class="o">=</span><span class="kc">true</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">return</span> <span class="n">bRet</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kt">void</span> <span class="n">ALayer</span><span class="o">::</span><span class="n">PostMessage</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">pSender</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">CCString</span><span class="o">*</span> <span class="n">str</span><span class="o">=</span><span class="n">CCString</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;Hello BLayer!&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">CCNotificationCenter</span><span class="o">::</span><span class="n">sharedNotificationCenter</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">postNotification</span><span class="p">(</span><span class="s">&quot;BMessage&quot;</span><span class="p">,</span><span class="n">str</span><span class="p">);</span><span class="c1">//发送带str的消息BMessage  </span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//BLayer  </span>
+</span><span class='line'>  <span class="kt">bool</span> <span class="n">BLayer</span><span class="o">::</span><span class="n">init</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="kt">bool</span> <span class="n">bRet</span><span class="o">=</span><span class="kc">false</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">do</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">CC_BREAK_IF</span><span class="p">(</span><span class="o">!</span><span class="n">CCLayer</span><span class="o">::</span><span class="n">init</span><span class="p">());</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="n">CCNotificationCenter</span><span class="o">::</span><span class="n">sharedNotificationCenter</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">addObserver</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="n">callfuncO_selector</span><span class="p">(</span><span class="n">BLayer</span><span class="o">::</span><span class="n">getMessage</span><span class="p">),</span><span class="s">&quot;BMessage&quot;</span><span class="p">,</span><span class="nb">NULL</span><span class="p">);</span><span class="c1">//注册BMessage，如果接收到了，执行getMessage  </span>
+</span><span class='line'>
+</span><span class='line'>          <span class="n">bRet</span><span class="o">=</span><span class="kc">true</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">return</span> <span class="n">bRet</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kt">void</span> <span class="n">BLayer</span><span class="o">::</span><span class="n">getMessage</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">obj</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">CCString</span><span class="o">*</span> <span class="n">str</span><span class="o">=</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">CCString</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">obj</span><span class="p">);</span><span class="c1">//打印出传递的数据  </span>
+</span><span class='line'>      <span class="n">CCLog</span><span class="p">(</span><span class="n">str</span><span class="o">-&gt;</span><span class="n">getCString</span><span class="p">());</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">BLayer</span><span class="o">::~</span><span class="n">BLayer</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">CCNotificationCenter</span><span class="o">::</span><span class="n">sharedNotificationCenter</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">purgeNotificationCenter</span><span class="p">();</span><span class="c1">//释放通知中心单例对象  </span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-        pCloseItem-&gt;setAnchorPoint(ccp(0.5,0.5));  
-        pCloseItem-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
-        CCMenu* pMenu = CCMenu::create(pCloseItem, NULL);  
-        pMenu-&gt;setPosition(CCPointZero);  
-        this-&gt;addChild(pMenu, 1);  
-
-        bRet=true;  
-    } while (0);  
-    return bRet;  
-}  
-
-void ALayer::PostMessage(CCObject* pSender)  
-{  
-    CCString* str=CCString::create("Hello BLayer!");  
-    CCNotificationCenter::sharedNotificationCenter()-&gt;postNotification("BMessage",str);//发送带str的消息BMessage  
-}  
-
-//BLayer  
-bool BLayer::init()  
-{  
-    bool bRet=false;  
-    do   
-    {  
-        CC_BREAK_IF(!CCLayer::init());  
-
-        CCNotificationCenter::sharedNotificationCenter()-&gt;addObserver(this,callfuncO_selector(BLayer::getMessage),"BMessage",NULL);//注册BMessage，如果接收到了，执行getMessage  
-
-        bRet=true;  
-    } while (0);  
-    return bRet;  
-}  
-
-void BLayer::getMessage(CCObject* obj)  
-{  
-    CCString* str=static_cast&lt;CCString*&gt;(obj);//打印出传递的数据  
-    CCLog(str-&gt;getCString());  
-}  
-
-BLayer::~BLayer(void)  
-{  
-    CCNotificationCenter::sharedNotificationCenter()-&gt;purgeNotificationCenter();//释放通知中心单例对象  
-}  
-</code></pre>
 
 <h3>5.注意</h3>
 
@@ -1410,8 +1751,10 @@ BLayer::~BLayer(void)
 
 <p><em>（2）传递参数，A可以向B传递参数，而B在注册的时候也可以带一个参数，如果这两个数据不是指向同一对象的话，消息不会传递。也就是说要么A传递NULL对象，要么B注册时带NULL对象，要么都不是NULL但必须是同一对象，消息传递才会成功。以下是发送消息执行的判断：</em></p>
 
-<pre><code>if (!strcmp(name,observer-&gt;getName()) &amp;&amp; (observer-&gt;getObject() == object || observer-&gt;getObject() == NULL || object == NULL))  
-</code></pre>
+<figure class='code'><figcaption><span>消息发送的判断</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">observer</span><span class="o">-&gt;</span><span class="n">getName</span><span class="p">())</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">observer</span><span class="o">-&gt;</span><span class="n">getObject</span><span class="p">()</span> <span class="o">==</span> <span class="n">object</span> <span class="o">||</span> <span class="n">observer</span><span class="o">-&gt;</span><span class="n">getObject</span><span class="p">()</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="o">||</span> <span class="n">object</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><em>（3）局部变量的传递，注意到上例，传递的是CCString的一个局部变量（但还是要autorelease），从CCNotificationCenter的实现上来看，这是没有问题的，因为数据是在postNotification被调用的，也就是整个函数体并没结束，数据不会被销毁。</em></p>
 
@@ -1438,19 +1781,32 @@ BLayer::~BLayer(void)
 
 <h3>1.示例</h3>
 
-<pre><code>CCBlink* blink=CCBlink::create(0.5f,10);//创建闪烁动画，duration=0.5s  
-CCAnimation* animation=CCAnimation::create();  
-animation-&gt;addSpriteFrameWithFileName("CloseNormal.png");  
-animation-&gt;addSpriteFrameWithFileName("CloseSelected.png");  
-animation-&gt;setDelayPerUnit(1.0f);//帧间间隔1s  
-CCAnimate* animate=CCAnimate::create(animation);//创建帧动画  
-CCRepeatForever* repeat=CCRepeatForever::create(animate);  
-CCSequence* sequence=CCSequence::create(blink,repeat,NULL);//创建连续动画  
-CCSprite* close=CCSprite::create("CloseNormal.png");  
-close-&gt;setPosition(ccp(240,160));  
-this-&gt;addChild(close);  
-close-&gt;runAction(sequence);//执行连续动画  
-</code></pre>
+<figure class='code'><figcaption><span>示例</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="n">CCBlink</span><span class="o">*</span> <span class="n">blink</span><span class="o">=</span><span class="n">CCBlink</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="mf">0.5f</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span><span class="c1">//创建闪烁动画，duration=0.5s  </span>
+</span><span class='line'>    <span class="n">CCAnimation</span><span class="o">*</span> <span class="n">animation</span><span class="o">=</span><span class="n">CCAnimation</span><span class="o">::</span><span class="n">create</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">animation</span><span class="o">-&gt;</span><span class="n">addSpriteFrameWithFileName</span><span class="p">(</span><span class="s">&quot;CloseNormal.png&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">animation</span><span class="o">-&gt;</span><span class="n">addSpriteFrameWithFileName</span><span class="p">(</span><span class="s">&quot;CloseSelected.png&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">animation</span><span class="o">-&gt;</span><span class="n">setDelayPerUnit</span><span class="p">(</span><span class="mf">1.0f</span><span class="p">);</span><span class="c1">//帧间间隔1s  </span>
+</span><span class='line'>    <span class="n">CCAnimate</span><span class="o">*</span> <span class="n">animate</span><span class="o">=</span><span class="n">CCAnimate</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">animation</span><span class="p">);</span><span class="c1">//创建帧动画  </span>
+</span><span class='line'>    <span class="n">CCRepeatForever</span><span class="o">*</span> <span class="n">repeat</span><span class="o">=</span><span class="n">CCRepeatForever</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">animate</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CCSequence</span><span class="o">*</span> <span class="n">sequence</span><span class="o">=</span><span class="n">CCSequence</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">blink</span><span class="p">,</span><span class="n">repeat</span><span class="p">,</span><span class="nb">NULL</span><span class="p">);</span><span class="c1">//创建连续动画  </span>
+</span><span class='line'>    <span class="n">CCSprite</span><span class="o">*</span> <span class="n">close</span><span class="o">=</span><span class="n">CCSprite</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;CloseNormal.png&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">close</span><span class="o">-&gt;</span><span class="n">setPosition</span><span class="p">(</span><span class="n">ccp</span><span class="p">(</span><span class="mi">240</span><span class="p">,</span><span class="mi">160</span><span class="p">));</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">-&gt;</span><span class="n">addChild</span><span class="p">(</span><span class="n">close</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">close</span><span class="o">-&gt;</span><span class="n">runAction</span><span class="p">(</span><span class="n">sequence</span><span class="p">);</span><span class="c1">//执行连续动画  </span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>结果精灵闪烁10次以后，帧动画不执行了。</p>
 
@@ -1465,58 +1821,98 @@ close-&gt;runAction(sequence);//执行连续动画
 
 <p>创建CCSequence调用</p>
 
-<pre><code>//创建CCSequence  
-CCSequence* CCSequence::create(CCFiniteTimeAction *pAction1, ...)  
-</code></pre>
+<figure class='code'><figcaption><span>创建CCSequence</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="n">CCSequence</span><span class="o">*</span> <span class="n">CCSequence</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">CCFiniteTimeAction</span> <span class="o">*</span><span class="n">pAction1</span><span class="p">,</span> <span class="p">...)</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>内部调用了createWithVariableList，从实现可以看出这是一个递归调用。</p>
 
-<pre><code>//获取动作列表，创建CCSequence  
-CCSequence* CCSequence::createWithVariableList(CCFiniteTimeAction *pAction1, va_list args)  
-{  
-    CCFiniteTimeAction *pNow;//当前动作  
-    CCFiniteTimeAction *pPrev = pAction1;//第一个动作  
-    bool bOneAction = true;//只有一个动作的标志位  
+<figure class='code'><figcaption><span>createWithVariableList</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//获取动作列表，创建CCSequence  </span>
+</span><span class='line'>    <span class="n">CCSequence</span><span class="o">*</span> <span class="n">CCSequence</span><span class="o">::</span><span class="n">createWithVariableList</span><span class="p">(</span><span class="n">CCFiniteTimeAction</span> <span class="o">*</span><span class="n">pAction1</span><span class="p">,</span> <span class="n">va_list</span> <span class="n">args</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="n">CCFiniteTimeAction</span> <span class="o">*</span><span class="n">pNow</span><span class="p">;</span><span class="c1">//当前动作  </span>
+</span><span class='line'>      <span class="n">CCFiniteTimeAction</span> <span class="o">*</span><span class="n">pPrev</span> <span class="o">=</span> <span class="n">pAction1</span><span class="p">;</span><span class="c1">//第一个动作  </span>
+</span><span class='line'>      <span class="kt">bool</span> <span class="n">bOneAction</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span><span class="c1">//只有一个动作的标志位  </span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">while</span> <span class="p">(</span><span class="n">pAction1</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">pNow</span> <span class="o">=</span> <span class="n">va_arg</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">CCFiniteTimeAction</span><span class="o">*</span><span class="p">);</span><span class="c1">//获取当前动作  </span>
+</span><span class='line'>          <span class="k">if</span> <span class="p">(</span><span class="n">pNow</span><span class="p">)</span><span class="c1">//如果存在  </span>
+</span><span class='line'>          <span class="p">{</span>
+</span><span class='line'>              <span class="n">pPrev</span> <span class="o">=</span> <span class="n">createWithTwoActions</span><span class="p">(</span><span class="n">pPrev</span><span class="p">,</span> <span class="n">pNow</span><span class="p">);</span><span class="c1">//用前两个动作创建CCSequence并赋给第一个动作  </span>
+</span><span class='line'>              <span class="n">bOneAction</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span><span class="c1">//置false  </span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>          <span class="k">else</span><span class="c1">//如果不存在  </span>
+</span><span class='line'>          <span class="p">{</span>
+</span><span class='line'>              <span class="c1">// If only one action is added to CCSequence, make up a CCSequence by adding a simplest finite time action.  </span>
+</span><span class='line'>              <span class="k">if</span> <span class="p">(</span><span class="n">bOneAction</span><span class="p">)</span><span class="c1">//如果只有一个动作  </span>
+</span><span class='line'>              <span class="p">{</span>
+</span><span class='line'>                  <span class="n">pPrev</span> <span class="o">=</span> <span class="n">createWithTwoActions</span><span class="p">(</span><span class="n">pPrev</span><span class="p">,</span> <span class="n">ExtraAction</span><span class="o">::</span><span class="n">create</span><span class="p">());</span>
+</span><span class='line'>              <span class="p">}</span>
+</span><span class='line'>          <span class="k">break</span><span class="p">;</span><span class="c1">//跳出循环  </span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">return</span> <span class="p">((</span><span class="n">CCSequence</span><span class="o">*</span><span class="p">)</span><span class="n">pPrev</span><span class="p">);</span><span class="c1">//返回第一个动作  </span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    while (pAction1)  
-    {  
-        pNow = va_arg(args, CCFiniteTimeAction*);//获取当前动作  
-        if (pNow)//如果存在  
-        {  
-            pPrev = createWithTwoActions(pPrev, pNow);//用前两个动作创建CCSequence并赋给第一个动作  
-            bOneAction = false;//置false  
-        }  
-        else//如果不存在  
-        {  
-            // If only one action is added to CCSequence, make up a CCSequence by adding a simplest finite time action.  
-            if (bOneAction)//如果只有一个动作  
-            {  
-                pPrev = createWithTwoActions(pPrev, ExtraAction::create());  
-            }  
-        break;//跳出循环  
-        }  
-    }  
-    return ((CCSequence*)pPrev);//返回第一个动作  
-}  
-</code></pre>
 
 <p>假如有3个动作要被串联，则先把第1个和第2个串联一个CCSequence，再把这个CCSequence和第3个动作串联成最终的CCSequence，然后返回。从CCSequence的成员变量可以看到：</p>
 
-<pre><code>CCFiniteTimeAction *m_pActions[2];//表明只包含2个动作对象指针
-</code></pre>
+<figure class='code'><figcaption><span>动作对象指针成员变量</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="n">CCFiniteTimeAction</span> <span class="o">*</span><span class="n">m_pActions</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="c1">//表明只包含2个动作对象指针</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>使用递归多少会降低程序的运行效率，但是却可以换来代码的简洁性，同样的CCSpawn也是这么实现的。
 在createWithTwoActions中，调用了initWithTwoActions函数，实现了把两个动作串成一个CCSequence，关键代码如下：</p>
 
-<pre><code>float d = pActionOne-&gt;getDuration() + pActionTwo-&gt;getDuration();//获取两个动作的duration  
-CCActionInterval::initWithDuration(d);//赋给新的CCSequence  
+<figure class='code'><figcaption><span>initWithTwoActions</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="kt">float</span> <span class="n">d</span> <span class="o">=</span> <span class="n">pActionOne</span><span class="o">-&gt;</span><span class="n">getDuration</span><span class="p">()</span> <span class="o">+</span> <span class="n">pActionTwo</span><span class="o">-&gt;</span><span class="n">getDuration</span><span class="p">();</span><span class="c1">//获取两个动作的duration  </span>
+</span><span class='line'>    <span class="n">CCActionInterval</span><span class="o">::</span><span class="n">initWithDuration</span><span class="p">(</span><span class="n">d</span><span class="p">);</span><span class="c1">//赋给新的CCSequence  </span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">m_pActions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">pActionOne</span><span class="p">;</span><span class="c1">//同时把两个动作赋给m_pActions指针数组  </span>
+</span><span class='line'>    <span class="n">pActionOne</span><span class="o">-&gt;</span><span class="n">retain</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">m_pActions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pActionTwo</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">pActionTwo</span><span class="o">-&gt;</span><span class="n">retain</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
 
-m_pActions[0] = pActionOne;//同时把两个动作赋给m_pActions指针数组  
-pActionOne-&gt;retain();  
-
-m_pActions[1] = pActionTwo;  
-pActionTwo-&gt;retain();  
-</code></pre>
 
 <p><strong>2.2.duration</strong></p>
 
@@ -1526,41 +1922,68 @@ pActionTwo-&gt;retain();
 
 <p>CCSequence中有这么一个成员变量</p>
 
-<pre><code>float m_split;//记录了第一个动画时长占总时长的比例，也就是2个动画的时长分界  
-</code></pre>
+<figure class='code'><figcaption><span>m_split</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="kt">float</span> <span class="n">m_split</span><span class="p">;</span><span class="c1">//记录了第一个动画时长占总时长的比例，也就是2个动画的时长分界  </span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>当执行runAction的时候，CCSequence会调用</p>
 
-<pre><code>void CCSequence::startWithTarget(CCNode *pTarget)  
-{  
-    CCActionInterval::startWithTarget(pTarget);  
-    m_split = m_pActions[0]-&gt;getDuration() / m_fDuration;//获取第一个动画占总时长的比例  
-    m_last = -1;  
-}  
-</code></pre>
+<figure class='code'><figcaption><span>startWithTarget</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="kt">void</span> <span class="n">CCSequence</span><span class="o">::</span><span class="n">startWithTarget</span><span class="p">(</span><span class="n">CCNode</span> <span class="o">*</span><span class="n">pTarget</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">CCActionInterval</span><span class="o">::</span><span class="n">startWithTarget</span><span class="p">(</span><span class="n">pTarget</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">m_split</span> <span class="o">=</span> <span class="n">m_pActions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">getDuration</span><span class="p">()</span> <span class="o">/</span> <span class="n">m_fDuration</span><span class="p">;</span><span class="c1">//获取第一个动画占总时长的比例  </span>
+</span><span class='line'>      <span class="n">m_last</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>而这里由于blink占了0.5s，repeat占了0s，总时长0.5s，所以m_split是0.5/0.5=1。blink占满了整个CCSequence，所以CCSequence无法执行repeat。</p>
 
 <p>这时候再来看CCSequence::update(float dt)函数的执行，就会恍然大悟了。</p>
 
-<pre><code>int found = 0;//当前播放动作索引  
-float new_t = 0.0f;//新播放进度  
+<figure class='code'><figcaption><span>update</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="kt">int</span> <span class="n">found</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="c1">//当前播放动作索引  </span>
+</span><span class='line'>  <span class="kt">float</span> <span class="n">new_t</span> <span class="o">=</span> <span class="mf">0.0f</span><span class="p">;</span><span class="c1">//新播放进度  </span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="n">m_split</span> <span class="p">)</span> <span class="p">{</span><span class="c1">//播放进度&lt;分界进度  </span>
+</span><span class='line'>      <span class="n">found</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="c1">//设置当前播放的是第一个动作  </span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span> <span class="n">m_split</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">)</span><span class="c1">//如果第一个动作时长占比!=0  </span>
+</span><span class='line'>          <span class="n">new_t</span> <span class="o">=</span> <span class="n">t</span> <span class="o">/</span> <span class="n">m_split</span><span class="p">;</span><span class="c1">//计算出第一个动作新的播放进度  </span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>          <span class="n">new_t</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="c1">//设置第一个已播放完毕  </span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span><span class="c1">//播放进度&gt;=分界进度  </span>
+</span><span class='line'>      <span class="n">found</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="c1">//设置当前播放的是第二个动作  </span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span> <span class="n">m_split</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">)</span><span class="c1">//如果第一个动作时长占比==1  </span>
+</span><span class='line'>          <span class="n">new_t</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="c1">//设置第二个动作已完成  </span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>          <span class="n">new_t</span> <span class="o">=</span> <span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="n">m_split</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">m_split</span> <span class="p">);</span><span class="c1">//计算出第二个动作新的播放进度  </span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-if( t &lt; m_split ) {//播放进度&lt;分界进度  
-    found = 0;//设置当前播放的是第一个动作  
-    if( m_split != 0 )//如果第一个动作时长占比!=0  
-        new_t = t / m_split;//计算出第一个动作新的播放进度  
-    else  
-        new_t = 1;//设置第一个已播放完毕  
-
-} else {//播放进度&gt;=分界进度  
-    found = 1;//设置当前播放的是第二个动作  
-    if ( m_split == 1 )//如果第一个动作时长占比==1  
-        new_t = 1;//设置第二个动作已完成  
-    else  
-        new_t = (t-m_split) / (1 - m_split );//计算出第二个动作新的播放进度  
-}  
-</code></pre>
 
 <h3>3.注意</h3>
 
@@ -1572,37 +1995,62 @@ if( t &lt; m_split ) {//播放进度&lt;分界进度
 
 <p><em>（1）对于同时动作，不使用CCSpawn，采用分别执行</em></p>
 
-<pre><code>close-&gt;runAction(blink);  
-close-&gt;runAction(repeat);  
-</code></pre>
+<figure class='code'><figcaption><span>分别执行</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="n">close</span><span class="o">-&gt;</span><span class="n">runAction</span><span class="p">(</span><span class="n">blink</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">close</span><span class="o">-&gt;</span><span class="n">runAction</span><span class="p">(</span><span class="n">repeat</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><em>（2）对于连续动作，不直接往CCSequence中加入CCRepeatForever，而是把CCRepeatForever放入瞬时动作CCCallFunc中，再把CCCallFunc加入CCSequence中执行。</em></p>
 
-<pre><code>close=CCSprite::create("CloseNormal.png");  
-CCBlink* blink=CCBlink::create(0.5f,10);  
-CCCallFunc* callFunc=CCCallFunc::create(this,callfunc_selector(TestScene::repeatFunc));//创建CCCallFunc对象  
-CCSequence* sequence=CCSequence::create(blink,callFunc,NULL);//把CCCallFunc对象加入CCSequence中  
-close-&gt;setPosition(ccp(240,160));  
-this-&gt;addChild(close);  
-close-&gt;runAction(sequence);  
+<figure class='code'><figcaption><span>CCSequence串联</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="n">close</span><span class="o">=</span><span class="n">CCSprite</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;CloseNormal.png&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">CCBlink</span><span class="o">*</span> <span class="n">blink</span><span class="o">=</span><span class="n">CCBlink</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="mf">0.5f</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">CCCallFunc</span><span class="o">*</span> <span class="n">callFunc</span><span class="o">=</span><span class="n">CCCallFunc</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="n">callfunc_selector</span><span class="p">(</span><span class="n">TestScene</span><span class="o">::</span><span class="n">repeatFunc</span><span class="p">));</span><span class="c1">//创建CCCallFunc对象  </span>
+</span><span class='line'>  <span class="n">CCSequence</span><span class="o">*</span> <span class="n">sequence</span><span class="o">=</span><span class="n">CCSequence</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">blink</span><span class="p">,</span><span class="n">callFunc</span><span class="p">,</span><span class="nb">NULL</span><span class="p">);</span><span class="c1">//把CCCallFunc对象加入CCSequence中  </span>
+</span><span class='line'>  <span class="n">close</span><span class="o">-&gt;</span><span class="n">setPosition</span><span class="p">(</span><span class="n">ccp</span><span class="p">(</span><span class="mi">240</span><span class="p">,</span><span class="mi">160</span><span class="p">));</span>
+</span><span class='line'>  <span class="k">this</span><span class="o">-&gt;</span><span class="n">addChild</span><span class="p">(</span><span class="n">close</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">close</span><span class="o">-&gt;</span><span class="n">runAction</span><span class="p">(</span><span class="n">sequence</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>  <span class="kt">void</span> <span class="n">TestScene</span><span class="o">::</span><span class="n">repeatFunc</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">CCAnimation</span><span class="o">*</span> <span class="n">animation</span><span class="o">=</span><span class="n">CCAnimation</span><span class="o">::</span><span class="n">create</span><span class="p">();</span>
+</span><span class='line'>      <span class="n">animation</span><span class="o">-&gt;</span><span class="n">addSpriteFrameWithFileName</span><span class="p">(</span><span class="s">&quot;CloseNormal.png&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">animation</span><span class="o">-&gt;</span><span class="n">addSpriteFrameWithFileName</span><span class="p">(</span><span class="s">&quot;CloseSelected.png&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">animation</span><span class="o">-&gt;</span><span class="n">setDelayPerUnit</span><span class="p">(</span><span class="mf">1.0f</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">CCAnimate</span><span class="o">*</span> <span class="n">animate</span><span class="o">=</span><span class="n">CCAnimate</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">animation</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">CCRepeatForever</span><span class="o">*</span> <span class="n">repeat</span><span class="o">=</span><span class="n">CCRepeatForever</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">animate</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">close</span><span class="o">-&gt;</span><span class="n">runAction</span><span class="p">(</span><span class="n">repeat</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-
-void TestScene::repeatFunc()  
-{  
-    CCAnimation* animation=CCAnimation::create();  
-    animation-&gt;addSpriteFrameWithFileName("CloseNormal.png");  
-    animation-&gt;addSpriteFrameWithFileName("CloseSelected.png");  
-    animation-&gt;setDelayPerUnit(1.0f);  
-    CCAnimate* animate=CCAnimate::create(animation);  
-    CCRepeatForever* repeat=CCRepeatForever::create(animate);  
-    close-&gt;runAction(repeat);  
-}  
-</code></pre>
 
 <p><em>（3）对于CCAnimation帧动画，可以设置循环属性，而不使用CCRepeatForever。</em></p>
 
-<pre><code>animation-&gt;setLoops(-1);  
-</code></pre>
+<figure class='code'><figcaption><span>setLoops</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="n">animation</span><span class="o">-&gt;</span><span class="n">setLoops</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h3>5.总结</h3>
 
@@ -1634,13 +2082,20 @@ void TestScene::repeatFunc()
 
 <p>uthash支持4种标准类型的键：整型，字符串，指针和结构体，不过到了CCDictionary就只支持整型和字符串型了。</p>
 
-<pre><code>enum CCDictType  
-{  
-    kCCDictUnknown = 0,  
-    kCCDictStr,  
-    kCCDictInt  
-};  
-</code></pre>
+<figure class='code'><figcaption><span>CCDictType</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="k">enum</span> <span class="n">CCDictType</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">kCCDictUnknown</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+</span><span class='line'>      <span class="n">kCCDictStr</span><span class="p">,</span>
+</span><span class='line'>      <span class="n">kCCDictInt</span>
+</span><span class='line'>  <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h3>2.CCDictElement</h3>
 
@@ -1650,105 +2105,186 @@ void TestScene::repeatFunc()
 
 <p><strong>3.1.创建</strong></p>
 
-<pre><code>//创建一个CCDictionary  
-static CCDictionary* create();  
-//用一个已存在的CCDictionary来创建一个新的CCDictionary  
-static CCDictionary* createWithDictionary(CCDictionary* srcDict);  
-//用一个plist来创建CCDictionary  
-static CCDictionary* createWithContentsOfFile(const char *pFileName);  
-//返回一个非autorelease对象的CCDictionary，它讷讷感够确保在新线程中使用  
-//但是你必须手动管理它的生命周期，当你不再需要它的时候，必须调用CC_SAFE_RELEASE  
-static CCDictionary* createWithContentsOfFileThreadSafe(const char *pFileName); 
-</code></pre>
+<figure class='code'><figcaption><span>创建</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//创建一个CCDictionary  </span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">CCDictionary</span><span class="o">*</span> <span class="n">create</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">//用一个已存在的CCDictionary来创建一个新的CCDictionary  </span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">CCDictionary</span><span class="o">*</span> <span class="n">createWithDictionary</span><span class="p">(</span><span class="n">CCDictionary</span><span class="o">*</span> <span class="n">srcDict</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//用一个plist来创建CCDictionary  </span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">CCDictionary</span><span class="o">*</span> <span class="n">createWithContentsOfFile</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">pFileName</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//返回一个非autorelease对象的CCDictionary，它讷讷感够确保在新线程中使用  </span>
+</span><span class='line'>    <span class="c1">//但是你必须手动管理它的生命周期，当你不再需要它的时候，必须调用CC_SAFE_RELEASE  </span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">CCDictionary</span><span class="o">*</span> <span class="n">createWithContentsOfFileThreadSafe</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">pFileName</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>3.2.查找</strong></p>
 
-<pre><code>//返回指定字符串类型key的value，如果CCDictionary的key是整型，会出现断言  
-CCObject* objectForKey(const std::string&amp; key);  
-//返回指定整型key的value，如果CCDictionary的key是字符串型，会出现断言  
-CCObject* objectForKey(intptr_t key);  
-//返回指定字符串类型key的CCString，这里假定value是CCString型，如果不是或者未找到，则返回空串  
-const CCString* valueForKey(const std::string&amp; key);  
-//返回指定整型类型key的CCString，这里假定value是CCString型，如果不是或者未找到，则返回空串  
-const CCString* valueForKey(intptr_t key);  
-</code></pre>
+<figure class='code'><figcaption><span>查找</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//返回指定字符串类型key的value，如果CCDictionary的key是整型，会出现断言  </span>
+</span><span class='line'>    <span class="n">CCObject</span><span class="o">*</span> <span class="n">objectForKey</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//返回指定整型key的value，如果CCDictionary的key是字符串型，会出现断言  </span>
+</span><span class='line'>    <span class="n">CCObject</span><span class="o">*</span> <span class="n">objectForKey</span><span class="p">(</span><span class="n">intptr_t</span> <span class="n">key</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//返回指定字符串类型key的CCString，这里假定value是CCString型，如果不是或者未找到，则返回空串  </span>
+</span><span class='line'>    <span class="k">const</span> <span class="n">CCString</span><span class="o">*</span> <span class="n">valueForKey</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//返回指定整型类型key的CCString，这里假定value是CCString型，如果不是或者未找到，则返回空串  </span>
+</span><span class='line'>    <span class="k">const</span> <span class="n">CCString</span><span class="o">*</span> <span class="n">valueForKey</span><span class="p">(</span><span class="n">intptr_t</span> <span class="n">key</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>3.3.增加</strong></p>
 
-<pre><code>//插入一个key-value，如果是第一次调用，那么CCDictionary的key类型会被确定为字符串型，之后就不能插入整型key  
-//如果已存在该key，则旧key-value会被释放和移除，被新的替代  
-void setObject(CCObject* pObject, const std::string&amp; key);  
-//插入一个key-value，如果是第一次调用，那么CCDictionary的key类型会被确定为整型，之后就不能插入字符串型key  
-//如果已存在该key，则旧key-value会被释放和移除，被新的替代  
-void setObject(CCObject* pObject, intptr_t key);  
-</code></pre>
+<figure class='code'><figcaption><span>增加</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//插入一个key-value，如果是第一次调用，那么CCDictionary的key类型会被确定为字符串型，之后就不能插入整型key  </span>
+</span><span class='line'>    <span class="c1">//如果已存在该key，则旧key-value会被释放和移除，被新的替代  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">setObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">pObject</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//插入一个key-value，如果是第一次调用，那么CCDictionary的key类型会被确定为整型，之后就不能插入字符串型key  </span>
+</span><span class='line'>    <span class="c1">//如果已存在该key，则旧key-value会被释放和移除，被新的替代  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">setObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">pObject</span><span class="p">,</span> <span class="n">intptr_t</span> <span class="n">key</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>3.4.移除</strong></p>
 
-<pre><code>//移除指定key  
-void removeObjectForKey(const std::string&amp; key);  
-void removeObjectForKey(intptr_t key);  
-//移除一个CCArray中keys  
-void removeObjectsForKeys(CCArray* pKeyArray);  
-//通过元素来移除value  
-void removeObjectForElememt(CCDictElement* pElement);  
-//移除所有的key-value  
-void removeAllObjects();
-</code></pre>
+<figure class='code'><figcaption><span>移除</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//移除指定key  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeObjectForKey</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">key</span><span class="p">);</span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeObjectForKey</span><span class="p">(</span><span class="n">intptr_t</span> <span class="n">key</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//移除一个CCArray中keys  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeObjectsForKeys</span><span class="p">(</span><span class="n">CCArray</span><span class="o">*</span> <span class="n">pKeyArray</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//通过元素来移除value  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeObjectForElememt</span><span class="p">(</span><span class="n">CCDictElement</span><span class="o">*</span> <span class="n">pElement</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//移除所有的key-value  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeAllObjects</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>3.5.其他</strong></p>
 
-<pre><code>//返回一个随机元素，这个使用得注意，因为value可以不一样，所以返回类型每次都可能不同，在类型转换的时候要非常小心  
-CCObject* randomObject();  
-//返回一个包含所有key的CCArray  
-CCArray* allKeys();  
-//返回指定value的所有key，因为value是可以相同的，内部使用==比较两个value是否相同   
-CCArray* allKeysForObject(CCObject* object);  
-//返回元素个数  
-unsigned int count();  
-//把CCDictionary写到一个plist中，写入的value要求是字符串型  
-bool writeToFile(const char *fullPath);  
-</code></pre>
+<figure class='code'><figcaption><span>其他</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//返回一个随机元素，这个使用得注意，因为value可以不一样，所以返回类型每次都可能不同，在类型转换的时候要非常小心  </span>
+</span><span class='line'>    <span class="n">CCObject</span><span class="o">*</span> <span class="n">randomObject</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">//返回一个包含所有key的CCArray  </span>
+</span><span class='line'>    <span class="n">CCArray</span><span class="o">*</span> <span class="n">allKeys</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">//返回指定value的所有key，因为value是可以相同的，内部使用==比较两个value是否相同   </span>
+</span><span class='line'>    <span class="n">CCArray</span><span class="o">*</span> <span class="n">allKeysForObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">object</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//返回元素个数  </span>
+</span><span class='line'>    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">count</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">//把CCDictionary写到一个plist中，写入的value要求是字符串型  </span>
+</span><span class='line'>    <span class="kt">bool</span> <span class="n">writeToFile</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">fullPath</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h3>4.示例</h3>
 
-<pre><code>// Create a dictionary, return an autorelease object.  
-CCDictionary* pDict = CCDictionary::create();  
+<figure class='code'><figcaption><span>示例</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">// Create a dictionary, return an autorelease object.  </span>
+</span><span class='line'>    <span class="n">CCDictionary</span><span class="o">*</span> <span class="n">pDict</span> <span class="o">=</span> <span class="n">CCDictionary</span><span class="o">::</span><span class="n">create</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Insert objects to dictionary  </span>
+</span><span class='line'>    <span class="n">CCString</span><span class="o">*</span> <span class="n">pValue1</span> <span class="o">=</span> <span class="n">CCString</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;100&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CCString</span><span class="o">*</span> <span class="n">pValue2</span> <span class="o">=</span> <span class="n">CCString</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;120&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CCInteger</span><span class="o">*</span> <span class="n">pValue3</span> <span class="o">=</span> <span class="n">CCInteger</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">pDict</span><span class="o">-&gt;</span><span class="n">setObject</span><span class="p">(</span><span class="n">pValue1</span><span class="p">,</span> <span class="s">&quot;key1&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">pDict</span><span class="o">-&gt;</span><span class="n">setObject</span><span class="p">(</span><span class="n">pValue2</span><span class="p">,</span> <span class="s">&quot;key2&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">pDict</span><span class="o">-&gt;</span><span class="n">setObject</span><span class="p">(</span><span class="n">pValue3</span><span class="p">,</span> <span class="s">&quot;key3&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Get the object for key  </span>
+</span><span class='line'>    <span class="n">CCString</span><span class="o">*</span> <span class="n">pStr1</span> <span class="o">=</span> <span class="p">(</span><span class="n">CCString</span><span class="o">*</span><span class="p">)</span><span class="n">pDict</span><span class="o">-&gt;</span><span class="n">objectForKey</span><span class="p">(</span><span class="s">&quot;key1&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CCLog</span><span class="p">(</span><span class="s">&quot;{ key1: %s }&quot;</span><span class="p">,</span> <span class="n">pStr1</span><span class="o">-&gt;</span><span class="n">getCString</span><span class="p">());</span>
+</span><span class='line'>    <span class="n">CCInteger</span><span class="o">*</span> <span class="n">pInteger</span> <span class="o">=</span> <span class="p">(</span><span class="n">CCInteger</span><span class="o">*</span><span class="p">)</span><span class="n">pDict</span><span class="o">-&gt;</span><span class="n">objectForKey</span><span class="p">(</span><span class="s">&quot;key3&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CCLog</span><span class="p">(</span><span class="s">&quot;{ key3: %d }&quot;</span><span class="p">,</span> <span class="n">pInteger</span><span class="o">-&gt;</span><span class="n">getValue</span><span class="p">());</span>
+</span><span class='line'>    <span class="n">CCString</span><span class="o">*</span> <span class="n">pStr3</span><span class="o">=</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">CCString</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">pDict</span><span class="o">-&gt;</span><span class="n">randomObject</span><span class="p">());</span><span class="c1">//这里有问题了，因为value有不同类型，所以随机返回时类型处理要小心  </span>
+</span><span class='line'>    <span class="n">CCLog</span><span class="p">(</span><span class="s">&quot;{ random key: %s }&quot;</span><span class="p">,</span><span class="n">pStr3</span><span class="o">-&gt;</span><span class="n">getCString</span><span class="p">());</span>  <span class="c1">//如果返回的是整型pValue3，那么会出现断言  </span>
+</span><span class='line'>    <span class="k">if</span><span class="p">(</span><span class="n">pDict</span><span class="o">-&gt;</span><span class="n">writeToFile</span><span class="p">(</span><span class="s">&quot;pdic.plist&quot;</span><span class="p">))</span>  <span class="c1">//整型的value无法写入，会提示This type cannot appear in property list  </span>
+</span><span class='line'>      <span class="n">CCLog</span><span class="p">(</span><span class="s">&quot;Write to file success!&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
-// Insert objects to dictionary  
-CCString* pValue1 = CCString::create("100");  
-CCString* pValue2 = CCString::create("120");  
-CCInteger* pValue3 = CCInteger::create(200);  
-pDict-&gt;setObject(pValue1, "key1");  
-pDict-&gt;setObject(pValue2, "key2");  
-pDict-&gt;setObject(pValue3, "key3");  
-
-// Get the object for key  
-CCString* pStr1 = (CCString*)pDict-&gt;objectForKey("key1");  
-CCLog("{ key1: %s }", pStr1-&gt;getCString());  
-CCInteger* pInteger = (CCInteger*)pDict-&gt;objectForKey("key3");  
-CCLog("{ key3: %d }", pInteger-&gt;getValue());  
-CCString* pStr3=static_cast&lt;CCString*&gt;(pDict-&gt;randomObject());//这里有问题了，因为value有不同类型，所以随机返回时类型处理要小心  
-CCLog("{ random key: %s }",pStr3-&gt;getCString());  //如果返回的是整型pValue3，那么会出现断言  
-if(pDict-&gt;writeToFile("pdic.plist"))  //整型的value无法写入，会提示This type cannot appear in property list  
-    CCLog("Write to file success!");  
-</code></pre>
 
 <p>Resource/pdic.plist</p>
 
-<p>&lt;?xml version=&ldquo;1.0&rdquo; encoding=&ldquo;UTF-8&rdquo;?><br/>
-&lt;!DOCTYPE plist PUBLIC &ldquo;&ndash;//Apple//DTD PLIST 1.0//EN&rdquo; &ldquo;<a href="http://www.apple.com/DTDs/PropertyList-1.0.dtd">http://www.apple.com/DTDs/PropertyList-1.0.dtd</a>&rdquo;/></p>
+<figure class='code'><figcaption><span>pdic.plist</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'> <span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+</span><span class='line'>  <span class="cp">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;/&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nt">&lt;plist</span> <span class="na">version=</span><span class="s">&quot;1.0&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;dict&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;key&gt;</span>key1<span class="nt">&lt;/key&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;string&gt;</span>100<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;key&gt;</span>key2<span class="nt">&lt;/key&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;string&gt;</span>120<span class="nt">&lt;/string&gt;</span>
+</span><span class='line'>      <span class="nt">&lt;key&gt;</span>key3<span class="nt">&lt;/key&gt;</span>  <span class="cp">&lt;!key3对应整型数据无法写入/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/dict&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/plist&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<pre><code>&lt;plist version="1.0"&gt;  
-&lt;dict&gt;  
-    &lt;key&gt;key1&lt;/key&gt;  
-    &lt;string&gt;100&lt;/string&gt;  
-    &lt;key&gt;key2&lt;/key&gt;  
-    &lt;string&gt;120&lt;/string&gt;  
-    &lt;key&gt;key3&lt;/key&gt;  &lt;!key3对应整型数据无法写入/&gt;  
-&lt;/dict&gt;  
-&lt;/plist&gt;  
-</code></pre>
 
 <h3>5.CCDICT_FOREACH</h3>
 
@@ -1756,23 +2292,37 @@ if(pDict-&gt;writeToFile("pdic.plist"))  //整型的value无法写入，会提�
 
 <p>宏定义，用于遍历CCDictionary的value。</p>
 
-<pre><code>#define CCDICT_FOREACH(__dict__, __el__) \  
-CCDictElement* pTmp##__dict__##__el__ = NULL; \  
-if (__dict__) \  
-HASH_ITER(hh, (__dict__)-&gt;m_pElements, __el__, pTmp##__dict__##__el__)  
-</code></pre>
+<figure class='code'><figcaption><span>CCDICT_FOREACH宏定义</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="err">#</span><span class="n">define</span> <span class="n">CCDICT_FOREACH</span><span class="p">(</span><span class="n">__dict__</span><span class="p">,</span> <span class="n">__el__</span><span class="p">)</span> <span class="err">\</span>
+</span><span class='line'>    <span class="n">CCDictElement</span><span class="o">*</span> <span class="n">pTmp</span><span class="err">##</span><span class="n">__dict__</span><span class="err">##</span><span class="n">__el__</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span> <span class="err">\</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">__dict__</span><span class="p">)</span> <span class="err">\</span>
+</span><span class='line'>    <span class="n">HASH_ITER</span><span class="p">(</span><span class="n">hh</span><span class="p">,</span> <span class="p">(</span><span class="n">__dict__</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">m_pElements</span><span class="p">,</span> <span class="n">__el__</span><span class="p">,</span> <span class="n">pTmp</span><span class="err">##</span><span class="n">__dict__</span><span class="err">##</span><span class="n">__el__</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>5.2.示例</strong></p>
 
-<pre><code>CCDictElement* pElement;  
-CCDICT_FOREACH(dict, pElement)  
-{  
-    const char*key = pElement-&gt;getStrKey();  
-    // You certainly know the type of value, so we assume that it's a CCSprite.  
-    CCSprite* pSprite = (CCSprite*)pElement-&gt;getObject();  
-    // ......  
-}  
-</code></pre>
+<figure class='code'><figcaption><span>CCDICT_FOREACH示例</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="n">CCDictElement</span><span class="o">*</span> <span class="n">pElement</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">CCDICT_FOREACH</span><span class="p">(</span><span class="n">dict</span><span class="p">,</span> <span class="n">pElement</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="n">key</span> <span class="o">=</span> <span class="n">pElement</span><span class="o">-&gt;</span><span class="n">getStrKey</span><span class="p">();</span>
+</span><span class='line'>      <span class="c1">// You certainly know the type of value, so we assume that it&#39;s a CCSprite.  </span>
+</span><span class='line'>      <span class="n">CCSprite</span><span class="o">*</span> <span class="n">pSprite</span> <span class="o">=</span> <span class="p">(</span><span class="n">CCSprite</span><span class="o">*</span><span class="p">)</span><span class="n">pElement</span><span class="o">-&gt;</span><span class="n">getObject</span><span class="p">();</span>
+</span><span class='line'>      <span class="c1">// ......  </span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/11/26/play-cocos2dx-26/'>http://www.fusijie.com/blog/2013/11/26/play-cocos2dx-26/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
 
@@ -1795,79 +2345,140 @@ CCDICT_FOREACH(dict, pElement)
 
 <p><strong>1.1.创建</strong></p>
 
-<pre><code>//创建array  
-static CCArray* create();  
-//使用一系列CCObject创建array  
-static CCArray* create(CCObject* pObject, …);  
-//使用一个CCObject创建array  
-static CCArray* createWithObject(CCObject* pObject);  
-//创建array并设置容量  
-static CCArray* createWithCapacity(unsigned int capacity);  
-//用一个已存在的array创建另一个array  
-static CCArray* createWithArray(CCArray* otherArray);  
-</code></pre>
+<figure class='code'><figcaption><span>创建</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//创建array  </span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">CCArray</span><span class="o">*</span> <span class="n">create</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">//使用一系列CCObject创建array  </span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">CCArray</span><span class="o">*</span> <span class="n">create</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">pObject</span><span class="p">,</span> <span class="err">…</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//使用一个CCObject创建array  </span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">CCArray</span><span class="o">*</span> <span class="n">createWithObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">pObject</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//创建array并设置容量  </span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">CCArray</span><span class="o">*</span> <span class="n">createWithCapacity</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">capacity</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//用一个已存在的array创建另一个array  </span>
+</span><span class='line'>    <span class="k">static</span> <span class="n">CCArray</span><span class="o">*</span> <span class="n">createWithArray</span><span class="p">(</span><span class="n">CCArray</span><span class="o">*</span> <span class="n">otherArray</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>1.2.添加</strong></p>
 
-<pre><code>//添加一个元素  
-void addObject(CCObject* object);  
-//添加一个已存在array中所有元素  
-void addObjectsFromArray(CCArray* otherArray);  
-//在指定位置插入元素  
-void insertObject(CCObject* object, unsigned int index);  
-</code></pre>
+<figure class='code'><figcaption><span>添加</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//添加一个元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">addObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">object</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//添加一个已存在array中所有元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">addObjectsFromArray</span><span class="p">(</span><span class="n">CCArray</span><span class="o">*</span> <span class="n">otherArray</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//在指定位置插入元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">insertObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">object</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">index</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>1.3.删除</strong></p>
 
-<pre><code>//移除最后一个元素  
-void removeLastObject(bool bReleaseObj = true);  
-//移除某个元素  
-void removeObject(CCObject* object, bool bReleaseObj = true);  
-//移除一个指定位置的元素  
-void removeObjectAtIndex(unsigned int index, bool bReleaseObj = true);  
-//移除某个array  
-void removeObjectsInArray(CCArray* otherArray);  
-//移除所有元素  
-void removeAllObjects();  
-//快速移除某个元素  
-void fastRemoveObject(CCObject* object);  
-//快速移除某个指定位置的元素  
-void fastRemoveObjectAtIndex(unsigned int index);  
-</code></pre>
+<figure class='code'><figcaption><span>删除</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//移除最后一个元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeLastObject</span><span class="p">(</span><span class="kt">bool</span> <span class="n">bReleaseObj</span> <span class="o">=</span> <span class="kc">true</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//移除某个元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">object</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">bReleaseObj</span> <span class="o">=</span> <span class="kc">true</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//移除一个指定位置的元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeObjectAtIndex</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">bReleaseObj</span> <span class="o">=</span> <span class="kc">true</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//移除某个array  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeObjectsInArray</span><span class="p">(</span><span class="n">CCArray</span><span class="o">*</span> <span class="n">otherArray</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//移除所有元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeAllObjects</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">//快速移除某个元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">fastRemoveObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">object</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//快速移除某个指定位置的元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">fastRemoveObjectAtIndex</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">index</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>1.4.操作元素</strong></p>
 
-<pre><code>//返回元素个数  
-unsigned int count() const;  
-//返回array容量  
-unsigned int capacity() const;  
-//返回指定CCObject的位置，如果不存在返回UINT_MAX  
-unsigned int indexOfObject(CCObject* object) const;  
-//返回指定位置的CCObject  
-CCObject* objectAtIndex(unsigned int index);  
-//返回最后一个元素  
-CCObject* lastObject();  
-//返回随机元素  
-CCObject* randomObject();  
-//返回某个元素是否存在于array中  
-bool containsObject(CCObject* object) const;  
-//判断array是否相等  
-bool isEqualToArray(CCArray* pOtherArray);  
-</code></pre>
+<figure class='code'><figcaption><span>操作元素</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//返回元素个数  </span>
+</span><span class='line'>    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">count</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">//返回array容量  </span>
+</span><span class='line'>    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">capacity</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">//返回指定CCObject的位置，如果不存在返回UINT_MAX  </span>
+</span><span class='line'>    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">indexOfObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">object</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">//返回指定位置的CCObject  </span>
+</span><span class='line'>    <span class="n">CCObject</span><span class="o">*</span> <span class="n">objectAtIndex</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">index</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//返回最后一个元素  </span>
+</span><span class='line'>    <span class="n">CCObject</span><span class="o">*</span> <span class="n">lastObject</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">//返回随机元素  </span>
+</span><span class='line'>    <span class="n">CCObject</span><span class="o">*</span> <span class="n">randomObject</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">//返回某个元素是否存在于array中  </span>
+</span><span class='line'>    <span class="kt">bool</span> <span class="n">containsObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">object</span><span class="p">)</span> <span class="k">const</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">//判断array是否相等  </span>
+</span><span class='line'>    <span class="kt">bool</span> <span class="n">isEqualToArray</span><span class="p">(</span><span class="n">CCArray</span><span class="o">*</span> <span class="n">pOtherArray</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>1.5.操作array内容</strong></p>
 
-<pre><code>//交换2个元素  
-void exchangeObject(CCObject* object1, CCObject* object2);  
-//交换2个指定位置元素  
-void exchangeObjectAtIndex(unsigned int index1, unsigned int index2);  
-//用一个对象替代指定位置元素  
-void replaceObjectAtIndex(unsigned int uIndex, CCObject* pObject, bool bReleaseObject = true);  
-//反转array  
-void reverseObjects();  
-//收缩array内存以匹配元素个数  
-void reduceMemoryFootprint();  
-</code></pre>
+<figure class='code'><figcaption><span>操作array内容</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//交换2个元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">exchangeObject</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">object1</span><span class="p">,</span> <span class="n">CCObject</span><span class="o">*</span> <span class="n">object2</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//交换2个指定位置元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">exchangeObjectAtIndex</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">index1</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">index2</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//用一个对象替代指定位置元素  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">replaceObjectAtIndex</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">uIndex</span><span class="p">,</span> <span class="n">CCObject</span><span class="o">*</span> <span class="n">pObject</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">bReleaseObject</span> <span class="o">=</span> <span class="kc">true</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//反转array  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">reverseObjects</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">//收缩array内存以匹配元素个数  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">reduceMemoryFootprint</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h3>2.remove和fastremove</h3>
 
@@ -1875,40 +2486,73 @@ void reduceMemoryFootprint();
 
 <p><strong>2.1.普通删除</strong></p>
 
-<pre><code>//普通删除  
-void ccArrayRemoveObjectAtIndex(ccArray *arr, unsigned int index, bool bReleaseObj/* = true*/)  
-{  
-    CCAssert(arr &amp;&amp; arr-&gt;num &gt; 0 &amp;&amp; index &lt; arr-&gt;num, "Invalid index. Out of bounds");  
-    //删除元素内容，位置仍保留着  
-    if (bReleaseObj)  
-    {  
-        CC_SAFE_RELEASE(arr-&gt;arr[index]);  
-    }  
-    //长度减1  
-    arr-&gt;num--;  
-    //获得要删除的元素后的元素个数  
-    unsigned int remaining = arr-&gt;num - index;  
-    if(remaining&gt;0)  
-    {  
-        //将要删除元素后的所有元素逐个向前移动  
-        memmove((void *)&amp;arr-&gt;arr[index], (void *)&amp;arr-&gt;arr[index+1], remaining * sizeof(CCObject*));  
-    }  
-}  
-</code></pre>
+<figure class='code'><figcaption><span>普通删除</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>
+</span><span class='line'>    <span class="c1">//普通删除  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">ccArrayRemoveObjectAtIndex</span><span class="p">(</span><span class="n">ccArray</span> <span class="o">*</span><span class="n">arr</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">index</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">bReleaseObj</span><span class="cm">/* = true*/</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="n">CCAssert</span><span class="p">(</span><span class="n">arr</span> <span class="o">&amp;&amp;</span> <span class="n">arr</span><span class="o">-&gt;</span><span class="n">num</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="o">-&gt;</span><span class="n">num</span><span class="p">,</span> <span class="s">&quot;Invalid index. Out of bounds&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="c1">//删除元素内容，位置仍保留着  </span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">bReleaseObj</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">CC_SAFE_RELEASE</span><span class="p">(</span><span class="n">arr</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">index</span><span class="p">]);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="c1">//长度减1  </span>
+</span><span class='line'>      <span class="n">arr</span><span class="o">-&gt;</span><span class="n">num</span><span class="o">--</span><span class="p">;</span>
+</span><span class='line'>      <span class="c1">//获得要删除的元素后的元素个数  </span>
+</span><span class='line'>      <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">remaining</span> <span class="o">=</span> <span class="n">arr</span><span class="o">-&gt;</span><span class="n">num</span> <span class="o">-</span> <span class="n">index</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="n">remaining</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="c1">//将要删除元素后的所有元素逐个向前移动  </span>
+</span><span class='line'>          <span class="n">memmove</span><span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">arr</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">arr</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">remaining</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span><span class="p">));</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>2.2.快速删除</strong></p>
 
-<pre><code>//快速删除  
-void ccArrayFastRemoveObjectAtIndex(ccArray *arr, unsigned int index)  
-{  
-    //删除元素内容，位置仍保留着  
-    CC_SAFE_RELEASE(arr-&gt;arr[index]);  
-    //获取最后一个元素  
-    unsigned int last = --arr-&gt;num;  
-    //把最后一个元素插到删除元素的位置上  
-    arr-&gt;arr[index] = arr-&gt;arr[last];  
-}  
-</code></pre>
+<figure class='code'><figcaption><span>快速删除</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//快速删除  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">ccArrayFastRemoveObjectAtIndex</span><span class="p">(</span><span class="n">ccArray</span> <span class="o">*</span><span class="n">arr</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">index</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="c1">//删除元素内容，位置仍保留着  </span>
+</span><span class='line'>      <span class="n">CC_SAFE_RELEASE</span><span class="p">(</span><span class="n">arr</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">index</span><span class="p">]);</span>
+</span><span class='line'>      <span class="c1">//获取最后一个元素  </span>
+</span><span class='line'>      <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">last</span> <span class="o">=</span> <span class="o">--</span><span class="n">arr</span><span class="o">-&gt;</span><span class="n">num</span><span class="p">;</span>
+</span><span class='line'>      <span class="c1">//把最后一个元素插到删除元素的位置上  </span>
+</span><span class='line'>      <span class="n">arr</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">last</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><strong>2.3.总结</strong></p>
 
@@ -1919,14 +2563,22 @@ void ccArrayFastRemoveObjectAtIndex(ccArray *arr, unsigned int index)
 <p><strong>3.1.容量和个数</strong>
 CCArray中容量和个数并不是同一个概念。个数&lt;=容量。从添加元素的源码中可以看到在添加之前会先进行空间分配，所以它是一个动态分配内存的过程。如下</p>
 
-<pre><code>void ccArrayEnsureExtraCapacity(ccArray *arr, unsigned int extra)//确保有额外的空间  
-{  
-    while (arr-&gt;max &lt; arr-&gt;num + extra)//判断空间是否足够  
-    {  
-        ccArrayDoubleCapacity(arr);//增加一倍空间  
-    }  
-}  
-</code></pre>
+<figure class='code'><figcaption><span>内存分配</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="kt">void</span> <span class="n">ccArrayEnsureExtraCapacity</span><span class="p">(</span><span class="n">ccArray</span> <span class="o">*</span><span class="n">arr</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">extra</span><span class="p">)</span><span class="c1">//确保有额外的空间  </span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="k">while</span> <span class="p">(</span><span class="n">arr</span><span class="o">-&gt;</span><span class="n">max</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="o">-&gt;</span><span class="n">num</span> <span class="o">+</span> <span class="n">extra</span><span class="p">)</span><span class="c1">//判断空间是否足够  </span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">ccArrayDoubleCapacity</span><span class="p">(</span><span class="n">arr</span><span class="p">);</span><span class="c1">//增加一倍空间  </span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>所以，每次CCArray在插入数据时检测到空间不足会增加一倍空间，再进行检测，直到空间满足分配为止。</p>
 
@@ -1951,18 +2603,30 @@ CCArray中容量和个数并不是同一个概念。个数&lt;=容量。从添�
 
 <p>宏定义，用于正向遍历和反向遍历CCArray元素</p>
 
-<pre><code>#define CCARRAY_FOREACH(__array__, __object__)                                                                         \  
-    if ((__array__) &amp;&amp; (__array__)-&gt;data-&gt;num &gt; 0)                                                                     \  
-    for(CCObject** __arr__ = (__array__)-&gt;data-&gt;arr, **__end__ = (__array__)-&gt;data-&gt;arr + (__array__)-&gt;data-&gt;num-1;    \  
-    __arr__ &lt;= __end__ &amp;&amp; (((__object__) = *__arr__) != NULL/* || true*/);                                             \  
-    __arr__++)  
+<figure class='code'><figcaption><span>正反向遍历CCArray</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="err">#</span><span class="n">define</span> <span class="n">CCARRAY_FOREACH</span><span class="p">(</span><span class="n">__array__</span><span class="p">,</span> <span class="n">__object__</span><span class="p">)</span>                                                                         <span class="err">\</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">((</span><span class="n">__array__</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">__array__</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">num</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>                                                                     <span class="err">\</span>
+</span><span class='line'>      <span class="k">for</span><span class="p">(</span><span class="n">CCObject</span><span class="o">**</span> <span class="n">__arr__</span> <span class="o">=</span> <span class="p">(</span><span class="n">__array__</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">,</span> <span class="o">**</span><span class="n">__end__</span> <span class="o">=</span> <span class="p">(</span><span class="n">__array__</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">arr</span> <span class="o">+</span> <span class="p">(</span><span class="n">__array__</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">num</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>    <span class="err">\</span>
+</span><span class='line'>      <span class="n">__arr__</span> <span class="o">&lt;=</span> <span class="n">__end__</span> <span class="o">&amp;&amp;</span> <span class="p">(((</span><span class="n">__object__</span><span class="p">)</span> <span class="o">=</span> <span class="o">*</span><span class="n">__arr__</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="cm">/* || true*/</span><span class="p">);</span>                                             <span class="err">\</span>
+</span><span class='line'>      <span class="n">__arr__</span><span class="o">++</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="err">#</span><span class="n">define</span> <span class="n">CCARRAY_FOREACH_REVERSE</span><span class="p">(</span><span class="n">__array__</span><span class="p">,</span> <span class="n">__object__</span><span class="p">)</span>                                                                  <span class="err">\</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">((</span><span class="n">__array__</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">__array__</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">num</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>                                                                      <span class="err">\</span>
+</span><span class='line'>      <span class="k">for</span><span class="p">(</span><span class="n">CCObject</span><span class="o">**</span> <span class="n">__arr__</span> <span class="o">=</span> <span class="p">(</span><span class="n">__array__</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">arr</span> <span class="o">+</span> <span class="p">(</span><span class="n">__array__</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">num</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">__end__</span> <span class="o">=</span> <span class="p">(</span><span class="n">__array__</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">;</span>     <span class="err">\</span>
+</span><span class='line'>      <span class="n">__arr__</span> <span class="o">&gt;=</span> <span class="n">__end__</span> <span class="o">&amp;&amp;</span> <span class="p">(((</span><span class="n">__object__</span><span class="p">)</span> <span class="o">=</span> <span class="o">*</span><span class="n">__arr__</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="cm">/* || true*/</span><span class="p">);</span>                                              <span class="err">\</span>
+</span><span class='line'>      <span class="n">__arr__</span><span class="o">--</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
-#define CCARRAY_FOREACH_REVERSE(__array__, __object__)                                                                  \  
-    if ((__array__) &amp;&amp; (__array__)-&gt;data-&gt;num &gt; 0)                                                                      \  
-    for(CCObject** __arr__ = (__array__)-&gt;data-&gt;arr + (__array__)-&gt;data-&gt;num-1, **__end__ = (__array__)-&gt;data-&gt;arr;     \  
-    __arr__ &gt;= __end__ &amp;&amp; (((__object__) = *__arr__) != NULL/* || true*/);                                              \  
-    __arr__--)  
-</code></pre>
 
 <h3>6.示例</h3>
 

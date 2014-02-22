@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 游戏引导 | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/you-xi-yin-dao/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-02-08T16:22:04+08:00</updated>
+  <updated>2014-02-22T08:54:13+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -42,6 +42,8 @@
 
 <p>CCClipingNode的使用还是比较简单的，至于显示底板还是模版，alpha值的设定，这些也不好说清楚，自己多试几次就知道是什么意思该怎么用了。</p>
 
+<p>``` cpp CCClipingNode API</p>
+
 <pre><code>//不带模版地创建一个裁剪节点  
 static CCClippingNode* create();  
 
@@ -68,9 +70,13 @@ bool isInverted() const;
 void setInverted(bool bInverted);  
 </code></pre>
 
+<p>```</p>
+
 <h3>3.示例</h3>
 
 <p>在init中实现：</p>
+
+<p>``` cpp CCClipingNode的使用</p>
 
 <pre><code>CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
 
@@ -113,6 +119,8 @@ tip-&gt;runAction(CCRepeatForever::create(CCSequence::create(CCScaleBy::create(0
 
 this-&gt;setTouchEnabled(true);//触摸有效，落点正确时移除裁剪节点和提示，相关处理请看源码  
 </code></pre>
+
+<p>```</p>
 
 <h3>4.效果</h3>
 

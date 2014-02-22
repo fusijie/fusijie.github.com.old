@@ -134,30 +134,54 @@
 
 <h3>2.相关API</h3>
 
-<pre><code>//获得消息通知中心的一个单例对象  
-static CCNotificationCenter *sharedNotificationCenter(void);  
+<figure class='code'><figcaption><span>CCNotificationCenter API</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="c1">//获得消息通知中心的一个单例对象  </span>
+</span><span class='line'>  <span class="k">static</span> <span class="n">CCNotificationCenter</span> <span class="o">*</span><span class="n">sharedNotificationCenter</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//销毁通知中心的单例对象  </span>
+</span><span class='line'>  <span class="k">static</span> <span class="kt">void</span> <span class="n">purgeNotificationCenter</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//添加观察者  </span>
+</span><span class='line'>  <span class="kt">void</span> <span class="n">addObserver</span><span class="p">(</span><span class="n">CCObject</span> <span class="o">*</span><span class="n">target</span><span class="p">,</span>
+</span><span class='line'>                  <span class="n">SEL_CallFuncO</span> <span class="n">selector</span><span class="p">,</span>
+</span><span class='line'>                  <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span>
+</span><span class='line'>                  <span class="n">CCObject</span> <span class="o">*</span><span class="n">obj</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//移除观察者  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">removeObserver</span><span class="p">(</span><span class="n">CCObject</span> <span class="o">*</span><span class="n">target</span><span class="p">,</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//移除所有观察者  </span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">removeAllObservers</span><span class="p">(</span><span class="n">CCObject</span> <span class="o">*</span><span class="n">target</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//发送消息  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">postNotification</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//发送带数据的消息  </span>
+</span><span class='line'>    <span class="kt">void</span> <span class="n">postNotification</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="n">CCObject</span> <span class="o">*</span><span class="n">object</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
 
-//销毁通知中心的单例对象  
-static void purgeNotificationCenter(void);  
-
-//添加观察者  
-void addObserver(CCObject *target,   
-                SEL_CallFuncO selector,  
-                const char *name,  
-                CCObject *obj);  
-
-//移除观察者  
-void removeObserver(CCObject *target,const char *name);  
-
-//移除所有观察者  
-int removeAllObservers(CCObject *target);  
-
-//发送消息  
-void postNotification(const char *name);  
-
-//发送带数据的消息  
-void postNotification(const char *name, CCObject *object);  
-</code></pre>
 
 <p>观察者的意思即是等待获取消息的对象，比如上图的B。</p>
 
@@ -169,63 +193,120 @@ void postNotification(const char *name, CCObject *object);
 
 <p>这里做了一个场景，包含了2个层，目的是层A向层B发送带数据的消息，层B收到后打印出这条数据。</p>
 
-<pre><code>//ALayer  
-bool ALayer::init()  
-{  
-    bool bRet=false;  
-    do   
-    {  
-        CC_BREAK_IF(!CCLayer::init());  
-        CCSize visibleSize = CCDirector::sharedDirector()-&gt;getVisibleSize();  
-        CCMenuItemImage *pCloseItem = CCMenuItemImage::create(  
-            "CloseNormal.png",  
-            "CloseSelected.png",  
-            this,  
-            menu_selector(ALayer::PostMessage));//按钮用于点击发送消息  
+<figure class='code'><figcaption><span>CCNotificationCenter的示例</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="c1">//ALayer  </span>
+</span><span class='line'>  <span class="kt">bool</span> <span class="n">ALayer</span><span class="o">::</span><span class="n">init</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="kt">bool</span> <span class="n">bRet</span><span class="o">=</span><span class="kc">false</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">do</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">CC_BREAK_IF</span><span class="p">(</span><span class="o">!</span><span class="n">CCLayer</span><span class="o">::</span><span class="n">init</span><span class="p">());</span>
+</span><span class='line'>          <span class="n">CCSize</span> <span class="n">visibleSize</span> <span class="o">=</span> <span class="n">CCDirector</span><span class="o">::</span><span class="n">sharedDirector</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">getVisibleSize</span><span class="p">();</span>
+</span><span class='line'>          <span class="n">CCMenuItemImage</span> <span class="o">*</span><span class="n">pCloseItem</span> <span class="o">=</span> <span class="n">CCMenuItemImage</span><span class="o">::</span><span class="n">create</span><span class="p">(</span>
+</span><span class='line'>              <span class="s">&quot;CloseNormal.png&quot;</span><span class="p">,</span>
+</span><span class='line'>              <span class="s">&quot;CloseSelected.png&quot;</span><span class="p">,</span>
+</span><span class='line'>              <span class="k">this</span><span class="p">,</span>
+</span><span class='line'>              <span class="n">menu_selector</span><span class="p">(</span><span class="n">ALayer</span><span class="o">::</span><span class="n">PostMessage</span><span class="p">));</span><span class="c1">//按钮用于点击发送消息  </span>
+</span><span class='line'>
+</span><span class='line'>          <span class="n">pCloseItem</span><span class="o">-&gt;</span><span class="n">setAnchorPoint</span><span class="p">(</span><span class="n">ccp</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">));</span>
+</span><span class='line'>          <span class="n">pCloseItem</span><span class="o">-&gt;</span><span class="n">setPosition</span><span class="p">(</span><span class="n">ccp</span><span class="p">(</span><span class="n">visibleSize</span><span class="p">.</span><span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="n">visibleSize</span><span class="p">.</span><span class="n">height</span><span class="o">/</span><span class="mi">2</span><span class="p">));</span>
+</span><span class='line'>          <span class="n">CCMenu</span><span class="o">*</span> <span class="n">pMenu</span> <span class="o">=</span> <span class="n">CCMenu</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">pCloseItem</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">pMenu</span><span class="o">-&gt;</span><span class="n">setPosition</span><span class="p">(</span><span class="n">CCPointZero</span><span class="p">);</span>
+</span><span class='line'>          <span class="k">this</span><span class="o">-&gt;</span><span class="n">addChild</span><span class="p">(</span><span class="n">pMenu</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="n">bRet</span><span class="o">=</span><span class="kc">true</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">return</span> <span class="n">bRet</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kt">void</span> <span class="n">ALayer</span><span class="o">::</span><span class="n">PostMessage</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">pSender</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">CCString</span><span class="o">*</span> <span class="n">str</span><span class="o">=</span><span class="n">CCString</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;Hello BLayer!&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">CCNotificationCenter</span><span class="o">::</span><span class="n">sharedNotificationCenter</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">postNotification</span><span class="p">(</span><span class="s">&quot;BMessage&quot;</span><span class="p">,</span><span class="n">str</span><span class="p">);</span><span class="c1">//发送带str的消息BMessage  </span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//BLayer  </span>
+</span><span class='line'>  <span class="kt">bool</span> <span class="n">BLayer</span><span class="o">::</span><span class="n">init</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="kt">bool</span> <span class="n">bRet</span><span class="o">=</span><span class="kc">false</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">do</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">CC_BREAK_IF</span><span class="p">(</span><span class="o">!</span><span class="n">CCLayer</span><span class="o">::</span><span class="n">init</span><span class="p">());</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="n">CCNotificationCenter</span><span class="o">::</span><span class="n">sharedNotificationCenter</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">addObserver</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="n">callfuncO_selector</span><span class="p">(</span><span class="n">BLayer</span><span class="o">::</span><span class="n">getMessage</span><span class="p">),</span><span class="s">&quot;BMessage&quot;</span><span class="p">,</span><span class="nb">NULL</span><span class="p">);</span><span class="c1">//注册BMessage，如果接收到了，执行getMessage  </span>
+</span><span class='line'>
+</span><span class='line'>          <span class="n">bRet</span><span class="o">=</span><span class="kc">true</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">return</span> <span class="n">bRet</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kt">void</span> <span class="n">BLayer</span><span class="o">::</span><span class="n">getMessage</span><span class="p">(</span><span class="n">CCObject</span><span class="o">*</span> <span class="n">obj</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">CCString</span><span class="o">*</span> <span class="n">str</span><span class="o">=</span><span class="k">static_cast</span><span class="o">&lt;</span><span class="n">CCString</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">obj</span><span class="p">);</span><span class="c1">//打印出传递的数据  </span>
+</span><span class='line'>      <span class="n">CCLog</span><span class="p">(</span><span class="n">str</span><span class="o">-&gt;</span><span class="n">getCString</span><span class="p">());</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">BLayer</span><span class="o">::~</span><span class="n">BLayer</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">CCNotificationCenter</span><span class="o">::</span><span class="n">sharedNotificationCenter</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">purgeNotificationCenter</span><span class="p">();</span><span class="c1">//释放通知中心单例对象  </span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-        pCloseItem-&gt;setAnchorPoint(ccp(0.5,0.5));  
-        pCloseItem-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
-        CCMenu* pMenu = CCMenu::create(pCloseItem, NULL);  
-        pMenu-&gt;setPosition(CCPointZero);  
-        this-&gt;addChild(pMenu, 1);  
-
-        bRet=true;  
-    } while (0);  
-    return bRet;  
-}  
-
-void ALayer::PostMessage(CCObject* pSender)  
-{  
-    CCString* str=CCString::create("Hello BLayer!");  
-    CCNotificationCenter::sharedNotificationCenter()-&gt;postNotification("BMessage",str);//发送带str的消息BMessage  
-}  
-
-//BLayer  
-bool BLayer::init()  
-{  
-    bool bRet=false;  
-    do   
-    {  
-        CC_BREAK_IF(!CCLayer::init());  
-
-        CCNotificationCenter::sharedNotificationCenter()-&gt;addObserver(this,callfuncO_selector(BLayer::getMessage),"BMessage",NULL);//注册BMessage，如果接收到了，执行getMessage  
-
-        bRet=true;  
-    } while (0);  
-    return bRet;  
-}  
-
-void BLayer::getMessage(CCObject* obj)  
-{  
-    CCString* str=static_cast&lt;CCString*&gt;(obj);//打印出传递的数据  
-    CCLog(str-&gt;getCString());  
-}  
-
-BLayer::~BLayer(void)  
-{  
-    CCNotificationCenter::sharedNotificationCenter()-&gt;purgeNotificationCenter();//释放通知中心单例对象  
-}  
-</code></pre>
 
 <h3>5.注意</h3>
 
@@ -235,8 +316,10 @@ BLayer::~BLayer(void)
 
 <p><em>（2）传递参数，A可以向B传递参数，而B在注册的时候也可以带一个参数，如果这两个数据不是指向同一对象的话，消息不会传递。也就是说要么A传递NULL对象，要么B注册时带NULL对象，要么都不是NULL但必须是同一对象，消息传递才会成功。以下是发送消息执行的判断：</em></p>
 
-<pre><code>if (!strcmp(name,observer-&gt;getName()) &amp;&amp; (observer-&gt;getObject() == object || observer-&gt;getObject() == NULL || object == NULL))  
-</code></pre>
+<figure class='code'><figcaption><span>消息发送的判断</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">strcmp</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">observer</span><span class="o">-&gt;</span><span class="n">getName</span><span class="p">())</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">observer</span><span class="o">-&gt;</span><span class="n">getObject</span><span class="p">()</span> <span class="o">==</span> <span class="n">object</span> <span class="o">||</span> <span class="n">observer</span><span class="o">-&gt;</span><span class="n">getObject</span><span class="p">()</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="o">||</span> <span class="n">object</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><em>（3）局部变量的传递，注意到上例，传递的是CCString的一个局部变量（但还是要autorelease），从CCNotificationCenter的实现上来看，这是没有问题的，因为数据是在postNotification被调用的，也就是整个函数体并没结束，数据不会被销毁。</em></p>
 

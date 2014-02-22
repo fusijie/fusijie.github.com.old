@@ -9,7 +9,18 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="之前在遇到这么一个问题，在CCSequence中加入CCRepeatForever，发现其他动作执行没问题，就是CCRepeatForever无法执行。代码并没有问题，很奇怪。 1.示例 CCBlink* blink=CCBlink::create(0.5f,10);//创建闪烁动画， &hellip;">
+  <meta name="description" content="之前在遇到这么一个问题，在CCSequence中加入CCRepeatForever，发现其他动作执行没问题，就是CCRepeatForever无法执行。代码并没有问题，很奇怪。 1.示例 示例1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12 CCBlink* blink=CCBlink:: &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -112,19 +123,32 @@
 
 <h3>1.示例</h3>
 
-<pre><code>CCBlink* blink=CCBlink::create(0.5f,10);//创建闪烁动画，duration=0.5s  
-CCAnimation* animation=CCAnimation::create();  
-animation-&gt;addSpriteFrameWithFileName("CloseNormal.png");  
-animation-&gt;addSpriteFrameWithFileName("CloseSelected.png");  
-animation-&gt;setDelayPerUnit(1.0f);//帧间间隔1s  
-CCAnimate* animate=CCAnimate::create(animation);//创建帧动画  
-CCRepeatForever* repeat=CCRepeatForever::create(animate);  
-CCSequence* sequence=CCSequence::create(blink,repeat,NULL);//创建连续动画  
-CCSprite* close=CCSprite::create("CloseNormal.png");  
-close-&gt;setPosition(ccp(240,160));  
-this-&gt;addChild(close);  
-close-&gt;runAction(sequence);//执行连续动画  
-</code></pre>
+<figure class='code'><figcaption><span>示例</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="n">CCBlink</span><span class="o">*</span> <span class="n">blink</span><span class="o">=</span><span class="n">CCBlink</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="mf">0.5f</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span><span class="c1">//创建闪烁动画，duration=0.5s  </span>
+</span><span class='line'>    <span class="n">CCAnimation</span><span class="o">*</span> <span class="n">animation</span><span class="o">=</span><span class="n">CCAnimation</span><span class="o">::</span><span class="n">create</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">animation</span><span class="o">-&gt;</span><span class="n">addSpriteFrameWithFileName</span><span class="p">(</span><span class="s">&quot;CloseNormal.png&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">animation</span><span class="o">-&gt;</span><span class="n">addSpriteFrameWithFileName</span><span class="p">(</span><span class="s">&quot;CloseSelected.png&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">animation</span><span class="o">-&gt;</span><span class="n">setDelayPerUnit</span><span class="p">(</span><span class="mf">1.0f</span><span class="p">);</span><span class="c1">//帧间间隔1s  </span>
+</span><span class='line'>    <span class="n">CCAnimate</span><span class="o">*</span> <span class="n">animate</span><span class="o">=</span><span class="n">CCAnimate</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">animation</span><span class="p">);</span><span class="c1">//创建帧动画  </span>
+</span><span class='line'>    <span class="n">CCRepeatForever</span><span class="o">*</span> <span class="n">repeat</span><span class="o">=</span><span class="n">CCRepeatForever</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">animate</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CCSequence</span><span class="o">*</span> <span class="n">sequence</span><span class="o">=</span><span class="n">CCSequence</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">blink</span><span class="p">,</span><span class="n">repeat</span><span class="p">,</span><span class="nb">NULL</span><span class="p">);</span><span class="c1">//创建连续动画  </span>
+</span><span class='line'>    <span class="n">CCSprite</span><span class="o">*</span> <span class="n">close</span><span class="o">=</span><span class="n">CCSprite</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;CloseNormal.png&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">close</span><span class="o">-&gt;</span><span class="n">setPosition</span><span class="p">(</span><span class="n">ccp</span><span class="p">(</span><span class="mi">240</span><span class="p">,</span><span class="mi">160</span><span class="p">));</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">-&gt;</span><span class="n">addChild</span><span class="p">(</span><span class="n">close</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">close</span><span class="o">-&gt;</span><span class="n">runAction</span><span class="p">(</span><span class="n">sequence</span><span class="p">);</span><span class="c1">//执行连续动画  </span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>结果精灵闪烁10次以后，帧动画不执行了。</p>
 
@@ -139,58 +163,98 @@ close-&gt;runAction(sequence);//执行连续动画
 
 <p>创建CCSequence调用</p>
 
-<pre><code>//创建CCSequence  
-CCSequence* CCSequence::create(CCFiniteTimeAction *pAction1, ...)  
-</code></pre>
+<figure class='code'><figcaption><span>创建CCSequence</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="n">CCSequence</span><span class="o">*</span> <span class="n">CCSequence</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">CCFiniteTimeAction</span> <span class="o">*</span><span class="n">pAction1</span><span class="p">,</span> <span class="p">...)</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>内部调用了createWithVariableList，从实现可以看出这是一个递归调用。</p>
 
-<pre><code>//获取动作列表，创建CCSequence  
-CCSequence* CCSequence::createWithVariableList(CCFiniteTimeAction *pAction1, va_list args)  
-{  
-    CCFiniteTimeAction *pNow;//当前动作  
-    CCFiniteTimeAction *pPrev = pAction1;//第一个动作  
-    bool bOneAction = true;//只有一个动作的标志位  
+<figure class='code'><figcaption><span>createWithVariableList</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="c1">//获取动作列表，创建CCSequence  </span>
+</span><span class='line'>    <span class="n">CCSequence</span><span class="o">*</span> <span class="n">CCSequence</span><span class="o">::</span><span class="n">createWithVariableList</span><span class="p">(</span><span class="n">CCFiniteTimeAction</span> <span class="o">*</span><span class="n">pAction1</span><span class="p">,</span> <span class="n">va_list</span> <span class="n">args</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="n">CCFiniteTimeAction</span> <span class="o">*</span><span class="n">pNow</span><span class="p">;</span><span class="c1">//当前动作  </span>
+</span><span class='line'>      <span class="n">CCFiniteTimeAction</span> <span class="o">*</span><span class="n">pPrev</span> <span class="o">=</span> <span class="n">pAction1</span><span class="p">;</span><span class="c1">//第一个动作  </span>
+</span><span class='line'>      <span class="kt">bool</span> <span class="n">bOneAction</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span><span class="c1">//只有一个动作的标志位  </span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">while</span> <span class="p">(</span><span class="n">pAction1</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">pNow</span> <span class="o">=</span> <span class="n">va_arg</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">CCFiniteTimeAction</span><span class="o">*</span><span class="p">);</span><span class="c1">//获取当前动作  </span>
+</span><span class='line'>          <span class="k">if</span> <span class="p">(</span><span class="n">pNow</span><span class="p">)</span><span class="c1">//如果存在  </span>
+</span><span class='line'>          <span class="p">{</span>
+</span><span class='line'>              <span class="n">pPrev</span> <span class="o">=</span> <span class="n">createWithTwoActions</span><span class="p">(</span><span class="n">pPrev</span><span class="p">,</span> <span class="n">pNow</span><span class="p">);</span><span class="c1">//用前两个动作创建CCSequence并赋给第一个动作  </span>
+</span><span class='line'>              <span class="n">bOneAction</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span><span class="c1">//置false  </span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>          <span class="k">else</span><span class="c1">//如果不存在  </span>
+</span><span class='line'>          <span class="p">{</span>
+</span><span class='line'>              <span class="c1">// If only one action is added to CCSequence, make up a CCSequence by adding a simplest finite time action.  </span>
+</span><span class='line'>              <span class="k">if</span> <span class="p">(</span><span class="n">bOneAction</span><span class="p">)</span><span class="c1">//如果只有一个动作  </span>
+</span><span class='line'>              <span class="p">{</span>
+</span><span class='line'>                  <span class="n">pPrev</span> <span class="o">=</span> <span class="n">createWithTwoActions</span><span class="p">(</span><span class="n">pPrev</span><span class="p">,</span> <span class="n">ExtraAction</span><span class="o">::</span><span class="n">create</span><span class="p">());</span>
+</span><span class='line'>              <span class="p">}</span>
+</span><span class='line'>          <span class="k">break</span><span class="p">;</span><span class="c1">//跳出循环  </span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">return</span> <span class="p">((</span><span class="n">CCSequence</span><span class="o">*</span><span class="p">)</span><span class="n">pPrev</span><span class="p">);</span><span class="c1">//返回第一个动作  </span>
+</span><span class='line'>    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-    while (pAction1)  
-    {  
-        pNow = va_arg(args, CCFiniteTimeAction*);//获取当前动作  
-        if (pNow)//如果存在  
-        {  
-            pPrev = createWithTwoActions(pPrev, pNow);//用前两个动作创建CCSequence并赋给第一个动作  
-            bOneAction = false;//置false  
-        }  
-        else//如果不存在  
-        {  
-            // If only one action is added to CCSequence, make up a CCSequence by adding a simplest finite time action.  
-            if (bOneAction)//如果只有一个动作  
-            {  
-                pPrev = createWithTwoActions(pPrev, ExtraAction::create());  
-            }  
-        break;//跳出循环  
-        }  
-    }  
-    return ((CCSequence*)pPrev);//返回第一个动作  
-}  
-</code></pre>
 
 <p>假如有3个动作要被串联，则先把第1个和第2个串联一个CCSequence，再把这个CCSequence和第3个动作串联成最终的CCSequence，然后返回。从CCSequence的成员变量可以看到：</p>
 
-<pre><code>CCFiniteTimeAction *m_pActions[2];//表明只包含2个动作对象指针
-</code></pre>
+<figure class='code'><figcaption><span>动作对象指针成员变量</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="n">CCFiniteTimeAction</span> <span class="o">*</span><span class="n">m_pActions</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="c1">//表明只包含2个动作对象指针</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>使用递归多少会降低程序的运行效率，但是却可以换来代码的简洁性，同样的CCSpawn也是这么实现的。
 在createWithTwoActions中，调用了initWithTwoActions函数，实现了把两个动作串成一个CCSequence，关键代码如下：</p>
 
-<pre><code>float d = pActionOne-&gt;getDuration() + pActionTwo-&gt;getDuration();//获取两个动作的duration  
-CCActionInterval::initWithDuration(d);//赋给新的CCSequence  
+<figure class='code'><figcaption><span>initWithTwoActions</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="kt">float</span> <span class="n">d</span> <span class="o">=</span> <span class="n">pActionOne</span><span class="o">-&gt;</span><span class="n">getDuration</span><span class="p">()</span> <span class="o">+</span> <span class="n">pActionTwo</span><span class="o">-&gt;</span><span class="n">getDuration</span><span class="p">();</span><span class="c1">//获取两个动作的duration  </span>
+</span><span class='line'>    <span class="n">CCActionInterval</span><span class="o">::</span><span class="n">initWithDuration</span><span class="p">(</span><span class="n">d</span><span class="p">);</span><span class="c1">//赋给新的CCSequence  </span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">m_pActions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">pActionOne</span><span class="p">;</span><span class="c1">//同时把两个动作赋给m_pActions指针数组  </span>
+</span><span class='line'>    <span class="n">pActionOne</span><span class="o">-&gt;</span><span class="n">retain</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">m_pActions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pActionTwo</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">pActionTwo</span><span class="o">-&gt;</span><span class="n">retain</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
 
-m_pActions[0] = pActionOne;//同时把两个动作赋给m_pActions指针数组  
-pActionOne-&gt;retain();  
-
-m_pActions[1] = pActionTwo;  
-pActionTwo-&gt;retain();  
-</code></pre>
 
 <p><strong>2.2.duration</strong></p>
 
@@ -200,41 +264,68 @@ pActionTwo-&gt;retain();
 
 <p>CCSequence中有这么一个成员变量</p>
 
-<pre><code>float m_split;//记录了第一个动画时长占总时长的比例，也就是2个动画的时长分界  
-</code></pre>
+<figure class='code'><figcaption><span>m_split</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="kt">float</span> <span class="n">m_split</span><span class="p">;</span><span class="c1">//记录了第一个动画时长占总时长的比例，也就是2个动画的时长分界  </span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>当执行runAction的时候，CCSequence会调用</p>
 
-<pre><code>void CCSequence::startWithTarget(CCNode *pTarget)  
-{  
-    CCActionInterval::startWithTarget(pTarget);  
-    m_split = m_pActions[0]-&gt;getDuration() / m_fDuration;//获取第一个动画占总时长的比例  
-    m_last = -1;  
-}  
-</code></pre>
+<figure class='code'><figcaption><span>startWithTarget</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="kt">void</span> <span class="n">CCSequence</span><span class="o">::</span><span class="n">startWithTarget</span><span class="p">(</span><span class="n">CCNode</span> <span class="o">*</span><span class="n">pTarget</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">CCActionInterval</span><span class="o">::</span><span class="n">startWithTarget</span><span class="p">(</span><span class="n">pTarget</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">m_split</span> <span class="o">=</span> <span class="n">m_pActions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">getDuration</span><span class="p">()</span> <span class="o">/</span> <span class="n">m_fDuration</span><span class="p">;</span><span class="c1">//获取第一个动画占总时长的比例  </span>
+</span><span class='line'>      <span class="n">m_last</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>而这里由于blink占了0.5s，repeat占了0s，总时长0.5s，所以m_split是0.5/0.5=1。blink占满了整个CCSequence，所以CCSequence无法执行repeat。</p>
 
 <p>这时候再来看CCSequence::update(float dt)函数的执行，就会恍然大悟了。</p>
 
-<pre><code>int found = 0;//当前播放动作索引  
-float new_t = 0.0f;//新播放进度  
+<figure class='code'><figcaption><span>update</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="kt">int</span> <span class="n">found</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="c1">//当前播放动作索引  </span>
+</span><span class='line'>  <span class="kt">float</span> <span class="n">new_t</span> <span class="o">=</span> <span class="mf">0.0f</span><span class="p">;</span><span class="c1">//新播放进度  </span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="n">m_split</span> <span class="p">)</span> <span class="p">{</span><span class="c1">//播放进度&lt;分界进度  </span>
+</span><span class='line'>      <span class="n">found</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><span class="c1">//设置当前播放的是第一个动作  </span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span> <span class="n">m_split</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">)</span><span class="c1">//如果第一个动作时长占比!=0  </span>
+</span><span class='line'>          <span class="n">new_t</span> <span class="o">=</span> <span class="n">t</span> <span class="o">/</span> <span class="n">m_split</span><span class="p">;</span><span class="c1">//计算出第一个动作新的播放进度  </span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>          <span class="n">new_t</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="c1">//设置第一个已播放完毕  </span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span><span class="c1">//播放进度&gt;=分界进度  </span>
+</span><span class='line'>      <span class="n">found</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="c1">//设置当前播放的是第二个动作  </span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span> <span class="n">m_split</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">)</span><span class="c1">//如果第一个动作时长占比==1  </span>
+</span><span class='line'>          <span class="n">new_t</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span><span class="c1">//设置第二个动作已完成  </span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>          <span class="n">new_t</span> <span class="o">=</span> <span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="n">m_split</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">m_split</span> <span class="p">);</span><span class="c1">//计算出第二个动作新的播放进度  </span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-if( t &lt; m_split ) {//播放进度&lt;分界进度  
-    found = 0;//设置当前播放的是第一个动作  
-    if( m_split != 0 )//如果第一个动作时长占比!=0  
-        new_t = t / m_split;//计算出第一个动作新的播放进度  
-    else  
-        new_t = 1;//设置第一个已播放完毕  
-
-} else {//播放进度&gt;=分界进度  
-    found = 1;//设置当前播放的是第二个动作  
-    if ( m_split == 1 )//如果第一个动作时长占比==1  
-        new_t = 1;//设置第二个动作已完成  
-    else  
-        new_t = (t-m_split) / (1 - m_split );//计算出第二个动作新的播放进度  
-}  
-</code></pre>
 
 <h3>3.注意</h3>
 
@@ -246,37 +337,62 @@ if( t &lt; m_split ) {//播放进度&lt;分界进度
 
 <p><em>（1）对于同时动作，不使用CCSpawn，采用分别执行</em></p>
 
-<pre><code>close-&gt;runAction(blink);  
-close-&gt;runAction(repeat);  
-</code></pre>
+<figure class='code'><figcaption><span>分别执行</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="n">close</span><span class="o">-&gt;</span><span class="n">runAction</span><span class="p">(</span><span class="n">blink</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">close</span><span class="o">-&gt;</span><span class="n">runAction</span><span class="p">(</span><span class="n">repeat</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p><em>（2）对于连续动作，不直接往CCSequence中加入CCRepeatForever，而是把CCRepeatForever放入瞬时动作CCCallFunc中，再把CCCallFunc加入CCSequence中执行。</em></p>
 
-<pre><code>close=CCSprite::create("CloseNormal.png");  
-CCBlink* blink=CCBlink::create(0.5f,10);  
-CCCallFunc* callFunc=CCCallFunc::create(this,callfunc_selector(TestScene::repeatFunc));//创建CCCallFunc对象  
-CCSequence* sequence=CCSequence::create(blink,callFunc,NULL);//把CCCallFunc对象加入CCSequence中  
-close-&gt;setPosition(ccp(240,160));  
-this-&gt;addChild(close);  
-close-&gt;runAction(sequence);  
+<figure class='code'><figcaption><span>CCSequence串联</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="n">close</span><span class="o">=</span><span class="n">CCSprite</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;CloseNormal.png&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">CCBlink</span><span class="o">*</span> <span class="n">blink</span><span class="o">=</span><span class="n">CCBlink</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="mf">0.5f</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">CCCallFunc</span><span class="o">*</span> <span class="n">callFunc</span><span class="o">=</span><span class="n">CCCallFunc</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="n">callfunc_selector</span><span class="p">(</span><span class="n">TestScene</span><span class="o">::</span><span class="n">repeatFunc</span><span class="p">));</span><span class="c1">//创建CCCallFunc对象  </span>
+</span><span class='line'>  <span class="n">CCSequence</span><span class="o">*</span> <span class="n">sequence</span><span class="o">=</span><span class="n">CCSequence</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">blink</span><span class="p">,</span><span class="n">callFunc</span><span class="p">,</span><span class="nb">NULL</span><span class="p">);</span><span class="c1">//把CCCallFunc对象加入CCSequence中  </span>
+</span><span class='line'>  <span class="n">close</span><span class="o">-&gt;</span><span class="n">setPosition</span><span class="p">(</span><span class="n">ccp</span><span class="p">(</span><span class="mi">240</span><span class="p">,</span><span class="mi">160</span><span class="p">));</span>
+</span><span class='line'>  <span class="k">this</span><span class="o">-&gt;</span><span class="n">addChild</span><span class="p">(</span><span class="n">close</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">close</span><span class="o">-&gt;</span><span class="n">runAction</span><span class="p">(</span><span class="n">sequence</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>  <span class="kt">void</span> <span class="n">TestScene</span><span class="o">::</span><span class="n">repeatFunc</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">CCAnimation</span><span class="o">*</span> <span class="n">animation</span><span class="o">=</span><span class="n">CCAnimation</span><span class="o">::</span><span class="n">create</span><span class="p">();</span>
+</span><span class='line'>      <span class="n">animation</span><span class="o">-&gt;</span><span class="n">addSpriteFrameWithFileName</span><span class="p">(</span><span class="s">&quot;CloseNormal.png&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">animation</span><span class="o">-&gt;</span><span class="n">addSpriteFrameWithFileName</span><span class="p">(</span><span class="s">&quot;CloseSelected.png&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">animation</span><span class="o">-&gt;</span><span class="n">setDelayPerUnit</span><span class="p">(</span><span class="mf">1.0f</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">CCAnimate</span><span class="o">*</span> <span class="n">animate</span><span class="o">=</span><span class="n">CCAnimate</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">animation</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">CCRepeatForever</span><span class="o">*</span> <span class="n">repeat</span><span class="o">=</span><span class="n">CCRepeatForever</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">animate</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">close</span><span class="o">-&gt;</span><span class="n">runAction</span><span class="p">(</span><span class="n">repeat</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-
-void TestScene::repeatFunc()  
-{  
-    CCAnimation* animation=CCAnimation::create();  
-    animation-&gt;addSpriteFrameWithFileName("CloseNormal.png");  
-    animation-&gt;addSpriteFrameWithFileName("CloseSelected.png");  
-    animation-&gt;setDelayPerUnit(1.0f);  
-    CCAnimate* animate=CCAnimate::create(animation);  
-    CCRepeatForever* repeat=CCRepeatForever::create(animate);  
-    close-&gt;runAction(repeat);  
-}  
-</code></pre>
 
 <p><em>（3）对于CCAnimation帧动画，可以设置循环属性，而不使用CCRepeatForever。</em></p>
 
-<pre><code>animation-&gt;setLoops(-1);  
-</code></pre>
+<figure class='code'><figcaption><span>setLoops</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="n">animation</span><span class="o">-&gt;</span><span class="n">setLoops</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <h3>5.总结</h3>
 
