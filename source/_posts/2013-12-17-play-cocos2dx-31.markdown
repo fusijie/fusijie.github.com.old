@@ -38,6 +38,8 @@ Http定义了与服务器交互的不同方法，最基本的方法有4种，分
 
 **3.1.采用get方式代码**
 
+``` html Get方式
+
     <html>  
     	<body>  
     		<?php  
@@ -67,7 +69,11 @@ Http定义了与服务器交互的不同方法，最基本的方法有4种，分
     	</body>  
     </html>  
 
+```
+
 **3.2.采用post方式代码**
+
+``` html Post方式
 
     <html>  
     	<body>  
@@ -98,10 +104,14 @@ Http定义了与服务器交互的不同方法，最基本的方法有4种，分
     	</body>  
     </html>  
 
+```
+
 ###4.cocos2d-x使用CCHttpClient类进行网络请求
 CCHttpClient的使用这里也不赘述了，请移步官方文档How_to_use_CCHttpClient。这里在上文编辑框和点九图的基础上进行了修改。2个编辑框，分别是username和password。一个按钮点击发送请求。一个文本显示从服务器返回的结果。
 
 **4.1.按钮请求处理**
+
+``` cpp 按钮请求处理
 
     void TestLayer::btncallback( CCObject* pSender )  
     {  
@@ -145,7 +155,11 @@ CCHttpClient的使用这里也不赘述了，请移步官方文档How_to_use_CCH
     	}  
     }  
 
+```
+
 **4.2.响应回调处理**
+
+``` cpp 响应回调处理
 
 	void TestLayer::onHttpRequestCompleted( CCHttpClient* client, CCHttpResponse* response )  
 	{  
@@ -168,6 +182,8 @@ CCHttpClient的使用这里也不赘述了，请移步官方文档How_to_use_CCH
     	string result(recieveData,begin,end-begin);  
     	m_labelStatusCode->setString(result.c_str());  
 	}  
+
+```
 
 ###5.效果图
 **5.1.Apache运行（Get和Post两种效果都是一样的）**

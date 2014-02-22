@@ -25,12 +25,16 @@ uthash是一个C/C++的哈希表实现，它以宏定义的方式实现了哈希
 
 uthash支持4种标准类型的键：整型，字符串，指针和结构体，不过到了CCDictionary就只支持整型和字符串型了。
 
+``` cpp CCDictType
+
 	enum CCDictType  
 	{  
     	kCCDictUnknown = 0,  
     	kCCDictStr,  
     	kCCDictInt  
 	};  
+
+```
 
 ###2.CCDictElement###
 
@@ -39,6 +43,8 @@ uthash支持4种标准类型的键：整型，字符串，指针和结构体，�
 ###3.API###
 
 **3.1.创建**
+
+``` cpp 创建
 
     //创建一个CCDictionary  
     static CCDictionary* create();  
@@ -49,8 +55,12 @@ uthash支持4种标准类型的键：整型，字符串，指针和结构体，�
     //返回一个非autorelease对象的CCDictionary，它讷讷感够确保在新线程中使用  
     //但是你必须手动管理它的生命周期，当你不再需要它的时候，必须调用CC_SAFE_RELEASE  
     static CCDictionary* createWithContentsOfFileThreadSafe(const char *pFileName); 
- 
+
+```
+
 **3.2.查找**
+
+``` cpp 查找
 
     //返回指定字符串类型key的value，如果CCDictionary的key是整型，会出现断言  
     CCObject* objectForKey(const std::string& key);  
@@ -61,7 +71,11 @@ uthash支持4种标准类型的键：整型，字符串，指针和结构体，�
     //返回指定整型类型key的CCString，这里假定value是CCString型，如果不是或者未找到，则返回空串  
     const CCString* valueForKey(intptr_t key);  
 
+```
+
 **3.3.增加**
+
+``` cpp 增加
 
     //插入一个key-value，如果是第一次调用，那么CCDictionary的key类型会被确定为字符串型，之后就不能插入整型key  
     //如果已存在该key，则旧key-value会被释放和移除，被新的替代  
@@ -70,7 +84,11 @@ uthash支持4种标准类型的键：整型，字符串，指针和结构体，�
     //如果已存在该key，则旧key-value会被释放和移除，被新的替代  
     void setObject(CCObject* pObject, intptr_t key);  
 
+```
+
 **3.4.移除**
+
+``` cpp 移除
 
     //移除指定key  
     void removeObjectForKey(const std::string& key);  
@@ -81,8 +99,12 @@ uthash支持4种标准类型的键：整型，字符串，指针和结构体，�
     void removeObjectForElememt(CCDictElement* pElement);  
     //移除所有的key-value  
     void removeAllObjects();
+
+```
   
 **3.5.其他**
+
+``` cpp 其他
 
     //返回一个随机元素，这个使用得注意，因为value可以不一样，所以返回类型每次都可能不同，在类型转换的时候要非常小心  
     CCObject* randomObject();  
@@ -95,7 +117,11 @@ uthash支持4种标准类型的键：整型，字符串，指针和结构体，�
     //把CCDictionary写到一个plist中，写入的value要求是字符串型  
     bool writeToFile(const char *fullPath);  
 
+```
+
 ###4.示例###
+
+``` cpp 示例
 
     // Create a dictionary, return an autorelease object.  
     CCDictionary* pDict = CCDictionary::create();  
@@ -118,10 +144,14 @@ uthash支持4种标准类型的键：整型，字符串，指针和结构体，�
     if(pDict->writeToFile("pdic.plist"))  //整型的value无法写入，会提示This type cannot appear in property list  
     	CCLog("Write to file success!");  
 
+```
+
 Resource/pdic.plist
 
-<?xml version="1.0" encoding="UTF-8"?>  
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"/>  
+``` html pdic.plist
+
+	<?xml version="1.0" encoding="UTF-8"?>  
+	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"/>  
   
     <plist version="1.0">  
     <dict>  
@@ -133,18 +163,26 @@ Resource/pdic.plist
     </dict>  
     </plist>  
 
+```
+
 ###5.CCDICT_FOREACH###
 
 **5.1.概况**
 
 宏定义，用于遍历CCDictionary的value。
- 
+
+``` cpp CCDICT_FOREACH宏定义
+
 	#define CCDICT_FOREACH(__dict__, __el__) \  
     CCDictElement* pTmp##__dict__##__el__ = NULL; \  
     if (__dict__) \  
     HASH_ITER(hh, (__dict__)->m_pElements, __el__, pTmp##__dict__##__el__)  
 
+```
+
 **5.2.示例**
+
+``` cpp CCDICT_FOREACH示例
 
     CCDictElement* pElement;  
     CCDICT_FOREACH(dict, pElement)  
@@ -154,3 +192,5 @@ Resource/pdic.plist
     	CCSprite* pSprite = (CCSprite*)pElement->getObject();  
     	// ......  
     }  
+
+```

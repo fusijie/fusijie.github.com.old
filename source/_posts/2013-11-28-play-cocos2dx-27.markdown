@@ -11,6 +11,8 @@ tags: [CCSequence, CCRepeatForever, 无法执行, 解决方案]
 
 ###1.示例###
 
+``` cpp 示例
+
     CCBlink* blink=CCBlink::create(0.5f,10);//创建闪烁动画，duration=0.5s  
     CCAnimation* animation=CCAnimation::create();  
     animation->addSpriteFrameWithFileName("CloseNormal.png");  
@@ -23,6 +25,9 @@ tags: [CCSequence, CCRepeatForever, 无法执行, 解决方案]
     close->setPosition(ccp(240,160));  
     this->addChild(close);  
     close->runAction(sequence);//执行连续动画  
+
+```
+
 结果精灵闪烁10次以后，帧动画不执行了。
 
 <!-- more -->
@@ -34,9 +39,15 @@ tags: [CCSequence, CCRepeatForever, 无法执行, 解决方案]
 
 创建CCSequence调用
 
-    //创建CCSequence  
+``` cpp 创建CCSequence
+
     CCSequence* CCSequence::create(CCFiniteTimeAction *pAction1, ...)  
+
+```
+
 内部调用了createWithVariableList，从实现可以看出这是一个递归调用。
+
+``` cpp createWithVariableList
 
     //获取动作列表，创建CCSequence  
     CCSequence* CCSequence::createWithVariableList(CCFiniteTimeAction *pAction1, va_list args)  
@@ -65,12 +76,21 @@ tags: [CCSequence, CCRepeatForever, 无法执行, 解决方案]
     	}  
     	return ((CCSequence*)pPrev);//返回第一个动作  
     }  
+
+```
+
 假如有3个动作要被串联，则先把第1个和第2个串联一个CCSequence，再把这个CCSequence和第3个动作串联成最终的CCSequence，然后返回。从CCSequence的成员变量可以看到：
+
+``` cpp 动作对象指针成员变量
 
     CCFiniteTimeAction *m_pActions[2];//表明只包含2个动作对象指针
 
+```
+
 使用递归多少会降低程序的运行效率，但是却可以换来代码的简洁性，同样的CCSpawn也是这么实现的。
 在createWithTwoActions中，调用了initWithTwoActions函数，实现了把两个动作串成一个CCSequence，关键代码如下：
+
+``` cpp initWithTwoActions
 
     float d = pActionOne->getDuration() + pActionTwo->getDuration();//获取两个动作的duration  
     CCActionInterval::initWithDuration(d);//赋给新的CCSequence  
@@ -81,6 +101,8 @@ tags: [CCSequence, CCRepeatForever, 无法执行, 解决方案]
     m_pActions[1] = pActionTwo;  
     pActionTwo->retain();  
 
+```
+
 **2.2.duration**
 
 从示例可以看出，闪烁动画blink的duration是0.5s，那CCRepeatForever呢？1s？当然不是，1s只是帧动画animate的帧间间隔，每个帧动画包含2帧，而CCRepeatForever的duration是0。因此，当示例中的闪烁动画blink和重复动画repeat串联成CCSequence sequence的时候，sequence的duration就变成0.5+0=0.5s，这很重要。
@@ -89,8 +111,15 @@ tags: [CCSequence, CCRepeatForever, 无法执行, 解决方案]
 
 CCSequence中有这么一个成员变量
 
+``` cpp m_split
+
 	float m_split;//记录了第一个动画时长占总时长的比例，也就是2个动画的时长分界  
+
+```
+
 当执行runAction的时候，CCSequence会调用
+
+``` cpp startWithTarget
 
 	void CCSequence::startWithTarget(CCNode *pTarget)  
 	{  
@@ -98,9 +127,14 @@ CCSequence中有这么一个成员变量
     	m_split = m_pActions[0]->getDuration() / m_fDuration;//获取第一个动画占总时长的比例  
     	m_last = -1;  
 	}  
+
+```
+
 而这里由于blink占了0.5s，repeat占了0s，总时长0.5s，所以m_split是0.5/0.5=1。blink占满了整个CCSequence，所以CCSequence无法执行repeat。
 
 这时候再来看CCSequence::update(float dt)函数的执行，就会恍然大悟了。
+
+``` cpp update
 
 	int found = 0;//当前播放动作索引  
 	float new_t = 0.0f;//新播放进度  
@@ -120,6 +154,8 @@ CCSequence中有这么一个成员变量
         	new_t = (t-m_split) / (1 - m_split );//计算出第二个动作新的播放进度  
 	}  
 
+```
+
 ###3.注意###
 *（1）CCSpawn也会有这个问题，所以CCSpawn也无法执行加入其中的CCRepeatForever动作。*
 
@@ -128,10 +164,16 @@ CCSequence中有这么一个成员变量
 ###4.解决方案###
 *（1）对于同时动作，不使用CCSpawn，采用分别执行*
 
+``` cpp 分别执行
+
 	close->runAction(blink);  
 	close->runAction(repeat);  
 
+```
+
 *（2）对于连续动作，不直接往CCSequence中加入CCRepeatForever，而是把CCRepeatForever放入瞬时动作CCCallFunc中，再把CCCallFunc加入CCSequence中执行。*
+
+``` cpp CCSequence串联
 
 	close=CCSprite::create("CloseNormal.png");  
 	CCBlink* blink=CCBlink::create(0.5f,10);  
@@ -153,9 +195,15 @@ CCSequence中有这么一个成员变量
     	close->runAction(repeat);  
 	}  
 
+```
+
 *（3）对于CCAnimation帧动画，可以设置循环属性，而不使用CCRepeatForever。*
 
+``` cpp setLoops
+
 	animation->setLoops(-1);  
+
+```
 
 ###5.总结###
 虽然CCRepeatForever也同样继承于CCActionInterval，理论上是延时动作的子类，但是和一般的延时动作又有很大的不同，所以平时在使用的时候必须很小心，不能当成一般的CCActionInterval使用。而在cocos2d-x动作的分类上是不是应该把它从CCAction继承出来会比较好一点？

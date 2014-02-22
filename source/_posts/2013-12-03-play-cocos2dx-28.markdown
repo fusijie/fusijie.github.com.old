@@ -27,6 +27,8 @@ CCNotificationCenter是cocos2d-x提供的一个消息中心，类似于观察者
 
 ###2.相关API###
 
+``` cpp CCNotificationCenter API
+
 	//获得消息通知中心的一个单例对象  
 	static CCNotificationCenter *sharedNotificationCenter(void);  
   
@@ -51,6 +53,8 @@ CCNotificationCenter是cocos2d-x提供的一个消息中心，类似于观察者
     //发送带数据的消息  
     void postNotification(const char *name, CCObject *object);  
 
+```
+
 观察者的意思即是等待获取消息的对象，比如上图的B。
 
 ###3.原理###
@@ -58,6 +62,8 @@ CCNotificationCenter的实现比较简单，它的内部维护了一个CCArray�
 
 ###4.示例###
 这里做了一个场景，包含了2个层，目的是层A向层B发送带数据的消息，层B收到后打印出这条数据。
+
+``` cpp CCNotificationCenter的示例
 
 	//ALayer  
 	bool ALayer::init()  
@@ -116,6 +122,8 @@ CCNotificationCenter的实现比较简单，它的内部维护了一个CCArray�
     	CCNotificationCenter::sharedNotificationCenter()->purgeNotificationCenter();//释放通知中心单例对象  
 	}  
 
+```
+
 ###5.注意###
 使用CCNotificationCenter需要注意以下几点：
 
@@ -123,7 +131,12 @@ CCNotificationCenter的实现比较简单，它的内部维护了一个CCArray�
 
 *（2）传递参数，A可以向B传递参数，而B在注册的时候也可以带一个参数，如果这两个数据不是指向同一对象的话，消息不会传递。也就是说要么A传递NULL对象，要么B注册时带NULL对象，要么都不是NULL但必须是同一对象，消息传递才会成功。以下是发送消息执行的判断：*
 
+``` cpp 消息发送的判断
+
 	if (!strcmp(name,observer->getName()) && (observer->getObject() == object || observer->getObject() == NULL || object == NULL))  
+
+```
+
 *（3）局部变量的传递，注意到上例，传递的是CCString的一个局部变量（但还是要autorelease），从CCNotificationCenter的实现上来看，这是没有问题的，因为数据是在postNotification被调用的，也就是整个函数体并没结束，数据不会被销毁。*
 
 ###6.效果图###

@@ -22,10 +22,16 @@ tags: [CCEditBox, CCScale9Sprite, 点九图, 输入框]
 
 cocos2d-x采用CCScale9Sprite来处理点九图，CCScale9Sprite为扩展类，所以在使用前需加入如下声明。
 
+``` cpp 头文件和空间
+
 	#include "cocos-ext.h"  
 	USING_NS_CC_EXT;
 
+```
+
 CCScale9Sprite和CCSprite一样继承于CCNodeRGB，所以基本上可以像使用CCSprite一样使用CCScale9Sprite（有一点小差别CCSprite还继承了CCTextureProtocol接口）。以下用于创建一个二态点九图按钮。
+
+``` cpp 创建点九图按钮
 
     CCScale9Sprite* confirmnormal=CCScale9Sprite::create("btn_style_alert_dialog_button_normal.9.png");//normal态  
     confirmnormal->setContentSize(CCSizeMake(100,70));//设置大小  
@@ -36,10 +42,14 @@ CCScale9Sprite和CCSprite一样继承于CCNodeRGB，所以基本上可以像使�
     menu->setPosition(visibleSize.width/2,visibleSize.height/2);  
     this->addChild(menu);  
 
+```
+
 ###2.输入框CCEditBox
 **2.1.概述**
 
 CCEditBox也是cocos2d-x的扩展类，所以和上面一样要进行头文件包含和命名空间声明。另外由于要监控输入框的各种状态，所以还必须实现CCEditBoxDelegate类，该类声明了以下接口：
+
+``` cpp CCEditBoxDelegate接口
 
     //当键盘弹出编辑框获得焦点时调用  
     virtual void editBoxEditingDidBegin(CCEditBox* editBox) {};  
@@ -50,9 +60,13 @@ CCEditBox也是cocos2d-x的扩展类，所以和上面一样要进行头文件�
     //当返回键按下时或者点击了键盘以外的区域时调用  
     virtual void editBoxReturn(CCEditBox* editBox) = 0;  
 
+```
+
 **2.2.使用**
 
 在TestLayer.cpp的init()中创建编辑框。
+
+``` cpp 编辑框的使用
 
     //bool TestLayer::init()  
     CCSize visibleSize=CCDirector::sharedDirector()->getVisibleSize();  
@@ -88,7 +102,11 @@ CCEditBox也是cocos2d-x的扩展类，所以和上面一样要进行头文件�
     pEditBox->setDelegate(this);//当前类继承CCEditBoxDelegate类  
     addChild(pEditBox);  
 
+```
+
 当前类继承于CCEditBoxDelegate，实现其所有接口如下：
+
+``` cpp CCEditBoxDelegate接口实现
 
     void TestLayer::editBoxEditingDidBegin(CCEditBox *editBox)  
     {  
@@ -106,6 +124,8 @@ CCEditBox也是cocos2d-x的扩展类，所以和上面一样要进行头文件�
     {  
     	CCLOG("text changed");  
     }  
+
+```
 
 ###3.结合点九图按钮的使用，效果图如下：
 

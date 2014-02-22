@@ -26,6 +26,8 @@ CCClipingNode是一个可裁剪节点，简单理解：
 ###2.API
 CCClipingNode的使用还是比较简单的，至于显示底板还是模版，alpha值的设定，这些也不好说清楚，自己多试几次就知道是什么意思该怎么用了。
 
+``` cpp CCClipingNode API
+
     //不带模版地创建一个裁剪节点  
     static CCClippingNode* create();  
       
@@ -51,8 +53,12 @@ CCClipingNode的使用还是比较简单的，至于显示底板还是模版，a
     bool isInverted() const;  
     void setInverted(bool bInverted);  
 
+```
+
 ###3.示例
 在init中实现：
+
+``` cpp CCClipingNode的使用
 
     CCSize visibleSize=CCDirector::sharedDirector()->getVisibleSize();  
       
@@ -94,6 +100,8 @@ CCClipingNode的使用还是比较简单的，至于显示底板还是模版，a
     tip->runAction(CCRepeatForever::create(CCSequence::create(CCScaleBy::create(0.25f,0.95f),CCScaleTo::create(0.25f,0.5),NULL)));  
       
     this->setTouchEnabled(true);//触摸有效，落点正确时移除裁剪节点和提示，相关处理请看源码  
+
+```
 
 ###4.效果
 两种效果：

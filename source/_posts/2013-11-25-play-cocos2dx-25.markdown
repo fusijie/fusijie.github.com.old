@@ -16,6 +16,8 @@ CCArray是从cocos2d中移植过来的，类似于Apple的NSMutableArray，但�
 
 **1.1.创建**
 
+``` cpp 创建
+
     //创建array  
     static CCArray* create();  
     //使用一系列CCObject创建array  
@@ -27,7 +29,11 @@ CCArray是从cocos2d中移植过来的，类似于Apple的NSMutableArray，但�
     //用一个已存在的array创建另一个array  
     static CCArray* createWithArray(CCArray* otherArray);  
 
+```
+
 **1.2.添加**
+
+``` cpp 添加
 
     //添加一个元素  
     void addObject(CCObject* object);  
@@ -36,7 +42,11 @@ CCArray是从cocos2d中移植过来的，类似于Apple的NSMutableArray，但�
     //在指定位置插入元素  
     void insertObject(CCObject* object, unsigned int index);  
 
+```
+
 **1.3.删除**
+
+``` cpp 删除
 
     //移除最后一个元素  
     void removeLastObject(bool bReleaseObj = true);  
@@ -53,7 +63,11 @@ CCArray是从cocos2d中移植过来的，类似于Apple的NSMutableArray，但�
     //快速移除某个指定位置的元素  
     void fastRemoveObjectAtIndex(unsigned int index);  
 
+```
+
 **1.4.操作元素**
+
+``` cpp 操作元素
 
     //返回元素个数  
     unsigned int count() const;  
@@ -72,7 +86,11 @@ CCArray是从cocos2d中移植过来的，类似于Apple的NSMutableArray，但�
     //判断array是否相等  
     bool isEqualToArray(CCArray* pOtherArray);  
 
+```
+
 **1.5.操作array内容**
+
+``` cpp 操作array内容
 
     //交换2个元素  
     void exchangeObject(CCObject* object1, CCObject* object2);  
@@ -85,10 +103,14 @@ CCArray是从cocos2d中移植过来的，类似于Apple的NSMutableArray，但�
     //收缩array内存以匹配元素个数  
     void reduceMemoryFootprint();  
 
+```
+
 ###2.remove和fastremove###
 从**1.3**可以看出删除有两种方式，普通删除和快速删除，它们有什么区别呢？
 
 **2.1.普通删除**
+
+``` cpp 普通删除
  
     //普通删除  
     void ccArrayRemoveObjectAtIndex(ccArray *arr, unsigned int index, bool bReleaseObj/* = true*/)  
@@ -110,7 +132,11 @@ CCArray是从cocos2d中移植过来的，类似于Apple的NSMutableArray，但�
     	}  
     }  
 
+```
+
 **2.2.快速删除**
+
+``` cpp 快速删除
 
     //快速删除  
     void ccArrayFastRemoveObjectAtIndex(ccArray *arr, unsigned int index)  
@@ -123,6 +149,8 @@ CCArray是从cocos2d中移植过来的，类似于Apple的NSMutableArray，但�
     	arr->arr[index] = arr->arr[last];  
     }  
 
+```
+
 **2.3.总结**
 
 如果有array={0,1,2,3,4,5}，如果要删除3，使用普通删除得到的结果{0,1,2,4,5}，使用快速删除得到的结果是{0,1,2,5,4}。可以看出快速删除的效率比普通删除效率高，就差在移动元素的时间复杂度上。
@@ -132,6 +160,8 @@ CCArray是从cocos2d中移植过来的，类似于Apple的NSMutableArray，但�
 **3.1.容量和个数**
 CCArray中容量和个数并不是同一个概念。个数<=容量。从添加元素的源码中可以看到在添加之前会先进行空间分配，所以它是一个动态分配内存的过程。如下
 
+``` cpp 内存分配
+
     void ccArrayEnsureExtraCapacity(ccArray *arr, unsigned int extra)//确保有额外的空间  
     {  
     	while (arr->max < arr->num + extra)//判断空间是否足够  
@@ -139,6 +169,9 @@ CCArray中容量和个数并不是同一个概念。个数<=容量。从添加�
     		ccArrayDoubleCapacity(arr);//增加一倍空间  
     	}  
     }  
+
+```
+
 所以，每次CCArray在插入数据时检测到空间不足会增加一倍空间，再进行检测，直到空间满足分配为止。
 
 **3.2.判等**
@@ -160,6 +193,8 @@ CCArray中容量和个数并不是同一个概念。个数<=容量。从添加�
 ###5.CCARRAY_FOREACH和CCARRAY_FOREACH_REVERSE###
 宏定义，用于正向遍历和反向遍历CCArray元素
 
+``` cpp 正反向遍历CCArray
+
 	#define CCARRAY_FOREACH(__array__, __object__)                                                                         \  
     	if ((__array__) && (__array__)->data->num > 0)                                                                     \  
     	for(CCObject** __arr__ = (__array__)->data->arr, **__end__ = (__array__)->data->arr + (__array__)->data->num-1;    \  
@@ -171,6 +206,8 @@ CCArray中容量和个数并不是同一个概念。个数<=容量。从添加�
     	for(CCObject** __arr__ = (__array__)->data->arr + (__array__)->data->num-1, **__end__ = (__array__)->data->arr;     \  
     	__arr__ >= __end__ && (((__object__) = *__arr__) != NULL/* || true*/);                                              \  
     	__arr__--)  
+
+```
 
 ###6.示例###
 CCArray的使用示例在[此文](http://blog.csdn.net/jackystudio/article/details/11917875)中有比较典型的应用，这里就不再详述。
