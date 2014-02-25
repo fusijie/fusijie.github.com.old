@@ -23,7 +23,7 @@ tags: [我叫MT]
 
 **我为什么要写这么一个demo？**
 
-对于一个游戏狂热份子，当《我叫MT》出来的时候，新奇的玩法，酷炫的卡牌，流畅的动画，以及WOW情结，让我找不到理由拒绝它。但是，每个游戏都有自己的生命周期，这些是跑不掉的，或许卓越的钱还没有赚够，但我希望这款游戏最后能有一个体面的结局。我从MT ios一区开始，玩到现在近一年半。他陪伴我历经了很多事情，如鱼饮水冷暖自知。每个程序员都有一颗做游戏的心。在决定进入游戏行业后，我决定写个MT的demo出来，算是感谢也算是怀念。说来也巧，当初找来各种版本的《我叫MT》反编译拿游戏资源为的只是把所有的卡牌图片收集起来，结果后面发现2.3以后的版本都做了加密处理。所以手上只有2.3版的资源，这个demo就按着2.3版做。
+对于一个游戏狂热份子，当《我叫MT》出来的时候，新奇的玩法，酷炫的卡牌，流畅的动画，以及WOW情结，让我找不到理由拒绝它。但是，每个游戏都有自己的生命周期，这些是跑不掉的，或许卓越的钱还没有赚够，但我希望这款游戏最后能有一个体面的结局。我从MT ios一区开始，玩到现在近一年半。它陪伴我历经了很多事情，如鱼饮水冷暖自知。每个程序员都有一颗做游戏的心。在决定进入游戏行业后，我决定写个MT的demo出来，算是感谢也算是怀念。说来也巧，当初找来各种版本的《我叫MT》反编译拿游戏资源为的只是把所有的卡牌图片收集起来，结果后面发现2.3以后的版本都做了加密处理。所以手上只有2.3版的资源，这个demo就按着2.3版做。
 
 **我开发的这个游戏能做什么？**
 
@@ -34,8 +34,6 @@ tags: [我叫MT]
 
 ###2.游戏结构和效果
 
-gif有点大近40M，加载较慢请见谅，加上色彩失真效果不怎么好，我会尽快放出apk。
-
 
 **公告**
 
@@ -43,99 +41,73 @@ gif有点大近40M，加载较慢请见谅，加上色彩失真效果不怎么�
 
 <div align="center"><img src="/images/Blog/mt/announcement.png" alt="" border="0" title="4" /><br></br></div>
 
+**游戏**
+
+<center><embed src="http://player.youku.com/player.php/sid/XNjc3ODI3NjY0/v.swf" allowFullScreen="true" quality="high" width="480" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed></center>
+
+录了个视频，我会尽快放出apk。
+
+
 **开幕故事**
 
 [http://www.fusijie.com/images/Blog/mt/story.gif](http://www.fusijie.com/images/Blog/mt/story.gif)
-
-<div align="center"><img src="/images/Blog/mt/story.gif" alt="" border="0" title="4" /><br></br></div>
-
 
 **游戏主场景**
 
 [http://www.fusijie.com/images/Blog/mt/mainui.gif](http://www.fusijie.com/images/Blog/mt/mainui.gif)
 
-<div align="center"><img src="/images/Blog/mt/mainui.gif" alt="" border="0" title="4" /><br></br></div>
-
 **英雄**
 
 [http://www.fusijie.com/images/Blog/mt/card.gif](http://www.fusijie.com/images/Blog/mt/card.gif)
-
-<div align="center"><img src="/images/Blog/mt/card.gif" alt="" border="0" title="4" /><br></br></div>
 
 **进化**
 
 [http://www.fusijie.com/images/Blog/mt/evolve.gif](http://www.fusijie.com/images/Blog/mt/evolve.gif)
 
-<div align="center"><img src="/images/Blog/mt/evolve.gif" alt="" border="0" title="4" /><br></br></div>
-
 **碎片**
 
 [http://www.fusijie.com/images/Blog/mt/chip.gif](http://www.fusijie.com/images/Blog/mt/chip.gif)
-
-<div align="center"><img src="/images/Blog/mt/chip.gif" alt="" border="0" title="4" /><br></br></div>
 
 **升级**
 
 [http://www.fusijie.com/images/Blog/mt/levelup.gif](http://www.fusijie.com/images/Blog/mt/levelup.gif)
 
-<div align="center"><img src="/images/Blog/mt/levelup.gif" alt="" border="0" title="4" /><br></br></div>
-
 **奖励**
 
 [http://www.fusijie.com/images/Blog/mt/task.gif](http://www.fusijie.com/images/Blog/mt/task.gif)
-
-<div align="center"><img src="/images/Blog/mt/task.gif" alt="" border="0" title="4" /><br></br></div>
 
 **技能学院**
 
 [http://www.fusijie.com/images/Blog/mt/colleage.gif](http://www.fusijie.com/images/Blog/mt/colleage.gif)
 
-<div align="center"><img src="/images/Blog/mt/colleage.gif" alt="" border="0" title="4" /><br></br></div>
-
 **副本列表**
 
 [http://www.fusijie.com/images/Blog/mt/instance.gif](http://www.fusijie.com/images/Blog/mt/instance.gif)
-
-<div align="center"><img src="/images/Blog/mt/instance.gif" alt="" border="0" title="4" /><br></br></div>
 
 **副本战斗**
 
 [http://www.fusijie.com/images/Blog/mt/battle.gif](http://www.fusijie.com/images/Blog/mt/battle.gif)
 
-<div align="center"><img src="/images/Blog/mt/battle.gif" alt="" border="0" title="4" /><br></br></div>
-
 **竞技场**
 
 [http://www.fusijie.com/images/Blog/mt/arena.gif](http://www.fusijie.com/images/Blog/mt/arena.gif)
-
-<div align="center"><img src="/images/Blog/mt/arena.gif" alt="" border="0" title="4" /><br></br></div>
 
 **商店**
 
 [http://www.fusijie.com/images/Blog/mt/store.gif](http://www.fusijie.com/images/Blog/mt/store.gif)
 
-<div align="center"><img src="/images/Blog/mt/store.gif" alt="" border="0" title="4" /><br></br></div>
-
 **单次抽奖**
 
 [http://www.fusijie.com/images/Blog/mt/raffleone.gif](http://www.fusijie.com/images/Blog/mt/raffleone.gif)
-
-<div align="center"><img src="/images/Blog/mt/raffleone.gif" alt="" border="0" title="4" /><br></br></div>
 
 **十连抽**
 
 [http://www.fusijie.com/images/Blog/mt/raffleten.gif](http://www.fusijie.com/images/Blog/mt/raffleten.gif)
 
-<div align="center"><img src="/images/Blog/mt/raffleten.gif" alt="" border="0" title="4" /><br></br></div>
-
 **好友**
 
 [http://www.fusijie.com/images/Blog/mt/friend.gif](http://www.fusijie.com/images/Blog/mt/friend.gif)
 
-<div align="center"><img src="/images/Blog/mt/friend.gif" alt="" border="0" title="4" /><br></br></div>
-
 **攻略**
 
 [http://www.fusijie.com/images/Blog/mt/more.gif](http://www.fusijie.com/images/Blog/mt/more.gif)
-
-<div align="center"><img src="/images/Blog/mt/more.gif" alt="" border="0" title="4" /><br></br></div>
