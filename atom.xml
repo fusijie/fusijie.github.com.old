@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-02-22T08:54:13+08:00</updated>
+  <updated>2014-02-25T20:53:59+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,130 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之三十五】《我叫MT online》Demo]]></title>
+    <link href="http://www.fusijie.com/blog/2014/02/25/play-cocos2dx-35/"/>
+    <updated>2014-02-25T19:43:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2014/02/25/play-cocos2dx-35</id>
+    <content type="html"><![CDATA[<h3>1.写在前面</h3>
+
+<p><strong>这是怎样一个游戏？</strong></p>
+
+<p>这是一个最好的时代。软件跑在硬件之前，而创意跑在软件之前。除去那些跨时代的作品（现在还没出，比如体感，识别等等），现在的手游对技术的要求门槛已经大大降低了。这是个创意决定市场的时代。</p>
+
+<p>（1）比如早些时候的愤怒小鸟，植物僵尸，水果忍者，这些是触屏刚刚诞生的时候出来的，可以说是借iphone触屏之风顺势而行火了一把，现在想要这样的机会已经很难了。</p>
+
+<p>（2）比如飞机大战，天天酷跑，FlappyBird，这些是利用怀旧，无差异竞技以及用户口碑堆起来的游戏，这靠的要么后台硬有干爹，要么祖坟正运气好，如果你都没有，想火也很难。</p>
+
+<p>（3）再如卡牌，COC，横版格斗，这些靠的是真正的创意。由此引来的一堆跟风之作就能看出来，几千万的月流水也证明了这一点，第一个想到创意，第一个抢到市场就是赢家。但是再来就没意思了。</p>
+
+<!-- more -->
+
+
+<p><strong>我为什么要写这么一个demo？</strong></p>
+
+<p>对于一个游戏狂热份子，当《我叫MT》出来的时候，新奇的玩法，酷炫的卡牌，流畅的动画，以及WOW情结，让我找不到理由拒绝它。但是，每个游戏都有自己的生命周期，这些是跑不掉的，或许卓越的钱还没有赚够，但我希望这款游戏最后能有一个体面的结局。我从MT ios一区开始，玩到现在近一年半。他陪伴我历经了很多事情，如鱼饮水冷暖自知。每个程序员都有一颗做游戏的心。在决定进入游戏行业后，我决定写个MT的demo出来，算是感谢也算是怀念。说来也巧，当初找来各种版本的《我叫MT》反编译拿游戏资源为的只是把所有的卡牌图片收集起来，结果后面发现2.3以后的版本都做了加密处理。所以手上只有2.3版的资源，这个demo就按着2.3版做。</p>
+
+<p><strong>我开发的这个游戏能做什么？</strong></p>
+
+<p>其实它什么也做不了，只是游戏的整体框架以及所有动画的demo，由于写的比较赶，很多功能都没有来得及实现，代码也写的比较粗糙。接下来我会继续完善它，我的最终目的是把它改成单机版的《我叫MT offline》。它的工作量太大了，接下来如果不会涉及版权问题我会考虑把源码推上Github。</p>
+
+<p>游戏采用VS2012+cocos2d-x v2.2.0开发。</p>
+
+<h3>2.游戏结构和效果</h3>
+
+<p>gif有点大近40M，加载较慢请见谅，加上色彩失真效果不怎么好，我会尽快放出apk。</p>
+
+<p><strong>公告</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/announcement.png" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>开幕故事</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/story.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>游戏主场景</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/mainui.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>英雄</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/card.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>进化</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/evolve.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>碎片</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/chip.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>升级</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/levelup.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>奖励</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/task.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>技能学院</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/colleage.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>副本列表</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/instance.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>副本战斗</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/battle.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>竞技场</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/arena.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>商店</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/store.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>单次抽奖</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/raffleone.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>十连抽</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/raffleten.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>好友</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/friend.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>攻略</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/more.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/02/25/play-cocos2dx-35/'>http://www.fusijie.com/blog/2014/02/25/play-cocos2dx-35/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十四】绘图：CCDrawingPrimitives和CCDrawNode]]></title>
@@ -3764,127 +3888,6 @@ void CTestLayer::update(float delta)
 <h3>4.源码下载</h3>
 
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6434549">源码下载</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/24/play-cocos2dx-16/'><a href="http://www.fusijie.com/blog/2013/10/24/play-cocos2dx-16/">http://www.fusijie.com/blog/2013/10/24/play-cocos2dx-16/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之十五】关卡选择的设计]]></title>
-    <link href="http://www.fusijie.com/blog/2013/10/23/play-cocos2dx-15/"/>
-    <updated>2013-10-23T16:26:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/10/23/play-cocos2dx-15</id>
-    <content type="html"><![CDATA[<p>这节介绍一下游戏中帮助界面和关卡选择的设计，其实都是一样的，关键在于美工。这里采用自定义TableView层来实现。</p>
-
-<h3>1.导入头文件和设定空间</h3>
-
-<p>因为TableView相关的类是在扩展包里面，所以必须先声明</p>
-
-<pre><code>#include "cocos-ext.h"  
-USING_NS_CC_EXT;  
-</code></pre>
-
-<!-- more -->
-
-
-<h3>2.继承的实现</h3>
-
-<p>自定义TableView继承于CCLayer，因此可以捕获触摸，同时继承于扩展包的CCTableViewDataSource和CCTableViewDelegate。前者是TableView的数据源，包含了一系列和TableView数据单元相关的操作，后者则是继承于CCScrollViewDelegate抽象类，声明了一些和滚动，放大，触摸回调之类的接口，然后在内部包含了一个CCTableView，这用起来有点像Android的Adapter。当然分别继承几个类使用也是一样的。</p>
-
-<p>先看一下要实现的接口吧。</p>
-
-<pre><code>class TableViewTestLayer : public cocos2d::CCLayer, public cocos2d::extension::CCTableViewDataSource, public cocos2d::extension::CCTableViewDelegate  
-{  
-    public:  
-    virtual bool init();    
-
-    CREATE_FUNC(TableViewTestLayer);  
-
-    virtual void scrollViewDidScroll(cocos2d::extension::CCScrollView* view){}//滚动时调用，空实现，因为继承了抽象类所以必须重写  
-    virtual void scrollViewDidZoom(cocos2d::extension::CCScrollView* view){}//缩放时调用，空实现，同上  
-    virtual void tableCellTouched(cocos2d::extension::CCTableView* table, cocos2d::extension::CCTableViewCell* cell);//触摸单元时回调  
-    virtual cocos2d::CCSize tableCellSizeForIndex(cocos2d::extension::CCTableView *table, unsigned int idx);//设定单元所占大小  
-    virtual cocos2d::extension::CCTableViewCell* tableCellAtIndex(cocos2d::extension::CCTableView *table, unsigned int idx);//设定单元内容  
-    virtual unsigned int numberOfCellsInTableView(cocos2d::extension::CCTableView *table);//返回单元数  
-};  
-</code></pre>
-
-<p>当然还有一些其他功能，如高亮，循环，看情况重载。</p>
-
-<h3>3.自定义TabView层各模块的实现</h3>
-
-<p><strong>3.1.初始化函数init</strong></p>
-
-<pre><code>CCSize winSize = CCDirector::sharedDirector()-&gt;getWinSize();  
-CCTableView* tableView = CCTableView::create(this, winSize);//创建一个CCTableView  
-tableView-&gt;setDirection(kCCScrollViewDirectionHorizontal);//设置方向  
-tableView-&gt;setPosition(ccp(0,winSize.height/2-50));  
-tableView-&gt;setDelegate(this);//这句话很重要，把taleView和当前类绑到一起，所以后面的调用主体都是tableView  
-this-&gt;addChild(tableView);  
-tableView-&gt;reloadData();  
-</code></pre>
-
-<p><strong>3.2.触摸回调tableCellTouched</strong></p>
-
-<pre><code>void TableViewTestLayer::tableCellTouched(CCTableView* table, CCTableViewCell* cell)  
-{  
-    CCLOG("cell touched at index: %i", cell-&gt;getIdx());//cell为当前选择单元  
-}  
-</code></pre>
-
-<p><strong>3.3.单元大小tableCellSizeForIndex</strong></p>
-
-<pre><code>CCSize TableViewTestLayer::tableCellSizeForIndex(CCTableView *table, unsigned int idx)  
-{  
-    //if (idx == 2) {  
-    //    return CCSizeMake(100, 100);//第2个大小为100，100  
-    //}  
-    return CCSizeMake(120, 120);其余为120，120  
-}  
-</code></pre>
-
-<p><strong>3.4.设置数据源tableCellAtIndex</strong></p>
-
-<pre><code>CCTableViewCell* TableViewTestLayer::tableCellAtIndex(CCTableView *table, unsigned int idx)  
-{  
-    CCString *string = CCString::createWithFormat("%d", idx);  
-    CCTableViewCell *cell = table-&gt;dequeueCell();  
-    if (!cell) {  
-        cell = new CCTableViewCell();//创建单元，如果要自定义单元效果，需继承CCTableViewCell，并重载draw函数  
-        cell-&gt;autorelease();  
-        CCSprite *sprite = CCSprite::create("HelloWorld.png");  
-        sprite-&gt;setScale(0.2f);  
-        sprite-&gt;setPosition(ccp(60, 60));  
-        sprite-&gt;setTag(123);  
-        cell-&gt;addChild(sprite);//添加到cell  
-        CCLabelTTF *label = CCLabelTTF::create(string-&gt;getCString(), "Helvetica", 20.0);  
-        label-&gt;setPosition(ccp(60,10));  
-        label-&gt;setTag(456);  
-        cell-&gt;addChild(label);//添加到cell  
-    }  
-    else  
-    {  
-        CCLabelTTF *label = (CCLabelTTF*)cell-&gt;getChildByTag(456);  
-        label-&gt;setString(string-&gt;getCString());  
-    }  
-    return cell;  
-}  
-</code></pre>
-
-<p><strong>3.5.单元数numberOfCellsInTableView</strong></p>
-
-<pre><code>unsigned int TableViewTestLayer::numberOfCellsInTableView(CCTableView *table)  
-{  
-    return 20;//直接返回设定单元数  
-}  
-</code></pre>
-
-<h3>4.效果图</h3>
-
-<div align="center"><img src="http://img.blog.csdn.net/20131209082656437" alt="" border="0" title="关卡1" /><br></br></div>
-
-
-<h3>5.源码下载地址</h3>
-
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6422401">下载地址</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/23/play-cocos2dx-15/'><a href="http://www.fusijie.com/blog/2013/10/23/play-cocos2dx-15/">http://www.fusijie.com/blog/2013/10/23/play-cocos2dx-15/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   

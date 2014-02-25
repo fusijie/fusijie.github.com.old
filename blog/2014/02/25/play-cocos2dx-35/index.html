@@ -1,0 +1,431 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>【玩转cocos2d-x之三十五】《我叫MT online》Demo - Jacky's Blog</title>
+  <meta name="author" content="FuSijie">
+
+  
+  <meta name="description" content="1.写在前面 这是怎样一个游戏？ 这是一个最好的时代。软件跑在硬件之前，而创意跑在软件之前。除去那些跨时代的作品（现在还没出，比如体感，识别等等），现在的手游对技术的要求门槛已经大大降低了。这是个创意决定市场的时代。 （1）比如早些时候的愤怒小鸟，植物僵尸，水果忍者，这些是触屏刚刚诞生的时候出来的 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.fusijie.com/blog/2014/02/25/play-cocos2dx-35">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jacky's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '45386223']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jacky's Blog</a></h1>
+  
+    <h2>Stay Hungry,Stay Foolish!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.fusijie.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/projects">Projects</a></li>
+  <li><a href="/tag-cloud/">Tags</a></li>
+  <li><a href="http://news.fusijie.com" target="_blank">News</a></li>
+  <li><a href="http://code.fusijie.com" target="_blank">Code</a></li>
+  <li><a href="https://github.com/fusijie" target="_blank">Github</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">【玩转cocos2d-x之三十五】《我叫MT online》Demo</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-25T19:43:00+08:00" pubdate data-updated="true">Feb 25<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>1.写在前面</h3>
+
+<p><strong>这是怎样一个游戏？</strong></p>
+
+<p>这是一个最好的时代。软件跑在硬件之前，而创意跑在软件之前。除去那些跨时代的作品（现在还没出，比如体感，识别等等），现在的手游对技术的要求门槛已经大大降低了。这是个创意决定市场的时代。</p>
+
+<p>（1）比如早些时候的愤怒小鸟，植物僵尸，水果忍者，这些是触屏刚刚诞生的时候出来的，可以说是借iphone触屏之风顺势而行火了一把，现在想要这样的机会已经很难了。</p>
+
+<p>（2）比如飞机大战，天天酷跑，FlappyBird，这些是利用怀旧，无差异竞技以及用户口碑堆起来的游戏，这靠的要么后台硬有干爹，要么祖坟正运气好，如果你都没有，想火也很难。</p>
+
+<p>（3）再如卡牌，COC，横版格斗，这些靠的是真正的创意。由此引来的一堆跟风之作就能看出来，几千万的月流水也证明了这一点，第一个想到创意，第一个抢到市场就是赢家。但是再来就没意思了。</p>
+
+<!-- more -->
+
+
+<p><strong>我为什么要写这么一个demo？</strong></p>
+
+<p>对于一个游戏狂热份子，当《我叫MT》出来的时候，新奇的玩法，酷炫的卡牌，流畅的动画，以及WOW情结，让我找不到理由拒绝它。但是，每个游戏都有自己的生命周期，这些是跑不掉的，或许卓越的钱还没有赚够，但我希望这款游戏最后能有一个体面的结局。我从MT ios一区开始，玩到现在近一年半。他陪伴我历经了很多事情，如鱼饮水冷暖自知。每个程序员都有一颗做游戏的心。在决定进入游戏行业后，我决定写个MT的demo出来，算是感谢也算是怀念。说来也巧，当初找来各种版本的《我叫MT》反编译拿游戏资源为的只是把所有的卡牌图片收集起来，结果后面发现2.3以后的版本都做了加密处理。所以手上只有2.3版的资源，这个demo就按着2.3版做。</p>
+
+<p><strong>我开发的这个游戏能做什么？</strong></p>
+
+<p>其实它什么也做不了，只是游戏的整体框架以及所有动画的demo，由于写的比较赶，很多功能都没有来得及实现，代码也写的比较粗糙。接下来我会继续完善它，我的最终目的是把它改成单机版的《我叫MT offline》。它的工作量太大了，接下来如果不会涉及版权问题我会考虑把源码推上Github。</p>
+
+<p>游戏采用VS2012+cocos2d-x v2.2.0开发。</p>
+
+<h3>2.游戏结构和效果</h3>
+
+<p>gif有点大近40M，加载较慢请见谅，加上色彩失真效果不怎么好，我会尽快放出apk。</p>
+
+<p><strong>公告</strong></p>
+
+<div align="center"><img src="/images/Blog/mt/announcement.png" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>开幕故事</strong></p>
+
+<div align="center"><img src="/images/Blog/mt/story.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>游戏主场景</strong></p>
+
+<div align="center"><img src="/images/Blog/mt/mainui.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>英雄</strong></p>
+
+<div align="center"><img src="/images/Blog/mt/card.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>进化</strong></p>
+
+<div align="center"><img src="/images/Blog/mt/evolve.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>碎片</strong></p>
+
+<div align="center"><img src="/images/Blog/mt/chip.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>升级</strong></p>
+
+<div align="center"><img src="/images/Blog/mt/levelup.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>奖励</strong></p>
+
+<div align="center"><img src="/images/Blog/mt/task.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>技能学院</strong></p>
+
+<div align="center"><img src="/images/Blog/mt/colleage.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>副本列表</strong></p>
+
+<div align="center"><img src="/images/Blog/mt/instance.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>副本战斗</strong></p>
+
+<div align="center"><img src="/images/Blog/mt/battle.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>竞技场</strong></p>
+
+<div align="center"><img src="/images/Blog/mt/arena.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>商店</strong></p>
+
+<div align="center"><img src="/images/Blog/mt/store.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>单次抽奖</strong></p>
+
+<div align="center"><img src="/images/Blog/mt/raffleone.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>十连抽</strong></p>
+
+<div align="center"><img src="/images/Blog/mt/raffleten.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>好友</strong></p>
+
+<div align="center"><img src="/images/Blog/mt/friend.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>攻略</strong></p>
+
+<div align="center"><img src="/images/Blog/mt/more.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/02/25/play-cocos2dx-35/'>http://www.fusijie.com/blog/2014/02/25/play-cocos2dx-35/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">FuSijie</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-25T19:43:00+08:00" pubdate data-updated="true">Feb 25<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cocos2d-x/'>cocos2d-x</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+      <!-- JiaThis Button BEGIN -->
+  <section>
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share?uid=1859056" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1859056" charset="utf-8"></script>
+</section>
+<!-- JiaThis Button END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+	    <p></p>
+        <a class="basic-alignment left" href="/blog/2014/02/08/play-cocos2dx-34/" title="Previous Post: 【玩转cocos2d-x之三十四】绘图：CCDrawingPrimitives和CCDrawNode">&laquo; 【玩转cocos2d-x之三十四】绘图：CCDrawingPrimitives和CCDrawNode</a>
+      
+      
+    </p>
+  </footer>
+</article>
+  <section>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"fusijie"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->  
+</section>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+		<br>
+		<center><a target="_blank" href="http://blog.csdn.net/jackystudio" style="text-decoration:none" ><img src="\images\aboutme.png" border=0></img></a></center>
+		</br>
+</section><section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (35)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/25/play-cocos2dx-35/">【玩转cocos2d-x之三十五】《我叫MT online》Demo</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/08/play-cocos2dx-34/">【玩转cocos2d-x之三十四】绘图：CCDrawingPrimitives和CCDrawNode</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/26/play-cocos2dx-33/">【玩转cocos2d-x之三十三】游戏嵌入Webview网页</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/18/play-cocos2dx-32/">【玩转cocos2d-x之三十二】xml的解析</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/17/play-cocos2dx-31/">【玩转cocos2d-x之三十一】服务器的网络通信编程</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+  <section>
+<h1>Recent Comments</h1>
+<ul class="ds-recent-comments" data-num-items="10">
+</ul>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"fusijie"};
+(function() {
+var ds = document.createElement('script');
+ds.type = 'text/javascript';
+ds.async = true;ds.src = 'http://static.duoshuo.com/embed.js';
+ds.charset = 'UTF-8';
+(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script>
+</section>
+<section>
+  <h1>Sina Weibo</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="450" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=450&fansRow=0&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=0&uid=1307211523&verifier=3619ee9c">
+      </iframe>
+    </li>
+  </ul>
+</section>
+ 
+<section>
+<h1>Visitor</h1>
+<div>
+	<p></p>
+    <center>
+	<a href="http://info.flagcounter.com/3pF8"><img src="http://s08.flagcounter.com/count/3pF8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_12/viewers_3/labels_0/pageviews_1/flags_0/" alt="Flag Counter" border="0"></a>
+	</center>
+</div>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - FuSijie -
+  <span class="credit">牛逼自豪有情怀地使用高大上的 <a href="http://octopress.org">Octopress</a></span>
+  <script type="text/javascript">
+	var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F966a6a480d428ebd0c0c55fcfb4f8a88' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</p>
+
+</footer>
+  <div id="full" style="width:0px; height:0px; position:fixed; right:70px; bottom:70px; z-index:100; text-align:center; background-color:transparent; cursor:pointer;">
+        <a href="#" onclick="goTop();return false;"><img src="/images/top.png" border=0 alt="Top"></a>
+</div>
+<script src="/javascripts/top.js" type="text/javascript"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

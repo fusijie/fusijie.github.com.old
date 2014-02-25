@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: 我叫MT | Jacky's Blog]]></title>
+  <link href="http://www.fusijie.com/tags/wo-jiao-mt/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2014-02-25T20:53:59+08:00</updated>
+  <id>http://www.fusijie.com/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之三十五】《我叫MT online》Demo]]></title>
+    <link href="http://www.fusijie.com/blog/2014/02/25/play-cocos2dx-35/"/>
+    <updated>2014-02-25T19:43:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2014/02/25/play-cocos2dx-35</id>
+    <content type="html"><![CDATA[<h3>1.写在前面</h3>
+
+<p><strong>这是怎样一个游戏？</strong></p>
+
+<p>这是一个最好的时代。软件跑在硬件之前，而创意跑在软件之前。除去那些跨时代的作品（现在还没出，比如体感，识别等等），现在的手游对技术的要求门槛已经大大降低了。这是个创意决定市场的时代。</p>
+
+<p>（1）比如早些时候的愤怒小鸟，植物僵尸，水果忍者，这些是触屏刚刚诞生的时候出来的，可以说是借iphone触屏之风顺势而行火了一把，现在想要这样的机会已经很难了。</p>
+
+<p>（2）比如飞机大战，天天酷跑，FlappyBird，这些是利用怀旧，无差异竞技以及用户口碑堆起来的游戏，这靠的要么后台硬有干爹，要么祖坟正运气好，如果你都没有，想火也很难。</p>
+
+<p>（3）再如卡牌，COC，横版格斗，这些靠的是真正的创意。由此引来的一堆跟风之作就能看出来，几千万的月流水也证明了这一点，第一个想到创意，第一个抢到市场就是赢家。但是再来就没意思了。</p>
+
+<!-- more -->
+
+
+<p><strong>我为什么要写这么一个demo？</strong></p>
+
+<p>对于一个游戏狂热份子，当《我叫MT》出来的时候，新奇的玩法，酷炫的卡牌，流畅的动画，以及WOW情结，让我找不到理由拒绝它。但是，每个游戏都有自己的生命周期，这些是跑不掉的，或许卓越的钱还没有赚够，但我希望这款游戏最后能有一个体面的结局。我从MT ios一区开始，玩到现在近一年半。他陪伴我历经了很多事情，如鱼饮水冷暖自知。每个程序员都有一颗做游戏的心。在决定进入游戏行业后，我决定写个MT的demo出来，算是感谢也算是怀念。说来也巧，当初找来各种版本的《我叫MT》反编译拿游戏资源为的只是把所有的卡牌图片收集起来，结果后面发现2.3以后的版本都做了加密处理。所以手上只有2.3版的资源，这个demo就按着2.3版做。</p>
+
+<p><strong>我开发的这个游戏能做什么？</strong></p>
+
+<p>其实它什么也做不了，只是游戏的整体框架以及所有动画的demo，由于写的比较赶，很多功能都没有来得及实现，代码也写的比较粗糙。接下来我会继续完善它，我的最终目的是把它改成单机版的《我叫MT offline》。它的工作量太大了，接下来如果不会涉及版权问题我会考虑把源码推上Github。</p>
+
+<p>游戏采用VS2012+cocos2d-x v2.2.0开发。</p>
+
+<h3>2.游戏结构和效果</h3>
+
+<p>gif有点大近40M，加载较慢请见谅，加上色彩失真效果不怎么好，我会尽快放出apk。</p>
+
+<p><strong>公告</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/announcement.png" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>开幕故事</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/story.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>游戏主场景</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/mainui.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>英雄</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/card.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>进化</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/evolve.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>碎片</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/chip.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>升级</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/levelup.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>奖励</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/task.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>技能学院</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/colleage.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>副本列表</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/instance.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>副本战斗</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/battle.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>竞技场</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/arena.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>商店</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/store.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>单次抽奖</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/raffleone.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>十连抽</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/raffleten.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>好友</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/friend.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>攻略</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/more.gif" alt="" border="0" title="4" /><br></br></div>
+
+]]></content>
+  </entry>
+  
+</feed>

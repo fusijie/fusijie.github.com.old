@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/blog/categories/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-02-22T08:54:13+08:00</updated>
+  <updated>2014-02-25T20:53:59+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,127 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之三十五】《我叫MT online》Demo]]></title>
+    <link href="http://www.fusijie.com/blog/2014/02/25/play-cocos2dx-35/"/>
+    <updated>2014-02-25T19:43:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2014/02/25/play-cocos2dx-35</id>
+    <content type="html"><![CDATA[<h3>1.写在前面</h3>
+
+<p><strong>这是怎样一个游戏？</strong></p>
+
+<p>这是一个最好的时代。软件跑在硬件之前，而创意跑在软件之前。除去那些跨时代的作品（现在还没出，比如体感，识别等等），现在的手游对技术的要求门槛已经大大降低了。这是个创意决定市场的时代。</p>
+
+<p>（1）比如早些时候的愤怒小鸟，植物僵尸，水果忍者，这些是触屏刚刚诞生的时候出来的，可以说是借iphone触屏之风顺势而行火了一把，现在想要这样的机会已经很难了。</p>
+
+<p>（2）比如飞机大战，天天酷跑，FlappyBird，这些是利用怀旧，无差异竞技以及用户口碑堆起来的游戏，这靠的要么后台硬有干爹，要么祖坟正运气好，如果你都没有，想火也很难。</p>
+
+<p>（3）再如卡牌，COC，横版格斗，这些靠的是真正的创意。由此引来的一堆跟风之作就能看出来，几千万的月流水也证明了这一点，第一个想到创意，第一个抢到市场就是赢家。但是再来就没意思了。</p>
+
+<!-- more -->
+
+
+<p><strong>我为什么要写这么一个demo？</strong></p>
+
+<p>对于一个游戏狂热份子，当《我叫MT》出来的时候，新奇的玩法，酷炫的卡牌，流畅的动画，以及WOW情结，让我找不到理由拒绝它。但是，每个游戏都有自己的生命周期，这些是跑不掉的，或许卓越的钱还没有赚够，但我希望这款游戏最后能有一个体面的结局。我从MT ios一区开始，玩到现在近一年半。他陪伴我历经了很多事情，如鱼饮水冷暖自知。每个程序员都有一颗做游戏的心。在决定进入游戏行业后，我决定写个MT的demo出来，算是感谢也算是怀念。说来也巧，当初找来各种版本的《我叫MT》反编译拿游戏资源为的只是把所有的卡牌图片收集起来，结果后面发现2.3以后的版本都做了加密处理。所以手上只有2.3版的资源，这个demo就按着2.3版做。</p>
+
+<p><strong>我开发的这个游戏能做什么？</strong></p>
+
+<p>其实它什么也做不了，只是游戏的整体框架以及所有动画的demo，由于写的比较赶，很多功能都没有来得及实现，代码也写的比较粗糙。接下来我会继续完善它，我的最终目的是把它改成单机版的《我叫MT offline》。它的工作量太大了，接下来如果不会涉及版权问题我会考虑把源码推上Github。</p>
+
+<p>游戏采用VS2012+cocos2d-x v2.2.0开发。</p>
+
+<h3>2.游戏结构和效果</h3>
+
+<p>gif有点大近40M，加载较慢请见谅，加上色彩失真效果不怎么好，我会尽快放出apk。</p>
+
+<p><strong>公告</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/announcement.png" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>开幕故事</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/story.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>游戏主场景</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/mainui.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>英雄</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/card.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>进化</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/evolve.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>碎片</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/chip.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>升级</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/levelup.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>奖励</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/task.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>技能学院</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/colleage.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>副本列表</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/instance.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>副本战斗</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/battle.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>竞技场</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/arena.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>商店</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/store.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>单次抽奖</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/raffleone.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>十连抽</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/raffleten.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>好友</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/friend.gif" alt="" border="0" title="4" /><br></br></div>
+
+
+<p><strong>攻略</strong></p>
+
+<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/more.gif" alt="" border="0" title="4" /><br></br></div>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十四】绘图：CCDrawingPrimitives和CCDrawNode]]></title>
@@ -785,153 +906,6 @@ Button m_backButton;//关闭按钮
 <h3>6.源码下载</h3>
 
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6713471">下载地址</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之三十】点九图和输入框的使用]]></title>
-    <link href="http://www.fusijie.com/blog/2013/12/13/play-cocos2dx-30/"/>
-    <updated>2013-12-13T11:53:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/12/13/play-cocos2dx-30</id>
-    <content type="html"><![CDATA[<p>登录界面一个帐号/密码输入框或者主角命名框是少不了的。这节就来了解一下点九图的输入框的使用。这里只是介绍基础知识，并不进行平台的移植，也不处理跨平台可能出现的问题。</p>
-
-<h3>1.点九图CCScale9Sprite</h3>
-
-<p><strong>1.1.概述</strong></p>
-
-<p>点九图做过移动开发的肯定不会陌生。采用的是PNG点9图，PNG点9图可以自适应各种环境，同时保持伸缩不变形。移动端的UI基本上都是按这个来做的。点9图的制作很简单，用Android SDK的tool下的draw9patch.bat就可以制作。左为原理图，右为效果图。</p>
-
-<!-- more -->
-
-
-
-
-<div align="center"><img src="http://img.blog.csdn.net/20131213100101843?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="点九图" /><br></br></div>
-
-
-<p><strong>1.2.使用</strong></p>
-
-<p>cocos2d-x采用CCScale9Sprite来处理点九图，CCScale9Sprite为扩展类，所以在使用前需加入如下声明。</p>
-
-<p>``` cpp 头文件和空间</p>
-
-<pre><code>#include "cocos-ext.h"  
-USING_NS_CC_EXT;
-</code></pre>
-
-<p>```</p>
-
-<p>CCScale9Sprite和CCSprite一样继承于CCNodeRGB，所以基本上可以像使用CCSprite一样使用CCScale9Sprite（有一点小差别CCSprite还继承了CCTextureProtocol接口）。以下用于创建一个二态点九图按钮。</p>
-
-<p>``` cpp 创建点九图按钮</p>
-
-<pre><code>CCScale9Sprite* confirmnormal=CCScale9Sprite::create("btn_style_alert_dialog_button_normal.9.png");//normal态  
-confirmnormal-&gt;setContentSize(CCSizeMake(100,70));//设置大小  
-CCScale9Sprite* confirmpressd=CCScale9Sprite::create("btn_style_alert_dialog_button_pressed.9.png");//pressd态  
-confirmpressd-&gt;setContentSize(CCSizeMake(100,70));//设置大小  
-CCMenuItemSprite* menuitem=CCMenuItemSprite::create(confirmnormal,confirmpressd,this,menu_selector(TestLayer::btncallback));  
-CCMenu* menu=CCMenu::create(menuitem,NULL);//创建menu  
-menu-&gt;setPosition(visibleSize.width/2,visibleSize.height/2);  
-this-&gt;addChild(menu);  
-</code></pre>
-
-<p>```</p>
-
-<h3>2.输入框CCEditBox</h3>
-
-<p><strong>2.1.概述</strong></p>
-
-<p>CCEditBox也是cocos2d-x的扩展类，所以和上面一样要进行头文件包含和命名空间声明。另外由于要监控输入框的各种状态，所以还必须实现CCEditBoxDelegate类，该类声明了以下接口：</p>
-
-<p>``` cpp CCEditBoxDelegate接口</p>
-
-<pre><code>//当键盘弹出编辑框获得焦点时调用  
-virtual void editBoxEditingDidBegin(CCEditBox* editBox) {};  
-//当键盘消失编辑框失去焦点时调用  
-virtual void editBoxEditingDidEnd(CCEditBox* editBox) {};  
-//当编辑框文本改变时调用  
-virtual void editBoxTextChanged(CCEditBox* editBox, const std::string&amp; text) {};  
-//当返回键按下时或者点击了键盘以外的区域时调用  
-virtual void editBoxReturn(CCEditBox* editBox) = 0;  
-</code></pre>
-
-<p>```</p>
-
-<p><strong>2.2.使用</strong></p>
-
-<p>在TestLayer.cpp的init()中创建编辑框。</p>
-
-<p>``` cpp 编辑框的使用</p>
-
-<pre><code>//bool TestLayer::init()  
-CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
-
-pEditBox = CCEditBox::create(CCSizeMake(250,50), CCScale9Sprite::create("login_edit_normal.9.png"));  
-pEditBox-&gt;setPosition(ccp(visibleSize.width/2, visibleSize.height*3/4));  
-pEditBox-&gt;setFontColor(ccRED);//设置字体颜色  
-pEditBox-&gt;setPlaceHolder("please input:");//设置预置文本  
-pEditBox-&gt;setMaxLength(8);//设置最大长度  
-
-//  kEditBoxInputModeAny: 开启任何文本的输入键盘,包括换行  
-//  kEditBoxInputModeEmailAddr:   开启 邮件地址 输入类型键盘  
-//  kEditBoxInputModeNumeric: 开启 数字符号 输入类型键盘  
-//  kEditBoxInputModePhoneNumber: 开启 电话号码 输入类型键盘  
-//  kEditBoxInputModeUrl: 开启 URL 输入类型键盘  
-//  kEditBoxInputModeDecimal: 开启 数字 输入类型键盘，允许小数点  
-//  kEditBoxInputModeSingleLine:  开启任何文本的输入键盘,不包括换行  
-pEditBox-&gt;setInputMode(kEditBoxInputModeAny);//设置输入类型  
-
-//kEditBoxInputFlagPassword:密码形式输入  
-//kEditBoxInputFlagSensitive:   敏感数据输入、存储输入方案且预测自动完成  
-//kEditBoxInputFlagInitialCapsWord: 每个单词首字母大写,并且伴有提示  
-//kEditBoxInputFlagInitialCapsSentence: 第一句首字母大写,并且伴有提示  
-//kEditBoxInputFlagInitialCapsAllCharacters:所有字符自动大写  
-pEditBox-&gt;setInputFlag(kEditBoxInputFlagPassword);//设置输入标志位  
-
-//  kKeyboardReturnTypeDefault:  默认使用键盘return 类型  
-//  kKeyboardReturnTypeDone: 默认使用键盘return类型为“Done”字样  
-//  kKeyboardReturnTypeSend: 默认使用键盘return类型为“Send”字样  
-//  kKeyboardReturnTypeSearch:   默认使用键盘return类型为“Search”字样  
-//  kKeyboardReturnTypeGo:   默认使用键盘return类型为“Go”字样  
-pEditBox-&gt;setReturnType(kKeyboardReturnTypeDone);//设置返回类型  
-pEditBox-&gt;setDelegate(this);//当前类继承CCEditBoxDelegate类  
-addChild(pEditBox);  
-</code></pre>
-
-<p>```</p>
-
-<p>当前类继承于CCEditBoxDelegate，实现其所有接口如下：</p>
-
-<p>``` cpp CCEditBoxDelegate接口实现</p>
-
-<pre><code>void TestLayer::editBoxEditingDidBegin(CCEditBox *editBox)  
-{  
-    CCLOG("start edit");  
-}  
-void TestLayer::editBoxEditingDidEnd(CCEditBox *editBox)  
-{  
-    CCLOG("end edit");  
-}  
-void TestLayer::editBoxReturn(CCEditBox *editBox)  
-{  
-    CCLOG("editbox return");  
-}  
-void TestLayer::editBoxTextChanged(CCEditBox *editBox, const std::string &amp;text)  
-{  
-    CCLOG("text changed");  
-}  
-</code></pre>
-
-<p>```</p>
-
-<h3>3.结合点九图按钮的使用，效果图如下：</h3>
-
-<div align="center"><img src="http://img.blog.csdn.net/20131213102619421" alt="" border="0" title="效果" /><br></br></div>
-
-
-<h3>4.源码下载</h3>
-
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6707427">下载地址</a></p>
 ]]></content>
   </entry>
   
