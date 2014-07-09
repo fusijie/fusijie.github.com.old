@@ -1,0 +1,158 @@
+---
+layout: post
+title: "【玩转cocos2d-x之三十六】Earth Warrior 3D 大揭秘"
+date: 2014-07-10 00:13
+comments: true
+categories: cocos2d-x
+tags: EarthWarrior3D
+---
+3D游戏现在玩起来门槛还是挺高的。不过如果在Cocos2d-x引擎加入3D扩展，实现2.5D游戏效果又会怎么样？
+
+###1.概述
+先上大会现场演示图：
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/4196_140316183412_1.JPG" alt="" border="0" title="" /><br></br></div>
+
+<!-- more -->
+
+Apk下载：[http://pan.baidu.com/s/1ntM75bV](http://pan.baidu.com/s/1ntM75bV)
+
+源码下载：[https://github.com/chukong/EarthWarrior3D.git](https://github.com/chukong/EarthWarrior3D.git)，给个star不费电。。。
+
+开发环境：Cocos2d-x v3.0 + Sprite3D扩展
+
+适用平台：Mac/iOS/Android
+
+###2.Sprite3D扩展
+
+**2.1. Sprite3D**
+
+sprite3D扩展目前可以支持加载静态obj模型。
+
+``` cpp Sprite3D使用
+
+	auto model = Sprite3D::create("3dmodel.obj", "texture.png"); 
+	 
+```
+
+**2.2. Toon Shading**
+
+Cocos2d-x精灵不能做发光效果，而Sprite3D中加入了发光函数，指定outline width和color就行了。
+
+``` cpp 设置边缘发光
+
+	model->setOutline(1.5, Color3B(0,0,0)); // 设置发光宽度1.5，黑色
+	
+```
+
+**2.3. 3D API**
+
+3D API是Cocos2d-x v3.0就具有的属性，源码可以到Node上看。
+
+``` cpp 设置位置和旋转
+
+	node->setPosition3D(Vertex3F(x,y,z));//设置位置  
+	Vertex3F pos = node->getPosition3D();  
+	node->setRotation3D(Vertex3F(x,y,z));//设置旋转  
+	Vertex3F rot = node->getRotation3D();
+	
+```
+
+其中Vertex3F当然就是指定了三维空间。而3D API同样也移植到了一些动作中，比如：
+
+``` cpp 3D旋转
+
+	node->runAction(RotateBy::create(Vertex3F(x,y,z)));  
+	
+```
+	
+完全没问题。
+
+###3.EarthWarrior
+
+Classes/3d文件夹包含了Sprite3D。其余文件为游戏逻辑控制，游戏总共三个场景
+
+**3.1. 主菜单界面（MainMenuScene）**
+包含：主菜单场景（MainMenuScene），飞机模型（Plane），License和Credits层（LicenseLayer）。
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/20140328095139203.png" alt="" border="0" title="" /><br></br></div>
+
+关键点：
+
+*①主界面3D飞机的实现*
+
+``` cpp 主界面3D飞机的实现
+
+	//Plane.cpp  
+	_Model = Sprite3D::create("playerv002.obj", "playerv002_256.png");  
+	if(_Model){  
+    	_Model->setScale(55);  
+    	((Sprite3D*)_Model)->setOutline(0.035, Color3B::BLACK);  
+    	_Model->setRotation3D(Vertex3F(originX,originY,originZ));  
+    	this->setRotation3D(Vertex3F(originX, originY, originZ));  
+    	this->addChild(_Model);  
+    	this->scheduleUpdate();  
+	}  
+
+```
+	
+*②对数学感兴趣的可以研究一下scheduleUpdate怎样让飞机晃啊晃。。。粒子系统这里就不再重复了。*
+
+``` cpp 设置飞机摇晃
+
+	void Plane::update(float dt)  
+	{  
+    	pRate+=0.01;  
+    	_Model->setRotation3D(Vertex3F(0-pXA*sin(pXW*pRate),0,0-pZA*sin(pZW*pRate)));  
+	}  
+
+```
+
+**3.2. 载入界面（LoadingScene）**
+
+包含：载入场景（LoadingScene）,粒子管理器(ParticleManager)
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/20140328095149734.png" alt="" border="0" title="" /><br></br></div>
+
+关键点：
+
+*①Loading界面实现资源的预加载，包括音乐，纹理，粒子效果，其中纹理使用异步加载，粒子效果在ParticleManager（单例类）中加载。*
+
+*②同时Loading界面也实现了游戏元素的预创建并保存在全局池中，避免游戏过程中的卡顿现象和反复create的低效，包括四类敌机和导弹Missile，在update中实现每帧创建一个，避免LoadingScene的卡顿。*
+
+*③cocos Logo的旋转动画*
+
+```cpp cocos Logo旋转动画
+
+	void LoadingScene::InitCoco()  
+	{  
+    	Size visibleSize = Director::getInstance()->getVisibleSize();  
+    	auto coco = Sprite3D::create("coconut.obj", "coco.png");  
+    	if(coco)  
+    	{  
+        	coco->setPosition(Point(visibleSize.width/2, visibleSize.height/2-150));  
+        	coco->setOutline(10,Color3B(0,0,0));  
+        	addChild(coco,1);  
+        	coco->runAction(RepeatForever::create(RotateBy::create(0.8f,Vertex3F(0,360,0))));  
+    	}  
+	} 
+
+```
+
+**3.3. 游戏界面（HelloWorldScene）**
+
+包含：游戏层（GameLayer），游戏元素基类（GameEntity），飞机类（AirCraft），玩家类（Player），敌机类（Enemies，又包括Fodder，FodderLeader，BigDude，Boss四类敌机），子弹类（Bullet，又包括PlayerBullet，Missile两类子弹），效果管理类（EffectManager），爆炸类（Explosion，又包括SmallExplosion，BigExplosion，BulletExplosion），游戏控制层（GameController，又包括BulletController，EnemyController和GameController），游戏结束层（GameOverLayer）
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/20140328095145093.png" alt="" border="0" title="" /><br></br></div>
+
+关键点：
+
+*①玩家和敌机的子弹控制统一在BulletController::spawnBullet中处理。如上述游戏元素保存在全局池中，可回收利用，避免反复创建，spawnBullet会先从这个池中取出，如果该池为空才会创建对于的子弹。*
+
+*②敌机的处理也是采用相同的方式，在EnemyController::spawnEnemy中处理，如果该池为空才会创建对于的敌机。*
+
+*③GameLayer::gameMaster管理敌机的出现的频率。*
+
+*④GameController::update管理游戏的碰撞检测。*
+
+除了一些数学上的计算比较羞涩意外，整个游戏的逻辑还是比较简单的。。。这里就不细说了，大家直接看源码吧。。。
