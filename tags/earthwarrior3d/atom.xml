@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: EarthWarrior3D | Jacky's Blog]]></title>
+  <link href="http://www.fusijie.com/tags/earthwarrior3d/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2014-07-10T01:23:08+08:00</updated>
+  <id>http://www.fusijie.com/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之三十六】Earth Warrior 3D 大揭秘]]></title>
+    <link href="http://www.fusijie.com/blog/2014/07/10/play-cocos2dx-36/"/>
+    <updated>2014-07-10T00:13:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2014/07/10/play-cocos2dx-36</id>
+    <content type="html"><![CDATA[<p>3D游戏现在玩起来门槛还是挺高的。不过如果在Cocos2d-x引擎加入3D扩展，实现2.5D游戏效果又会怎么样？</p>
+
+<h3>1.概述</h3>
+
+<p>先上大会现场演示图：</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/4196_140316183412_1.JPG" alt="" border="0" title="" /><br></br></div>
+
+
+
+
+<!-- more -->
+
+
+<p>Apk下载：<a href="http://pan.baidu.com/s/1ntM75bV">http://pan.baidu.com/s/1ntM75bV</a></p>
+
+<p>源码下载：<a href="https://github.com/chukong/EarthWarrior3D.git">https://github.com/chukong/EarthWarrior3D.git</a>，给个star不费电。。。</p>
+
+<p>开发环境：Cocos2d-x v3.0 + Sprite3D扩展</p>
+
+<p>适用平台：Mac/iOS/Android</p>
+
+<h3>2.Sprite3D扩展</h3>
+
+<p><strong>2.1. Sprite3D</strong></p>
+
+<p>sprite3D扩展目前可以支持加载静态obj模型。</p>
+
+<p>``` cpp Sprite3D使用</p>
+
+<pre><code>auto model = Sprite3D::create("3dmodel.obj", "texture.png"); 
+</code></pre>
+
+<p>```</p>
+
+<p><strong>2.2. Toon Shading</strong></p>
+
+<p>Cocos2d-x精灵不能做发光效果，而Sprite3D中加入了发光函数，指定outline width和color就行了。</p>
+
+<p>``` cpp 设置边缘发光</p>
+
+<pre><code>model-&gt;setOutline(1.5, Color3B(0,0,0)); // 设置发光宽度1.5，黑色
+</code></pre>
+
+<p>```</p>
+
+<p><strong>2.3. 3D API</strong></p>
+
+<p>3D API是Cocos2d-x v3.0就具有的属性，源码可以到Node上看。</p>
+
+<p>``` cpp 设置位置和旋转</p>
+
+<pre><code>node-&gt;setPosition3D(Vertex3F(x,y,z));//设置位置  
+Vertex3F pos = node-&gt;getPosition3D();  
+node-&gt;setRotation3D(Vertex3F(x,y,z));//设置旋转  
+Vertex3F rot = node-&gt;getRotation3D();
+</code></pre>
+
+<p>```</p>
+
+<p>其中Vertex3F当然就是指定了三维空间。而3D API同样也移植到了一些动作中，比如：</p>
+
+<p>``` cpp 3D旋转</p>
+
+<pre><code>node-&gt;runAction(RotateBy::create(Vertex3F(x,y,z)));  
+</code></pre>
+
+<p>```</p>
+
+<p>完全没问题。</p>
+
+<h3>3.EarthWarrior</h3>
+
+<p>Classes/3d文件夹包含了Sprite3D。其余文件为游戏逻辑控制，游戏总共三个场景</p>
+
+<p><strong>3.1. 主菜单界面（MainMenuScene）</strong>
+包含：主菜单场景（MainMenuScene），飞机模型（Plane），License和Credits层（LicenseLayer）。</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/20140328095139203.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p>关键点：</p>
+
+<p><em>①主界面3D飞机的实现</em></p>
+
+<p>``` cpp 主界面3D飞机的实现</p>
+
+<pre><code>//Plane.cpp  
+_Model = Sprite3D::create("playerv002.obj", "playerv002_256.png");  
+if(_Model){  
+    _Model-&gt;setScale(55);  
+    ((Sprite3D*)_Model)-&gt;setOutline(0.035, Color3B::BLACK);  
+    _Model-&gt;setRotation3D(Vertex3F(originX,originY,originZ));  
+    this-&gt;setRotation3D(Vertex3F(originX, originY, originZ));  
+    this-&gt;addChild(_Model);  
+    this-&gt;scheduleUpdate();  
+}  
+</code></pre>
+
+<p>```</p>
+
+<p><em>②对数学感兴趣的可以研究一下scheduleUpdate怎样让飞机晃啊晃。。。粒子系统这里就不再重复了。</em></p>
+
+<p>``` cpp 设置飞机摇晃</p>
+
+<pre><code>void Plane::update(float dt)  
+{  
+    pRate+=0.01;  
+    _Model-&gt;setRotation3D(Vertex3F(0-pXA*sin(pXW*pRate),0,0-pZA*sin(pZW*pRate)));  
+}  
+</code></pre>
+
+<p>```</p>
+
+<p><strong>3.2. 载入界面（LoadingScene）</strong></p>
+
+<p>包含：载入场景（LoadingScene）,粒子管理器(ParticleManager)</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/20140328095149734.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p>关键点：</p>
+
+<p><em>①Loading界面实现资源的预加载，包括音乐，纹理，粒子效果，其中纹理使用异步加载，粒子效果在ParticleManager（单例类）中加载。</em></p>
+
+<p><em>②同时Loading界面也实现了游戏元素的预创建并保存在全局池中，避免游戏过程中的卡顿现象和反复create的低效，包括四类敌机和导弹Missile，在update中实现每帧创建一个，避免LoadingScene的卡顿。</em></p>
+
+<p><em>③cocos Logo的旋转动画</em></p>
+
+<p>```cpp cocos Logo旋转动画</p>
+
+<pre><code>void LoadingScene::InitCoco()  
+{  
+    Size visibleSize = Director::getInstance()-&gt;getVisibleSize();  
+    auto coco = Sprite3D::create("coconut.obj", "coco.png");  
+    if(coco)  
+    {  
+        coco-&gt;setPosition(Point(visibleSize.width/2, visibleSize.height/2-150));  
+        coco-&gt;setOutline(10,Color3B(0,0,0));  
+        addChild(coco,1);  
+        coco-&gt;runAction(RepeatForever::create(RotateBy::create(0.8f,Vertex3F(0,360,0))));  
+    }  
+} 
+</code></pre>
+
+<p>```</p>
+
+<p><strong>3.3. 游戏界面（HelloWorldScene）</strong></p>
+
+<p>包含：游戏层（GameLayer），游戏元素基类（GameEntity），飞机类（AirCraft），玩家类（Player），敌机类（Enemies，又包括Fodder，FodderLeader，BigDude，Boss四类敌机），子弹类（Bullet，又包括PlayerBullet，Missile两类子弹），效果管理类（EffectManager），爆炸类（Explosion，又包括SmallExplosion，BigExplosion，BulletExplosion），游戏控制层（GameController，又包括BulletController，EnemyController和GameController），游戏结束层（GameOverLayer）</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/20140328095145093.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p>关键点：</p>
+
+<p><em>①玩家和敌机的子弹控制统一在BulletController::spawnBullet中处理。如上述游戏元素保存在全局池中，可回收利用，避免反复创建，spawnBullet会先从这个池中取出，如果该池为空才会创建对于的子弹。</em></p>
+
+<p><em>②敌机的处理也是采用相同的方式，在EnemyController::spawnEnemy中处理，如果该池为空才会创建对于的敌机。</em></p>
+
+<p><em>③GameLayer::gameMaster管理敌机的出现的频率。</em></p>
+
+<p><em>④GameController::update管理游戏的碰撞检测。</em></p>
+
+<p>除了一些数学上的计算比较羞涩意外，整个游戏的逻辑还是比较简单的。。。这里就不细说了，大家直接看源码吧。。。</p>
+]]></content>
+  </entry>
+  
+</feed>

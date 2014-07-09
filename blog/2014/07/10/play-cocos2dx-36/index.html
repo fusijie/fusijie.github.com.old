@@ -1,0 +1,501 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>【玩转cocos2d-x之三十六】Earth Warrior 3D 大揭秘 - Jacky's Blog</title>
+  <meta name="author" content="FuSijie">
+
+  
+  <meta name="description" content="3D游戏现在玩起来门槛还是挺高的。不过如果在Cocos2d-x引擎加入3D扩展，实现2.5D游戏效果又会怎么样？ 1.概述 先上大会现场演示图： Apk下载：http://pan.baidu.com/s/1ntM75bV 源码下载：https://github.com/chukong/ &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.fusijie.com/blog/2014/07/10/play-cocos2dx-36">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jacky's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '45386223']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jacky's Blog</a></h1>
+  
+    <h2>Stay Hungry,Stay Foolish!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.fusijie.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/projects">Projects</a></li>
+  <li><a href="/tag-cloud/">Tags</a></li>
+  <li><a href="http://news.fusijie.com" target="_blank">News</a></li>
+  <li><a href="http://code.fusijie.com" target="_blank">Code</a></li>
+  <li><a href="https://github.com/fusijie" target="_blank">Github</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">【玩转cocos2d-x之三十六】Earth Warrior 3D 大揭秘</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-10T00:13:00+08:00" pubdate data-updated="true">Jul 10<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>3D游戏现在玩起来门槛还是挺高的。不过如果在Cocos2d-x引擎加入3D扩展，实现2.5D游戏效果又会怎么样？</p>
+
+<h3>1.概述</h3>
+
+<p>先上大会现场演示图：</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/4196_140316183412_1.JPG" alt="" border="0" title="" /><br></br></div>
+
+
+
+
+<!-- more -->
+
+
+<p>Apk下载：<a href="http://pan.baidu.com/s/1ntM75bV">http://pan.baidu.com/s/1ntM75bV</a></p>
+
+<p>源码下载：<a href="https://github.com/chukong/EarthWarrior3D.git">https://github.com/chukong/EarthWarrior3D.git</a>，给个star不费电。。。</p>
+
+<p>开发环境：Cocos2d-x v3.0 + Sprite3D扩展</p>
+
+<p>适用平台：Mac/iOS/Android</p>
+
+<h3>2.Sprite3D扩展</h3>
+
+<p><strong>2.1. Sprite3D</strong></p>
+
+<p>sprite3D扩展目前可以支持加载静态obj模型。</p>
+
+<figure class='code'><figcaption><span>Sprite3D使用</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="k">auto</span> <span class="n">model</span> <span class="o">=</span> <span class="n">Sprite3D</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;3dmodel.obj&quot;</span><span class="p">,</span> <span class="s">&quot;texture.png&quot;</span><span class="p">);</span>
+</span><span class='line'>  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>2.2. Toon Shading</strong></p>
+
+<p>Cocos2d-x精灵不能做发光效果，而Sprite3D中加入了发光函数，指定outline width和color就行了。</p>
+
+<figure class='code'><figcaption><span>设置边缘发光</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="n">model</span><span class="o">-&gt;</span><span class="n">setOutline</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">Color3B</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">));</span> <span class="c1">// 设置发光宽度1.5，黑色</span>
+</span><span class='line'>  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>2.3. 3D API</strong></p>
+
+<p>3D API是Cocos2d-x v3.0就具有的属性，源码可以到Node上看。</p>
+
+<figure class='code'><figcaption><span>设置位置和旋转</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="n">node</span><span class="o">-&gt;</span><span class="n">setPosition3D</span><span class="p">(</span><span class="n">Vertex3F</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">));</span><span class="c1">//设置位置  </span>
+</span><span class='line'>  <span class="n">Vertex3F</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">getPosition3D</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">node</span><span class="o">-&gt;</span><span class="n">setRotation3D</span><span class="p">(</span><span class="n">Vertex3F</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">));</span><span class="c1">//设置旋转  </span>
+</span><span class='line'>  <span class="n">Vertex3F</span> <span class="n">rot</span> <span class="o">=</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">getRotation3D</span><span class="p">();</span>
+</span><span class='line'>  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其中Vertex3F当然就是指定了三维空间。而3D API同样也移植到了一些动作中，比如：</p>
+
+<figure class='code'><figcaption><span>3D旋转</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="n">node</span><span class="o">-&gt;</span><span class="n">runAction</span><span class="p">(</span><span class="n">RotateBy</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">Vertex3F</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)));</span>
+</span><span class='line'>  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>完全没问题。</p>
+
+<h3>3.EarthWarrior</h3>
+
+<p>Classes/3d文件夹包含了Sprite3D。其余文件为游戏逻辑控制，游戏总共三个场景</p>
+
+<p><strong>3.1. 主菜单界面（MainMenuScene）</strong>
+包含：主菜单场景（MainMenuScene），飞机模型（Plane），License和Credits层（LicenseLayer）。</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/20140328095139203.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p>关键点：</p>
+
+<p><em>①主界面3D飞机的实现</em></p>
+
+<figure class='code'><figcaption><span>主界面3D飞机的实现</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="c1">//Plane.cpp  </span>
+</span><span class='line'>  <span class="n">_Model</span> <span class="o">=</span> <span class="n">Sprite3D</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;playerv002.obj&quot;</span><span class="p">,</span> <span class="s">&quot;playerv002_256.png&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">_Model</span><span class="p">){</span>
+</span><span class='line'>      <span class="n">_Model</span><span class="o">-&gt;</span><span class="n">setScale</span><span class="p">(</span><span class="mi">55</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">((</span><span class="n">Sprite3D</span><span class="o">*</span><span class="p">)</span><span class="n">_Model</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">setOutline</span><span class="p">(</span><span class="mf">0.035</span><span class="p">,</span> <span class="n">Color3B</span><span class="o">::</span><span class="n">BLACK</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">_Model</span><span class="o">-&gt;</span><span class="n">setRotation3D</span><span class="p">(</span><span class="n">Vertex3F</span><span class="p">(</span><span class="n">originX</span><span class="p">,</span><span class="n">originY</span><span class="p">,</span><span class="n">originZ</span><span class="p">));</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">-&gt;</span><span class="n">setRotation3D</span><span class="p">(</span><span class="n">Vertex3F</span><span class="p">(</span><span class="n">originX</span><span class="p">,</span> <span class="n">originY</span><span class="p">,</span> <span class="n">originZ</span><span class="p">));</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">-&gt;</span><span class="n">addChild</span><span class="p">(</span><span class="n">_Model</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">-&gt;</span><span class="n">scheduleUpdate</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>②对数学感兴趣的可以研究一下scheduleUpdate怎样让飞机晃啊晃。。。粒子系统这里就不再重复了。</em></p>
+
+<figure class='code'><figcaption><span>设置飞机摇晃</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="kt">void</span> <span class="n">Plane</span><span class="o">::</span><span class="n">update</span><span class="p">(</span><span class="kt">float</span> <span class="n">dt</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">pRate</span><span class="o">+=</span><span class="mf">0.01</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">_Model</span><span class="o">-&gt;</span><span class="n">setRotation3D</span><span class="p">(</span><span class="n">Vertex3F</span><span class="p">(</span><span class="mi">0</span><span class="o">-</span><span class="n">pXA</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">pXW</span><span class="o">*</span><span class="n">pRate</span><span class="p">),</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="o">-</span><span class="n">pZA</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">pZW</span><span class="o">*</span><span class="n">pRate</span><span class="p">)));</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>3.2. 载入界面（LoadingScene）</strong></p>
+
+<p>包含：载入场景（LoadingScene）,粒子管理器(ParticleManager)</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/20140328095149734.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p>关键点：</p>
+
+<p><em>①Loading界面实现资源的预加载，包括音乐，纹理，粒子效果，其中纹理使用异步加载，粒子效果在ParticleManager（单例类）中加载。</em></p>
+
+<p><em>②同时Loading界面也实现了游戏元素的预创建并保存在全局池中，避免游戏过程中的卡顿现象和反复create的低效，包括四类敌机和导弹Missile，在update中实现每帧创建一个，避免LoadingScene的卡顿。</em></p>
+
+<p><em>③cocos Logo的旋转动画</em></p>
+
+<figure class='code'><figcaption><span>cocos Logo旋转动画</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="kt">void</span> <span class="n">LoadingScene</span><span class="o">::</span><span class="n">InitCoco</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">Size</span> <span class="n">visibleSize</span> <span class="o">=</span> <span class="n">Director</span><span class="o">::</span><span class="n">getInstance</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">getVisibleSize</span><span class="p">();</span>
+</span><span class='line'>      <span class="k">auto</span> <span class="n">coco</span> <span class="o">=</span> <span class="n">Sprite3D</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;coconut.obj&quot;</span><span class="p">,</span> <span class="s">&quot;coco.png&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="n">coco</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">coco</span><span class="o">-&gt;</span><span class="n">setPosition</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="n">visibleSize</span><span class="p">.</span><span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">visibleSize</span><span class="p">.</span><span class="n">height</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="mi">150</span><span class="p">));</span>
+</span><span class='line'>          <span class="n">coco</span><span class="o">-&gt;</span><span class="n">setOutline</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="n">Color3B</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">));</span>
+</span><span class='line'>          <span class="n">addChild</span><span class="p">(</span><span class="n">coco</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">coco</span><span class="o">-&gt;</span><span class="n">runAction</span><span class="p">(</span><span class="n">RepeatForever</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">RotateBy</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="mf">0.8f</span><span class="p">,</span><span class="n">Vertex3F</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">360</span><span class="p">,</span><span class="mi">0</span><span class="p">))));</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>3.3. 游戏界面（HelloWorldScene）</strong></p>
+
+<p>包含：游戏层（GameLayer），游戏元素基类（GameEntity），飞机类（AirCraft），玩家类（Player），敌机类（Enemies，又包括Fodder，FodderLeader，BigDude，Boss四类敌机），子弹类（Bullet，又包括PlayerBullet，Missile两类子弹），效果管理类（EffectManager），爆炸类（Explosion，又包括SmallExplosion，BigExplosion，BulletExplosion），游戏控制层（GameController，又包括BulletController，EnemyController和GameController），游戏结束层（GameOverLayer）</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/20140328095145093.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p>关键点：</p>
+
+<p><em>①玩家和敌机的子弹控制统一在BulletController::spawnBullet中处理。如上述游戏元素保存在全局池中，可回收利用，避免反复创建，spawnBullet会先从这个池中取出，如果该池为空才会创建对于的子弹。</em></p>
+
+<p><em>②敌机的处理也是采用相同的方式，在EnemyController::spawnEnemy中处理，如果该池为空才会创建对于的敌机。</em></p>
+
+<p><em>③GameLayer::gameMaster管理敌机的出现的频率。</em></p>
+
+<p><em>④GameController::update管理游戏的碰撞检测。</em></p>
+
+<p>除了一些数学上的计算比较羞涩意外，整个游戏的逻辑还是比较简单的。。。这里就不细说了，大家直接看源码吧。。。<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/07/10/play-cocos2dx-36/'><a href="http://www.fusijie.com/blog/2014/07/10/play-cocos2dx-36/">http://www.fusijie.com/blog/2014/07/10/play-cocos2dx-36/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">FuSijie</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-10T00:13:00+08:00" pubdate data-updated="true">Jul 10<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cocos2d-x/'>cocos2d-x</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+      <!-- JiaThis Button BEGIN -->
+  <section>
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share?uid=1859056" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1859056" charset="utf-8"></script>
+</section>
+<!-- JiaThis Button END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+	    <p></p>
+        <a class="basic-alignment left" href="/blog/2014/02/25/play-cocos2dx-35/" title="Previous Post: 【玩转cocos2d-x之三十五】《我叫MT offline》Demo">&laquo; 【玩转cocos2d-x之三十五】《我叫MT offline》Demo</a>
+      
+      
+    </p>
+  </footer>
+</article>
+  <section>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"fusijie"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->  
+</section>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+		<br>
+		<center><a target="_blank" href="http://blog.csdn.net/jackystudio" style="text-decoration:none" ><img src="\images\aboutme.png" border=0></img></a></center>
+		</br>
+</section><section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (36)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/07/10/play-cocos2dx-36/">【玩转cocos2d-x之三十六】Earth Warrior 3D 大揭秘</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/25/play-cocos2dx-35/">【玩转cocos2d-x之三十五】《我叫MT offline》Demo</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/08/play-cocos2dx-34/">【玩转cocos2d-x之三十四】绘图：CCDrawingPrimitives和CCDrawNode</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/26/play-cocos2dx-33/">【玩转cocos2d-x之三十三】游戏嵌入Webview网页</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/18/play-cocos2dx-32/">【玩转cocos2d-x之三十二】xml的解析</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+  <section>
+<h1>Recent Comments</h1>
+<ul class="ds-recent-comments" data-num-items="10">
+</ul>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"fusijie"};
+(function() {
+var ds = document.createElement('script');
+ds.type = 'text/javascript';
+ds.async = true;ds.src = 'http://static.duoshuo.com/embed.js';
+ds.charset = 'UTF-8';
+(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script>
+</section>
+<section>
+  <h1>Sina Weibo</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="450" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=450&fansRow=0&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=0&uid=1307211523&verifier=3619ee9c">
+      </iframe>
+    </li>
+  </ul>
+</section>
+ 
+<section>
+<h1>Visitor</h1>
+<div>
+	<p></p>
+    <center>
+	<a href="http://info.flagcounter.com/3pF8"><img src="http://s08.flagcounter.com/count/3pF8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_12/viewers_3/labels_0/pageviews_1/flags_0/" alt="Flag Counter" border="0"></a>
+	</center>
+</div>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - FuSijie -
+  <span class="credit">牛逼自豪有情怀地使用高大上的 <a href="http://octopress.org">Octopress</a></span>
+  <script type="text/javascript">
+	var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F966a6a480d428ebd0c0c55fcfb4f8a88' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</p>
+
+</footer>
+  <div id="full" style="width:0px; height:0px; position:fixed; right:70px; bottom:70px; z-index:100; text-align:center; background-color:transparent; cursor:pointer;">
+        <a href="#" onclick="goTop();return false;"><img src="/images/top.png" border=0 alt="Top"></a>
+</div>
+<script src="/javascripts/top.js" type="text/javascript"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

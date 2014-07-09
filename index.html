@@ -9,7 +9,7 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="1.写在前面 这是怎样一个游戏？ 这是一个最好的时代。软件跑在硬件之前，而创意跑在软件之前。除去那些跨时代的作品（现在还没出，比如体感，识别等等和硬件强相关的游戏），现在的手游对技术的要求门槛已经大大降低了。这是个创意决定市场的时代。 （1）比如早些时候的愤怒小鸟，植物僵尸，水果忍者， &hellip;">
+  <meta name="description" content="3D游戏现在玩起来门槛还是挺高的。不过如果在Cocos2d-x引擎加入3D扩展，实现2.5D游戏效果又会怎么样？ 1.概述 先上大会现场演示图： ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -82,6 +82,56 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/10/play-cocos2dx-36/">【玩转cocos2d-x之三十六】Earth Warrior 3D 大揭秘</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-10T00:13:00+08:00" pubdate data-updated="true">Jul 10<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>3D游戏现在玩起来门槛还是挺高的。不过如果在Cocos2d-x引擎加入3D扩展，实现2.5D游戏效果又会怎么样？</p>
+
+<h3>1.概述</h3>
+
+<p>先上大会现场演示图：</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/4196_140316183412_1.JPG" alt="" border="0" title="" /><br></br></div>
+
+
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/07/10/play-cocos2dx-36/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -541,55 +591,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/11/26/play-cocos2dx-26/">【玩转cocos2d-x之二十六】数据结构CCDictionary</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-11-26T09:00:00+08:00" pubdate data-updated="true">Nov 26<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>CCDictionary在cocos2d-x中被大量的应用，比如CCTexureCache，CCSpriteFramCache等等。</p>
-
-<h3>1.实现原理</h3>
-
-<p><strong>1.1.uthash</strong></p>
-
-<p>CCDictionary是使用uthash实现的，而过时的CCMutableDictionary则是使用STL实现，就效率而言CCDictionary至少提升了两倍，而且CCDictionary并没有使用C++模版，因此也很容易绑定到脚本。</p>
-
-<p>uthash是一个C/C++的哈希表实现，它以宏定义的方式实现了哈希表，不仅加快了运行速度，而且与key类型无关。它的github在<a href="https://github.com/troydhanson/uthash">这里</a>。cocos2d-x的头文件在\cocos2d-x-2.2.0\cocos2dx\support\data_support\uthash.h。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/11/26/play-cocos2dx-26/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -608,12 +609,16 @@
 </section><section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (35)</a></li>
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (36)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/07/10/play-cocos2dx-36/">【玩转cocos2d-x之三十六】Earth Warrior 3D 大揭秘</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/02/25/play-cocos2dx-35/">【玩转cocos2d-x之三十五】《我叫MT offline》Demo</a>
@@ -629,10 +634,6 @@
     
       <li class="post">
         <a href="/blog/2013/12/18/play-cocos2dx-32/">【玩转cocos2d-x之三十二】xml的解析</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/12/17/play-cocos2dx-31/">【玩转cocos2d-x之三十一】服务器的网络通信编程</a>
       </li>
     
   </ul>

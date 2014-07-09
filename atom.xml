@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-02-26T08:56:16+08:00</updated>
+  <updated>2014-07-10T01:23:08+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,200 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之三十六】Earth Warrior 3D 大揭秘]]></title>
+    <link href="http://www.fusijie.com/blog/2014/07/10/play-cocos2dx-36/"/>
+    <updated>2014-07-10T00:13:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2014/07/10/play-cocos2dx-36</id>
+    <content type="html"><![CDATA[<p>3D游戏现在玩起来门槛还是挺高的。不过如果在Cocos2d-x引擎加入3D扩展，实现2.5D游戏效果又会怎么样？</p>
+
+<h3>1.概述</h3>
+
+<p>先上大会现场演示图：</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/4196_140316183412_1.JPG" alt="" border="0" title="" /><br></br></div>
+
+
+
+
+<!-- more -->
+
+
+<p>Apk下载：<a href="http://pan.baidu.com/s/1ntM75bV">http://pan.baidu.com/s/1ntM75bV</a></p>
+
+<p>源码下载：<a href="https://github.com/chukong/EarthWarrior3D.git">https://github.com/chukong/EarthWarrior3D.git</a>，给个star不费电。。。</p>
+
+<p>开发环境：Cocos2d-x v3.0 + Sprite3D扩展</p>
+
+<p>适用平台：Mac/iOS/Android</p>
+
+<h3>2.Sprite3D扩展</h3>
+
+<p><strong>2.1. Sprite3D</strong></p>
+
+<p>sprite3D扩展目前可以支持加载静态obj模型。</p>
+
+<figure class='code'><figcaption><span>Sprite3D使用</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="k">auto</span> <span class="n">model</span> <span class="o">=</span> <span class="n">Sprite3D</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;3dmodel.obj&quot;</span><span class="p">,</span> <span class="s">&quot;texture.png&quot;</span><span class="p">);</span>
+</span><span class='line'>  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>2.2. Toon Shading</strong></p>
+
+<p>Cocos2d-x精灵不能做发光效果，而Sprite3D中加入了发光函数，指定outline width和color就行了。</p>
+
+<figure class='code'><figcaption><span>设置边缘发光</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="n">model</span><span class="o">-&gt;</span><span class="n">setOutline</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">Color3B</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">));</span> <span class="c1">// 设置发光宽度1.5，黑色</span>
+</span><span class='line'>  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>2.3. 3D API</strong></p>
+
+<p>3D API是Cocos2d-x v3.0就具有的属性，源码可以到Node上看。</p>
+
+<figure class='code'><figcaption><span>设置位置和旋转</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="n">node</span><span class="o">-&gt;</span><span class="n">setPosition3D</span><span class="p">(</span><span class="n">Vertex3F</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">));</span><span class="c1">//设置位置  </span>
+</span><span class='line'>  <span class="n">Vertex3F</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">getPosition3D</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">node</span><span class="o">-&gt;</span><span class="n">setRotation3D</span><span class="p">(</span><span class="n">Vertex3F</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">));</span><span class="c1">//设置旋转  </span>
+</span><span class='line'>  <span class="n">Vertex3F</span> <span class="n">rot</span> <span class="o">=</span> <span class="n">node</span><span class="o">-&gt;</span><span class="n">getRotation3D</span><span class="p">();</span>
+</span><span class='line'>  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其中Vertex3F当然就是指定了三维空间。而3D API同样也移植到了一些动作中，比如：</p>
+
+<figure class='code'><figcaption><span>3D旋转</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="n">node</span><span class="o">-&gt;</span><span class="n">runAction</span><span class="p">(</span><span class="n">RotateBy</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">Vertex3F</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)));</span>
+</span><span class='line'>  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>完全没问题。</p>
+
+<h3>3.EarthWarrior</h3>
+
+<p>Classes/3d文件夹包含了Sprite3D。其余文件为游戏逻辑控制，游戏总共三个场景</p>
+
+<p><strong>3.1. 主菜单界面（MainMenuScene）</strong>
+包含：主菜单场景（MainMenuScene），飞机模型（Plane），License和Credits层（LicenseLayer）。</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/20140328095139203.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p>关键点：</p>
+
+<p><em>①主界面3D飞机的实现</em></p>
+
+<figure class='code'><figcaption><span>主界面3D飞机的实现</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="c1">//Plane.cpp  </span>
+</span><span class='line'>  <span class="n">_Model</span> <span class="o">=</span> <span class="n">Sprite3D</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;playerv002.obj&quot;</span><span class="p">,</span> <span class="s">&quot;playerv002_256.png&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">_Model</span><span class="p">){</span>
+</span><span class='line'>      <span class="n">_Model</span><span class="o">-&gt;</span><span class="n">setScale</span><span class="p">(</span><span class="mi">55</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">((</span><span class="n">Sprite3D</span><span class="o">*</span><span class="p">)</span><span class="n">_Model</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">setOutline</span><span class="p">(</span><span class="mf">0.035</span><span class="p">,</span> <span class="n">Color3B</span><span class="o">::</span><span class="n">BLACK</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">_Model</span><span class="o">-&gt;</span><span class="n">setRotation3D</span><span class="p">(</span><span class="n">Vertex3F</span><span class="p">(</span><span class="n">originX</span><span class="p">,</span><span class="n">originY</span><span class="p">,</span><span class="n">originZ</span><span class="p">));</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">-&gt;</span><span class="n">setRotation3D</span><span class="p">(</span><span class="n">Vertex3F</span><span class="p">(</span><span class="n">originX</span><span class="p">,</span> <span class="n">originY</span><span class="p">,</span> <span class="n">originZ</span><span class="p">));</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">-&gt;</span><span class="n">addChild</span><span class="p">(</span><span class="n">_Model</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">this</span><span class="o">-&gt;</span><span class="n">scheduleUpdate</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>②对数学感兴趣的可以研究一下scheduleUpdate怎样让飞机晃啊晃。。。粒子系统这里就不再重复了。</em></p>
+
+<figure class='code'><figcaption><span>设置飞机摇晃</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="kt">void</span> <span class="n">Plane</span><span class="o">::</span><span class="n">update</span><span class="p">(</span><span class="kt">float</span> <span class="n">dt</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">pRate</span><span class="o">+=</span><span class="mf">0.01</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">_Model</span><span class="o">-&gt;</span><span class="n">setRotation3D</span><span class="p">(</span><span class="n">Vertex3F</span><span class="p">(</span><span class="mi">0</span><span class="o">-</span><span class="n">pXA</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">pXW</span><span class="o">*</span><span class="n">pRate</span><span class="p">),</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="o">-</span><span class="n">pZA</span><span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">pZW</span><span class="o">*</span><span class="n">pRate</span><span class="p">)));</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>3.2. 载入界面（LoadingScene）</strong></p>
+
+<p>包含：载入场景（LoadingScene）,粒子管理器(ParticleManager)</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/20140328095149734.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p>关键点：</p>
+
+<p><em>①Loading界面实现资源的预加载，包括音乐，纹理，粒子效果，其中纹理使用异步加载，粒子效果在ParticleManager（单例类）中加载。</em></p>
+
+<p><em>②同时Loading界面也实现了游戏元素的预创建并保存在全局池中，避免游戏过程中的卡顿现象和反复create的低效，包括四类敌机和导弹Missile，在update中实现每帧创建一个，避免LoadingScene的卡顿。</em></p>
+
+<p><em>③cocos Logo的旋转动画</em></p>
+
+<figure class='code'><figcaption><span>cocos Logo旋转动画</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="kt">void</span> <span class="n">LoadingScene</span><span class="o">::</span><span class="n">InitCoco</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">Size</span> <span class="n">visibleSize</span> <span class="o">=</span> <span class="n">Director</span><span class="o">::</span><span class="n">getInstance</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">getVisibleSize</span><span class="p">();</span>
+</span><span class='line'>      <span class="k">auto</span> <span class="n">coco</span> <span class="o">=</span> <span class="n">Sprite3D</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;coconut.obj&quot;</span><span class="p">,</span> <span class="s">&quot;coco.png&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="n">coco</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">coco</span><span class="o">-&gt;</span><span class="n">setPosition</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="n">visibleSize</span><span class="p">.</span><span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">visibleSize</span><span class="p">.</span><span class="n">height</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="mi">150</span><span class="p">));</span>
+</span><span class='line'>          <span class="n">coco</span><span class="o">-&gt;</span><span class="n">setOutline</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="n">Color3B</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">));</span>
+</span><span class='line'>          <span class="n">addChild</span><span class="p">(</span><span class="n">coco</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">coco</span><span class="o">-&gt;</span><span class="n">runAction</span><span class="p">(</span><span class="n">RepeatForever</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">RotateBy</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="mf">0.8f</span><span class="p">,</span><span class="n">Vertex3F</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">360</span><span class="p">,</span><span class="mi">0</span><span class="p">))));</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>3.3. 游戏界面（HelloWorldScene）</strong></p>
+
+<p>包含：游戏层（GameLayer），游戏元素基类（GameEntity），飞机类（AirCraft），玩家类（Player），敌机类（Enemies，又包括Fodder，FodderLeader，BigDude，Boss四类敌机），子弹类（Bullet，又包括PlayerBullet，Missile两类子弹），效果管理类（EffectManager），爆炸类（Explosion，又包括SmallExplosion，BigExplosion，BulletExplosion），游戏控制层（GameController，又包括BulletController，EnemyController和GameController），游戏结束层（GameOverLayer）</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/20140328095145093.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p>关键点：</p>
+
+<p><em>①玩家和敌机的子弹控制统一在BulletController::spawnBullet中处理。如上述游戏元素保存在全局池中，可回收利用，避免反复创建，spawnBullet会先从这个池中取出，如果该池为空才会创建对于的子弹。</em></p>
+
+<p><em>②敌机的处理也是采用相同的方式，在EnemyController::spawnEnemy中处理，如果该池为空才会创建对于的敌机。</em></p>
+
+<p><em>③GameLayer::gameMaster管理敌机的出现的频率。</em></p>
+
+<p><em>④GameController::update管理游戏的碰撞检测。</em></p>
+
+<p>除了一些数学上的计算比较羞涩意外，整个游戏的逻辑还是比较简单的。。。这里就不细说了，大家直接看源码吧。。。<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/07/10/play-cocos2dx-36/'><a href="http://www.fusijie.com/blog/2014/07/10/play-cocos2dx-36/">http://www.fusijie.com/blog/2014/07/10/play-cocos2dx-36/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十五】《我叫MT offline》Demo]]></title>
@@ -3782,102 +3976,6 @@ this-&gt;addChild(pLabel, 1);
 <h3>4.源码下载</h3>
 
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6442201">源码下载</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/25/play-cocos2dx-17/'><a href="http://www.fusijie.com/blog/2013/10/25/play-cocos2dx-17/">http://www.fusijie.com/blog/2013/10/25/play-cocos2dx-17/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之十六】滚动字幕和公告]]></title>
-    <link href="http://www.fusijie.com/blog/2013/10/24/play-cocos2dx-16/"/>
-    <updated>2013-10-24T16:38:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/10/24/play-cocos2dx-16</id>
-    <content type="html"><![CDATA[<p>滚动字幕和公告是游戏中经常使用到的元素，本文大致写一下实现方法，至于例子中具体的坐标值，请不要纠结。。。这和美工关系还是蛮大的。我PS技术太搓了。。。</p>
-
-<h3>1.原理</h3>
-
-<p>其实它们的实现都是简单的通过调用update来更新位置达到的移动效果，和背景滚动有点类似，一旦滚动结束就重置为起点，开始新的滚动。只是为了达到在某个区域内滚动而不至于超出这个区域，有时候会用一些前景图来做遮盖，所以这个时候其实字幕或者公告是有在后面滚动的，但是被遮住了，因此看起来就像是只在某个区域内滚动。以垂直字幕滚动为例说明，如下图。</p>
-
-<!-- more -->
-
-
-
-
-<div align="center"><img src="http://img.blog.csdn.net/20131022090909406?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="原理" /><br></br></div>
-
-
-<h3>2.实现</h3>
-
-<p>不要纠结以下各精灵的坐标位置：）</p>
-
-<pre><code>bool CTestLayer::init()  
-{  
-    bool bRet=false;  
-    do   
-    {  
-        CC_BREAK_IF(!CCLayer::init());  
-
-        CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
-        CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;addSpriteFramesWithFile("ui_serverlist.plist");  
-
-        //垂直滚动字幕  
-        CCSprite* listbase=CCSprite::createWithSpriteFrame(CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;spriteFrameByName("login_listbase.png"));//bottom底图  
-        listbase-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2+10));  
-        this-&gt;addChild(listbase);  
-        text1=CCLabelTTF::create("1.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n2.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n3.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!\n4.Hi! Welcome to JackyStudio,\nMy Blog is\nblog.csdn.net/jackystudio!","Arial",12);//middle文本  
-        text1-&gt;setHorizontalAlignment(kCCTextAlignmentLeft);//左对齐  
-        text1-&gt;setAnchorPoint(ccp(0.5,1));  
-        text1-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2-55));  
-        this-&gt;addChild(text1);  
-        CCSprite* fg=CCSprite::create("fg.png");//top前景  
-        fg-&gt;setPosition(ccp(visibleSize.width/2,visibleSize.height/2));  
-        this-&gt;addChild(fg);  
-
-        //水平滚动公告  
-        CCSprite* textbase=CCSprite::createWithSpriteFrame(CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;spriteFrameByName("login_textbase.png"));  
-        textbase-&gt;setPosition(ccp(visibleSize.width/2,50));  
-        textbase-&gt;setScaleX(2.5f);  
-        this-&gt;addChild(textbase);  
-        text2=CCLabelTTF::create("Hi! Welcome to JackyStudio,My Blog is blog.csdn.net/jackystudio!","Arial",12);  
-        text2-&gt;setPosition(ccp(visibleSize.width+text2-&gt;getContentSize().width/2,50));  
-        text2-&gt;setColor(ccc3(255,0,0));//红色字体  
-        this-&gt;addChild(text2);  
-
-        this-&gt;scheduleUpdate();//执行更新  
-
-        bRet=true;  
-    } while (0);  
-    return bRet;  
-}  
-
-void CTestLayer::update(float delta)  
-{  
-    CCSize visibleSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
-
-    int newY=text1-&gt;getPositionY()+1;  
-    if (newY==500)//如果滚动到这个位置，重置  
-    {  
-        newY=visibleSize.height/2-55;  
-    }  
-    text1-&gt;setPositionY(newY);  
-
-    int newX=text2-&gt;getPositionX()-1;  
-    if (newX&lt;=-text2-&gt;getContentSize().width/2)//如果滚动到这个位置，重置  
-    {  
-        newX=visibleSize.width+text2-&gt;getContentSize().width/2;  
-    }  
-    text2-&gt;setPositionX(newX);  
-}  
-</code></pre>
-
-<h3>3.效果</h3>
-
-<p>这个效果有点小bug，就是文字覆盖到边框上了，这是因为没有把边框做在top层上导致的，实际使用注意这个问题即可。</p>
-
-<div align="center"><img src="http://img.blog.csdn.net/20131209083133296" alt="" border="0" title="字幕滚动和公告" /><br></br></div>
-
-
-<h3>4.源码下载</h3>
-
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6434549">源码下载</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/24/play-cocos2dx-16/'><a href="http://www.fusijie.com/blog/2013/10/24/play-cocos2dx-16/">http://www.fusijie.com/blog/2013/10/24/play-cocos2dx-16/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
