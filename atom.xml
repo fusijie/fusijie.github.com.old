@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-08-22T00:05:56+08:00</updated>
+  <updated>2014-08-22T00:19:14+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -323,7 +323,7 @@ $ ./build_native.py
 </span><span class='line'>  <span class="err">#</span><span class="k">if</span> <span class="p">(</span><span class="n">CC_TARGET_PLATFORM</span> <span class="o">==</span> <span class="n">CC_PLATFORM_ANDROID</span><span class="p">)</span> <span class="c1">//判断当前是否为Android平台</span>
 </span><span class='line'>    <span class="n">JniMethodInfo</span> <span class="n">minfo</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="kt">bool</span> <span class="n">isHave</span> <span class="o">=</span> <span class="n">JniHelper</span><span class="o">::</span><span class="n">getStaticMethodInfo</span><span class="p">(</span><span class="n">minfo</span><span class="p">,</span><span class="s">&quot;com/fusijie/umengdemo/WeChatDemo&quot;</span><span class="p">,</span><span class="s">&quot;sendMsgToFriend&quot;</span><span class="p">,</span> <span class="s">&quot;()V&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="kt">bool</span> <span class="n">isHave</span> <span class="o">=</span> <span class="n">JniHelper</span><span class="o">::</span><span class="n">getStaticMethodInfo</span><span class="p">(</span><span class="n">minfo</span><span class="p">,</span><span class="s">&quot;org/cocos2dx/cpp/AppActivity&quot;</span><span class="p">,</span><span class="s">&quot;sendMsgToFriend&quot;</span><span class="p">,</span> <span class="s">&quot;()V&quot;</span><span class="p">);</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">isHave</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>        <span class="n">log</span><span class="p">(</span><span class="s">&quot;jni:sendMsgToFriend is null&quot;</span><span class="p">);</span>
@@ -339,7 +339,7 @@ $ ./build_native.py
 </span><span class='line'>  <span class="err">#</span><span class="k">if</span> <span class="p">(</span><span class="n">CC_TARGET_PLATFORM</span> <span class="o">==</span> <span class="n">CC_PLATFORM_ANDROID</span><span class="p">)</span> <span class="c1">//判断当前是否为Android平台</span>
 </span><span class='line'>    <span class="n">JniMethodInfo</span> <span class="n">minfo</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="kt">bool</span> <span class="n">isHave</span> <span class="o">=</span> <span class="n">JniHelper</span><span class="o">::</span><span class="n">getStaticMethodInfo</span><span class="p">(</span><span class="n">minfo</span><span class="p">,</span><span class="s">&quot;com/fusijie/umengdemo/WeChatDemo&quot;</span><span class="p">,</span><span class="s">&quot;sendMsgToTimeLine&quot;</span><span class="p">,</span> <span class="s">&quot;()V&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="kt">bool</span> <span class="n">isHave</span> <span class="o">=</span> <span class="n">JniHelper</span><span class="o">::</span><span class="n">getStaticMethodInfo</span><span class="p">(</span><span class="n">minfo</span><span class="p">,</span><span class="s">&quot;org/cocos2dx/cpp/AppActivity&quot;</span><span class="p">,</span><span class="s">&quot;sendMsgToTimeLine&quot;</span><span class="p">,</span> <span class="s">&quot;()V&quot;</span><span class="p">);</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">isHave</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>        <span class="n">log</span><span class="p">(</span><span class="s">&quot;jni:sendMsgToTimeLine is null&quot;</span><span class="p">);</span>

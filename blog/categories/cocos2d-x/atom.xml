@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/blog/categories/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-08-22T00:05:56+08:00</updated>
+  <updated>2014-08-22T00:19:14+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -236,7 +236,7 @@ private void regToWX(){
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) //判断当前是否为Android平台
 JniMethodInfo minfo;
 
-bool isHave = JniHelper::getStaticMethodInfo(minfo,"com/fusijie/umengdemo/WeChatDemo","sendMsgToFriend", "()V");
+bool isHave = JniHelper::getStaticMethodInfo(minfo,"org/cocos2dx/cpp/AppActivity","sendMsgToFriend", "()V");
 
 if (!isHave) {
     log("jni:sendMsgToFriend is null");
@@ -254,7 +254,7 @@ if (!isHave) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) //判断当前是否为Android平台
 JniMethodInfo minfo;
 
-bool isHave = JniHelper::getStaticMethodInfo(minfo,"com/fusijie/umengdemo/WeChatDemo","sendMsgToTimeLine", "()V");
+bool isHave = JniHelper::getStaticMethodInfo(minfo,"org/cocos2dx/cpp/AppActivity","sendMsgToTimeLine", "()V");
 
 if (!isHave) {
     log("jni:sendMsgToTimeLine is null");
