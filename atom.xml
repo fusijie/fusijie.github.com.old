@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-08-22T00:00:33+08:00</updated>
+  <updated>2014-08-22T00:05:56+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -26,7 +26,7 @@
 
 <ul>
 <li>OS: Mac OSX</li>
-<li>IDE: Xcode v5.11 and Eclipse</li>
+<li>IDE: Xcode v5.11 and Eclipse ADT v22.3</li>
 <li>Android SDK:4.0</li>
 <li>Adnroid NDK:r9d</li>
 <li>Cocos2d-x 3.2release</li>
