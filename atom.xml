@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-07-10T01:23:08+08:00</updated>
+  <updated>2014-08-22T00:00:33+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,401 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之三十七】在Cocos2d-x中集成安卓版微信SDK]]></title>
+    <link href="http://www.fusijie.com/blog/2014/08/21/play-cocos2dx-37/"/>
+    <updated>2014-08-21T00:26:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2014/08/21/play-cocos2dx-37</id>
+    <content type="html"><![CDATA[<h3>1.概述</h3>
+
+<p>微信的火热程度已不必说了，如果能在Cocos2d-x中集成微信SDK，让游戏能分享给好友或者朋友圈，那对游戏推广将会是非常有利的。好了，本文就是手把手地教大伙如何在Cocos2d-x中集成微信SDK。</p>
+
+<h3>2.环境</h3>
+
+<ul>
+<li>OS: Mac OSX</li>
+<li>IDE: Xcode v5.11 and Eclipse</li>
+<li>Android SDK:4.0</li>
+<li>Adnroid NDK:r9d</li>
+<li>Cocos2d-x 3.2release</li>
+</ul>
+
+
+<h3>3.创建Cocos2d-x工程</h3>
+
+<p>这里不再详述，网上的资料多如牛毛了。这里我按自己习惯的方式来。</p>
+
+<!-- more -->
+
+
+<p>（1）命令行创建Cocos2dxWechat项目</p>
+
+<pre><code>$ cocos new -p com.fusijie.cocos2dxwechat -l cpp -d . Cocos2dxWechat
+</code></pre>
+
+<p>（2）交叉编译生成so文件</p>
+
+<pre><code>$ cd Cocos2dxWechat/proj.android/
+$ ./build_native.py
+</code></pre>
+
+<p>（3）导入Eclipse生成APK</p>
+
+<p>导入libcocos2dx项目和Cocos2dxWechat项目到Eclipse中。在真机中成功运行Cocos2dxWechat.apk。</p>
+
+<h3>4.申请创建微信应用</h3>
+
+<p>这一步主要是在微信开放平台上申请创建移动应用，获取AppID。微信开放平台的网址是：<a href="https://open.weixin.qq.com/">https://open.weixin.qq.com/</a></p>
+
+<p>（1）注册帐号，进入管理中心，点击创建移动应用。</p>
+
+<p>（2）第一步是填写应用名，描述，图标等等。如下图。</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/playcocos2dx37_1.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p>（3）填写应用官网，勾选Android应用，填写签名，包名等等。如下图。</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/playcocos2dx37_2.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p><strong>注意：</strong></p>
+
+<p>这里需要特别注意的是应用签名这一项。在第三步的时候，真机中成功运行Cocos2dxWechat.apk之后，我们需要从微信开放平台下载一个签名生成软件<a href="https://open.weixin.qq.com/cgi-bin/frame?t=resource/res_main_tmpl&amp;verify=1&amp;lang=zh_CN&amp;token=2788af648d5164d0feec470a8bfd42f9833ae887">GenSignature</a>（资源下载->Android资源下载）。</p>
+
+<p>安装签名生成后，打开软件输入游戏包名获取即可。</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/playcocos2dx37_3.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p>这里的签名和游戏的包名和keystore是相关联的，如果修改了包名或者更换了keystore，必须同步更新微信开放平台管理中心的信息，防止失效。本示例采用的是debug签名。在完成以上工作后，提交审核即可。说是7天，实际上一般1～2天就审核过了。</p>
+
+<h3>5.集成微信SDK</h3>
+
+<p>刚才都是铺垫，这里开始才是进入主题了。要在Cocos2d-x调用微信安卓SDK，Jni跑不掉的。这里只演示如何进行分享到朋友圈和分享给好友，微信SDK还有很多高级的功能，如支付，收藏等等接口，有需要自行<a href="https://open.weixin.qq.com/cgi-bin/frame?t=resource/res_main_tmpl&amp;verify=1&amp;lang=zh_CN&amp;token=2788af648d5164d0feec470a8bfd42f9833ae887">参考文档（移动应用开发）</a>进行开发。</p>
+
+<p>这里主要分成3部分来解释：</p>
+
+<ul>
+<li>微信SDK下载，jar包导入</li>
+<li>Android代码</li>
+<li>C++代码</li>
+</ul>
+
+
+<p>（1）下载微信SDK</p>
+
+<p><a href="https://open.weixin.qq.com/cgi-bin/frame?t=resource/res_main_tmpl&amp;verify=1&amp;lang=zh_CN&amp;token=2788af648d5164d0feec470a8bfd42f9833ae887">资源下载->Android资源下载</a></p>
+
+<p>（2）打开下载的Android_SDK.zip。解压，将lib目录下的libammsdk.jar拷到Cocos2dxWechat项目下的libs目录。</p>
+
+<p>（3）右键单击工程，选择Build Path中的Configure Build Path&hellip;，选中Libraries这个tab，并通过Add Jars&hellip;导入工程libs目录下的libammsdk.jar文件。</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/playcocos2dx37_4.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p>（4）在AppActivity中添加成员变量</p>
+
+<figure class='code'><figcaption><span>增加成员变量</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">APP_ID</span> <span class="o">=</span> <span class="s">&quot;wx1234567890&quot;</span><span class="o">;</span><span class="c1">//AppID，从第四步获取</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="kd">static</span> <span class="n">IWXAPI</span> <span class="n">api</span><span class="o">;</span><span class="c1">//微信API接口</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="kd">static</span> <span class="n">AppActivity</span> <span class="n">instance</span><span class="o">;</span><span class="c1">//类静态实例，为了方便后面静态函数的调用</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>（5）注册到微信</p>
+
+<p>打开AppActivity，在onCreate()中调用regToWX()注册到微信</p>
+
+<figure class='code'><figcaption><span>注册到微信</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="c1">// TODO Auto-generated method stub</span>
+</span><span class='line'>      <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
+</span><span class='line'>      
+</span><span class='line'>      <span class="n">instance</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+</span><span class='line'>      <span class="n">regToWX</span><span class="o">();</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">regToWX</span><span class="o">(){</span>
+</span><span class='line'>      <span class="n">api</span> <span class="o">=</span> <span class="n">WXAPIFactory</span><span class="o">.</span><span class="na">createWXAPI</span><span class="o">(</span><span class="k">this</span><span class="o">,</span> <span class="n">APP_ID</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+</span><span class='line'>      <span class="n">api</span><span class="o">.</span><span class="na">registerApp</span><span class="o">(</span><span class="n">APP_ID</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>（6）由于这里采用的分享示例传递了一张icon，所以需要额外的一个bitmap的解析类Util类，这个类可以到微信官方SDK demo下载，也可以在本示例中下载（早期的SDK版本这个类是集成在微信SDK中）。icon放在res目录下的drawable目录，我这里偷个懒直接使用了应用icon。</p>
+
+<p>（7）分享给好友</p>
+
+<figure class='code'><figcaption><span>分享给好友</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">sendMsgToFriend</span><span class="o">(){</span>
+</span><span class='line'>      
+</span><span class='line'>      <span class="k">if</span><span class="o">(</span><span class="n">api</span><span class="o">.</span><span class="na">openWXApp</span><span class="o">())</span>
+</span><span class='line'>      <span class="o">{</span>
+</span><span class='line'>          <span class="n">WXWebpageObject</span> <span class="n">webpage</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WXWebpageObject</span><span class="o">();</span>
+</span><span class='line'>            <span class="n">webpage</span><span class="o">.</span><span class="na">webpageUrl</span> <span class="o">=</span> <span class="s">&quot;http://www.fusijie.com&quot;</span><span class="o">;</span>
+</span><span class='line'>            <span class="n">WXMediaMessage</span> <span class="n">msg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WXMediaMessage</span><span class="o">(</span><span class="n">webpage</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">msg</span><span class="o">.</span><span class="na">title</span> <span class="o">=</span> <span class="s">&quot;Tittle&quot;</span><span class="o">;</span>
+</span><span class='line'>            <span class="n">msg</span><span class="o">.</span><span class="na">description</span> <span class="o">=</span> <span class="s">&quot;Description&quot;</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">Bitmap</span> <span class="n">thumb</span> <span class="o">=</span> <span class="n">BitmapFactory</span><span class="o">.</span><span class="na">decodeResource</span><span class="o">(</span><span class="n">instance</span><span class="o">.</span><span class="na">getResources</span><span class="o">(),</span> <span class="n">R</span><span class="o">.</span><span class="na">drawable</span><span class="o">.</span><span class="na">icon</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">msg</span><span class="o">.</span><span class="na">thumbData</span> <span class="o">=</span> <span class="n">Util</span><span class="o">.</span><span class="na">bmpToByteArray</span><span class="o">(</span><span class="n">thumb</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">SendMessageToWX</span><span class="o">.</span><span class="na">Req</span> <span class="n">req</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SendMessageToWX</span><span class="o">.</span><span class="na">Req</span><span class="o">();</span>
+</span><span class='line'>            <span class="n">req</span><span class="o">.</span><span class="na">transaction</span> <span class="o">=</span> <span class="n">buildTransaction</span><span class="o">(</span><span class="s">&quot;webpage&quot;</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">req</span><span class="o">.</span><span class="na">message</span> <span class="o">=</span> <span class="n">msg</span><span class="o">;</span>
+</span><span class='line'>            <span class="n">req</span><span class="o">.</span><span class="na">scene</span> <span class="o">=</span> <span class="n">SendMessageToWX</span><span class="o">.</span><span class="na">Req</span><span class="o">.</span><span class="na">WXSceneSession</span><span class="o">;</span>
+</span><span class='line'>            <span class="n">api</span><span class="o">.</span><span class="na">sendReq</span><span class="o">(</span><span class="n">req</span><span class="o">);</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>      <span class="o">{</span>
+</span><span class='line'>           <span class="n">Toast</span><span class="o">.</span><span class="na">makeText</span><span class="o">(</span><span class="n">instance</span><span class="o">,</span> <span class="s">&quot;未安装微信&quot;</span><span class="o">,</span> <span class="n">Toast</span><span class="o">.</span><span class="na">LENGTH_SHORT</span><span class="o">).</span><span class="na">show</span><span class="o">();</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>（8）分享到朋友圈</p>
+
+<figure class='code'><figcaption><span>分享到朋友圈</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">sendMsgToTimeLine</span><span class="o">(){</span>
+</span><span class='line'>      
+</span><span class='line'>      <span class="k">if</span><span class="o">(</span><span class="n">api</span><span class="o">.</span><span class="na">openWXApp</span><span class="o">())</span>
+</span><span class='line'>      <span class="o">{</span>
+</span><span class='line'>          <span class="k">if</span><span class="o">(</span><span class="n">api</span><span class="o">.</span><span class="na">getWXAppSupportAPI</span><span class="o">()</span> <span class="o">&gt;=</span> <span class="mh">0x21020001</span><span class="o">)</span>
+</span><span class='line'>          <span class="o">{</span>                
+</span><span class='line'>              <span class="n">WXWebpageObject</span> <span class="n">webpage</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WXWebpageObject</span><span class="o">();</span>
+</span><span class='line'>                <span class="n">webpage</span><span class="o">.</span><span class="na">webpageUrl</span> <span class="o">=</span> <span class="s">&quot;http://www.fusijie.com&quot;</span><span class="o">;</span>
+</span><span class='line'>                <span class="n">WXMediaMessage</span> <span class="n">msg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WXMediaMessage</span><span class="o">(</span><span class="n">webpage</span><span class="o">);</span>
+</span><span class='line'>                <span class="n">msg</span><span class="o">.</span><span class="na">title</span> <span class="o">=</span> <span class="s">&quot;Tittle&quot;</span><span class="o">;</span>
+</span><span class='line'>                <span class="n">msg</span><span class="o">.</span><span class="na">description</span> <span class="o">=</span> <span class="s">&quot;Description&quot;</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">Bitmap</span> <span class="n">thumb</span> <span class="o">=</span> <span class="n">BitmapFactory</span><span class="o">.</span><span class="na">decodeResource</span><span class="o">(</span><span class="n">instance</span><span class="o">.</span><span class="na">getResources</span><span class="o">(),</span> <span class="n">R</span><span class="o">.</span><span class="na">drawable</span><span class="o">.</span><span class="na">icon</span><span class="o">);</span>
+</span><span class='line'>                <span class="n">msg</span><span class="o">.</span><span class="na">thumbData</span> <span class="o">=</span> <span class="n">Util</span><span class="o">.</span><span class="na">bmpToByteArray</span><span class="o">(</span><span class="n">thumb</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="n">SendMessageToWX</span><span class="o">.</span><span class="na">Req</span> <span class="n">req</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SendMessageToWX</span><span class="o">.</span><span class="na">Req</span><span class="o">();</span>
+</span><span class='line'>                <span class="n">req</span><span class="o">.</span><span class="na">transaction</span> <span class="o">=</span> <span class="n">buildTransaction</span><span class="o">(</span><span class="s">&quot;webpage&quot;</span><span class="o">);</span>
+</span><span class='line'>                <span class="n">req</span><span class="o">.</span><span class="na">message</span> <span class="o">=</span> <span class="n">msg</span><span class="o">;</span>
+</span><span class='line'>                <span class="n">req</span><span class="o">.</span><span class="na">scene</span> <span class="o">=</span> <span class="n">SendMessageToWX</span><span class="o">.</span><span class="na">Req</span><span class="o">.</span><span class="na">WXSceneTimeline</span><span class="o">;</span>
+</span><span class='line'>                <span class="n">api</span><span class="o">.</span><span class="na">sendReq</span><span class="o">(</span><span class="n">req</span><span class="o">);</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>          <span class="k">else</span><span class="o">{</span>
+</span><span class='line'>              <span class="n">Toast</span><span class="o">.</span><span class="na">makeText</span><span class="o">(</span><span class="n">instance</span><span class="o">,</span> <span class="s">&quot;微信版本过低&quot;</span><span class="o">,</span> <span class="n">Toast</span><span class="o">.</span><span class="na">LENGTH_SHORT</span><span class="o">).</span><span class="na">show</span><span class="o">();</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>              
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>      <span class="o">{</span>
+</span><span class='line'>           <span class="n">Toast</span><span class="o">.</span><span class="na">makeText</span><span class="o">(</span><span class="n">instance</span><span class="o">,</span> <span class="s">&quot;未安装微信&quot;</span><span class="o">,</span> <span class="n">Toast</span><span class="o">.</span><span class="na">LENGTH_SHORT</span><span class="o">).</span><span class="na">show</span><span class="o">();</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>其中buildTransaction()用于生成一个唯一的会话标识符。</p>
+
+<figure class='code'><figcaption><span>buildTransaction</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="kd">private</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">buildTransaction</span><span class="o">(</span><span class="kd">final</span> <span class="n">String</span> <span class="n">type</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="o">(</span><span class="n">type</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">?</span> <span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">())</span> <span class="o">:</span> <span class="n">type</span> <span class="o">+</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>代码不难，所以不再逐行解释，可以参考<a href="https://open.weixin.qq.com/zh_CN/htmledition/res/dev/document/sdk/android/index.html">SDK文档</a>。</p>
+
+<p>（9）JNI调用</p>
+
+<p>在Classes目录下新建一个WeixinShare类，主要包含2个静态函数：</p>
+
+<figure class='code'><figcaption><span>Jni调用分享给好友和朋友圈</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="kt">void</span> <span class="n">WeiXinShare</span><span class="o">::</span><span class="n">sendToFriend</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>  <span class="err">#</span><span class="k">if</span> <span class="p">(</span><span class="n">CC_TARGET_PLATFORM</span> <span class="o">==</span> <span class="n">CC_PLATFORM_ANDROID</span><span class="p">)</span> <span class="c1">//判断当前是否为Android平台</span>
+</span><span class='line'>    <span class="n">JniMethodInfo</span> <span class="n">minfo</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">bool</span> <span class="n">isHave</span> <span class="o">=</span> <span class="n">JniHelper</span><span class="o">::</span><span class="n">getStaticMethodInfo</span><span class="p">(</span><span class="n">minfo</span><span class="p">,</span><span class="s">&quot;com/fusijie/umengdemo/WeChatDemo&quot;</span><span class="p">,</span><span class="s">&quot;sendMsgToFriend&quot;</span><span class="p">,</span> <span class="s">&quot;()V&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">isHave</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">log</span><span class="p">(</span><span class="s">&quot;jni:sendMsgToFriend is null&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span><span class='line'>        <span class="c1">//调用此函数</span>
+</span><span class='line'>        <span class="n">minfo</span><span class="p">.</span><span class="n">env</span><span class="o">-&gt;</span><span class="n">CallStaticVoidMethod</span><span class="p">(</span><span class="n">minfo</span><span class="p">.</span><span class="n">classID</span><span class="p">,</span> <span class="n">minfo</span><span class="p">.</span><span class="n">methodID</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="err">#</span><span class="n">endif</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kt">void</span> <span class="n">WeiXinShare</span><span class="o">::</span><span class="n">sendToTimeLine</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>  <span class="err">#</span><span class="k">if</span> <span class="p">(</span><span class="n">CC_TARGET_PLATFORM</span> <span class="o">==</span> <span class="n">CC_PLATFORM_ANDROID</span><span class="p">)</span> <span class="c1">//判断当前是否为Android平台</span>
+</span><span class='line'>    <span class="n">JniMethodInfo</span> <span class="n">minfo</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">bool</span> <span class="n">isHave</span> <span class="o">=</span> <span class="n">JniHelper</span><span class="o">::</span><span class="n">getStaticMethodInfo</span><span class="p">(</span><span class="n">minfo</span><span class="p">,</span><span class="s">&quot;com/fusijie/umengdemo/WeChatDemo&quot;</span><span class="p">,</span><span class="s">&quot;sendMsgToTimeLine&quot;</span><span class="p">,</span> <span class="s">&quot;()V&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">isHave</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">log</span><span class="p">(</span><span class="s">&quot;jni:sendMsgToTimeLine is null&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span><span class='line'>        <span class="c1">//调用此函数</span>
+</span><span class='line'>        <span class="n">minfo</span><span class="p">.</span><span class="n">env</span><span class="o">-&gt;</span><span class="n">CallStaticVoidMethod</span><span class="p">(</span><span class="n">minfo</span><span class="p">.</span><span class="n">classID</span><span class="p">,</span> <span class="n">minfo</span><span class="p">.</span><span class="n">methodID</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="err">#</span><span class="n">endif</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>（10）Cocos2d-x使用</p>
+
+<p>这个就比较简单了，只要包含这个WeiXinShare类，调用这两个静态函数即可。</p>
+
+<figure class='code'><figcaption><span>主程序调用</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="kt">void</span> <span class="n">HelloWorld</span><span class="o">::</span><span class="n">menuCloseCallback</span><span class="p">(</span><span class="n">Ref</span><span class="o">*</span> <span class="n">pSender</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="cp">#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)</span>
+</span><span class='line'><span class="c1">//WeiXinShare::sendToFriend();</span>
+</span><span class='line'><span class="n">WeiXinShare</span><span class="o">::</span><span class="n">sendToTimeLine</span><span class="p">();</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>（11）Android.mk的修改</p>
+
+<p>最后不要忘记修改Android.mk文件。</p>
+
+<pre><code>LOCAL_SRC_FILES := hellocpp/main.cpp \
+               ../../Classes/AppDelegate.cpp \
+               ../../Classes/HelloWorldScene.cpp \
+               ../../Classes/WeiXinShare.cpp
+</code></pre>
+
+<p>（12）重新交叉编译，打包为APK即可</p>
+
+<h3>6.效果</h3>
+
+<p><strong>分享给好友</strong></p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/playcocos2dx37_5.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p><strong>分享到朋友圈</strong></p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/playcocos2dx37_6.png" alt="" border="0" title="" /><br></br></div>
+
+
+<h3>7.总结</h3>
+
+<p>本文写的比较详细，但是也忽略了比如如何接收微信的请求及返回值的说明以及如何进行混淆等等，算是一个初级教程吧。主要是面向对jni调用，第三方安卓sdk集成不太了解的朋友。这里虽然只是针对微信sdk的部分功能集成进行说明，但是道理都是共通的，如何集成微博分享，如何集成第三方广告等等，用类似的方法都可以实现。</p>
+
+<p>本demo的下载地址：<a href="https://github.com/fusijie/Cocos2dx-Wechat">我的Github</a></p>
+
+<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/08/21/play-cocos2dx-37/'>http://www.fusijie.com/blog/2014/08/21/play-cocos2dx-37/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十六】Earth Warrior 3D 大揭秘]]></title>
@@ -3918,64 +4313,6 @@ void update(float delta)
 <h3>4.源码下载</h3>
 
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6463261">源码下载</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/28/play-cocos2dx-18/'><a href="http://www.fusijie.com/blog/2013/10/28/play-cocos2dx-18/">http://www.fusijie.com/blog/2013/10/28/play-cocos2dx-18/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之十七】cocos2d-x中文显示]]></title>
-    <link href="http://www.fusijie.com/blog/2013/10/25/play-cocos2dx-17/"/>
-    <updated>2013-10-25T16:53:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/10/25/play-cocos2dx-17</id>
-    <content type="html"><![CDATA[<p>cocos2d-x的中文显示其实就是一个UTF-8编码在作怪而已，一种简单的方法就是把文本保存为UTF-8编码即可（注意不是UTF-8 + BOM），建议使用UE，Sublime Text或者EditPlus之类的本文编辑器。这里介绍另一种方法：通过读取xml文件显示中文，这种方法更利于软件的国际化，demo顺便实现了中英文切换。</p>
-
-<!-- more -->
-
-
-<h3>1.xml文件</h3>
-
-<p>先写好一个xml文件（CHN_Strings.xml）。注意记得要以UTF-8编码保存。格式很简单，一个key对应一个string的键值对。如下：</p>
-
-<pre><code>&lt;dict&gt;  
-    &lt;key&gt;language&lt;/key&gt;  
-    &lt;string&gt;English&lt;/string&gt;  
-    &lt;key&gt;username&lt;/key&gt;  
-    &lt;string&gt;偶尔e网事&lt;/string&gt;  
-    &lt;key&gt;website&lt;/key&gt;  
-    &lt;string&gt;CSDN博客：http://blog.csdn.net/jackystudio&lt;/string&gt;  
-&lt;/dict&gt;  
-</code></pre>
-
-<h3>2.通过CCDictionary读取xml</h3>
-
-<p>CCDictionary是利用哈希表算法来进行CCObject管理的一个类。这里不再对它的API及内部实现进行说明了。</p>
-
-<p><strong>2.1.创建词典类实例</strong></p>
-
-<pre><code>CCDictionary *chnStrings = CCDictionary::createWithContentsOfFile("CHN_Strings.xml");  
-</code></pre>
-
-<p><strong>2.2.通过键（key）获取值（value）</strong></p>
-
-<pre><code>const char *username = ((CCString*)chnStrings-&gt;objectForKey("username"))-&gt;m_sString.c_str();  
-</code></pre>
-
-<p><strong>2.3.使用value</strong></p>
-
-<pre><code>CCLabelTTF* pLabel = CCLabelTTF::create(username, "Arial", 24);//这里创建一个文本  
-pLabel-&gt;setPosition(ccp(origin.x + visibleSize.width/2,origin.y + visibleSize.height - pLabel-&gt;getContentSize().height));  
-this-&gt;addChild(pLabel, 1);  
-</code></pre>
-
-<h3>3.效果</h3>
-
-<p>这里我用了2个xml，一个是中文，一个是英文，设置了一个菜单，点击即可调用不同的xml进行中英文的切换，效果如下图。</p>
-
-<div align="center"><img src="http://img.blog.csdn.net/20131209083141593" alt="" border="0" title="效果" /><br></br></div>
-
-
-<h3>4.源码下载</h3>
-
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6442201">源码下载</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/25/play-cocos2dx-17/'><a href="http://www.fusijie.com/blog/2013/10/25/play-cocos2dx-17/">http://www.fusijie.com/blog/2013/10/25/play-cocos2dx-17/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cocos2d-x | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/blog/categories/cocos2d-x/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-07-10T01:23:08+08:00</updated>
+  <updated>2014-08-22T00:00:33+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,311 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[【玩转cocos2d-x之三十七】在Cocos2d-x中集成安卓版微信SDK]]></title>
+    <link href="http://www.fusijie.com/blog/2014/08/21/play-cocos2dx-37/"/>
+    <updated>2014-08-21T00:26:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2014/08/21/play-cocos2dx-37</id>
+    <content type="html"><![CDATA[<h3>1.概述</h3>
+
+<p>微信的火热程度已不必说了，如果能在Cocos2d-x中集成微信SDK，让游戏能分享给好友或者朋友圈，那对游戏推广将会是非常有利的。好了，本文就是手把手地教大伙如何在Cocos2d-x中集成微信SDK。</p>
+
+<h3>2.环境</h3>
+
+<ul>
+<li>OS: Mac OSX</li>
+<li>IDE: Xcode v5.11 and Eclipse</li>
+<li>Android SDK:4.0</li>
+<li>Adnroid NDK:r9d</li>
+<li>Cocos2d-x 3.2release</li>
+</ul>
+
+
+<h3>3.创建Cocos2d-x工程</h3>
+
+<p>这里不再详述，网上的资料多如牛毛了。这里我按自己习惯的方式来。</p>
+
+<!-- more -->
+
+
+<p>（1）命令行创建Cocos2dxWechat项目</p>
+
+<pre><code>$ cocos new -p com.fusijie.cocos2dxwechat -l cpp -d . Cocos2dxWechat
+</code></pre>
+
+<p>（2）交叉编译生成so文件</p>
+
+<pre><code>$ cd Cocos2dxWechat/proj.android/
+$ ./build_native.py
+</code></pre>
+
+<p>（3）导入Eclipse生成APK</p>
+
+<p>导入libcocos2dx项目和Cocos2dxWechat项目到Eclipse中。在真机中成功运行Cocos2dxWechat.apk。</p>
+
+<h3>4.申请创建微信应用</h3>
+
+<p>这一步主要是在微信开放平台上申请创建移动应用，获取AppID。微信开放平台的网址是：<a href="https://open.weixin.qq.com/">https://open.weixin.qq.com/</a></p>
+
+<p>（1）注册帐号，进入管理中心，点击创建移动应用。</p>
+
+<p>（2）第一步是填写应用名，描述，图标等等。如下图。</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/playcocos2dx37_1.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p>（3）填写应用官网，勾选Android应用，填写签名，包名等等。如下图。</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/playcocos2dx37_2.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p><strong>注意：</strong></p>
+
+<p>这里需要特别注意的是应用签名这一项。在第三步的时候，真机中成功运行Cocos2dxWechat.apk之后，我们需要从微信开放平台下载一个签名生成软件<a href="https://open.weixin.qq.com/cgi-bin/frame?t=resource/res_main_tmpl&amp;verify=1&amp;lang=zh_CN&amp;token=2788af648d5164d0feec470a8bfd42f9833ae887">GenSignature</a>（资源下载->Android资源下载）。</p>
+
+<p>安装签名生成后，打开软件输入游戏包名获取即可。</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/playcocos2dx37_3.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p>这里的签名和游戏的包名和keystore是相关联的，如果修改了包名或者更换了keystore，必须同步更新微信开放平台管理中心的信息，防止失效。本示例采用的是debug签名。在完成以上工作后，提交审核即可。说是7天，实际上一般1～2天就审核过了。</p>
+
+<h3>5.集成微信SDK</h3>
+
+<p>刚才都是铺垫，这里开始才是进入主题了。要在Cocos2d-x调用微信安卓SDK，Jni跑不掉的。这里只演示如何进行分享到朋友圈和分享给好友，微信SDK还有很多高级的功能，如支付，收藏等等接口，有需要自行<a href="https://open.weixin.qq.com/cgi-bin/frame?t=resource/res_main_tmpl&amp;verify=1&amp;lang=zh_CN&amp;token=2788af648d5164d0feec470a8bfd42f9833ae887">参考文档（移动应用开发）</a>进行开发。</p>
+
+<p>这里主要分成3部分来解释：</p>
+
+<ul>
+<li>微信SDK下载，jar包导入</li>
+<li>Android代码</li>
+<li>C++代码</li>
+</ul>
+
+
+<p>（1）下载微信SDK</p>
+
+<p><a href="https://open.weixin.qq.com/cgi-bin/frame?t=resource/res_main_tmpl&amp;verify=1&amp;lang=zh_CN&amp;token=2788af648d5164d0feec470a8bfd42f9833ae887">资源下载->Android资源下载</a></p>
+
+<p>（2）打开下载的Android_SDK.zip。解压，将lib目录下的libammsdk.jar拷到Cocos2dxWechat项目下的libs目录。</p>
+
+<p>（3）右键单击工程，选择Build Path中的Configure Build Path&hellip;，选中Libraries这个tab，并通过Add Jars&hellip;导入工程libs目录下的libammsdk.jar文件。</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/playcocos2dx37_4.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p>（4）在AppActivity中添加成员变量</p>
+
+<p>``` java 增加成员变量</p>
+
+<pre><code>private static final String APP_ID = "wx1234567890";//AppID，从第四步获取
+private static IWXAPI api;//微信API接口
+private static AppActivity instance;//类静态实例，为了方便后面静态函数的调用
+</code></pre>
+
+<p>```</p>
+
+<p>（5）注册到微信</p>
+
+<p>打开AppActivity，在onCreate()中调用regToWX()注册到微信</p>
+
+<p>``` java 注册到微信</p>
+
+<pre><code>protected void onCreate(Bundle savedInstanceState) {
+    // TODO Auto-generated method stub
+    super.onCreate(savedInstanceState);
+
+    instance = this;
+    regToWX();
+}
+
+private void regToWX(){
+    api = WXAPIFactory.createWXAPI(this, APP_ID, true);
+    api.registerApp(APP_ID);
+}
+</code></pre>
+
+<p>```</p>
+
+<p>（6）由于这里采用的分享示例传递了一张icon，所以需要额外的一个bitmap的解析类Util类，这个类可以到微信官方SDK demo下载，也可以在本示例中下载（早期的SDK版本这个类是集成在微信SDK中）。icon放在res目录下的drawable目录，我这里偷个懒直接使用了应用icon。</p>
+
+<p>（7）分享给好友</p>
+
+<p>``` java 分享给好友</p>
+
+<pre><code>public static void sendMsgToFriend(){
+
+    if(api.openWXApp())
+    {
+        WXWebpageObject webpage = new WXWebpageObject();
+        webpage.webpageUrl = "http://www.fusijie.com";
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+        msg.title = "Tittle";
+        msg.description = "Description";
+
+        Bitmap thumb = BitmapFactory.decodeResource(instance.getResources(), R.drawable.icon);
+        msg.thumbData = Util.bmpToByteArray(thumb, true);
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = buildTransaction("webpage");
+        req.message = msg;
+        req.scene = SendMessageToWX.Req.WXSceneSession;
+        api.sendReq(req);
+    }
+    else
+    {
+         Toast.makeText(instance, "未安装微信", Toast.LENGTH_SHORT).show();
+    }
+}
+</code></pre>
+
+<p>```</p>
+
+<p>（8）分享到朋友圈</p>
+
+<p>``` java 分享到朋友圈</p>
+
+<pre><code>public static void sendMsgToTimeLine(){
+
+    if(api.openWXApp())
+    {
+        if(api.getWXAppSupportAPI() &gt;= 0x21020001)
+        {               
+            WXWebpageObject webpage = new WXWebpageObject();
+            webpage.webpageUrl = "http://www.fusijie.com";
+            WXMediaMessage msg = new WXMediaMessage(webpage);
+            msg.title = "Tittle";
+            msg.description = "Description";
+
+            Bitmap thumb = BitmapFactory.decodeResource(instance.getResources(), R.drawable.icon);
+            msg.thumbData = Util.bmpToByteArray(thumb, true);
+
+            SendMessageToWX.Req req = new SendMessageToWX.Req();
+            req.transaction = buildTransaction("webpage");
+            req.message = msg;
+            req.scene = SendMessageToWX.Req.WXSceneTimeline;
+            api.sendReq(req);
+        }
+        else{
+            Toast.makeText(instance, "微信版本过低", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+    else
+    {
+         Toast.makeText(instance, "未安装微信", Toast.LENGTH_SHORT).show();
+    }
+}
+</code></pre>
+
+<p>```</p>
+
+<p>其中buildTransaction()用于生成一个唯一的会话标识符。</p>
+
+<p>``` java buildTransaction</p>
+
+<pre><code>private static String buildTransaction(final String type) {
+    return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
+}
+</code></pre>
+
+<p>```</p>
+
+<p>代码不难，所以不再逐行解释，可以参考<a href="https://open.weixin.qq.com/zh_CN/htmledition/res/dev/document/sdk/android/index.html">SDK文档</a>。</p>
+
+<p>（9）JNI调用</p>
+
+<p>在Classes目录下新建一个WeixinShare类，主要包含2个静态函数：</p>
+
+<p>``` cpp Jni调用分享给好友和朋友圈</p>
+
+<pre><code>void WeiXinShare::sendToFriend()
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) //判断当前是否为Android平台
+JniMethodInfo minfo;
+
+bool isHave = JniHelper::getStaticMethodInfo(minfo,"com/fusijie/umengdemo/WeChatDemo","sendMsgToFriend", "()V");
+
+if (!isHave) {
+    log("jni:sendMsgToFriend is null");
+}else{
+    //调用此函数
+    minfo.env-&gt;CallStaticVoidMethod(minfo.classID, minfo.methodID);
+}
+#endif
+</code></pre>
+
+<p>}</p>
+
+<pre><code>void WeiXinShare::sendToTimeLine()
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) //判断当前是否为Android平台
+JniMethodInfo minfo;
+
+bool isHave = JniHelper::getStaticMethodInfo(minfo,"com/fusijie/umengdemo/WeChatDemo","sendMsgToTimeLine", "()V");
+
+if (!isHave) {
+    log("jni:sendMsgToTimeLine is null");
+}else{
+    //调用此函数
+    minfo.env-&gt;CallStaticVoidMethod(minfo.classID, minfo.methodID);
+}
+#endif
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+
+<p>（10）Cocos2d-x使用</p>
+
+<p>这个就比较简单了，只要包含这个WeiXinShare类，调用这两个静态函数即可。</p>
+
+<p>``` cpp 主程序调用</p>
+
+<pre><code>void HelloWorld::menuCloseCallback(Ref* pSender)
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+//WeiXinShare::sendToFriend();
+WeiXinShare::sendToTimeLine();
+#endif
+}
+</code></pre>
+
+<p>```</p>
+
+<p>（11）Android.mk的修改</p>
+
+<p>最后不要忘记修改Android.mk文件。</p>
+
+<pre><code>LOCAL_SRC_FILES := hellocpp/main.cpp \
+               ../../Classes/AppDelegate.cpp \
+               ../../Classes/HelloWorldScene.cpp \
+               ../../Classes/WeiXinShare.cpp
+</code></pre>
+
+<p>（12）重新交叉编译，打包为APK即可</p>
+
+<h3>6.效果</h3>
+
+<p><strong>分享给好友</strong></p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/playcocos2dx37_5.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p><strong>分享到朋友圈</strong></p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/playcocos2dx37_6.png" alt="" border="0" title="" /><br></br></div>
+
+
+<h3>7.总结</h3>
+
+<p>本文写的比较详细，但是也忽略了比如如何接收微信的请求及返回值的说明以及如何进行混淆等等，算是一个初级教程吧。主要是面向对jni调用，第三方安卓sdk集成不太了解的朋友。这里虽然只是针对微信sdk的部分功能集成进行说明，但是道理都是共通的，如何集成微博分享，如何集成第三方广告等等，用类似的方法都可以实现。</p>
+
+<p>本demo的下载地址：<a href="https://github.com/fusijie/Cocos2dx-Wechat">我的Github</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十六】Earth Warrior 3D 大揭秘]]></title>
@@ -663,196 +968,6 @@ Button m_backButton;//关闭按钮
 <p>包含win32，android代码，拿掉了android交叉编译生成的obj，保留so和apk文件。</p>
 
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6770315">下载地址</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之三十二】xml的解析]]></title>
-    <link href="http://www.fusijie.com/blog/2013/12/18/play-cocos2dx-32/"/>
-    <updated>2013-12-18T09:30:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/12/18/play-cocos2dx-32</id>
-    <content type="html"><![CDATA[<p>cocos2d-x中对xml的解析是采用的TinyXML库，而对plist的解析同时结合了CCDictionary来处理，这里简单介绍下cocos2d-x中解析xml的两种方式，也是常用的xml两个C++解析库：TinyXML和RapidXML。xml被设计用于数据存储和传输，重点是数据内容本身，而不像html，用于表现数据。</p>
-
-<h3>1.TinyXML</h3>
-
-<p><strong>1.1.概况</strong></p>
-
-<p>TinyXML的<a href="http://www.grinninglizard.com/tinyxml/">主页</a>，本来不打算介绍这个库的，因为它的解析效率并不高，但是鉴于cocos2d-x采用的就是它，所以也稍微写一下它的用法，cocos2d-x使用的是TinyXML2，Github地址<a href="https://github.com/leethomason/tinyxml2">在这里</a>。就是对TinyXML重新进行了封装，具体的区别在其github上也写的很清楚了。</p>
-
-<!-- more -->
-
-
-<p><strong>1.2.示例</strong></p>
-
-<p>这里不介绍API，因为太多了，在线手册也都有。首先下载TinyXML库，将4个cpp文件和2个h文件加入cocos2d-x中。添加头文件时只需添加"<em>tinyxml.h</em>&ldquo;即可。</p>
-
-<p><strong>1.2.1.xml的创建</strong></p>
-
-<p>``` cpp xml的创建</p>
-
-<pre><code>void TestLayer::writeTinyXML()  
-{  
-    TiXmlDocument* myTinyXMLDoc=new TiXmlDocument();//创建文档对象  
-
-    TiXmlElement* rootElement=new TiXmlElement("Jacky");//创建根节点并连接到文档  
-    myTinyXMLDoc-&gt;LinkEndChild(rootElement);  
-
-    TiXmlElement* infoElement=new TiXmlElement("Info");//创建info节点并连接到根节点  
-    rootElement-&gt;LinkEndChild(infoElement);  
-
-    infoElement-&gt;SetAttribute("Name","Jacky");//为info节点设置属性  
-    infoElement-&gt;SetAttribute("QQ","754505629");  
-    infoElement-&gt;SetAttribute("E-mail","Geek.Jacky@Gmail.com");  
-
-    TiXmlElement* blogElement=new TiXmlElement("blog");  
-    infoElement-&gt;LinkEndChild(blogElement);//创建blog节点并连接到info节点  
-    TiXmlText* blogtext=new TiXmlText("http://blog.csdn.net/jackystudio");  
-    blogElement-&gt;LinkEndChild(blogtext);//为blog节点添加文本值  
-
-    TiXmlElement* websiteElenment=new TiXmlElement("website");  
-    infoElement-&gt;LinkEndChild(websiteElenment);  
-    TiXmlText* websitetext=new TiXmlText("http://www.fusijie.com");  
-    websiteElenment-&gt;LinkEndChild(websitetext);  
-
-    myTinyXMLDoc-&gt;SaveFile(CCFileUtils::sharedFileUtils()-&gt;fullPathForFilename("testTiny.xml").c_str());//保存xml  
-
-    delete myTinyXMLDoc;  
-}  
-</code></pre>
-
-<p>```</p>
-
-<p>是不是很奇怪为什么new了那么多内存，但最后只delete TixmlDocument呢？其实在TinyXML中，子节点的内存管理都由父节点进行维护，所以不必在释放内存时对每个子节点都进行释放，而只需要释放父节点即可。</p>
-
-<p><strong>1.2.2.xml的读取</strong></p>
-
-<p>``` cpp xml的读取</p>
-
-<pre><code>void TestLayer::readTinyXML()  
-{  
-    TiXmlDocument* myTinyXMLDoc=new TiXmlDocument(CCFileUtils::sharedFileUtils()-&gt;fullPathForFilename("testTiny.xml").c_str());  
-    myTinyXMLDoc-&gt;LoadFile();  
-
-    TiXmlElement* rootElement = myTinyXMLDoc-&gt;RootElement();  //获取根节点  
-    TiXmlElement* infoElement = rootElement-&gt;FirstChildElement();  // 获取Info节点    
-
-    while (infoElement)   
-    {  
-
-        TiXmlAttribute* attributeOfinfo = infoElement-&gt;FirstAttribute();  //获得info的属性    
-        while ( attributeOfinfo )   
-        {    
-            CCLOG("%s : %s",attributeOfinfo-&gt;Name(),attributeOfinfo-&gt;Value());//获取所有属性  
-            attributeOfinfo = attributeOfinfo-&gt;Next();    
-        }  
-
-        TiXmlElement* blogElement = infoElement-&gt;FirstChildElement();//获得blog  
-        CCLOG("blog : %s",blogElement-&gt;GetText());    
-
-        TiXmlElement* websiteElement = blogElement-&gt;NextSiblingElement();//获取website    
-        CCLOG("website : %s",websiteElement-&gt;GetText());    
-
-        infoElement = infoElement-&gt;NextSiblingElement();//查找下一节点    
-    }    
-    delete myTinyXMLDoc;    
-} 
-</code></pre>
-
-<p>```</p>
-
-<h3>2.RapidXML</h3>
-
-<p><strong>2.1.概况</strong></p>
-
-<p>RapidXML的<a href="http://rapidxml.sourceforge.net/">主页</a>。在其手册中第四节<a href="http://rapidxml.sourceforge.net/manual.html#namespacerapidxml_1performance">comparison with others parsers</a>可以看到在同等条件下它的解析效率是TinyXML的30到60倍，所以如果需要解析大文件的话，RapidXML是不二之选。</p>
-
-<p><strong>2.2.示例</strong></p>
-
-<p>首先下载RapidXML库，将四个hpp文件都加入cocos2d-x中，在包含头文件时，4个hpp都要进行包含。</p>
-
-<p><strong>2.2.1.xml的创建</strong></p>
-
-<p>``` cpp xml的创建</p>
-
-<pre><code>void TestLayer::writeRapidXML()  
-{  
-    rapidxml::xml_document&lt;&gt; myRapidXMLDoc;  
-
-    rapidxml::xml_node&lt;&gt;* root = myRapidXMLDoc.allocate_node(rapidxml::node_element,"Jacky",NULL);//创建根节点  
-    myRapidXMLDoc.append_node(root);//追加根节点  
-
-    rapidxml::xml_node&lt;&gt;* info = myRapidXMLDoc.allocate_node(rapidxml::node_element,"Info",NULL);//创建info节点  
-    info-&gt;append_attribute(myRapidXMLDoc.allocate_attribute("Name","Jacky"));  
-    info-&gt;append_attribute(myRapidXMLDoc.allocate_attribute("QQ","754505629"));  
-    info-&gt;append_attribute(myRapidXMLDoc.allocate_attribute("E-mail","Geek.Jacky@Gmail.com"));  
-    root-&gt;append_node(info);//追加info节点到root  
-
-    //创建blog和website节点并追加到root  
-    rapidxml::xml_node&lt;&gt;* blog = myRapidXMLDoc.allocate_node(rapidxml::node_element,"blog","http://blog.csdn.net/jackystudio");  
-    info-&gt;append_node(blog);  
-    rapidxml::xml_node&lt;&gt;* website = myRapidXMLDoc.allocate_node(rapidxml::node_element,"website","http://www.fusijie.com");  
-    info-&gt;append_node(website);  
-
-    //保存xml文档  
-    std::string text;  
-    rapidxml::print(std::back_inserter(text), myRapidXMLDoc, 0);  
-    CCLog(text.c_str());  
-    std::ofstream out(CCFileUtils::sharedFileUtils()-&gt;fullPathForFilename("testRapid.xml"));  
-    out &lt;&lt; myRapidXMLDoc;  
-}
-</code></pre>
-
-<p>```</p>
-
-<p><strong>2.2.2.xml的读取</strong></p>
-
-<p>``` cpp xml的读取</p>
-
-<pre><code>void TestLayer::readRapidXML()  
-{  
-    rapidxml::file&lt;&gt; fdoc(CCFileUtils::sharedFileUtils()-&gt;fullPathForFilename("testRapid.xml").c_str());//读取数据  
-    CCLog(fdoc.data());  
-    rapidxml::xml_document&lt;&gt; myRapidXMLDoc;  
-    myRapidXMLDoc.parse&lt;0&gt;(fdoc.data());//将数据写入xml_document  
-
-    rapidxml::xml_node&lt;&gt;* root = myRapidXMLDoc.first_node();//获取根节点  
-
-    rapidxml::xml_node&lt;&gt;* info = root-&gt;first_node();//获取Info节点  
-
-    rapidxml::xml_attribute&lt;&gt;* info_attr = info-&gt;first_attribute();//获取info属性  
-    CCLog("%s:%s",info_attr-&gt;name(),info_attr-&gt;value());  
-    CCLog("%s:%s",info_attr-&gt;next_attribute()-&gt;name(),info_attr-&gt;next_attribute()-&gt;value());  
-    CCLog("%s:%s",info_attr-&gt;next_attribute()-&gt;next_attribute()-&gt;name(),info_attr-&gt;next_attribute()-&gt;next_attribute()-&gt;value());  
-
-    rapidxml::xml_node&lt;&gt;* blog=info-&gt;first_node();//获取blog节点  
-    CCLog("%s:%s",blog-&gt;name(),blog-&gt;value());  
-
-    rapidxml::xml_node&lt;&gt;* website=blog-&gt;next_sibling();//获取website节点  
-    CCLog("%s:%s",website-&gt;name(),website-&gt;value());  
-}  
-</code></pre>
-
-<p>```</p>
-
-<h3>3.生成xml的文件</h3>
-
-<p>以上2种方式生成的xml文件内容如下：</p>
-
-<p>``` xml 生成的xml文件</p>
-
-<pre><code>&lt;Jacky&gt;  
-    &lt;Info Name="Jacky" QQ="754505629" E-mail="Geek.Jacky@Gmail.com"&gt;  
-        &lt;blog&gt;http://blog.csdn.net/jackystudio&lt;/blog&gt;  
-    &lt;website&gt;http://www.fusijie.com&lt;/website&gt;  
-    &lt;/Info&gt;  
-&lt;/Jacky&gt;  
-</code></pre>
-
-<p>```</p>
-
-<h3>4.源码下载</h3>
-
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6732361">下载地址</a></p>
 ]]></content>
   </entry>
   

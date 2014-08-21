@@ -9,7 +9,7 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="滚动字幕和公告是游戏中经常使用到的元素，本文大致写一下实现方法，至于例子中具体的坐标值，请不要纠结。。。这和美工关系还是蛮大的。我PS技术太搓了。。。 1.原理 其实它们的实现都是简单的通过调用update来更新位置达到的移动效果，和背景滚动有点类似，一旦滚动结束就重置为起点，开始新的滚动。 &hellip;">
+  <meta name="description" content="cocos2d-x的中文显示其实就是一个UTF-8编码在作怪而已，一种简单的方法就是把文本保存为UTF-8编码即可（注意不是UTF-8 + BOM），建议使用UE，Sublime Text或者EditPlus之类的本文编辑器。这里介绍另一种方法：通过读取xml文件显示中文， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -82,6 +82,47 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/25/play-cocos2dx-17/">【玩转cocos2d-x之十七】cocos2d-x中文显示</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-25T16:53:00+08:00" pubdate data-updated="true">Oct 25<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>cocos2d-x的中文显示其实就是一个UTF-8编码在作怪而已，一种简单的方法就是把文本保存为UTF-8编码即可（注意不是UTF-8 + BOM），建议使用UE，Sublime Text或者EditPlus之类的本文编辑器。这里介绍另一种方法：通过读取xml文件显示中文，这种方法更利于软件的国际化，demo顺便实现了中英文切换。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/25/play-cocos2dx-17/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -506,49 +547,6 @@ USING_NS_CC_EXT;
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/10/14/play-cocos2dx-07/">【玩转cocos2d-x之七】场景类CCScene和布景类CCLayer</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-14T22:21:00+08:00" pubdate data-updated="true">Oct 14<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>场景类CCScene和布景类CCLayer都是作为一个容器来使用，这里简单地看下它们的实现：</p>
-
-<h3>1.场景类：CCScene</h3>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/10/14/play-cocos2dx-07/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -569,12 +567,16 @@ USING_NS_CC_EXT;
 </section><section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (36)</a></li>
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (37)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/08/21/play-cocos2dx-37/">【玩转cocos2d-x之三十七】在Cocos2d-x中集成安卓版微信SDK</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/07/10/play-cocos2dx-36/">【玩转cocos2d-x之三十六】Earth Warrior 3D 大揭秘</a>
@@ -590,10 +592,6 @@ USING_NS_CC_EXT;
     
       <li class="post">
         <a href="/blog/2013/12/26/play-cocos2dx-33/">【玩转cocos2d-x之三十三】游戏嵌入Webview网页</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/12/18/play-cocos2dx-32/">【玩转cocos2d-x之三十二】xml的解析</a>
       </li>
     
   </ul>

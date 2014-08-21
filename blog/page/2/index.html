@@ -9,7 +9,18 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="CCDictionary在cocos2d-x中被大量的应用，比如CCTexureCache，CCSpriteFramCache等等。 1.实现原理 1.1.uthash CCDictionary是使用uthash实现的，而过时的CCMutableDictionary则是使用STL实现， &hellip;">
+  <meta name="description" content="之前在遇到这么一个问题，在CCSequence中加入CCRepeatForever，发现其他动作执行没问题，就是CCRepeatForever无法执行。代码并没有问题，很奇怪。 1.示例 示例1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12 CCBlink* blink=CCBlink:: &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -82,6 +93,78 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/11/28/play-cocos2dx-27/">【玩转cocos2d-x之二十七】CCSequence不能执行CCRepeatForever</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-28T09:25:00+08:00" pubdate data-updated="true">Nov 28<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>之前在遇到这么一个问题，在CCSequence中加入CCRepeatForever，发现其他动作执行没问题，就是CCRepeatForever无法执行。代码并没有问题，很奇怪。</p>
+
+<h3>1.示例</h3>
+
+<figure class='code'><figcaption><span>示例</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>    <span class="n">CCBlink</span><span class="o">*</span> <span class="n">blink</span><span class="o">=</span><span class="n">CCBlink</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="mf">0.5f</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span><span class="c1">//创建闪烁动画，duration=0.5s  </span>
+</span><span class='line'>    <span class="n">CCAnimation</span><span class="o">*</span> <span class="n">animation</span><span class="o">=</span><span class="n">CCAnimation</span><span class="o">::</span><span class="n">create</span><span class="p">();</span>
+</span><span class='line'>    <span class="n">animation</span><span class="o">-&gt;</span><span class="n">addSpriteFrameWithFileName</span><span class="p">(</span><span class="s">&quot;CloseNormal.png&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">animation</span><span class="o">-&gt;</span><span class="n">addSpriteFrameWithFileName</span><span class="p">(</span><span class="s">&quot;CloseSelected.png&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">animation</span><span class="o">-&gt;</span><span class="n">setDelayPerUnit</span><span class="p">(</span><span class="mf">1.0f</span><span class="p">);</span><span class="c1">//帧间间隔1s  </span>
+</span><span class='line'>    <span class="n">CCAnimate</span><span class="o">*</span> <span class="n">animate</span><span class="o">=</span><span class="n">CCAnimate</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">animation</span><span class="p">);</span><span class="c1">//创建帧动画  </span>
+</span><span class='line'>    <span class="n">CCRepeatForever</span><span class="o">*</span> <span class="n">repeat</span><span class="o">=</span><span class="n">CCRepeatForever</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">animate</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CCSequence</span><span class="o">*</span> <span class="n">sequence</span><span class="o">=</span><span class="n">CCSequence</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">blink</span><span class="p">,</span><span class="n">repeat</span><span class="p">,</span><span class="nb">NULL</span><span class="p">);</span><span class="c1">//创建连续动画  </span>
+</span><span class='line'>    <span class="n">CCSprite</span><span class="o">*</span> <span class="n">close</span><span class="o">=</span><span class="n">CCSprite</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;CloseNormal.png&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">close</span><span class="o">-&gt;</span><span class="n">setPosition</span><span class="p">(</span><span class="n">ccp</span><span class="p">(</span><span class="mi">240</span><span class="p">,</span><span class="mi">160</span><span class="p">));</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">-&gt;</span><span class="n">addChild</span><span class="p">(</span><span class="n">close</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">close</span><span class="o">-&gt;</span><span class="n">runAction</span><span class="p">(</span><span class="n">sequence</span><span class="p">);</span><span class="c1">//执行连续动画  </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>结果精灵闪烁10次以后，帧动画不执行了。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/11/28/play-cocos2dx-27/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -495,47 +578,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/10/25/play-cocos2dx-17/">【玩转cocos2d-x之十七】cocos2d-x中文显示</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-25T16:53:00+08:00" pubdate data-updated="true">Oct 25<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>cocos2d-x的中文显示其实就是一个UTF-8编码在作怪而已，一种简单的方法就是把文本保存为UTF-8编码即可（注意不是UTF-8 + BOM），建议使用UE，Sublime Text或者EditPlus之类的本文编辑器。这里介绍另一种方法：通过读取xml文件显示中文，这种方法更利于软件的国际化，demo顺便实现了中英文切换。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/10/25/play-cocos2dx-17/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -556,12 +598,16 @@
 </section><section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (36)</a></li>
+    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (37)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/08/21/play-cocos2dx-37/">【玩转cocos2d-x之三十七】在Cocos2d-x中集成安卓版微信SDK</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/07/10/play-cocos2dx-36/">【玩转cocos2d-x之三十六】Earth Warrior 3D 大揭秘</a>
@@ -577,10 +623,6 @@
     
       <li class="post">
         <a href="/blog/2013/12/26/play-cocos2dx-33/">【玩转cocos2d-x之三十三】游戏嵌入Webview网页</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/12/18/play-cocos2dx-32/">【玩转cocos2d-x之三十二】xml的解析</a>
       </li>
     
   </ul>
