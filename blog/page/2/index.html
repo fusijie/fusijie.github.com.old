@@ -9,18 +9,7 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="之前在遇到这么一个问题，在CCSequence中加入CCRepeatForever，发现其他动作执行没问题，就是CCRepeatForever无法执行。代码并没有问题，很奇怪。 1.示例 示例1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12 CCBlink* blink=CCBlink:: &hellip;">
+  <meta name="description" content="如何在层间或者场景间进行消息传递，大概是每个初学者都要面对的问题吧。这里介绍cocos2d-x的一种消息/数据传递方式，内置的观察者模式，也称消息通知中心，CCNotificationCenter。 1.CCNotificationCenter &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -93,6 +82,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/12/03/play-cocos2dx-28/">【玩转cocos2d-x之二十八】cocos2d-x的消息和数据传递</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-03T09:57:00+08:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>如何在层间或者场景间进行消息传递，大概是每个初学者都要面对的问题吧。这里介绍cocos2d-x的一种消息/数据传递方式，内置的观察者模式，也称消息通知中心，CCNotificationCenter。</p>
+
+<h3>1.CCNotificationCenter</h3>
+
+<p>CCNotificationCenter是cocos2d-x提供的一个消息中心，类似于观察者模式，是一个单例类，用于辅助控制消息传递。大概工作原理如下图。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/12/03/play-cocos2dx-28/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -533,51 +567,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/10/28/play-cocos2dx-18/">【玩转cocos2d-x之十八】仿《中国好学霸》文字拖拽和定位</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-28T18:00:00+08:00" pubdate data-updated="true">Oct 28<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>现在各种猜成语猜歌名好学霸之类的游戏火的一塌糊涂。本节就介绍下文字的拖拽和定位。</p>
-
-<h3>1.基本原理</h3>
-
-<p>其实这只是精灵的简单拖拽和坐标的识别而已。当触摸点在精灵的范围内，精灵可以感应拖动，当触摸结束进行位置判断，如果在有效范围内就进行自动定位。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/10/28/play-cocos2dx-18/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -598,12 +587,17 @@
 </section><section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (37)</a></li>
+    <li class='category'><a href='/blog/categories/tools/'>Tools (1)</a></li>
+<li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (37)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/08/24/tools-powercmd/">PowerCmd，一个Windows下cmd的绝佳替代工具</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/08/21/play-cocos2dx-37/">【玩转cocos2d-x之三十七】在Cocos2d-x中集成安卓版微信SDK</a>
@@ -619,10 +613,6 @@
     
       <li class="post">
         <a href="/blog/2014/02/08/play-cocos2dx-34/">【玩转cocos2d-x之三十四】绘图：CCDrawingPrimitives和CCDrawNode</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/12/26/play-cocos2dx-33/">【玩转cocos2d-x之三十三】游戏嵌入Webview网页</a>
       </li>
     
   </ul>

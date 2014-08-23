@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-08-22T00:19:14+08:00</updated>
+  <updated>2014-08-24T01:08:23+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,74 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[PowerCmd，一个Windows下cmd的绝佳替代工具]]></title>
+    <link href="http://www.fusijie.com/blog/2014/08/24/tools-powercmd/"/>
+    <updated>2014-08-24T00:48:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2014/08/24/tools-powercmd</id>
+    <content type="html"><![CDATA[<p>由于工作关系（码奴），平时会需要接触到比较多奇奇怪怪的应用。而一些比较好的小众软件和工具，我觉得很有必要分享出来。这是第一篇，之后有的话会慢慢积累分享出来，如果你们也有好的软件，欢迎留言分享。</p>
+
+<p>因为只是介绍工具而已，所以内容会很简单。</p>
+
+<p>当然这里没有任何的广告成分。次奥。。。谁会给我广告费啊。。。</p>
+
+<!-- more -->
+
+
+<blockquote><p>当我第一次知道要写这些的时候，其实我是拒绝的！因为我觉得&hellip;呀&hellip;你不能叫我马上写，第一，我要试一下，我又不想说&hellip;我一篇文章写完以后加了很多特技，那工具赞啊&hellip;很酷！很炫！很屌！结果读者出来一定骂我，根本没有这种工具！这证明上面那个是假的……我说先要给我试一下。后来我经过也知道他们是很实在的，而且没有那种虚假成分的。那&hellip;用了这个月&hellip;这个月下来之后呢……起码我用了很舒服。现在呢&hellip;每天还在用！每天还在用呢&hellip;我还给了我团队用！来！来！来！大家试试看！那我跟读者讲∶「写的时候就写！写完之后，这个文章就是我的文章，就不要加，再加特技上去，加到没有就是这样子！我要给读者看到，我用完之后是这样子，你们用完之后，也是这样子！</p></blockquote>
+
+<p>好了，黑完进入正题~</p>
+
+<p>用过Mac terminal的都会觉得Windows下的cmd就是一渣，但是没办法，各种原因有时候我们就得在渣上工作。前两天遇到了个问题：<code>cd始终无法切换文件夹目录</code>，虽然后来找到了解决办法，但是还是决心找个cmd的替代品。</p>
+
+<p>解决方法：cd后增加<code>/d</code>即可。</p>
+
+<pre><code>cd /d F:/
+</code></pre>
+
+<p>这一找不得了，<strong>PowerCmd</strong>进入我的视野，官方网站是：<a href="http://www.powercmd.com/">http://www.powercmd.com/</a>。</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/tools_powercmd_maintext.jpg" alt="" border="0" title="" /><br></br></div>
+
+
+<p>我们来看看它有多强大。</p>
+
+<p>1.<code>多tab窗口</code>，你可以同时在PowerCmd打开多个cmd窗口，根据你的喜好进行排列，如上图。可以最小化，也可以全屏。</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/tools_powercmd_pic%20001.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p>2.<code>保存</code>工作状态，并在下次启动时<code>恢复</code>。</p>
+
+<p>3.<code>集成到shell</code>，右键点击任意文件夹，你会发现多了改PowerCmd的菜单，点击该菜单，启动PowerCmd，并默认cd到当前目录。碉堡了，省了很多cd是不是？</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/tools_powercmd_pic%20002.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p>4.自带的cmd复制粘贴很麻烦，PowerCmd的<code>复制粘贴</code>就像操作普通文本一样。</p>
+
+<p>5.<code>书签</code>功能，内容<code>过滤</code>功能，内容<code>自动保存</code>功能，内容<code>查找高亮</code>功能。</p>
+
+<p>6.顶部<code>快捷登录</code>工具栏，可以自定义你的应用。</p>
+
+<p>7.表格的形式<code>可视化地查看系统环境变量</code>等参数，终于不用再“我的电脑”->右键->xxx&hellip;</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/tools_powercmd_pic%20003.png"" alt="" border="0" title="" /><br></br></div>
+
+
+<p>8.<code>自动提示</code>，主要是针对文件夹。这个比mac terminal还屌啊。。。</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/tools_powercmd_pic%20004.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p>9.其他<code>自定义功能</code>，比如行号，外观颜色、透明度等等，尽情DIY吧。。。</p>
+
+<p>好了，看了半天还不如动手试试，软件是收费的，不过有一个月的试用期。</p>
+
+<p><strong>Win下coding，良心推荐。</strong><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/08/24/tools-powercmd/'><a href="http://www.fusijie.com/blog/2014/08/24/tools-powercmd/">http://www.fusijie.com/blog/2014/08/24/tools-powercmd/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十七】在Cocos2d-x中集成安卓版微信SDK]]></title>
@@ -4193,126 +4261,6 @@ void update(float delta)
 <h3>4.深拷贝和浅拷贝</h3>
 
 <p>其实不单是CCArray，cocos2d-x采用的都是深拷贝的方式，深拷贝和浅拷贝的概念和详解请移步<a href="http://blog.csdn.net/jackystudio/article/details/11553117">这里</a>。它们的区别在于当前对象是否包含了对其他资源的引用。在拷贝机制上采用深拷贝的方式，大大方便了我们对内存的管理，避免因资源的释放导致引用异常。这对于平时在进行一些自定义子类的拷贝处理上还是很有指导意义的。<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/30/play-cocos2dx-19/'><a href="http://www.fusijie.com/blog/2013/10/30/play-cocos2dx-19/">http://www.fusijie.com/blog/2013/10/30/play-cocos2dx-19/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之十八】仿《中国好学霸》文字拖拽和定位]]></title>
-    <link href="http://www.fusijie.com/blog/2013/10/28/play-cocos2dx-18/"/>
-    <updated>2013-10-28T18:00:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/10/28/play-cocos2dx-18</id>
-    <content type="html"><![CDATA[<p>现在各种猜成语猜歌名好学霸之类的游戏火的一塌糊涂。本节就介绍下文字的拖拽和定位。</p>
-
-<h3>1.基本原理</h3>
-
-<p>其实这只是精灵的简单拖拽和坐标的识别而已。当触摸点在精灵的范围内，精灵可以感应拖动，当触摸结束进行位置判断，如果在有效范围内就进行自动定位。</p>
-
-<!-- more -->
-
-
-<h3>2.实现</h3>
-
-<p><strong>2.1.背景加入和文字精灵的加入</strong>
-这里是采用<a href="http://blog.csdn.net/jackystudio/article/details/13014883">这一节</a>所述方式添加中文。</p>
-
-<pre><code>bool AutoSet::init()  
-{  
-    bool bRet=false;  
-    do   
-    {  
-        CC_BREAK_IF(!CCLayer::init());  
-        CCSize visiableSize=CCDirector::sharedDirector()-&gt;getVisibleSize();  
-
-        CCSprite* background=CCSprite::create("AutoSetBk.jpg");  
-        background-&gt;setPosition(ccp(visiableSize.width/2,visiableSize.height/2));  
-        this-&gt;addChild(background);//添加背景  
-
-        //利用CCDictionary来读取xml  
-        CCDictionary* chnStrings = CCDictionary::createWithContentsOfFile("CHN_Strings.xml");  
-        const char *hao = ((CCString*)chnStrings-&gt;objectForKey("hao"))-&gt;m_sString.c_str();   
-
-        text=CCLabelTTF::create(hao,"Arial",50);  
-        text-&gt;setPosition(ccp(120,160));  
-        text-&gt;setColor(ccc3(0,0,0));  
-        this-&gt;addChild(text);//添加文本  
-
-        this-&gt;setTouchEnabled(true);//设置触摸可用  
-
-        bRet=true;  
-    } while (0);  
-    return bRet;  
-}  
-</code></pre>
-
-<p><strong>2.2.触摸的实现和拖拽的定位</strong></p>
-
-<p>因为3.0版本cocos2d-x的触摸实现已经变更了，所以这里不再赘述，3.0之前的触摸的原理和实现具体可以参见<a href="http://blog.csdn.net/jackystudio/article/details/11860007">这一节</a>。</p>
-
-<p><strong>2.2.1注册触摸事件</strong></p>
-
-<pre><code>void AutoSet::registerWithTouchDispatcher(void)  
-{  
-    CCDirector *pDirector=CCDirector::sharedDirector();    
-    pDirector-&gt;getTouchDispatcher()-&gt;addTargetedDelegate(this,0,true);//单点触摸  
-}  
-</code></pre>
-
-<p><strong>2.2.2.触摸开始</strong></p>
-
-<pre><code>bool AutoSet::ccTouchBegan(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent)  
-{  
-    return true;//返回true表示接收触摸事件  
-}  
-</code></pre>
-
-<p><strong>2.2.3.触摸过程</strong></p>
-
-<pre><code>void AutoSet::ccTouchMoved(cocos2d::CCTouch *pTouch, cocos2d::CCEvent *pEvent)  
-{  
-    CCPoint beginPoint = pTouch-&gt;getLocationInView();  //获取触摸位置  
-    beginPoint = CCDirector::sharedDirector()-&gt;convertToGL(beginPoint);//坐标转换  
-    CCPoint pt=text-&gt;getPosition();  
-    CCRect rect=CCRectMake(pt.x-30,pt.y-30,60,60);  
-    if (rect.containsPoint(beginPoint))//判断触摸点是否在文字上  
-    {  
-        CCPoint endPoint=pTouch-&gt;getPreviousLocationInView();//获取触摸的前一个位置    
-        endPoint=CCDirector::sharedDirector()-&gt;convertToGL(endPoint);     
-
-        CCPoint offSet =ccpSub(beginPoint,endPoint);//获取offset    
-        CCPoint toPoint=ccpAdd(text-&gt;getPosition(),offSet); //获取真正移动位置  
-        text-&gt;setPosition(toPoint);//移动文字  
-    }  
-}  
-</code></pre>
-
-<p><strong>2.2.4.触摸结束</strong></p>
-
-<pre><code>void AutoSet::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)  
-{  
-    CCPoint lastPoint = pTouch-&gt;getLocationInView();//获取触摸结束点位置  
-    lastPoint = CCDirector::sharedDirector()-&gt;convertToGL(lastPoint);  
-    CCRect rect=CCRectMake(330,130,60,60);  
-    CCMoveTo* moveto;  
-    if (!rect.containsPoint(lastPoint))//如果未在指定区域，还原到初始位置  
-    {  
-        moveto=CCMoveTo::create(0.1f,ccp(120,160));  
-    }  
-    else//如果在指定区域，移动到该区域中心  
-    {  
-        moveto=CCMoveTo::create(0.1f,ccp(360,160));  
-    }  
-    text-&gt;runAction(moveto);  
-}  
-</code></pre>
-
-<h3>3.效果图</h3>
-
-<div align="center"><img src="http://img.blog.csdn.net/20131209083021671" alt="" border="0" title="效果" /><br></br></div>
-
-
-<h3>4.源码下载</h3>
-
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6463261">源码下载</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/28/play-cocos2dx-18/'><a href="http://www.fusijie.com/blog/2013/10/28/play-cocos2dx-18/">http://www.fusijie.com/blog/2013/10/28/play-cocos2dx-18/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
