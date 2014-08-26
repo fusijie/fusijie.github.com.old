@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Cocos2dx | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/blog/categories/cocos2dx/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Cocos2dx-FAQ | Jacky's Blog]]></title>
+  <link href="http://www.fusijie.com/blog/categories/cocos2dx-faq/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-08-26T17:45:17+08:00</updated>
+  <updated>2014-08-26T17:48:04+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
