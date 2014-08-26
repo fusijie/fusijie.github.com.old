@@ -9,7 +9,7 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="如何在层间或者场景间进行消息传递，大概是每个初学者都要面对的问题吧。这里介绍cocos2d-x的一种消息/数据传递方式，内置的观察者模式，也称消息通知中心，CCNotificationCenter。 1.CCNotificationCenter &hellip;">
+  <meta name="description" content="新手引导是游戏中必备的（除了奇葩的MT用一段动画开始），也是玩家对游戏的第一印象，重要性不言而喻。一般采用的遮罩的形式来突出引导重点，同时屏蔽其他功能。这里简单的介绍一下游戏遮罩的实现，并给出一个示例。 1.CCClipingNode CCClipingNode是一个可裁剪节点，简单理解： （1） &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -82,6 +82,57 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/12/06/play-cocos2dx-29/">【玩转cocos2d-x之二十九】利用CCClipingNode做游戏遮罩</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-06T10:41:00+08:00" pubdate data-updated="true">Dec 6<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>新手引导是游戏中必备的（除了奇葩的MT用一段动画开始），也是玩家对游戏的第一印象，重要性不言而喻。一般采用的遮罩的形式来突出引导重点，同时屏蔽其他功能。这里简单的介绍一下游戏遮罩的实现，并给出一个示例。</p>
+
+<h3>1.CCClipingNode</h3>
+
+<p>CCClipingNode是一个可裁剪节点，简单理解：</p>
+
+<p><em>（1）首先它是一个节点，继承于CCNode，所以它可以像普通节点一样放入CCLayer，CCScene，CCNode中。</em></p>
+
+<p><em>（2）作为节点，它就可以用作容器，承载其他节点和精灵。我把它叫底板。</em></p>
+
+<p><em>（3）如果想要对一个节点进行裁剪，那需要给出裁剪的部分，这个裁剪区域，我把它叫模版。</em></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/12/06/play-cocos2dx-29/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -522,51 +573,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/10/30/play-cocos2dx-19/">【玩转cocos2d-x之十九】从CCObject看cocos2d-x的拷贝机制</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-30T18:08:00+08:00" pubdate data-updated="true">Oct 30<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>CCObject在之前的文章中出现了N次，它扮演了一个老祖宗的角色，但是它到底是做什么的？先从它看看cocos2d-x的拷贝机制吧。</p>
-
-<h3>1.CCCopying</h3>
-
-<p>CCObject从CCCopying继承而来，而CCCopying拥有唯一的一个成员虚函数copyWithZone，这个函数可以认为是拷贝的一个协议，所有继承了CCObject并且需要实现拷贝功能的子类都可以通过它来实现，它的源码很简单，就是一个未实现的断言。CCZone是神马？只是封装了一个CCObject对象指针而已。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/10/30/play-cocos2dx-19/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -587,13 +593,19 @@
 </section><section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/tools/'>Tools (1)</a></li>
+    <li class='category'><a href='/blog/categories/cocos2dx/'>Cocos2dx (1)</a></li>
+<li class='category'><a href='/blog/categories/faq/'>FAQ (1)</a></li>
+<li class='category'><a href='/blog/categories/tools/'>Tools (1)</a></li>
 <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (37)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/08/26/cocos2dx-faq-1/">Cocos2dx-FAQ-1</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/08/24/tools-powercmd/">PowerCmd，一个Windows下cmd的绝佳替代工具</a>
@@ -609,10 +621,6 @@
     
       <li class="post">
         <a href="/blog/2014/02/25/play-cocos2dx-35/">【玩转cocos2d-x之三十五】《我叫MT offline》Demo</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/08/play-cocos2dx-34/">【玩转cocos2d-x之三十四】绘图：CCDrawingPrimitives和CCDrawNode</a>
       </li>
     
   </ul>

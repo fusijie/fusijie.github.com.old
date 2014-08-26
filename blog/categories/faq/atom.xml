@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: FAQ | Jacky's Blog]]></title>
+  <link href="http://www.fusijie.com/blog/categories/faq/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2014-08-26T17:45:17+08:00</updated>
+  <id>http://www.fusijie.com/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Cocos2dx-FAQ-1]]></title>
+    <link href="http://www.fusijie.com/blog/2014/08/26/cocos2dx-faq-1/"/>
+    <updated>2014-08-26T17:28:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2014/08/26/cocos2dx-faq-1</id>
+    <content type="html"><![CDATA[<h3>1. <code>Q:</code>如何在安卓上给应用程序设置透明背景？</h3>
+
+<p>NativeActivity，以Cocos2d-x 3.0 rc0为例</p>
+
+<p><a href="http://www.cocoachina.com/bbs/read.php?tid=196780">http://www.cocoachina.com/bbs/read.php?tid=196780</a></p>
+
+<p>JavaActivity，以Cocos2d-x 3.2 release为例</p>
+
+<p><a href="http://www.cocoachina.com/bbs/read.php?tid=224544">http://www.cocoachina.com/bbs/read.php?tid=224544</a></p>
+
+<br></br>
+
+
+<h3>2. <code>Q:</code>SimpleAudioEngine在Windows平台上卡顿严重，无法调节音量？</h3>
+
+<p>SimpleAudioEngine是分平台实现的，Windows平台上部分API是空实现（比如preloadBackgroundMusic等等）,所以在Windows平台上并不提供预加载，调节音量等功能（参见<a href="https://github.com/cocos2d/cocos2d-x/blob/v3/cocos/audio/win32/SimpleAudioEngine.cpp">cocos/audio/win32/SimpleAudioEngine.cpp</a>），移植到Android/iOS/Mac上就正常了。Windows上调节音量有网友提供了解决方案。</p>
+
+<p>参考链接：<a href="http://www.cocoachina.com/bbs/read.php?tid=213345">http://www.cocoachina.com/bbs/read.php?tid=213345</a></p>
+
+<br></br>
+
+
+<h3>3. <code>Q:</code>Cocos2d-x 3.x无法重写Node::draw()方法？</h3>
+
+<p>Cocos2d-x 从v3.0开始将Node::draw()方法标记为final（参见<a href="https://github.com/cocos2d/cocos2d-x/blob/v3/cocos/2d/CCNode.h">cocos2d/2d/CCNode.h</a>），引擎另外提供了</p>
+
+<p>``` cpp draw函数</p>
+
+<pre><code>virtual void draw(Renderer *renderer, const Mat4&amp; transform, uint32_t flags);
+</code></pre>
+
+<p>```</p>
+
+<p>函数，可以通过重写这个函数来绘制你自己的节点，需注意的是如果更改了任何的GL状态，在使用完后必须还原。</p>
+
+<p>参考链接：<a href="http://www.cocoachina.com/bbs/read.php?tid=200176">http://www.cocoachina.com/bbs/read.php?tid=200176</a></p>
+
+<br></br>
+
+
+<h3>4. <code>Q:</code>使用ClippingNode，为什么在Android/iOS裁剪显示错误，或者背景变为绿色？</h3>
+
+<p>未开启OpenGL深度缓存，解决方法如下：</p>
+
+<p><em>iOS：在AppController.mm修改</em></p>
+
+<p>``` objc iOS修改深度缓存</p>
+
+<pre><code>EAGLView *__glView = [EAGLView viewWithFrame: [window bounds]
+                                 pixelFormat: kEAGLColorFormatRGBA8
+                                 depthFormat: GL_DEPTH24_STENCIL8_OES
+                          preserveBackbuffer: NO
+                                  sharegroup: nil
+                               multiSampling: NO
+                             numberOfSamples: 0];
+</code></pre>
+
+<p>```</p>
+
+<p><em>Android：在AppActivity.java修改</em></p>
+
+<p>``` java Android修改深度缓存</p>
+
+<pre><code>public class AppActivity extends Cocos2dxActivity {
+
+public Cocos2dxGLSurfaceView onCreateView() {
+    Cocos2dxGLSurfaceView glSurfaceView = new Cocos2dxGLSurfaceView(this);
+    // TestCpp should create stencil buffer
+       glSurfaceView.setEGLConfigChooser(5, 6, 5, 0, 16, 8);
+
+    return glSurfaceView;
+}
+}
+</code></pre>
+
+<p>```</p>
+
+<br></br>
+
+
+
+]]></content>
+  </entry>
+  
+</feed>
