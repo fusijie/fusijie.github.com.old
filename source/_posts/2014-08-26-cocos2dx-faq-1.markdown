@@ -1,0 +1,82 @@
+---
+layout: post
+title: "Cocos2dx-FAQ-1"
+date: 2014-08-26 17:28
+comments: true
+categories: Cocos2dx-FAQ
+tags: 
+---
+
+###1. `Q:`如何在安卓上给应用程序设置透明背景？
+
+NativeActivity，以Cocos2d-x 3.0 rc0为例
+
+[http://www.cocoachina.com/bbs/read.php?tid=196780](http://www.cocoachina.com/bbs/read.php?tid=196780)
+
+JavaActivity，以Cocos2d-x 3.2 release为例
+
+[http://www.cocoachina.com/bbs/read.php?tid=224544](http://www.cocoachina.com/bbs/read.php?tid=224544)
+
+<br></br>
+
+###2. `Q:`SimpleAudioEngine在Windows平台上卡顿严重，无法调节音量？
+
+SimpleAudioEngine是分平台实现的，Windows平台上部分API是空实现（比如preloadBackgroundMusic等等）,所以在Windows平台上并不提供预加载，调节音量等功能（参见[cocos/audio/win32/SimpleAudioEngine.cpp](https://github.com/cocos2d/cocos2d-x/blob/v3/cocos/audio/win32/SimpleAudioEngine.cpp)），移植到Android/iOS/Mac上就正常了。Windows上调节音量有网友提供了解决方案。
+
+参考链接：[http://www.cocoachina.com/bbs/read.php?tid=213345](http://www.cocoachina.com/bbs/read.php?tid=213345)
+
+<br></br>
+
+###3. `Q:`Cocos2d-x 3.x无法重写Node::draw()方法？
+
+Cocos2d-x 从v3.0开始将Node::draw()方法标记为final（参见[cocos2d/2d/CCNode.h](https://github.com/cocos2d/cocos2d-x/blob/v3/cocos/2d/CCNode.h)），引擎另外提供了
+    
+``` cpp draw函数
+	
+	virtual void draw(Renderer *renderer, const Mat4& transform, uint32_t flags);
+	
+```
+
+函数，可以通过重写这个函数来绘制你自己的节点，需注意的是如果更改了任何的GL状态，在使用完后必须还原。
+
+参考链接：[http://www.cocoachina.com/bbs/read.php?tid=200176](http://www.cocoachina.com/bbs/read.php?tid=200176)
+
+<br></br>
+
+###4. `Q:`使用ClippingNode，为什么在Android/iOS裁剪显示错误，或者背景变为绿色？
+
+未开启OpenGL深度缓存，解决方法如下：
+
+*iOS：在AppController.mm修改*
+
+``` objc iOS修改深度缓存
+	
+	EAGLView *__glView = [EAGLView viewWithFrame: [window bounds]
+                                     pixelFormat: kEAGLColorFormatRGBA8
+                                     depthFormat: GL_DEPTH24_STENCIL8_OES
+                              preserveBackbuffer: NO
+                                      sharegroup: nil
+                                   multiSampling: NO
+                                 numberOfSamples: 0];
+    
+```
+                                 
+*Android：在AppActivity.java修改*
+
+``` java Android修改深度缓存
+	
+	public class AppActivity extends Cocos2dxActivity {
+     
+    public Cocos2dxGLSurfaceView onCreateView() {
+        Cocos2dxGLSurfaceView glSurfaceView = new Cocos2dxGLSurfaceView(this);
+        // TestCpp should create stencil buffer
+           glSurfaceView.setEGLConfigChooser(5, 6, 5, 0, 16, 8);
+         
+        return glSurfaceView;
+    }
+	}
+	
+```
+
+<br></br>
+
