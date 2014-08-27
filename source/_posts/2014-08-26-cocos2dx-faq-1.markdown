@@ -17,6 +17,8 @@ JavaActivity，以Cocos2d-x 3.2 release为例
 
 [http://www.cocoachina.com/bbs/read.php?tid=224544](http://www.cocoachina.com/bbs/read.php?tid=224544)
 
+<!-- more -->
+
 <br></br>
 
 ###2. `Q:`SimpleAudioEngine在Windows平台上卡顿严重，无法调节音量？
