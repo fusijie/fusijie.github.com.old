@@ -4,7 +4,7 @@ title: "PowerCmd，一个Windows下cmd的绝佳替代工具"
 date: 2014-08-24 00:48
 comments: true
 categories: Tools
-tags: PowerCmd
+tags: [PowerCmd]
 ---
 
 由于工作关系（码奴），平时会需要接触到比较多奇奇怪怪的应用。而一些比较好的小众软件和工具，我觉得很有必要分享出来。这是第一篇，之后有的话会慢慢积累分享出来，如果你们也有好的软件，欢迎留言分享。
