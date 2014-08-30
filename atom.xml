@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-08-30T21:31:40+08:00</updated>
+  <updated>2014-08-31T01:03:14+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,170 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[如何在Windows平台使用VS搭建C++/Lua的开发环境]]></title>
+    <link href="http://www.fusijie.com/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs/"/>
+    <updated>2014-08-31T00:28:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs</id>
+    <content type="html"><![CDATA[<p>本文主要介绍如何在Windows平台利用VS搭建C++/Lua开发环境。这里的“C++/Lua开发环境”主要指的是C++调用Lua，以及Lua调用C++。Mac平台相对会比较方便，但是VS也不是很麻烦就是了。Mac上利用XCode搭建的教程可以参考<a href="http://4gamers.cn/archives/242">子龙山人的教程</a>，当然也可以利用其他IDE，比如Eclipse+CDT+LDT来搭建，这都没有问题。</p>
+
+<p>另外，本文不谈及Lua/C++的交互，相关内容可以参考<a href="http://book.luaer.cn/">《Lua程序设计》</a>，或者<a href="http://4gamers.cn/">子龙山人的Lua系列教程</a>。</p>
+
+<!-- more -->
+
+
+<h4>环境</h4>
+
+<ul>
+<li>Windows 8.1</li>
+<li>VS2012</li>
+<li>Lua5.2.3</li>
+</ul>
+
+
+<h4>如何搭建</h4>
+
+<p>1.生成Lua静态库</p>
+
+<p>(1)下载lua src。</p>
+
+<p>最新版本是5.2.3。 <a href="http://www.lua.org/download.html">下载地址</a>。</p>
+
+<p>(2)新建VS Win32控制台应用程序，取名为Lua。在应用程序设置中选择应用程序类型为静态库，附加选项中取消预编译头的勾选。</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/vslua_pic_1.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p>(3)在Lua的VS项目文件夹中新建LuaSrc目录，用于存放Lua源码。解压下载的lua src，拷贝src目录下所有 * .c和 * .h文件到LuaSrc。</p>
+
+<p>(4)在Lua的VS项目文件夹中新建bin目录，用于存放Lua.lib。</p>
+
+<p>(5)在VS环境中，右键点击Lua项目，选择添加->现有项，导入LuaSrc目录下所有的文件。</p>
+
+<p>(6)右键点击Lua项目，选择属性，在顶部选择所有配置，然后修改配置属性->常规->输出目录为</p>
+
+<pre><code>$(SolutionDir)bin
+</code></pre>
+
+<p>(7)为了禁止一些安全警告（Windows程序员知道为什么），需要再修改配置属性->C/C++&ndash;>预处理器->预处理器定义，在末尾添加</p>
+
+<pre><code>;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE
+</code></pre>
+
+<p>(8)选择release模式，点击项目，生成Lua.lib即可。Lua.lib生成在bin目录下。</p>
+
+<p>2.调用Lua静态库</p>
+
+<p>(1)在Lua解决方案下新建名字为HelloLua的Win32控制台程序，采用默认选项，不做修改。</p>
+
+<p>(2)右键点击HelloLua项目，选择属性，修改配置属性->C/C++&ndash;>附加包含目录，新增</p>
+
+<pre><code>..\LuaSrc
+</code></pre>
+
+<p>(3)在修改配置属性->链接器->输入->附加依赖项，新增</p>
+
+<pre><code>..\bin\Lua.lib
+</code></pre>
+
+<p>(4)在HeloLua.cpp中添加如下代码，</p>
+
+<figure class='code'><figcaption><span>调用lua.lib</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="err">#</span><span class="n">pragma</span> <span class="n">comment</span> <span class="p">(</span><span class="n">lib</span><span class="p">,</span><span class="s">&quot;Lua.lib&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>(5)设置HelloLua项目为默认启动项，点击生成项目即可。</p>
+
+<p>(6)因为此时main函数并没有执行任何代码，所以控制台一闪而过。右键HelloLua项目的源文件，添加新建项，取名hellolua.lua。</p>
+
+<p>(7)一个简单的调用示例：</p>
+
+<figure class='code'><figcaption><span>demo</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'><span class="o">*</span><span class="n">hellolua</span><span class="p">.</span><span class="n">lua</span><span class="o">*</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">print</span><span class="p">(</span><span class="s">&quot;Hello, Lua&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">*</span><span class="n">HelloLua</span><span class="p">.</span><span class="n">cpp</span><span class="o">*</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="err">#</span><span class="n">include</span> <span class="s">&quot;stdafx.h&quot;</span>
+</span><span class='line'>  <span class="err">#</span><span class="n">pragma</span> <span class="n">comment</span> <span class="p">(</span><span class="n">lib</span><span class="p">,</span><span class="s">&quot;Lua.lib&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="err">#</span><span class="n">include</span> <span class="s">&quot;lua.hpp&quot;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">_tmain</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">_TCHAR</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">lua_State</span><span class="o">*</span> <span class="n">lua_state</span> <span class="o">=</span> <span class="n">luaL_newstate</span><span class="p">();</span>
+</span><span class='line'>      <span class="n">luaL_openlibs</span><span class="p">(</span><span class="n">lua_state</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">luaL_dofile</span><span class="p">(</span><span class="n">lua_state</span><span class="p">,</span><span class="s">&quot;hellolua.lua&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">lua_close</span><span class="p">(</span><span class="n">lua_state</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">getchar</span><span class="p">();</span>
+</span><span class='line'>      <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><em>效果</em></p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/vslua_pic_2.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p>demo下载地址：<a href="https://github.com/fusijie/Cpp_Lua_VS2012">https://github.com/fusijie/Cpp_Lua_VS2012</a></p>
+
+<p>3.生成Lua.exe和Luac.exe</p>
+
+<p>由于下载的lua源码中包含lua.c和luac.c，这两个文件都有main入口，同时编译的话会出错，所以只要删除其中一个，另一个就可以正常编译。</p>
+
+<p>(1)新建VS空项目，取名为Lua。</p>
+
+<p>(2)在Lua的VS项目文件夹中新建LuaSrc目录，用于存放Lua源码。解压下载的lua src，拷贝src目录下是所有 * .c和 * .h文件。</p>
+
+<p>(3)在VS环境中，右键点击Lua项目，选择添加->现有项，导入LuaSrc目录下所有的文件。</p>
+
+<p>(4)右键点击Lua项目，选择属性，在顶部选择所有配置，然后修改配置属性->C/C++&ndash;>预处理器->预处理器定义，在末尾添加</p>
+
+<pre><code>;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE
+</code></pre>
+
+<p>(5)在Lua项目的源文件，找到luac.c，右键移除。</p>
+
+<p>(6)选择release模式，点击项目生成lua.exe即可。</p>
+
+<p>(7)同理在同个解决方案下创建LuaC空项目，按以上步骤生成luac.exe。只是第五步要改为“找到lua.c，右键移除”。</p>
+
+<p>(8)lua.exe和luac.exe生成在Lua项目目录下的release目录。</p>
+
+<div align="center"><img src="http://www-fusijie-com.qiniudn.com/vslua_pic_3.png" alt="" border="0" title="" /><br></br></div>
+
+
+<p>demo下载地址：<a href="https://github.com/fusijie/Lua_LuaC_exe">https://github.com/fusijie/Lua_LuaC_exe</a></p>
+
+<p>如果你不想这么麻烦，也可以直接从上述2个github地址直接clone我的项目。</p>
+
+<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs/'>http://www.fusijie.com/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Cocos2dx-FAQ-1]]></title>
@@ -4258,187 +4422,6 @@ PTW32_DLLPORT int PTW32_CDECL pthread_mutex_unlock (pthread_mutex_t * mutex);
 <p><em>（3）pthread_cond_wait()看起来有个bug，首次wait会失败，但是之后又会工作的很好。</em></p>
 
 <p><em>（4）OpenGL context也不是线程安全。</em><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/11/04/play-cocos2dx-21/'><a href="http://www.fusijie.com/blog/2013/11/04/play-cocos2dx-21/">http://www.fusijie.com/blog/2013/11/04/play-cocos2dx-21/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之二十】从CCObject看cocos2d-x的内存管理机制]]></title>
-    <link href="http://www.fusijie.com/blog/2013/10/31/play-cocos2dx-20/"/>
-    <updated>2013-10-31T18:13:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/10/31/play-cocos2dx-20</id>
-    <content type="html"><![CDATA[<p>再看CCObject，剔除上节的拷贝相关，以及Lua脚本相关的属性和方法后，CCObject还剩下什么？</p>
-
-<h3>1.剩下什么？</h3>
-
-<p>可以看到整个CCObject就是围绕着m_uReference和m_uAutoReleaseCount在转。这两个变量的解释如下。所以CCObject剩下的其实就是对内存的管理。</p>
-
-<!-- more -->
-
-
-<pre><code>CCObject::CCObject(void)//构造函数  
-: m_nLuaID(0)  
-, m_uReference(1) //引用计数，初始为1，当引用计数=0，自动释放该对象  
-, m_uAutoReleaseCount(0)//自动释放对象计数，如果是手动new的，则为0，如果autoRelease的，则在AutoreleasePool会+1  
-                    //这里是保护成员，所以CCAutoreleasePool被声明为友元类  
-{  
-    static unsigned int uObjectCount = 0;//静态成员，对象的计数，只增不减，用于标识唯一一个对象实例  
-    m_uID = ++uObjectCount;                
-}  
-
-CCObject::~CCObject(void)  
-{  
-    if (m_uAutoReleaseCount &gt; 0)//如果是自动管理，则在PoolManager中删除  
-    {  
-        CCPoolManager::sharedPoolManager()-&gt;removeObject(this);  
-    }  
-
-    // if the object is referenced by Lua engine, remove it  
-    if (m_nLuaID)  
-    {  
-        CCScriptEngineManager::sharedManager()-&gt;getScriptEngine()-&gt;removeScriptObjectByCCObject(this);  
-    }  
-    else  
-    {  
-        CCScriptEngineProtocol* pEngine = CCScriptEngineManager::sharedManager()-&gt;getScriptEngine();  
-        if (pEngine != NULL &amp;&amp; pEngine-&gt;getScriptType() == kScriptTypeJavascript)  
-        {  
-            pEngine-&gt;removeScriptObjectByCCObject(this);  
-        }  
-    }  
-}  
-
-void CCObject::release(void)//引用计数-1，如果引用计数=0，释放对象  
-{  
-    CCAssert(m_uReference &gt; 0, "reference count should greater than 0");  
-    --m_uReference;  
-
-    if (m_uReference == 0)  
-    {  
-        delete this;  
-    }  
-}  
-
-void CCObject::retain(void)//引用计数+1,防止被对象释放  
-{  
-    CCAssert(m_uReference &gt; 0, "reference count should greater than 0");  
-
-    ++m_uReference;  
-}  
-
-CCObject* CCObject::autorelease(void)//对象加入PoolManager，自动管理  
-{  
-    CCPoolManager::sharedPoolManager()-&gt;addObject(this);  
-    return this;  
-}  
-
-bool CCObject::isSingleReference(void) const //返回是否唯一引用  
-{  
-    return m_uReference == 1;  
-}  
-
-unsigned int CCObject::retainCount(void) const  //返回引用计数  
-{  
-    return m_uReference;  
-}  
-
-bool CCObject::isEqual(const CCObject *pObject) //判断对象是否相等  
-{  
-    return this == pObject;  
-}  
-
-void CCObject::acceptVisitor(CCDataVisitor &amp;visitor) //辅助对象执行动作  
-{  
-    visitor.visitObject(this);  
-}  
-</code></pre>
-
-<h3>2.内存管理</h3>
-
-<p>从CCObject可以看出，内存的管理方式有两种：手动管理和自动管理。</p>
-
-<p><strong>2.1.手动内存管理</strong></p>
-
-<p>想必从Java转到C++的朋友可能很受不了C++再申请完内存后还要手动释放，就像我从C++转Java时也同样很不习惯竟然不用管理内存，老是害怕会不小心让系统给销毁了。CCObject的成员变量m_uAutoReleaseCount标识了是手动管理还是自动管理。如果执行以下操作：</p>
-
-<pre><code>CCObject* obj=new CCObject();//m_uAutoReleaseCount=0,m_uReference=1  
-</code></pre>
-
-<p>从析构函数可以看到，析构函数是不对所有手动进行申请的变量进行内存释放（必须m_uAutoReleaseCount>0）。那么这时得手动释放：</p>
-
-<pre><code>obj-&gt;release();//m_uReference-1后为0，执行delete this;  
-</code></pre>
-
-<p>所以，new和release是好基友！而手动内存管理一般不再使用retain。</p>
-
-<p><strong>2.2.自动内存管理</strong></p>
-
-<p>如果需要进行内存的自动管理，那要怎么做呢？</p>
-
-<pre><code>CCObject* obj=new CCObject();//m_uAutoReleaseCount=0,m_uReference=1  
-obj-&gt;autorelease();//m_uAutoReleaseCount=1,m_uReference=1  
-</code></pre>
-
-<p>好了，什么都不用做，obj自生自灭了。
-如果我们需要随时用到obj，而不愿意让它在我们不知情的情况下被释放，那么使用：</p>
-
-<pre><code>obj-&gt;retain();//m_uAutoReleaseCount=1,m_uReference=2  
-</code></pre>
-
-<p>当不再需要它的时候，使用：</p>
-
-<pre><code>obj-&gt;release();//m_uAutoReleaseCount=1,m_uReference=1  
-</code></pre>
-
-<p>又恢复回去了，所以，retain和release是好基友，一般在自动内存管理使用。</p>
-
-<p>这里只是大概写一下如何使用new，autorelease，retain和release，至于内存管理的实现网上的代码解析很多，发现自己没办法深入浅出地写出来，所以还是放弃再写一回注释了，原理可以这么理解：Cocos2d-x提供了一个内存管理器类CCPoolManager，它包含了一个CCArray容器m_pReleasePoolStack，这个容器用来存放一些容器管理类CCAutoreleasePool的实例对象。需要自动进行内存释放的CCObject实例对象会把其指针存放在容器管理类CCAutoreleasePool的实例对象中的m_pManagedObjectArray容器里。所有存在其中的CCObject实例对象在进行释放操作时通过使用计数器来进行判断在何时真正释放内存，游戏在每一帧结束时都会对autorelease对象进行释放。</p>
-
-<p><strong>2.3.一个疑问</strong></p>
-
-<p>平时我们可能会这么用：</p>
-
-<pre><code>//CTestLayer.h  
-class CTestLayer : public cocos2d::CCLayer  
-{  
-public:  
-    virtual bool init();  
-
-    CREATE_FUNC(CTestLayer);  
-
-    virtual void update(float delta);  
-
-private:  
-    CCSprite* background;  
-};  
-
-//CTestLayer.cpp  
-bool CTestLayer::init()  
-{  
-    if ( !CCLayer::init() )  
-    {  
-        return false;  
-    }  
-    background=CCSprite::create("background.png");  
-    this-&gt;addChild(background);  
-    this-&gt;scheduleUpdate();  
-    return true;  
-}  
-
-void update(float delta)  
-{  
-    background-&gt;setPositionY(background-&gt;getPositionY()-0.1);  
-}  
-</code></pre>
-
-<p>background是create出来的，可以知道它是调用了autorelease，属于自动管理对象，而且我们又没有进行retain操作，按道理在执行update的时候background已经是要被销毁的，但是实际并没有。问题就出在这一句：</p>
-
-<pre><code>this-&gt;addChild(background);  
-</code></pre>
-
-<p>至于为什么，大家翻一下addChild实现源码就知道啦~</p>
-
-<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/10/31/play-cocos2dx-20/'>http://www.fusijie.com/blog/2013/10/31/play-cocos2dx-20/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
-
 ]]></content>
   </entry>
   

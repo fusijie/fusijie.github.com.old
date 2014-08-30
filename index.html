@@ -9,7 +9,7 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="1. Q:如何在安卓上给应用程序设置透明背景？ NativeActivity，以Cocos2d-x 3.0 rc0为例 http://www.cocoachina.com/bbs/read.php?tid=196780 JavaActivity，以Cocos2d-x 3.2 release为例 &hellip;">
+  <meta name="description" content="本文主要介绍如何在Windows平台利用VS搭建C++/Lua开发环境。这里的“C++/Lua开发环境”主要指的是C++调用Lua，以及Lua调用C++。Mac平台相对会比较方便，但是VS也不是很麻烦就是了。Mac上利用XCode搭建的教程可以参考子龙山人的教程，当然也可以利用其他IDE， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,49 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs/">如何在Windows平台使用VS搭建C++/Lua的开发环境</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-31T00:28:00+08:00" pubdate data-updated="true">Aug 31<span>st</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>本文主要介绍如何在Windows平台利用VS搭建C++/Lua开发环境。这里的“C++/Lua开发环境”主要指的是C++调用Lua，以及Lua调用C++。Mac平台相对会比较方便，但是VS也不是很麻烦就是了。Mac上利用XCode搭建的教程可以参考<a href="http://4gamers.cn/archives/242">子龙山人的教程</a>，当然也可以利用其他IDE，比如Eclipse+CDT+LDT来搭建，这都没有问题。</p>
+
+<p>另外，本文不谈及Lua/C++的交互，相关内容可以参考<a href="http://book.luaer.cn/">《Lua程序设计》</a>，或者<a href="http://4gamers.cn/">子龙山人的Lua系列教程</a>。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -521,53 +564,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/12/13/play-cocos2dx-30/">【玩转cocos2d-x之三十】点九图和输入框的使用</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-13T11:53:00+08:00" pubdate data-updated="true">Dec 13<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>登录界面一个帐号/密码输入框或者主角命名框是少不了的。这节就来了解一下点九图的输入框的使用。这里只是介绍基础知识，并不进行平台的移植，也不处理跨平台可能出现的问题。</p>
-
-<h3>1.点九图CCScale9Sprite</h3>
-
-<p><strong>1.1.概述</strong></p>
-
-<p>点九图做过移动开发的肯定不会陌生。采用的是PNG点9图，PNG点9图可以自适应各种环境，同时保持伸缩不变形。移动端的UI基本上都是按这个来做的。点9图的制作很简单，用Android SDK的tool下的draw9patch.bat就可以制作。左为原理图，右为效果图。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/12/13/play-cocos2dx-30/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -587,6 +583,7 @@
   <h1>Categories</h1>
   <ul id="categories">
     <li class='category'><a href='/blog/categories/cocos2dx-faq/'>Cocos2dx-FAQ (1)</a></li>
+<li class='category'><a href='/blog/categories/lua/'>Lua (1)</a></li>
 <li class='category'><a href='/blog/categories/tools/'>Tools (1)</a></li>
 <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (37)</a></li>
 
@@ -594,6 +591,10 @@
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs/">如何在Windows平台使用VS搭建C++/Lua的开发环境</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/08/26/cocos2dx-faq-1/">Cocos2dx-FAQ-1</a>
@@ -609,10 +610,6 @@
     
       <li class="post">
         <a href="/blog/2014/07/10/play-cocos2dx-36/">【玩转cocos2d-x之三十六】Earth Warrior 3D 大揭秘</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/25/play-cocos2dx-35/">【玩转cocos2d-x之三十五】《我叫MT offline》Demo</a>
       </li>
     
   </ul>

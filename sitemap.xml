@@ -150,11 +150,15 @@
     </url>
     <url>
         <loc>http://www.fusijie.com/blog/2014/08/24/tools-powercmd/</loc>
-        <lastmod>2014-08-24T01:07:46+08:00</lastmod>
+        <lastmod>2014-08-31T00:30:01+08:00</lastmod>
     </url>
     <url>
         <loc>http://www.fusijie.com/blog/2014/08/26/cocos2dx-faq-1/</loc>
         <lastmod>2014-08-30T20:57:19+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://www.fusijie.com/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs/</loc>
+        <lastmod>2014-08-31T01:00:18+08:00</lastmod>
     </url>
     <url>
         <loc>http://www.fusijie.com/404.html</loc>
@@ -166,7 +170,7 @@
     </url>
     <url>
         <loc>http://www.fusijie.com/blog/archives/</loc>
-        <lastmod>2014-08-30T20:57:19+08:00</lastmod>
+        <lastmod>2014-08-31T01:00:18+08:00</lastmod>
     </url>
     <url>
         <loc>http://www.fusijie.com/blog/categories/</loc>
@@ -174,11 +178,11 @@
     </url>
     <url>
         <loc>http://www.fusijie.com/blog/projects/</loc>
-        <lastmod>2014-08-30T20:57:19+08:00</lastmod>
+        <lastmod>2014-08-31T01:00:18+08:00</lastmod>
     </url>
     <url>
         <loc>http://www.fusijie.com/</loc>
-        <lastmod>2014-08-30T20:57:19+08:00</lastmod>
+        <lastmod>2014-08-31T01:00:18+08:00</lastmod>
     </url>
     <url>
         <loc>http://www.fusijie.com/javascripts/libs/bootstrap-3.0.0/components.html</loc>
@@ -198,7 +202,7 @@
     </url>
     <url>
         <loc>http://www.fusijie.com/javascripts/libs/bootstrap-3.0.0/</loc>
-        <lastmod>2014-08-30T20:57:19+08:00</lastmod>
+        <lastmod>2014-08-31T01:00:18+08:00</lastmod>
     </url>
     <url>
         <loc>http://www.fusijie.com/javascripts/libs/bootstrap-3.0.0/javascript.html</loc>

@@ -9,7 +9,7 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="CCObject在之前的文章中出现了N次，它扮演了一个老祖宗的角色，但是它到底是做什么的？先从它看看cocos2d-x的拷贝机制吧。 1.CCCopying CCObject从CCCopying继承而来，而CCCopying拥有唯一的一个成员虚函数copyWithZone， &hellip;">
+  <meta name="description" content="再看CCObject，剔除上节的拷贝相关，以及Lua脚本相关的属性和方法后，CCObject还剩下什么？ 1.剩下什么？ 可以看到整个CCObject就是围绕着m_uReference和m_uAutoReleaseCount在转。这两个变量的解释如下。所以CCObject剩下的其实就是对内存的管理 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/31/play-cocos2dx-20/">【玩转cocos2d-x之二十】从CCObject看cocos2d-x的内存管理机制</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-31T18:13:00+08:00" pubdate data-updated="true">Oct 31<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>再看CCObject，剔除上节的拷贝相关，以及Lua脚本相关的属性和方法后，CCObject还剩下什么？</p>
+
+<h3>1.剩下什么？</h3>
+
+<p>可以看到整个CCObject就是围绕着m_uReference和m_uAutoReleaseCount在转。这两个变量的解释如下。所以CCObject剩下的其实就是对内存的管理。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/31/play-cocos2dx-20/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -493,55 +538,6 @@ USING_NS_CC_EXT;
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/10/17/play-cocos2dx-10/">【玩转cocos2d-x之十】cocos2d-x坐标系</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-17T14:43:00+08:00" pubdate data-updated="true">Oct 17<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>cocos2d-x采用的是笛卡尔平面坐标系，也就是平面上两条垂直线构成的坐标系，平面上任意一点都可以用（x，y）来表示。</p>
-
-<p><em>（1）就坐标系方向而言，cocos2d-x分为屏幕坐标系和OpenGL坐标系。</em></p>
-
-<p><em>（2）就节点本身而言，cocos2d-x分为绝对坐标系和相对坐标系。</em></p>
-
-<h3>1.屏幕坐标系</h3>
-
-<p>屏幕坐标系，也叫UIKit坐标系，原点在屏幕左上，x轴向右，y轴向下。cocos2d-x的屏幕触摸事件传入的位置坐标就是采用了屏幕坐标系。以320*480的屏幕为例，如图坐标值为屏幕坐标系。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/10/17/play-cocos2dx-10/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -563,6 +559,7 @@ USING_NS_CC_EXT;
   <h1>Categories</h1>
   <ul id="categories">
     <li class='category'><a href='/blog/categories/cocos2dx-faq/'>Cocos2dx-FAQ (1)</a></li>
+<li class='category'><a href='/blog/categories/lua/'>Lua (1)</a></li>
 <li class='category'><a href='/blog/categories/tools/'>Tools (1)</a></li>
 <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (37)</a></li>
 
@@ -570,6 +567,10 @@ USING_NS_CC_EXT;
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs/">如何在Windows平台使用VS搭建C++/Lua的开发环境</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/08/26/cocos2dx-faq-1/">Cocos2dx-FAQ-1</a>
@@ -585,10 +586,6 @@ USING_NS_CC_EXT;
     
       <li class="post">
         <a href="/blog/2014/07/10/play-cocos2dx-36/">【玩转cocos2d-x之三十六】Earth Warrior 3D 大揭秘</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/25/play-cocos2dx-35/">【玩转cocos2d-x之三十五】《我叫MT offline》Demo</a>
       </li>
     
   </ul>
