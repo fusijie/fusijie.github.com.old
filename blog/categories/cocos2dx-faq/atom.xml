@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Cocos2dx-FAQ | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/blog/categories/cocos2dx-faq/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-08-28T12:58:35+08:00</updated>
+  <updated>2014-08-30T20:58:57+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -103,6 +103,106 @@ public Cocos2dxGLSurfaceView onCreateView() {
 <br></br>
 
 
+<h3>5.<code>Q:</code>如何在Cocos2d-x实现C++调用Java？</h3>
+
+<br></br>
+
+
+<h3>6.<code>Q:</code>如何在Cocos2d-x实现Java调用C++？</h3>
+
+<br></br>
+
+
+<h3>7.<code>Q:</code>如何在Cocos2d-x实现截图功能？</h3>
+
+<p><em>Cocos2d-x 2.x</em></p>
+
+<p>Cocos2d-x 2.x没有提供截图功能，但是可以用CCRenderTexture来实现这个功能</p>
+
+<p>``` cpp SaveScreenShot</p>
+
+<pre><code>void CTestLayer::SaveScreenShot()  
+{  
+    //获取屏幕尺寸  
+    CCSize size = CCDirector::sharedDirector()-&gt;getWinSize();  
+    //使用屏幕尺寸初始化一个空的渲染纹理对象  
+    CCRenderTexture* texture = CCRenderTexture::create((int)size.width, (int)size.height);  
+    //设置位置      
+    texture-&gt;setPosition(ccp(size.width/2, size.height/2));  
+    //开始获取      
+    texture-&gt;begin();  
+    //遍历场景节点对象，填充纹理到texure中  
+    CCDirector::sharedDirector()-&gt;getRunningScene()-&gt;visit();  
+    //结束获取  
+    texture-&gt;end();  
+    //保存为PNG图，Win32/Debug目录下  
+    texture-&gt;saveToFile("screenshot.png", kCCImageFormatPNG);  
+}  
+</code></pre>
+
+<p>```</p>
+
+<p><em>Cocos2d-x 3.x</em></p>
+
+<p>在Cocos2d-x 3.2之前，引擎也没有提供截图功能，同样可以使用RenderTexture实现</p>
+
+<p>``` cpp SaveScreenShot</p>
+
+<pre><code>void Director::saveScreenshot(const std::string&amp; fileName,const std::function&lt;void(const std::string&amp;)&gt;&amp; callback)  
+{  
+    Image::Format format;  
+    //进行后缀判断  
+    if(std::string::npos != fileName.find_last_of(".")){  
+    auto extension = fileName.substr(fileName.find_last_of("."),fileName.length());  
+    if (!extension.compare(".png")) {  
+        format = Image::Format::PNG;  
+    } else if(!extension.compare(".jpg")) {  
+        format = Image::Format::JPG;  
+    } else{  
+        log("cocos2d: the image can only be saved as JPG or PNG format");  
+        return;  
+    }  
+} else {  
+    log("cocos2d: the image can only be saved as JPG or PNG format");  
+    return ;  
+}  
+//获取屏幕尺寸，初始化一个空的渲染纹理对象  
+    auto renderTexture = RenderTexture::create(getWinSize().width, getWinSize().height, Texture2D::PixelFormat::RGBA8888);  
+    //清空并开始获取  
+    renderTexture-&gt;beginWithClear(0.0f, 0.0f, 0.0f, 0.0f);  
+    //遍历场景节点对象，填充纹理到RenderTexture中  
+    getRunningScene()-&gt;visit();  
+    //结束获取  
+    renderTexture-&gt;end();  
+    //保存文件  
+    renderTexture-&gt;saveToFile(fileName , format);  
+    //使用schedule在下一帧中调用callback函数  
+    auto fullPath = FileUtils::getInstance()-&gt;getWritablePath() + fileName;  
+    auto scheduleCallback = [&amp;,fullPath,callback](float dt){  
+        callback(fullPath);  
+    };  
+    auto _schedule = getRunningScene()-&gt;getScheduler();  
+    _schedule-&gt;schedule(scheduleCallback, this, 0.0f,0,0.0f, false, "screenshot");  
+}
+</code></pre>
+
+<p>```</p>
+
+<p>从Cocos2d-x 3.2之后开始，引擎提供了captureScreen函数来实现截图功能</p>
+
+<p>``` cpp captureScreen</p>
+
+<pre><code>void Util::captureScreen(const std::function&lt;void(bool, const std::string&amp;)&gt;&amp; afterCaptured, const std::string&amp; filename);
+</code></pre>
+
+<p>```</p>
+
+<br></br>
+
+
+<h3>8.<code>Q:</code>如何在Cocos2d-x获取随机数？</h3>
+
+<br></br>
 
 ]]></content>
   </entry>
