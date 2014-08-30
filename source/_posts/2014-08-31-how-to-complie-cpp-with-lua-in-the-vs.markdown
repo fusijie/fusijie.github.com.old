@@ -103,8 +103,6 @@ tags: [VS2012, C++, Lua]
 
 <div align="center"><img src="http://www-fusijie-com.qiniudn.com/vslua_pic_2.png" alt="" border="0" title="" /><br></br></div>
 
-demo下载地址：[https://github.com/fusijie/Cpp_Lua_VS2012](https://github.com/fusijie/Cpp_Lua_VS2012)
-
 3.生成Lua.exe和Luac.exe
 
 由于下载的lua源码中包含lua.c和luac.c，这两个文件都有main入口，同时编译的话会出错，所以只要删除其中一个，另一个就可以正常编译。
@@ -129,6 +127,8 @@ demo下载地址：[https://github.com/fusijie/Cpp_Lua_VS2012](https://github.co
 
 <div align="center"><img src="http://www-fusijie-com.qiniudn.com/vslua_pic_3.png" alt="" border="0" title="" /><br></br></div>
 
-demo下载地址：[https://github.com/fusijie/Lua_LuaC_exe](https://github.com/fusijie/Lua_LuaC_exe)
+C++调用Lua项目：[https://github.com/fusijie/Cpp_Lua_VS2012](https://github.com/fusijie/Cpp_Lua_VS2012)
+
+Lua和LuaC项目：[https://github.com/fusijie/Lua_LuaC_exe](https://github.com/fusijie/Lua_LuaC_exe)
 
 如果你不想这么麻烦，也可以直接从上述2个github地址直接clone我的项目。
