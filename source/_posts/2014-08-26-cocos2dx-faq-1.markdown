@@ -9,11 +9,11 @@ tags:
 
 ###1. `Q:`如何在安卓上给应用程序设置透明背景？
 
-NativeActivity，以Cocos2d-x 3.0 rc0为例
+(1)NativeActivity，以Cocos2d-x 3.0 rc0为例
 
 [http://www.cocoachina.com/bbs/read.php?tid=196780](http://www.cocoachina.com/bbs/read.php?tid=196780)
 
-JavaActivity，以Cocos2d-x 3.2 release为例
+(2)JavaActivity，以Cocos2d-x 3.2 release为例
 
 [http://www.cocoachina.com/bbs/read.php?tid=224544](http://www.cocoachina.com/bbs/read.php?tid=224544)
 
@@ -49,7 +49,7 @@ Cocos2d-x 从v3.0开始将Node::draw()方法标记为final（参见[cocos2d/2d/C
 
 未开启OpenGL深度缓存，解决方法如下：
 
-*iOS：在AppController.mm修改*
+*(1)iOS：在AppController.mm修改*
 
 ``` objc iOS修改深度缓存
 	
@@ -63,7 +63,7 @@ Cocos2d-x 从v3.0开始将Node::draw()方法标记为final（参见[cocos2d/2d/C
     
 ```
                                  
-*Android：在AppActivity.java修改*
+*(2)Android：在AppActivity.java修改*
 
 ``` java Android修改深度缓存
 	
@@ -84,15 +84,106 @@ Cocos2d-x 从v3.0开始将Node::draw()方法标记为final（参见[cocos2d/2d/C
 
 ###5.`Q:`如何在Cocos2d-x实现C++调用Java？
 
+C++调用Java代码主要是通过JNI实现，这里以Cocos2d-x 3.2为例。
+
+(1)C++部分：
+
+在HelloWorld.cpp增加如下函数，用于调用java代码。
+
+``` cpp C++代码
+
+	#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+	#include <jni.h>
+	#include "platform/android/jni/JniHelper.h"
+	#include <cocos2d.h>
+	#endif
+
+	void HelloWorld::testJNI()
+	{
+	#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+		JniMethodInfo minfo;
+ 
+		bool isHave = JniHelper::getStaticMethodInfo(minfo,"org/cocos2dx/cpp/AppActivity","testjni", "()V");
+ 
+		if (!isHave) {
+    		log("jni:testjni is null");
+		}else{
+    		minfo.env->CallStaticVoidMethod(minfo.classID, minfo.methodID);
+		}
+	#endif
+	}
+	
+```
+	
+(2)Java部分：
+
+在org.cocos2dx.cpp.Activity中增加如下函数，供C++调用。
+
+``` java Java代码
+
+	public static void testjni() {  
+	    System.out.println("From Java"); 
+	}
+
+```
+
+更详细的使用说明，请参考：[Java Native Interface Specification](http://docs.oracle.com/javase/6/docs/technotes/guides/jni/spec/jniTOC.html)
+
 <br></br>
 
 ###6.`Q:`如何在Cocos2d-x实现Java调用C++？
+
+Java调C++代码也是通过JNI实现，当然Android给我们提供了更方便的工具NDK。由于这里是以Cocos2d-x为例，所以不再去赘述NDK使用。同样以Cocos2d-x 3.2为例。
+
+(1)C++部分：
+
+在HelloWorld.cpp增加如下函数，供java调用。
+
+``` cpp C++代码	
+
+	#include <jni.h>
+
+	#ifdef __cplusplus
+	extern "C" {
+	#endif
+    JNIEXPORT jstring JNICALL Java_org_cocos2dx_cpp_AppActivity_testjni
+    (JNIEnv *env, jclass)
+    {
+        return env->NewStringUTF("From C++");
+    }
+	#ifdef __cplusplus
+	}
+	#endif
+
+```
+
+(2)Java部分：
+
+在org.cocos2dx.cpp.Activity中增加如下函数，用于调用C++代码。
+
+``` java java代码
+
+	public class AppActivity extends Cocos2dxActivity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		System.out.println(testjni());
+	}
+	
+	public static native String testjni();
+	}
+	
+```
+
+参考地址：[Java Programming Tutorial Java Native Interface](https://www3.ntu.edu.sg/home/ehchua/programming/java/JavaNativeInterface.html)
 
 <br></br>
 
 ###7.`Q:`如何在Cocos2d-x实现截图功能？
 
-*Cocos2d-x 2.x*
+*（1）Cocos2d-x 2.x*
 
 Cocos2d-x 2.x没有提供截图功能，但是可以用CCRenderTexture来实现这个功能
 
@@ -117,7 +208,7 @@ Cocos2d-x 2.x没有提供截图功能，但是可以用CCRenderTexture来实现�
 	}  
 ```
 
-*Cocos2d-x 3.x*
+*（2）Cocos2d-x 3.x*
 
 在Cocos2d-x 3.2之前，引擎也没有提供截图功能，同样可以使用RenderTexture实现
 
@@ -174,4 +265,39 @@ Cocos2d-x 2.x没有提供截图功能，但是可以用CCRenderTexture来实现�
 
 ###8.`Q:`如何在Cocos2d-x获取随机数？
 
+首先计算机是无法产生真正的随机数的，都是伪随机。获取随机数的方式和算法多种多样，这里只给出一种方法，基于最新的C++11。
+
+``` cpp 随机数产生
+
+	#include <random>
+
+    std::uniform_int_distribution<unsigned> u(1,1000);
+    std::default_random_engine e;
+    e.seed((unsigned)time(NULL));
+    int random_number = u(e);
+
+```
+
+这个例子产生了一个范围在1～1000的随机数（这里采用的标准分布是离散型均匀分布）。
+
+参考：[C++11:Random number generation](http://www.stroustrup.com/C++11FAQ.html#std-random)
+
 <br></br>
+
+
+###9.`Q:`为什么直接点击Windows平台生成的exe可执行文件，提示程序已停止工作？
+
+这里以Cocos2d-x 3.2为例。
+
+(1)如果直接在Visual Studio编译生成目标文件，那么目标文件会被生成到`项目/proj.win32/Debug.win32`目录下（debug模式）或者`项目/proj.win32/release.win32`目录下（release模式）。由于资源文件没有拷贝到目标文件目录的关系，此时点击xxx.exe，程序会停止工作。
+
+解决方法是：手动将资源文件拷贝到xxx.exe同级目录下。
+
+(2)如果采用的是命令行
+
+	cocos run -p win32
+	
+那目标文件会被生成到`项目/bin/debug/win32`目录下，同时资源文件也会被拷贝到这个文件夹，此时直接点击xxx.exe就可以运行。`项目/proj.win32/Debug.win32`目录也会有xxx.exe，点击也会提示停止工作，解决方法同上。
+
+<br></br>
+
