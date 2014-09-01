@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-08-31T01:12:06+08:00</updated>
+  <updated>2014-09-01T18:26:07+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -184,11 +184,11 @@
     <id>http://www.fusijie.com/blog/2014/08/26/cocos2dx-faq-1</id>
     <content type="html"><![CDATA[<h3>1. <code>Q:</code>如何在安卓上给应用程序设置透明背景？</h3>
 
-<p>NativeActivity，以Cocos2d-x 3.0 rc0为例</p>
+<p>(1)NativeActivity，以Cocos2d-x 3.0 rc0为例</p>
 
 <p><a href="http://www.cocoachina.com/bbs/read.php?tid=196780">http://www.cocoachina.com/bbs/read.php?tid=196780</a></p>
 
-<p>JavaActivity，以Cocos2d-x 3.2 release为例</p>
+<p>(2)JavaActivity，以Cocos2d-x 3.2 release为例</p>
 
 <p><a href="http://www.cocoachina.com/bbs/read.php?tid=224544">http://www.cocoachina.com/bbs/read.php?tid=224544</a></p>
 
@@ -229,7 +229,7 @@
 
 <p>未开启OpenGL深度缓存，解决方法如下：</p>
 
-<p><em>iOS：在AppController.mm修改</em></p>
+<p><em>(1)iOS：在AppController.mm修改</em></p>
 
 <figure class='code'><figcaption><span>iOS修改深度缓存</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -248,7 +248,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><em>Android：在AppActivity.java修改</em></p>
+<p><em>(2)Android：在AppActivity.java修改</em></p>
 
 <figure class='code'><figcaption><span>Android修改深度缓存</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -280,17 +280,151 @@
 
 <h3>5.<code>Q:</code>如何在Cocos2d-x实现C++调用Java？</h3>
 
+<p>C++调用Java代码主要是通过JNI实现，这里以Cocos2d-x 3.2为例。</p>
+
+<p>(1)C++部分：</p>
+
+<p>在HelloWorld.cpp增加如下函数，用于调用java代码。</p>
+
+<figure class='code'><figcaption><span>C++代码</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="err">#</span><span class="k">if</span> <span class="p">(</span><span class="n">CC_TARGET_PLATFORM</span> <span class="o">==</span> <span class="n">CC_PLATFORM_ANDROID</span><span class="p">)</span>
+</span><span class='line'>  <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">jni</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="err">#</span><span class="n">include</span> <span class="s">&quot;platform/android/jni/JniHelper.h&quot;</span>
+</span><span class='line'>  <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">cocos2d</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="err">#</span><span class="n">endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kt">void</span> <span class="n">HelloWorld</span><span class="o">::</span><span class="n">testJNI</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>  <span class="err">#</span><span class="k">if</span> <span class="p">(</span><span class="n">CC_TARGET_PLATFORM</span> <span class="o">==</span> <span class="n">CC_PLATFORM_ANDROID</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">JniMethodInfo</span> <span class="n">minfo</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="kt">bool</span> <span class="n">isHave</span> <span class="o">=</span> <span class="n">JniHelper</span><span class="o">::</span><span class="n">getStaticMethodInfo</span><span class="p">(</span><span class="n">minfo</span><span class="p">,</span><span class="s">&quot;org/cocos2dx/cpp/AppActivity&quot;</span><span class="p">,</span><span class="s">&quot;testjni&quot;</span><span class="p">,</span> <span class="s">&quot;()V&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">isHave</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">log</span><span class="p">(</span><span class="s">&quot;jni:testjni is null&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span><span class='line'>          <span class="n">minfo</span><span class="p">.</span><span class="n">env</span><span class="o">-&gt;</span><span class="n">CallStaticVoidMethod</span><span class="p">(</span><span class="n">minfo</span><span class="p">.</span><span class="n">classID</span><span class="p">,</span> <span class="n">minfo</span><span class="p">.</span><span class="n">methodID</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="err">#</span><span class="n">endif</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>(2)Java部分：</p>
+
+<p>在org.cocos2dx.cpp.Activity中增加如下函数，供C++调用。</p>
+
+<figure class='code'><figcaption><span>Java代码</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">testjni</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;From Java&quot;</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>更详细的使用说明，请参考：<a href="http://docs.oracle.com/javase/6/docs/technotes/guides/jni/spec/jniTOC.html">Java Native Interface Specification</a></p>
+
 <br></br>
 
 
 <h3>6.<code>Q:</code>如何在Cocos2d-x实现Java调用C++？</h3>
+
+<p>Java调C++代码也是通过JNI实现，当然Android给我们提供了更方便的工具NDK。由于这里是以Cocos2d-x为例，所以不再去赘述NDK使用。同样以Cocos2d-x 3.2为例。</p>
+
+<p>(1)C++部分：</p>
+
+<p>在HelloWorld.cpp增加如下函数，供java调用。</p>
+
+<figure class='code'><figcaption><span>C++代码  </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">jni</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="err">#</span><span class="n">ifdef</span> <span class="n">__cplusplus</span>
+</span><span class='line'>  <span class="k">extern</span> <span class="s">&quot;C&quot;</span> <span class="p">{</span>
+</span><span class='line'>  <span class="err">#</span><span class="n">endif</span>
+</span><span class='line'>    <span class="n">JNIEXPORT</span> <span class="n">jstring</span> <span class="n">JNICALL</span> <span class="n">Java_org_cocos2dx_cpp_AppActivity_testjni</span>
+</span><span class='line'>    <span class="p">(</span><span class="n">JNIEnv</span> <span class="o">*</span><span class="n">env</span><span class="p">,</span> <span class="n">jclass</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">env</span><span class="o">-&gt;</span><span class="n">NewStringUTF</span><span class="p">(</span><span class="s">&quot;From C++&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="err">#</span><span class="n">ifdef</span> <span class="n">__cplusplus</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="err">#</span><span class="n">endif</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>(2)Java部分：</p>
+
+<p>在org.cocos2dx.cpp.Activity中增加如下函数，用于调用C++代码。</p>
+
+<figure class='code'><figcaption><span>java代码</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="kd">public</span> <span class="kd">class</span> <span class="nc">AppActivity</span> <span class="kd">extends</span> <span class="n">Cocos2dxActivity</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nd">@Override</span>
+</span><span class='line'>  <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">(</span><span class="n">Bundle</span> <span class="n">savedInstanceState</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="c1">// TODO Auto-generated method stub</span>
+</span><span class='line'>      <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">(</span><span class="n">savedInstanceState</span><span class="o">);</span>
+</span><span class='line'>      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">testjni</span><span class="o">());</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">native</span> <span class="n">String</span> <span class="nf">testjni</span><span class="o">();</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>参考地址：<a href="https://www3.ntu.edu.sg/home/ehchua/programming/java/JavaNativeInterface.html">Java Programming Tutorial Java Native Interface</a></p>
 
 <br></br>
 
 
 <h3>7.<code>Q:</code>如何在Cocos2d-x实现截图功能？</h3>
 
-<p><em>Cocos2d-x 2.x</em></p>
+<p><em>（1）Cocos2d-x 2.x</em></p>
 
 <p>Cocos2d-x 2.x没有提供截图功能，但是可以用CCRenderTexture来实现这个功能</p>
 
@@ -331,7 +465,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><em>Cocos2d-x 3.x</em></p>
+<p><em>（2）Cocos2d-x 3.x</em></p>
 
 <p>在Cocos2d-x 3.2之前，引擎也没有提供截图功能，同样可以使用RenderTexture实现</p>
 
@@ -424,7 +558,51 @@
 
 <h3>8.<code>Q:</code>如何在Cocos2d-x获取随机数？</h3>
 
-<br></br><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/08/26/cocos2dx-faq-1/'>http://www.fusijie.com/blog/2014/08/26/cocos2dx-faq-1/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+<p>首先计算机是无法产生真正的随机数的，都是伪随机。获取随机数的方式和算法多种多样，这里只给出一种方法，基于最新的C++11。</p>
+
+<figure class='code'><figcaption><span>随机数产生</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">random</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">std</span><span class="o">::</span><span class="n">uniform_int_distribution</span><span class="o">&lt;</span><span class="kt">unsigned</span><span class="o">&gt;</span> <span class="n">u</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1000</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">std</span><span class="o">::</span><span class="n">default_random_engine</span> <span class="n">e</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">e</span><span class="p">.</span><span class="n">seed</span><span class="p">((</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">random_number</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="n">e</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这个例子产生了一个范围在1～1000的随机数（这里采用的标准分布是离散型均匀分布）。</p>
+
+<p>参考：<a href="http://www.stroustrup.com/C++11FAQ.html#std-random">C++11:Random number generation</a></p>
+
+<br></br>
+
+
+<h3>9.<code>Q:</code>为什么直接点击Windows平台生成的exe可执行文件，提示程序已停止工作？</h3>
+
+<p>这里以Cocos2d-x 3.2为例。</p>
+
+<p>(1)如果直接在Visual Studio编译生成目标文件，那么目标文件会被生成到<code>项目/proj.win32/Debug.win32</code>目录下（debug模式）或者<code>项目/proj.win32/release.win32</code>目录下（release模式）。由于资源文件没有拷贝到目标文件目录的关系，此时点击xxx.exe，程序会停止工作。</p>
+
+<p>解决方法是：手动将资源文件拷贝到xxx.exe同级目录下。</p>
+
+<p>(2)如果采用的是命令行</p>
+
+<pre><code>cocos run -p win32
+</code></pre>
+
+<p>那目标文件会被生成到<code>项目/bin/debug/win32</code>目录下，同时资源文件也会被拷贝到这个文件夹，此时直接点击xxx.exe就可以运行。<code>项目/proj.win32/Debug.win32</code>目录也会有xxx.exe，点击也会提示停止工作，解决方法同上。</p>
+
+<br></br>
+
+
+
+
+<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/08/26/cocos2dx-faq-1/'>http://www.fusijie.com/blog/2014/08/26/cocos2dx-faq-1/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
 
 ]]></content>
   </entry>
