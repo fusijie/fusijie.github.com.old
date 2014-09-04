@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Cocos2dx-FAQ | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/blog/categories/cocos2dx-faq/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-09-01T18:26:07+08:00</updated>
+  <updated>2014-09-04T18:17:29+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,122 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Cocos2dx-FAQ-2]]></title>
+    <link href="http://www.fusijie.com/blog/2014/09/02/cocos2dx-faq-2/"/>
+    <updated>2014-09-02T17:34:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2014/09/02/cocos2dx-faq-2</id>
+    <content type="html"><![CDATA[<h3>1.<code>Q:</code>Cocos2d-x v2.2.5 进行Android交叉编译的时候报错“'transform' is not a member of &lsquo;std'”，如何解决？</h3>
+
+<p>由于没有添加标准算法库导致的问题，在<a href="https://github.com/cocos2d/cocos2d-x/blob/v2/extensions/CocoStudio/Reader/WidgetReader/LabelReader/LabelReader.cpp">extensions/CocoStudio/Reader/LabelReader.cpp</a>增加头文件的引用即可。官方仓库已修复，可以直接拉取更新。</p>
+
+<p>``` cpp 包含头文件</p>
+
+<pre><code>#include &lt;algorithm&gt;
+</code></pre>
+
+<p>```</p>
+
+<p><a href="https://github.com/cocos2d/cocos2d-x/commit/70cbb91ea88a65be34e223c93f00edfdbfc11975">参考链接</a></p>
+
+<!-- more -->
+
+
+
+
+<br></br>
+
+
+<h3>2.<code>Q:</code>Cocos2d-x有哪些可用的粒子编辑器？</h3>
+
+<p>Mac平台：</p>
+
+<ul>
+<li><a href="https://71squared.com/particledesigner">Particle Designer，收费</a></li>
+<li><a href="https://itunes.apple.com/us/app/id600661093?mt=8">Particle Playground，收费</a></li>
+</ul>
+
+
+<p>Windows平台：</p>
+
+<ul>
+<li><p><a href="code.google.com/p/cocos2d-windows-particle-editor/">Particle Editor，基于C#，开源，免费</a></p></li>
+<li><p><a href="http://bbs.csdn.net/topics/390627359">ParticleDesigner，不开源，免费</a></p></li>
+<li><a href="http://blog.csdn.net/jebe7282/article/details/8051899">Cocos2d Particle Builder，基于QT，不开源，免费</a></li>
+</ul>
+
+
+<p>Web平台：</p>
+
+<ul>
+<li><a href="http://particle2dx.com/">Particle2dx，免费</a></li>
+</ul>
+
+
+<br></br>
+
+
+<h3>3.<code>Q:</code>点击按钮菜单的时候如果让它具有放大效果？</h3>
+
+<p>以Cocos2d-x v3.2为例。</p>
+
+<p>如果使用Menu的话，手动去设置将按下图片放大（使用MenuItemSprite），那么按钮的放大效果会保持坐下坐标不变，往右上角放大，而不是从中心往四周放大。</p>
+
+<p>解决的方法是，使用Button控件。设置按下动作有效即可，目前放大倍数是1.1。v3.3版本会开放这个倍数设置接口。</p>
+
+<p>``` cpp setPressedActionEnabled</p>
+
+<pre><code>auto btn = Button::create("CloseNormal.png");
+btn-&gt;setPressedActionEnabled(true);
+btn-&gt;setPosition(Vec2(200,200));
+this-&gt;addChild(btn);
+</code></pre>
+
+<p>```</p>
+
+<br></br>
+
+
+<h3>4.<code>Q:</code>Cocos2d-x支持视频播放吗？为什么TestCpp看不到相关测试例？</h3>
+
+<p>从Cocos2d-x v3.1开始，Cocos2d-x加入视频播放模块<a href="https://github.com/cocos2d/cocos2d-x/blob/v3/cocos/ui/UIVideoPlayer.h">VideoPlayer</a>，暂只支持iOS和Android平台。</p>
+
+<p>因此只有在iOS和Android平台上才能在看到TestCpp的VideoPlayer菜单，其他平台是隐藏的。具体位置是：
+Node::UI/GUI Dynamic Create Test/VideoPlayerTest。</p>
+
+<br></br>
+
+
+<h3>5.<code>Q:</code>如何下载Cocos2d-x的历史版本？</h3>
+
+<p>最简单的方式就是克隆官方git仓库。通过标签来创建本地分支，并进行切换。这样就可以不用每个版本都去下载一个引擎了。</p>
+
+<p>比如要获取Cocos2d-x v3.2（注：这里不处理submodule）</p>
+
+<pre><code>git clone https://github.com/cocos2d/cocos2d-x.git
+cd cocos2d-x/
+git checkout -b v3.2 cocos2d-x-3.2
+</code></pre>
+
+<p>这样就在本地创建了3.2的分支。查看版本标签可以使用</p>
+
+<pre><code>git tag
+</code></pre>
+
+<p>当然也可以采用直接下载的方式</p>
+
+<ul>
+<li><p><a href="http://www.cocos2d-x.org/download">http://www.cocos2d-x.org/download</a></p></li>
+<li><p><a href="http://www.cocos2d-x.org/download/version#Cocos2d-x">http://www.cocos2d-x.org/download/version#Cocos2d-x</a></p></li>
+<li><p><a href="https://code.google.com/p/cocos2d-x/downloads/list">https://code.google.com/p/cocos2d-x/downloads/list</a></p></li>
+</ul>
+
+
+<br></br>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Cocos2dx-FAQ-1]]></title>
@@ -336,7 +452,44 @@ int random_number = u(e);
 <br></br>
 
 
+<h3>10.<code>Q:</code>如何在popScene时使用场景过渡效果？</h3>
 
+<p>这里以Cocos2d-x 3.2为例。需要修改引擎的Director::popScene()函数，也可以进行重载或者设置默认参数。</p>
+
+<p>``` cpp popScene</p>
+
+<pre><code>void Director::popScene(const std::function&lt;void(Scene* &amp;)&gt;&amp; callback)
+{
+    CCASSERT(_runningScene != nullptr, "running scene should not null");
+
+    _scenesStack.popBack();
+    ssize_t c = _scenesStack.size();
+
+    if (c == 0)
+    {
+        end();
+    }
+    else
+    {
+        _sendCleanupToScene = true;
+        _nextScene = _scenesStack.at(c - 1);
+        if(callback)
+            callback(_nextScene);
+    }
+}
+</code></pre>
+
+<p>```</p>
+
+<p>使用方式：</p>
+
+<p>``` cpp 使用新的popScene</p>
+
+<pre><code>auto callback = [](Scene*&amp; scene){scene = TransitionJumpZoom::create(1.0f, scene);};
+Director::getInstance()-&gt;popScene(callback);
+</code></pre>
+
+<p>```</p>
 ]]></content>
   </entry>
   

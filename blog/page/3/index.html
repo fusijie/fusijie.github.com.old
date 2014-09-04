@@ -9,7 +9,7 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="再看CCObject，剔除上节的拷贝相关，以及Lua脚本相关的属性和方法后，CCObject还剩下什么？ 1.剩下什么？ 可以看到整个CCObject就是围绕着m_uReference和m_uAutoReleaseCount在转。这两个变量的解释如下。所以CCObject剩下的其实就是对内存的管理 &hellip;">
+  <meta name="description" content="和其他框架一样，cocos2d-x允许我们使用多线程进行编程。cocos2d-x v2.2.0使用的是pthread库，是一套用户级线程库，被广泛地使用在跨平台应用上。 1.配置 在使用pthread之前，需要把头文件和库文件链接进来。pthread的官网戳这里，当然cocos2d- &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/11/04/play-cocos2dx-21/">【玩转cocos2d-x之二十一】多线程和同步01-pthread库</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-04T11:01:00+08:00" pubdate data-updated="true">Nov 4<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>和其他框架一样，cocos2d-x允许我们使用多线程进行编程。cocos2d-x v2.2.0使用的是pthread库，是一套用户级线程库，被广泛地使用在跨平台应用上。</p>
+
+<h3>1.配置</h3>
+
+<p>在使用pthread之前，需要把头文件和库文件链接进来。pthread的官网<a href="http://www.sourceware.org/pthreads-win32/">戳这里</a>，当然cocos2d-x帮我们包含进引擎了。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/11/04/play-cocos2dx-21/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -486,58 +531,6 @@ USING_NS_CC_EXT;
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/10/18/play-cocos2dx-11/">【玩转cocos2d-x之十一】定时器schedule</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-18T08:08:00+08:00" pubdate data-updated="true">Oct 18<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>如果我们想定时执行一个动作怎么办？CCScheduler帮了我们一个大忙。</p>
-
-<h3>1.概况</h3>
-
-<p>CCNode内部封装了一个</p>
-
-<pre><code>CCScheduler *m_pScheduler;  
-</code></pre>
-
-<p>正是通过它我们可以很轻松地完成一些定时功能，所以定时器是节点所具备的功能。</p>
-
-<p>定时器分为2种，一种是更新定时器，执行的频率是每帧执行一次，另一种则是自定义回调函数的定时器（最小值是一帧），关于回调函数和函数指针的相关基础可参见<a href="http://blog.csdn.net/jackystudio/article/details/11720325">这里</a>。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/10/18/play-cocos2dx-11/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -558,7 +551,7 @@ USING_NS_CC_EXT;
 </section><section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/cocos2dx-faq/'>Cocos2dx-FAQ (1)</a></li>
+    <li class='category'><a href='/blog/categories/cocos2dx-faq/'>Cocos2dx-FAQ (2)</a></li>
 <li class='category'><a href='/blog/categories/lua/'>Lua (1)</a></li>
 <li class='category'><a href='/blog/categories/tools/'>Tools (1)</a></li>
 <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (37)</a></li>
@@ -567,6 +560,10 @@ USING_NS_CC_EXT;
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/09/02/cocos2dx-faq-2/">Cocos2dx-FAQ-2</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs/">如何在Windows平台使用VS搭建C++/Lua的开发环境</a>
@@ -582,10 +579,6 @@ USING_NS_CC_EXT;
     
       <li class="post">
         <a href="/blog/2014/08/21/play-cocos2dx-37/">【玩转cocos2d-x之三十七】在Cocos2d-x中集成安卓版微信SDK</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/07/10/play-cocos2dx-36/">【玩转cocos2d-x之三十六】Earth Warrior 3D 大揭秘</a>
       </li>
     
   </ul>

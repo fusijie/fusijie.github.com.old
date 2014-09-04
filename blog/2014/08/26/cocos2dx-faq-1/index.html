@@ -519,6 +519,60 @@
 <br></br>
 
 
+<h3>10.<code>Q:</code>如何在popScene时使用场景过渡效果？</h3>
+
+<p>这里以Cocos2d-x 3.2为例。需要修改引擎的Director::popScene()函数，也可以进行重载或者设置默认参数。</p>
+
+<figure class='code'><figcaption><span>popScene</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="kt">void</span> <span class="n">Director</span><span class="o">::</span><span class="n">popScene</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="n">Scene</span><span class="o">*</span> <span class="o">&amp;</span><span class="p">)</span><span class="o">&gt;&amp;</span> <span class="n">callback</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">CCASSERT</span><span class="p">(</span><span class="n">_runningScene</span> <span class="o">!=</span> <span class="n">nullptr</span><span class="p">,</span> <span class="s">&quot;running scene should not null&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">_scenesStack</span><span class="p">.</span><span class="n">popBack</span><span class="p">();</span>
+</span><span class='line'>      <span class="n">ssize_t</span> <span class="n">c</span> <span class="o">=</span> <span class="n">_scenesStack</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">end</span><span class="p">();</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'>          <span class="n">_sendCleanupToScene</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+</span><span class='line'>          <span class="n">_nextScene</span> <span class="o">=</span> <span class="n">_scenesStack</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">c</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>          <span class="k">if</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span>
+</span><span class='line'>              <span class="n">callback</span><span class="p">(</span><span class="n">_nextScene</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>使用方式：</p>
+
+<figure class='code'><figcaption><span>使用新的popScene</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="k">auto</span> <span class="n">callback</span> <span class="o">=</span> <span class="p">[](</span><span class="n">Scene</span><span class="o">*&amp;</span> <span class="n">scene</span><span class="p">){</span><span class="n">scene</span> <span class="o">=</span> <span class="n">TransitionJumpZoom</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="mf">1.0f</span><span class="p">,</span> <span class="n">scene</span><span class="p">);};</span>
+</span><span class='line'>    <span class="n">Director</span><span class="o">::</span><span class="n">getInstance</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">popScene</span><span class="p">(</span><span class="n">callback</span><span class="p">);</span>
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/08/26/cocos2dx-faq-1/'>http://www.fusijie.com/blog/2014/08/26/cocos2dx-faq-1/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
@@ -623,7 +677,7 @@ var duoshuoQuery = {short_name:"fusijie"};
 </section><section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/cocos2dx-faq/'>Cocos2dx-FAQ (1)</a></li>
+    <li class='category'><a href='/blog/categories/cocos2dx-faq/'>Cocos2dx-FAQ (2)</a></li>
 <li class='category'><a href='/blog/categories/lua/'>Lua (1)</a></li>
 <li class='category'><a href='/blog/categories/tools/'>Tools (1)</a></li>
 <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (37)</a></li>
@@ -632,6 +686,10 @@ var duoshuoQuery = {short_name:"fusijie"};
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/09/02/cocos2dx-faq-2/">Cocos2dx-FAQ-2</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs/">如何在Windows平台使用VS搭建C++/Lua的开发环境</a>
@@ -647,10 +705,6 @@ var duoshuoQuery = {short_name:"fusijie"};
     
       <li class="post">
         <a href="/blog/2014/08/21/play-cocos2dx-37/">【玩转cocos2d-x之三十七】在Cocos2d-x中集成安卓版微信SDK</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/07/10/play-cocos2dx-36/">【玩转cocos2d-x之三十六】Earth Warrior 3D 大揭秘</a>
       </li>
     
   </ul>
