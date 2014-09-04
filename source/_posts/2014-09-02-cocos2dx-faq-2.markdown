@@ -1,0 +1,97 @@
+---
+layout: post
+title: "Cocos2dx-FAQ-2"
+date: 2014-09-02 17:34
+comments: true
+categories: Cocos2dx-FAQ
+tags: 
+---
+
+###1.`Q:`Cocos2d-x v2.2.5 进行Android交叉编译的时候报错“'transform' is not a member of 'std'”，如何解决？
+
+由于没有添加标准算法库导致的问题，在[extensions/CocoStudio/Reader/LabelReader.cpp](https://github.com/cocos2d/cocos2d-x/blob/v2/extensions/CocoStudio/Reader/WidgetReader/LabelReader/LabelReader.cpp)增加头文件的引用即可。官方仓库已修复，可以直接拉取更新。
+
+``` cpp 包含头文件
+
+	#include <algorithm>
+
+```
+
+[参考链接](https://github.com/cocos2d/cocos2d-x/commit/70cbb91ea88a65be34e223c93f00edfdbfc11975)
+
+<!-- more -->
+
+<br></br>
+
+###2.`Q:`Cocos2d-x有哪些可用的粒子编辑器？
+
+Mac平台：
+
+* [Particle Designer，收费](https://71squared.com/particledesigner)
+* [Particle Playground，收费](https://itunes.apple.com/us/app/id600661093?mt=8)
+
+Windows平台：
+
+* [Particle Editor，基于C#，开源，免费](code.google.com/p/cocos2d-windows-particle-editor/)
+
+* [ParticleDesigner，不开源，免费](http://bbs.csdn.net/topics/390627359)
+* [Cocos2d Particle Builder，基于QT，不开源，免费](http://blog.csdn.net/jebe7282/article/details/8051899)
+
+Web平台：
+
+* [Particle2dx，免费](http://particle2dx.com/)
+
+<br></br>
+
+###3.`Q:`点击按钮菜单的时候如果让它具有放大效果？
+
+以Cocos2d-x v3.2为例。
+
+如果使用Menu的话，手动去设置将按下图片放大（使用MenuItemSprite），那么按钮的放大效果会保持坐下坐标不变，往右上角放大，而不是从中心往四周放大。
+
+解决的方法是，使用Button控件。设置按下动作有效即可，目前放大倍数。
+
+``` cpp setPressedActionEnabled
+
+	auto btn = Button::create("CloseNormal.png");
+	btn->setPressedActionEnabled(true);
+	btn->setPosition(Vec2(200,200));
+	this->addChild(btn);
+
+```
+
+<br></br>
+
+###4.`Q:`Cocos2d-x支持视频播放吗？为什么TestCpp看不到相关测试例？
+
+从Cocos2d-x v3.1开始，Cocos2d-x加入视频播放模块[VideoPlayer](https://github.com/cocos2d/cocos2d-x/blob/v3/cocos/ui/UIVideoPlayer.h)，暂只支持iOS和Android平台。
+
+因此只有在iOS和Android平台上才能在看到TestCpp的VideoPlayer菜单，其他平台是隐藏的。具体位置是：
+Node::UI/GUI Dynamic Create Test/VideoPlayerTest。
+
+<br></br>
+
+###5.`Q:`如何下载Cocos2d-x的历史版本？
+
+最简单的方式就是克隆官方git仓库。通过标签来创建本地分支，并进行切换。这样就可以不用每个版本都去下载一个引擎了。
+
+比如要获取Cocos2d-x v3.2（注：这里不处理submodule）
+
+	git clone https://github.com/cocos2d/cocos2d-x.git
+	cd cocos2d-x/
+	git checkout -b v3.2 cocos2d-x-3.2
+	
+这样就在本地创建了3.2的分支。查看版本标签可以使用
+
+	git tag
+	
+当然也可以采用直接下载的方式
+	
+* [http://www.cocos2d-x.org/download](http://www.cocos2d-x.org/download)
+	
+* [http://www.cocos2d-x.org/download/version#Cocos2d-x](http://www.cocos2d-x.org/download/version#Cocos2d-x)
+	
+* [https://code.google.com/p/cocos2d-x/downloads/list](https://code.google.com/p/cocos2d-x/downloads/list)
+
+
+<br></br>

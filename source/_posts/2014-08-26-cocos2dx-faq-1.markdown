@@ -301,3 +301,39 @@ Cocos2d-x 2.x没有提供截图功能，但是可以用CCRenderTexture来实现�
 
 <br></br>
 
+###10.`Q:`如何在popScene时使用场景过渡效果？
+
+这里以Cocos2d-x 3.2为例。需要修改引擎的Director::popScene()函数，也可以进行重载或者设置默认参数。
+
+``` cpp popScene
+
+	void Director::popScene(const std::function<void(Scene* &)>& callback)
+	{
+    	CCASSERT(_runningScene != nullptr, "running scene should not null");
+ 
+    	_scenesStack.popBack();
+    	ssize_t c = _scenesStack.size();
+ 
+    	if (c == 0)
+    	{
+        	end();
+    	}
+    	else
+    	{
+        	_sendCleanupToScene = true;
+        	_nextScene = _scenesStack.at(c - 1);
+        	if(callback)
+        		callback(_nextScene);
+    	}
+	}
+
+```
+
+使用方式：
+
+``` cpp 使用新的popScene
+
+	auto callback = [](Scene*& scene){scene = TransitionJumpZoom::create(1.0f, scene);};
+    Director::getInstance()->popScene(callback);
+    
+```
