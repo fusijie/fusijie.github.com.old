@@ -9,7 +9,7 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="如果我们想定时执行一个动作怎么办？CCScheduler帮了我们一个大忙。 1.概况 CCNode内部封装了一个 CCScheduler *m_pScheduler; 正是通过它我们可以很轻松地完成一些定时功能，所以定时器是节点所具备的功能。 定时器分为2种，一种是更新定时器， &hellip;">
+  <meta name="description" content="之前拿了一些别人的图片素材，是用TexturePacker打包合成的，结果写程序的时候不知道每个合成前小png图的名字是什么，只能一个一个从plist文件中找，然后猜测对应的名字，再进行显示，如果不对，还要继续猜。。。坑爹啊，效率大大降低了，时间都耗在找图片名字上了。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,53 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/19/play-cocos2dx-12/">【玩转cocos2d-x之十二】plist解析工具：Anti_TexturePacker</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-19T09:49:00+08:00" pubdate data-updated="true">Oct 19<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>之前拿了一些别人的图片素材，是用TexturePacker打包合成的，结果写程序的时候不知道每个合成前小png图的名字是什么，只能一个一个从plist文件中找，然后猜测对应的名字，再进行显示，如果不对，还要继续猜。。。坑爹啊，效率大大降低了，时间都耗在找图片名字上了。后来决定动手写一个解析plist的软件，就叫它Anti_TexturePacker吧。</p>
+
+<p>Anti_TexurePacker软件基于VS 2008 MFC Dialog。</p>
+
+<h3>1.PNG图的显示</h3>
+
+<p>这个还好，VS2008提供了GDI+，所以可以直接用它显示。关键是屏幕尺寸有限，如果打包后的PNG图很大的话，不能直接显示，又懒得做滚动条，所以直接采用缩放的方式了。缩放比例较大的话，可能会出现捕获点计算不精确，不过效果还是不错的，没有尺寸限制。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/19/play-cocos2dx-12/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -478,55 +525,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/10/09/play-cocos2dx-02/">【玩转cocos2d-x之二】游戏和引擎构成</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-09T16:53:00+08:00" pubdate data-updated="true">Oct 9<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>1.游戏构成</h3>
-
-<p>我们以超级马里奥游戏作为蓝本来描述一下一个游戏的构成。</p>
-
-<p>1.首先我们需要一个容器来放置游戏元素，每一个关卡都是一个容器，这叫场景。</p>
-
-<p>2.蓝天白云，各种板砖水管，这些是布景，放置在关卡中，通过布景的叠加，构成了游戏的主要背景。</p>
-
-<p>3.主角马里奥兄弟和各种小怪兽，这些叫精灵。这是游戏互动的主要元素。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/10/09/play-cocos2dx-02/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -547,7 +545,8 @@
 </section><section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/cocos2dx-faq/'>Cocos2dx-FAQ (2)</a></li>
+    <li class='category'><a href='/blog/categories/android/'>Android (1)</a></li>
+<li class='category'><a href='/blog/categories/cocos2dx-faq/'>Cocos2dx-FAQ (2)</a></li>
 <li class='category'><a href='/blog/categories/lua/'>Lua (1)</a></li>
 <li class='category'><a href='/blog/categories/tools/'>Tools (1)</a></li>
 <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (37)</a></li>
@@ -556,6 +555,10 @@
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/09/08/smali-introduction/">Smali和逆向分析</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/09/02/cocos2dx-faq-2/">Cocos2dx-FAQ-2</a>
@@ -571,10 +574,6 @@
     
       <li class="post">
         <a href="/blog/2014/08/24/tools-powercmd/">PowerCmd，一个Windows下cmd的绝佳替代工具</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/08/21/play-cocos2dx-37/">【玩转cocos2d-x之三十七】在Cocos2d-x中集成安卓版微信SDK</a>
       </li>
     
   </ul>
