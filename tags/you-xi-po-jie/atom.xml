@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: 游戏破解 | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/tags/you-xi-po-jie/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-09-09T00:51:57+08:00</updated>
+  <updated>2014-09-09T10:33:49+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -18,7 +18,7 @@
     <link href="http://www.fusijie.com/blog/2014/09/08/smali-introduction/"/>
     <updated>2014-09-08T20:37:00+08:00</updated>
     <id>http://www.fusijie.com/blog/2014/09/08/smali-introduction</id>
-    <content type="html"><![CDATA[<p>这篇文章其实2个月前就想写了，但我知道并不好写，就懒得写了，所以拖到现在～其实接触smali这门语法是件蛮偶然的事，接触后发现，次奥，这货在某些领域太有用了，至于为什么我想看完这篇文章应该都明白了。</p>
+    <content type="html"><![CDATA[<p>这篇文章其实2个月前就想写了，但并不好写，就懒得写了，所以拖到现在～其实接触smali这门语法是件蛮偶然的事，接触后发现，次奥，这货在某些领域太有用了，至于为什么我想看完这篇文章应该都明白了。</p>
 
 <p>我自己也只是接触了皮毛，大概用了2个礼拜多一点，也不是很系统的学习，写这篇的目的主要还是想把知道的东西记下来，以后好追溯。</p>
 
@@ -138,13 +138,13 @@ return-void
 </ul>
 
 
-<p>对比了Java代码和Smali代码，可以很清楚的看到，原本只有几行的代码到了Smali，内容被大大扩充了。Smali还原了Java隐藏的东西，同时显式地指定了很多细节。这还只是个最基本的HelloWorld的onCreate函数，如果有内部类，还有分文件显示。</p>
+<p>对比了Java代码和Smali代码，可以很清楚的看到，原本只有几行的代码到了Smali，内容被大大扩充了。Smali还原了Java隐藏的东西，同时显式地指定了很多细节。这还只是个最基本的HelloWorld的onCreate函数，如果有内部类，还会分文件显示。</p>
 
 <p>这样看来，其实Smali只能说复杂，不能说难。我这里不打算把Smali的语法再贴一次，这里给出几个链接，算是总结的相对好一点的（其实我都没看到有系统总结的。。。如果你有好的资料，欢迎跟帖分享）</p>
 
 <ul>
 <li><a href="http://liuzhichao.com/p/tag/smali">Smali语法&mdash;数据类型、方法、字段和寄存器</a></li>
-<li><a href="http://book.2cto.com/201212/12468.html">Android软件安全与逆向分享&mdash;Smali文件格式</a></li>
+<li><a href="http://book.2cto.com/201212/12468.html">Android软件安全与逆向分析&mdash;Smali文件格式</a></li>
 <li><a href="http://blog.csdn.net/wdaming1986/article/details/8299996">Smali&mdash;Dalvik虚拟机指令语言</a></li>
 <li><a href="http://bbs.pediy.com/showthread.php?t=151769">看雪论坛&mdash;关于Smali语法</a></li>
 </ul>
