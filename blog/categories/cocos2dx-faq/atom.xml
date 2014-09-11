@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Cocos2dx-FAQ | Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/blog/categories/cocos2dx-faq/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-09-09T10:33:49+08:00</updated>
+  <updated>2014-09-11T10:24:21+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -68,7 +68,7 @@
 <br></br>
 
 
-<h3>3.<code>Q:</code>点击按钮菜单的时候如果让它具有放大效果？</h3>
+<h3>3.<code>Q:</code>点击按钮菜单的时候如何让它具有放大效果？</h3>
 
 <p>以Cocos2d-x v3.2为例。</p>
 

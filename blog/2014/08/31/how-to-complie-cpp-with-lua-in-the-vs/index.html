@@ -162,18 +162,18 @@
 <pre><code>..\bin\Lua.lib
 </code></pre>
 
-<p>(4)在HeloLua.cpp中添加如下代码，</p>
+<p>或者使用代码链接lua库，即在HeloLua.cpp中添加如下代码，</p>
 
 <figure class='code'><figcaption><span>调用lua.lib</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="err">#</span><span class="n">pragma</span> <span class="n">comment</span> <span class="p">(</span><span class="n">lib</span><span class="p">,</span><span class="s">&quot;Lua.lib&quot;</span><span class="p">)</span>
+</pre></td><td class='code'><pre><code class='cpp'><span class='line'>  <span class="err">#</span><span class="n">pragma</span> <span class="n">comment</span> <span class="p">(</span><span class="n">lib</span><span class="p">,</span><span class="s">&quot;../bin/Lua.lib&quot;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>(5)设置HelloLua项目为默认启动项，点击生成项目即可。</p>
+<p>(4)设置HelloLua项目为默认启动项，点击生成项目即可。</p>
 
-<p>(6)因为此时main函数并没有执行任何代码，所以控制台一闪而过。右键HelloLua项目的源文件，添加新建项，取名hellolua.lua。</p>
+<p>(5)因为此时main函数并没有执行任何代码，所以控制台一闪而过。右键HelloLua项目的源文件，添加新建项，取名hellolua.lua。</p>
 
-<p>(7)一个简单的调用示例：</p>
+<p>(6)一个简单的调用示例：</p>
 
 <figure class='code'><figcaption><span>demo</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
