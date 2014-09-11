@@ -60,19 +60,19 @@ tags: [VS2012, C++, Lua]
 
 	..\bin\Lua.lib
 
-(4)在HeloLua.cpp中添加如下代码，
+或者使用代码链接lua库，即在HeloLua.cpp中添加如下代码，
 
 ``` cpp 调用lua.lib
 
-	#pragma comment (lib,"Lua.lib")
+	#pragma comment (lib,"../bin/Lua.lib")
 
 ```
 
-(5)设置HelloLua项目为默认启动项，点击生成项目即可。
+(4)设置HelloLua项目为默认启动项，点击生成项目即可。
 
-(6)因为此时main函数并没有执行任何代码，所以控制台一闪而过。右键HelloLua项目的源文件，添加新建项，取名hellolua.lua。
+(5)因为此时main函数并没有执行任何代码，所以控制台一闪而过。右键HelloLua项目的源文件，添加新建项，取名hellolua.lua。
 
-(7)一个简单的调用示例：
+(6)一个简单的调用示例：
 
 ``` cpp demo
 
