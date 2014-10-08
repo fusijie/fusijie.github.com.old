@@ -9,7 +9,7 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="之前拿了一些别人的图片素材，是用TexturePacker打包合成的，结果写程序的时候不知道每个合成前小png图的名字是什么，只能一个一个从plist文件中找，然后猜测对应的名字，再进行显示，如果不对，还要继续猜。。。坑爹啊，效率大大降低了，时间都耗在找图片名字上了。 &hellip;">
+  <meta name="description" content="前两天写个游戏，发现CCMenu的布局还是比较有意思的，这里总结一下，以便后用。 1.概况 CCMenu是cocos2d-x的菜单类，但它本身并不具备菜单具体属性，而是作为一个父节点，将一些具体类型的菜单添加进去来达到菜单目的的。我们正常会这么使用它：先创建子菜单项CCMenuItem， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +75,53 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/21/play-cocos2dx-13/">【玩转cocos2d-x之十三】CCMenu的布局</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-21T10:23:00+08:00" pubdate data-updated="true">Oct 21<span>st</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>前两天写个游戏，发现CCMenu的布局还是比较有意思的，这里总结一下，以便后用。</p>
+
+<h3>1.概况</h3>
+
+<p>CCMenu是cocos2d-x的菜单类，但它本身并不具备菜单具体属性，而是作为一个父节点，将一些具体类型的菜单添加进去来达到菜单目的的。我们正常会这么使用它：先创建子菜单项CCMenuItem，然后将子菜单项CCMenuItem加入菜单CCMenu，最后把CCMenu加入当前层CCLayer。</p>
+
+<p>如果直接在层中添加CCMenuItem会怎样？其实显示也是会正常，但是无法响应回调，因为CCMenu是继承至CCLayer，也就继承了触摸的相关事件，而CCMenuItem只是从CCNode继承而来，并不响应触摸，因此无法调用回调函数。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013/10/21/play-cocos2dx-13/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -482,49 +529,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/10/10/play-cocos2dx-03/">【玩转cocos2d-x之三】cocos2d-x游戏是怎么跑起来的</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-10T10:01:00+08:00" pubdate data-updated="true">Oct 10<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>虽然cocos2d-x v3.0 alpha版已经出来了，也改进了不少，有兴趣的可以去尝尝鲜。因为后面可能还会配合cocoStudio写一下博客，而现在v1.0.0.0版本需要配合cocos2d-x v2.2.0使用。所以这里选择了V2.2.0版的cocos2d-x。</p>
-
-<p>一个新的东西，从头开始吧！从HelloWorld出发看一下一个cocos2d-x游戏是怎么跑起来的。先看看它的结构。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/10/10/play-cocos2dx-03/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -550,11 +554,16 @@
 <li class='category'><a href='/blog/categories/lua/'>Lua (1)</a></li>
 <li class='category'><a href='/blog/categories/tools/'>Tools (1)</a></li>
 <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (37)</a></li>
+<li class='category'><a href='/blog/categories/git/'>git (1)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/10/08/what-is-a-commit-hash/">(译)第一部分：什么是commit Hash?</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/09/08/smali-introduction/">Smali和逆向分析</a>
@@ -570,10 +579,6 @@
     
       <li class="post">
         <a href="/blog/2014/08/26/cocos2dx-faq-1/">Cocos2dx-FAQ-1</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/08/24/tools-powercmd/">PowerCmd，一个Windows下cmd的绝佳替代工具</a>
       </li>
     
   </ul>

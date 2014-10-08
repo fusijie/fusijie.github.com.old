@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-09-11T10:24:21+08:00</updated>
+  <updated>2014-10-09T00:19:49+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -12,6 +12,76 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[(译)第一部分：什么是commit hash?]]></title>
+    <link href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/"/>
+    <updated>2014-10-08T22:25:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash</id>
+    <content type="html"><![CDATA[<h4>内容提要</h4>
+
+<ul>
+<li>第一部分：commit hash是什么？</li>
+<li>第二部分：<a href="">merge是什么？</a></li>
+<li>第三部分：<a href="">rebase是什么？</a></li>
+</ul>
+
+
+<p>最近一段时间我在学习如何使用<a href="http://git-scm.com/">Git</a>，碰到的一个难点：如何区别<a href="http://git-scm.com/docs/git-merge">merge</a>和<a href="http://git-scm.com/docs/git-rebase">rebase</a>？大部分人都能理解merge的概念，但是对于rebase就不是很清楚了。在这三篇博文中我将尽可能用最简单的方式来解释它们的异同。不过在此之前，我们需要先了解一下什么是commit hash。</p>
+
+<!-- more -->
+
+
+<p>如果你看过自己的commit历史，那么对于下面的内容肯定不会陌生：</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>commit a9ca2c9f4e1e0061075aa47cbb97201a43b0f66f 
+</span><span class='line'>Author: Alex Ford 
+</span><span class='line'>Date: Mon Sep 8 6:49:17 2014
+</span><span class='line'>
+</span><span class='line'>Initial commit.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>你也许会认为这个由字母和数字组成的长长的字符串是一个单独commit的唯一的ID。虽然你是对的，但是你可能不知道它是一个<a href="http://en.wikipedia.org/wiki/SHA-1">SHA-1</a>生成的哈希码，用于表示一个git commit对象。如果不去深入理解git <a href="http://git-scm.com/book/en/Git-Internals-Git-Objects#Commit-Objects">commit object</a>，那顶多就只知道这是一个基于它所表示的信息直接生成的一个很大的加密字符串。改变一个commit hash的唯一方式就是改变commit的细节，本质上来说，其实是生成了一个全新的commit对象。</p>
+
+<p>除了一些明显的信息，比如commit的作者，时间，存储的数据，commit通常还包含了在它之前的一个commit的hash，这正是你的commit历史产生的原因。每一个commit都知道紧跟它之前的commit hash。</p>
+
+<p><img src="http://i.imgur.com/mljhFlh.png" alt="" /></p>
+
+<p>上图可以看到我的<a href="https://www.atlassian.com/software/sourcetree/overview">SourceTree</a>窗口，打开了一个我创建的demo仓库。我做了3次commit。SourceTree相当智能，它可以读取仓库中的每一个commit，然后用图形的方式展现出commit历史。可以看到，<code>Commit 2</code>直接引用了<code>Commit 1</code>，而<code>Commit 1</code>直接引用了<code>Commit 0</code>。需要注意的是，在这里，我直接使用Commit字样作为commit描述，为的是尽可能简单地谈论这个话题。实际上，每一个commit信息都应该正确地描述它们所做的改变。</p>
+
+<p>因为我的demo仓库master分支上只包含了这3个commit，所以SourceTree的图形从头到尾就是一条简单直线。好，现在我们就做点稍微复杂一点的事情，为了一个新的功能，我们需要创建一个独立的分支。</p>
+
+<p><img src="http://i.imgur.com/S5o9qWL.png" alt="" /></p>
+
+<p>从上图可以看到我创建了一个叫<code>feature1</code>的分支，但是图形仍然是一样的。这是因为在创建完新的分支后，我并没有进行任何新的commit。分支实际上只是指向一个特殊commit的指针。现在，<code>master</code>和<code>feature1</code>都指向了同一个commit。好了，我们往<code>feature1</code>分支添加一个新的commit</p>
+
+<p><img src="http://i.imgur.com/qjIWl7F.png" alt="" /></p>
+
+<p>可以看到，我们的<code>feature1</code>分支移动了它的指针来指向一个新的commit，<code>Commit 3</code>。你可以看到，我们的图形<em>仍然</em>是一条简单的直线。这是因为到目前为止，仅有4个commit，而每一个commit都是引用了紧跟它的前一个commit。如果我现在将<code>feature1</code>合并到<code>master</code>，只会发生一件事，就是<code>master</code>分支会直接跳到和<code>feature1</code>指向的相同commit，也就是<code>Commit 3</code>。这个叫做<em>fast-forward</em>合并（快进合并），因为它只是简单地将<code>master</code>分支的移动到指向最新的commit。</p>
+
+<p>OK，当我们兴高采烈地在<code>feature1</code>上赶工，突然老板一个电话说一个新的Bug需要被马上解决，这是重中之重。这需要暂停<code>feature1</code>上的工作，然后马上在<code>master</code>分支上修复bug并提交。这个时候，我们不得不切换到<code>master</code>分支，然后进行一个commit。如果bug很大，可能得考虑是否要创建另一个分支，然后在这个分支上进行多个commit，现在假装bug很小，只要一个commit就能搞定。</p>
+
+<p><img src="http://i.imgur.com/8MFZLBi.png" alt="" /></p>
+
+<p>好了，现在看起来就有点不一样了，请注意上图的图形，<code>feature1</code>分支上的<code>Commit 3</code>在自己封闭的路径上了。原因很简单，<code>Commit 4</code>和<code>Commit 3</code>有相同的祖先。还记得commit是如何存储紧跟它之前的commit吗？当切换到<code>master</code>分支的时候，我们将会返回到<code>Commit 2</code>，因为<code>Commit 3</code>只由<code>feature1</code>分支指针引用。而<code>master</code>分支指针仍然指向<code>Commit 2</code>。因为我们的修复commit（<code>Commit 4</code>）将<code>Commit 2</code>视为它的前一个commit。</p>
+
+<p>现在的图形告诉我们，<code>Commit 4</code>和<code>Commit 3</code>同时都引用了<code>Commit 2</code>作为他的前一个commit。在这种情况下，可以将<code>Commit 2</code>视为<code>Commit 3</code>和<code>Commit 4</code>共有的祖先。现在我们的修复已经被提交了，所以可以回到<code>feature1</code>分支继续工作了。</p>
+
+<p><img src="http://i.imgur.com/kxDIgKl.png" alt="" /></p>
+
+<p>现在我在<code>feature1</code>分支上创建了2个新的commit，<code>Commit 5</code>和<code>Commit 6</code>。新功能已经完成了，也是时候合并<code>feature1</code>分支到<code>master</code>分支中了。这时，我们可以选择merge <code>feature1</code>分支到<code>master</code>分支，也可以reabse <code>feature1</code>分支到<code>master</code>分支，让我们在<a href="">第二部分</a>中探究一下merge是什么？</p>
+
+<blockquote><p>原文地址:<a href="http://codetunnel.com/merge-vs-rebase-part-1-what-is-a-commit-hash/">http://codetunnel.com/merge-vs-rebase-part-1-what-is-a-commit-hash/</a></p></blockquote>
+
+<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/'>http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Smali和逆向分析]]></title>
@@ -4556,181 +4626,6 @@ void CTestLayer::SaveScreenShot()
 <h3>4.源码下载</h3>
 
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6538305">下载地址</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/11/13/play-cocos2dx-24/'><a href="http://www.fusijie.com/blog/2013/11/13/play-cocos2dx-24/">http://www.fusijie.com/blog/2013/11/13/play-cocos2dx-24/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[【玩转cocos2d-x之二十三】多线程和同步03-图片异步加载]]></title>
-    <link href="http://www.fusijie.com/blog/2013/11/11/play-cocos2dx-23/"/>
-    <updated>2013-11-11T11:22:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/11/11/play-cocos2dx-23</id>
-    <content type="html"><![CDATA[<p>cocos2d-x中和Android，Windows都一样，如果在主线程中处理一些耗时操作，那么主线程就会出现阻塞现象，表现在界面上就是卡住，未响应等情况。为了避免这种情况的出现，我们需要在后台开辟工作线程进行数据的处理，再采用消息传递或者其他形式来通知主线程进行UI变化。最常见的情况就是游戏进入前的loading。</p>
-
-<h3>1.图片的异步加载</h3>
-
-<p>在多线程和同步的第一篇介绍到使用pthread库的时候，讲到由于CCAutoreleasePool不是线程安全的，所以不能在工作线程中引入cocos2d-x相关的API（其实并不是所有的API都不能使用）。但是cocos2d-x显然考虑到这个问题了，所以它本身就帮我们封装好了一个API，避免了还要手动引入pthread库的尴尬。</p>
-
-<pre><code>void CCTextureCache::addImageAsync(const char *path, CCObject *target, SEL_CallFuncO selector)  
-</code></pre>
-
-<!--more -->
-
-
-<p>其中path是图片的位置，selector是加载完成时的回调函数。很方便，如果需要加载很多图片的话，对每一个进行回调处理，然后在update中更新UI即可。</p>
-
-<h3>2.plist的异步加载</h3>
-
-<p>可是由于内存原因，大部分情况下图片会被合成打包，同时带入plist。这时候如何进行图片的异步加载呢？这个时候就需要对addImageAsync的源码进一步的探究了。</p>
-
-<p><strong>2.1.耗时的是什么？</strong></p>
-
-<p>首先要理解的是耗时的动作是什么，只有把耗时的工作真正抓出来丢到工作线程上，异步加载才有意义。我们知道，图片在内存中是以纹理的形式存在的，而图片的加载，通俗来讲也就是纹理的生成，这就是耗时的原因。那CCTexureCache中addImage（同步加载）和addImageAysnc（异步加载）分别做了什么事？</p>
-
-<p><em>（1）addImage</em>
-可以看出addImage使用同步的方式生成了纹理，也就是在主线程中进行了耗时的加载操作。</p>
-
-<pre><code>//...cocos2d-x维护着一个全局纹理，在判断纹理是否已存在  
-if (! texture)   
-    {  
-        do   
-        {  
-        //...判断图片格式  
-
-            pImage = new CCImage();  
-            CC_BREAK_IF(NULL == pImage);  
-
-            bool bRet = pImage-&gt;initWithImageFile(fullpath.c_str(), eImageFormat);  
-            CC_BREAK_IF(!bRet);  
-
-            texture = new CCTexture2D();    //开辟纹理空间  
-
-            if( texture &amp;&amp;  
-                texture-&gt;initWithImage(pImage) )  //使用CCImage初始化纹理  
-            {  
-#if CC_ENABLE_CACHE_TEXTURE_DATA  
-                // cache the texture file name  
-                VolatileTexture::addImageTexture(texture, fullpath.c_str(), eImageFormat);  
-#endif  
-                m_pTextures-&gt;setObject(texture, pathKey.c_str());  
-                texture-&gt;release();  
-            }  
-            else  
-            {  
-                CCLOG("cocos2d: Couldn't create texture for file:%s in CCTextureCache", path);  
-            }  
-        } while (0);  
-    }  
-//...释放资源，返回纹理  
-</code></pre>
-
-<p><em>（2）addImageAsync</em></p>
-
-<p>addImageAsync则是在工作线程中加载图片，然后通过调度器进行纹理的转换。</p>
-
-<pre><code>//创建工作线程用于后台加载图片  
-pthread_create(&amp;s_loadingThread, NULL, loadImage, NULL);  
-
-//创建调度队列，用来根据已加载的图片进行纹理转换  
-CCDirector::sharedDirector()-&gt;getScheduler()-&gt;scheduleSelector(schedule_selector(CCTextureCache::addImageAsyncCallBack), this, 0, false);  
-
-void CCTextureCache::addImageAsyncCallBack(float dt)  
-{  
-    //...  
-    CCTexture2D *texture = new CCTexture2D();   //开辟纹理空间  
-#if 0 //TODO: (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)  
-    texture-&gt;initWithImage(pImage, kCCResolutioniPhone);  
-#else  
-    texture-&gt;initWithImage(pImage);      //使用CCImage初始化纹理  
-#endif  
-
-#if CC_ENABLE_CACHE_TEXTURE_DATA  
-
-   VolatileTexture::addImageTexture(texture, filename, pImageInfo-&gt;imageType);  
-#endif  
-    //...将加入autorelease，进行加载后的回调函数的调用，释放相关资源  
-}  
-</code></pre>
-
-<p><strong>2.2.plist加载的原理</strong></p>
-
-<p>之前使用plist是这样子的：</p>
-
-<pre><code>void CCSpriteFrameCache::addSpriteFramesWithFile(const char *pszPlist)//传入plist文件即可  
-</code></pre>
-
-<p>在它的实现中，发现了这么一句：</p>
-
-<pre><code>CCTexture2D *pTexture = CCTextureCache::sharedTextureCache()-&gt;addImage(texturePath.c_str());  
-</code></pre>
-
-<p>原来addSpriteFramesWithFile会先查找是否存在纹理，否则会在.plist的目录下寻找同名图片，然后调用同步的addImage函数来生成纹理。这也就是为什么只加载了plist，而纹理就会存在的原因了。</p>
-
-<p><strong>2.3.异步加载plist</strong></p>
-
-<p>知道了这些，那就让addSpriteFramesWithFile调用异步的addImageAsync函数就可以了，当然不需要改源码，因为CCSpriteFrameCache还提供了如下的plist加载方式：</p>
-
-<pre><code>void CCSpriteFrameCache::addSpriteFramesWithFile(const char *pszPlist, CCTexture2D *pobTexture)  
-</code></pre>
-
-<p>所以我们可以手动异步生成纹理后，在回调函数中和.plist一起传入addSpriteFramesWithFile，搞定！还记得刚开始的selector么？生成的纹理会作为参数传入这个回调函数中，完美！</p>
-
-<p><strong>2.4.注意</strong></p>
-
-<p>只要注意一点的是，在使用任何plist中的小图片时，引擎并不会为每一张小图片生成一个纹理，而是共用了大图片的纹理，同时指定了小图片的坐标和长宽。</p>
-
-<h3>3.示例</h3>
-
-<p>其中ui_text.png是大图片，raffle_b_friend.png和raffle_b_diamond.png是两张小图片。</p>
-
-<pre><code>bool CTestLayer::init()  
-{  
-    bool bRet=false;  
-    do   
-    {  
-        CC_BREAK_IF(!CCLayer::init());  
-
-        //addImage or addImageAsync中创建纹理  
-        CCTextureCache::sharedTextureCache()-&gt;addImageAsync("ui_text.png",this,callfuncO_selector(CTestLayer::showSprite));  
-
-        bRet=true;  
-    } while (0);  
-    return bRet;  
-}  
-
-void CTestLayer::showSprite(CCObject* obj)  
-{  
-    CCTexture2D* texture_ui_text=(CCTexture2D*)obj;//传入的obj即是异步生成的纹理  
-    CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;addSpriteFramesWithFile("ui_text.plist",texture_ui_text);//通过纹理和.plist文件加入CCSpriteFrameCache  
-    CCSprite* raffle_b_friend=CCSprite::createWithSpriteFrameName("raffle_b_friend.png");//尽情使用小图片吧  
-    raffle_b_friend-&gt;setPosition(ccp(100,100));  
-    this-&gt;addChild(raffle_b_friend);  
-
-    //错误，只能获取ui_text.png的纹理  
-    //CCTexture2D* raffle_b_diamond_texture=CCTextureCache::sharedTextureCache()-&gt;textureForKey("raffle_b_diamond.png");  
-    //正确，可以用这种先获取精灵帧，再从精灵帧中获取ui_text的纹理，以及大小，来构建CCSprite  
-    CCSpriteFrame* raffle_b_diamond_spriteframe=CCSpriteFrameCache::sharedSpriteFrameCache()-&gt;spriteFrameByName("raffle_b_diamond.png");  
-    CCTexture2D* texture=raffle_b_diamond_spriteframe-&gt;getTexture();  
-    CCRect rect=raffle_b_diamond_spriteframe-&gt;getRect();  
-    CCSprite* raffle_b_diamond=CCSprite::createWithTexture(texture,rect); //如果纹理需要旋转，setRotation吧  
-    raffle_b_diamond-&gt;setRotation(false);  
-    raffle_b_diamond-&gt;setPosition(ccp(300,100));  
-    this-&gt;addChild(raffle_b_diamond);  
-}  
-</code></pre>
-
-<h3>4.效果</h3>
-
-<p>使用异步加载plist方式处理:</p>
-
-<div align="center"><img src="http://img.blog.csdn.net/20131111094358437?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamFja3lzdHVkaW8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="" border="0" title="效果图" /><br></br></div>
-
-
-<h3>5.源码下载</h3>
-
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6533293">下载地址</a></p>
-
-<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/11/11/play-cocos2dx-23/'>http://www.fusijie.com/blog/2013/11/11/play-cocos2dx-23/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
-
 ]]></content>
   </entry>
   

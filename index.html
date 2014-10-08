@@ -9,7 +9,9 @@
   <meta name="author" content="FuSijie">
 
   
-  <meta name="description" content="这篇文章其实2个月前就想写了，但并不好写，就懒得写了，所以拖到现在～其实接触smali这门语法是件蛮偶然的事，接触后发现，次奥，这货在某些领域太有用了，至于为什么我想看完这篇文章应该都明白了。 我自己也只是接触了皮毛，大概用了2个礼拜多一点，也不是很系统的学习， &hellip;">
+  <meta name="description" content="内容提要 第一部分：commit hash是什么？
+第二部分：merge是什么？
+第三部分：rebase是什么？ 最近一段时间我在学习如何使用Git，碰到的一个难点：如何区别merge和rebase？大部分人都能理解merge的概念，但是对于rebase就不是很清楚了。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +77,56 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/10/08/what-is-a-commit-hash/">(译)第一部分：什么是commit Hash?</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-08T22:25:00+08:00" pubdate data-updated="true">Oct 8<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>内容提要</h4>
+
+<ul>
+<li>第一部分：commit hash是什么？</li>
+<li>第二部分：<a href="">merge是什么？</a></li>
+<li>第三部分：<a href="">rebase是什么？</a></li>
+</ul>
+
+
+<p>最近一段时间我在学习如何使用<a href="http://git-scm.com/">Git</a>，碰到的一个难点：如何区别<a href="http://git-scm.com/docs/git-merge">merge</a>和<a href="http://git-scm.com/docs/git-rebase">rebase</a>？大部分人都能理解merge的概念，但是对于rebase就不是很清楚了。在这三篇博文中我将尽可能用最简单的方式来解释它们的异同。不过在此之前，我们需要先了解一下什么是commit hash。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/10/08/what-is-a-commit-hash/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -518,55 +570,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/12/26/play-cocos2dx-33/">【玩转cocos2d-x之三十三】游戏嵌入Webview网页</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-26T14:11:00+08:00" pubdate data-updated="true">Dec 26<span>th</span>, 2013</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>手游《我叫MT》一开始会弹出一个游戏公告，有玩过的肯定都蛮熟悉的，这就是webview，就是一个网页。由于webview和平台相关，这里就介绍下cocos2d-x如何嵌入andorid的webview控件，在cocos2d-x中显示网页。</p>
-
-<h3>1.Jni</h3>
-
-<p>Jni这里我就不再多说了。可用参考<a href="http://en.wikipedia.org/wiki/Java_Native_Interface">wikipedia</a>，或者<a href="http://blog.csdn.net/jackystudio/article/details/12150907">微信飞机大战的移植篇</a>。通过Jni，可以实现在cocos2d-x中调用Android的API，当然也可以进行传值。</p>
-
-<h3>2.Android使用webview</h3>
-
-<p>直接上代码。主要是处理布局和webview使用的问题。这里采用代码布局。以下操作在android的主类（cocos2dxActivity）中处理。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/12/26/play-cocos2dx-33/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -590,11 +593,16 @@
 <li class='category'><a href='/blog/categories/lua/'>Lua (1)</a></li>
 <li class='category'><a href='/blog/categories/tools/'>Tools (1)</a></li>
 <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (37)</a></li>
+<li class='category'><a href='/blog/categories/git/'>git (1)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/10/08/what-is-a-commit-hash/">(译)第一部分：什么是commit Hash?</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/09/08/smali-introduction/">Smali和逆向分析</a>
@@ -610,10 +618,6 @@
     
       <li class="post">
         <a href="/blog/2014/08/26/cocos2dx-faq-1/">Cocos2dx-FAQ-1</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/08/24/tools-powercmd/">PowerCmd，一个Windows下cmd的绝佳替代工具</a>
       </li>
     
   </ul>

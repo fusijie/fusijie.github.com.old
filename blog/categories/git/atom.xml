@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: git | Jacky's Blog]]></title>
+  <link href="http://www.fusijie.com/blog/categories/git/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2014-10-09T00:19:49+08:00</updated>
+  <id>http://www.fusijie.com/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[(译)第一部分：什么是commit hash?]]></title>
+    <link href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/"/>
+    <updated>2014-10-08T22:25:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash</id>
+    <content type="html"><![CDATA[<h4>内容提要</h4>
+
+<ul>
+<li>第一部分：commit hash是什么？</li>
+<li>第二部分：<a href="">merge是什么？</a></li>
+<li>第三部分：<a href="">rebase是什么？</a></li>
+</ul>
+
+
+<p>最近一段时间我在学习如何使用<a href="http://git-scm.com/">Git</a>，碰到的一个难点：如何区别<a href="http://git-scm.com/docs/git-merge">merge</a>和<a href="http://git-scm.com/docs/git-rebase">rebase</a>？大部分人都能理解merge的概念，但是对于rebase就不是很清楚了。在这三篇博文中我将尽可能用最简单的方式来解释它们的异同。不过在此之前，我们需要先了解一下什么是commit hash。</p>
+
+<!-- more -->
+
+
+<p>如果你看过自己的commit历史，那么对于下面的内容肯定不会陌生：</p>
+
+<p>```</p>
+
+<pre><code>commit a9ca2c9f4e1e0061075aa47cbb97201a43b0f66f 
+Author: Alex Ford 
+Date: Mon Sep 8 6:49:17 2014
+
+Initial commit.
+</code></pre>
+
+<p>```</p>
+
+<p>你也许会认为这个由字母和数字组成的长长的字符串是一个单独commit的唯一的ID。虽然你是对的，但是你可能不知道它是一个<a href="http://en.wikipedia.org/wiki/SHA-1">SHA-1</a>生成的哈希码，用于表示一个git commit对象。如果不去深入理解git <a href="http://git-scm.com/book/en/Git-Internals-Git-Objects#Commit-Objects">commit object</a>，那顶多就只知道这是一个基于它所表示的信息直接生成的一个很大的加密字符串。改变一个commit hash的唯一方式就是改变commit的细节，本质上来说，其实是生成了一个全新的commit对象。</p>
+
+<p>除了一些明显的信息，比如commit的作者，时间，存储的数据，commit通常还包含了在它之前的一个commit的hash，这正是你的commit历史产生的原因。每一个commit都知道紧跟它之前的commit hash。</p>
+
+<p><img src="http://i.imgur.com/mljhFlh.png" alt="" /></p>
+
+<p>上图可以看到我的<a href="https://www.atlassian.com/software/sourcetree/overview">SourceTree</a>窗口，打开了一个我创建的demo仓库。我做了3次commit。SourceTree相当智能，它可以读取仓库中的每一个commit，然后用图形的方式展现出commit历史。可以看到，<code>Commit 2</code>直接引用了<code>Commit 1</code>，而<code>Commit 1</code>直接引用了<code>Commit 0</code>。需要注意的是，在这里，我直接使用Commit字样作为commit描述，为的是尽可能简单地谈论这个话题。实际上，每一个commit信息都应该正确地描述它们所做的改变。</p>
+
+<p>因为我的demo仓库master分支上只包含了这3个commit，所以SourceTree的图形从头到尾就是一条简单直线。好，现在我们就做点稍微复杂一点的事情，为了一个新的功能，我们需要创建一个独立的分支。</p>
+
+<p><img src="http://i.imgur.com/S5o9qWL.png" alt="" /></p>
+
+<p>从上图可以看到我创建了一个叫<code>feature1</code>的分支，但是图形仍然是一样的。这是因为在创建完新的分支后，我并没有进行任何新的commit。分支实际上只是指向一个特殊commit的指针。现在，<code>master</code>和<code>feature1</code>都指向了同一个commit。好了，我们往<code>feature1</code>分支添加一个新的commit</p>
+
+<p><img src="http://i.imgur.com/qjIWl7F.png" alt="" /></p>
+
+<p>可以看到，我们的<code>feature1</code>分支移动了它的指针来指向一个新的commit，<code>Commit 3</code>。你可以看到，我们的图形<em>仍然</em>是一条简单的直线。这是因为到目前为止，仅有4个commit，而每一个commit都是引用了紧跟它的前一个commit。如果我现在将<code>feature1</code>合并到<code>master</code>，只会发生一件事，就是<code>master</code>分支会直接跳到和<code>feature1</code>指向的相同commit，也就是<code>Commit 3</code>。这个叫做<em>fast-forward</em>合并（快进合并），因为它只是简单地将<code>master</code>分支的移动到指向最新的commit。</p>
+
+<p>OK，当我们兴高采烈地在<code>feature1</code>上赶工，突然老板一个电话说一个新的Bug需要被马上解决，这是重中之重。这需要暂停<code>feature1</code>上的工作，然后马上在<code>master</code>分支上修复bug并提交。这个时候，我们不得不切换到<code>master</code>分支，然后进行一个commit。如果bug很大，可能得考虑是否要创建另一个分支，然后在这个分支上进行多个commit，现在假装bug很小，只要一个commit就能搞定。</p>
+
+<p><img src="http://i.imgur.com/8MFZLBi.png" alt="" /></p>
+
+<p>好了，现在看起来就有点不一样了，请注意上图的图形，<code>feature1</code>分支上的<code>Commit 3</code>在自己封闭的路径上了。原因很简单，<code>Commit 4</code>和<code>Commit 3</code>有相同的祖先。还记得commit是如何存储紧跟它之前的commit吗？当切换到<code>master</code>分支的时候，我们将会返回到<code>Commit 2</code>，因为<code>Commit 3</code>只由<code>feature1</code>分支指针引用。而<code>master</code>分支指针仍然指向<code>Commit 2</code>。因为我们的修复commit（<code>Commit 4</code>）将<code>Commit 2</code>视为它的前一个commit。</p>
+
+<p>现在的图形告诉我们，<code>Commit 4</code>和<code>Commit 3</code>同时都引用了<code>Commit 2</code>作为他的前一个commit。在这种情况下，可以将<code>Commit 2</code>视为<code>Commit 3</code>和<code>Commit 4</code>共有的祖先。现在我们的修复已经被提交了，所以可以回到<code>feature1</code>分支继续工作了。</p>
+
+<p><img src="http://i.imgur.com/kxDIgKl.png" alt="" /></p>
+
+<p>现在我在<code>feature1</code>分支上创建了2个新的commit，<code>Commit 5</code>和<code>Commit 6</code>。新功能已经完成了，也是时候合并<code>feature1</code>分支到<code>master</code>分支中了。这时，我们可以选择merge <code>feature1</code>分支到<code>master</code>分支，也可以reabse <code>feature1</code>分支到<code>master</code>分支，让我们在<a href="">第二部分</a>中探究一下merge是什么？</p>
+
+<blockquote><p>原文地址:<a href="http://codetunnel.com/merge-vs-rebase-part-1-what-is-a-commit-hash/">http://codetunnel.com/merge-vs-rebase-part-1-what-is-a-commit-hash/</a></p></blockquote>
+]]></content>
+  </entry>
+  
+</feed>
