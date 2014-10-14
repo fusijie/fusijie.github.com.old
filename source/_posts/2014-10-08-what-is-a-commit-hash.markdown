@@ -10,7 +10,7 @@ tags: [commit hash]
 ####内容提要
 
 * 第一部分：commit hash是什么？
-* 第二部分：[merge是什么？]()
+* 第二部分：[merge是什么？](http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/)
 * 第三部分：[rebase是什么？]()
 
 最近一段时间我在学习如何使用[Git](http://git-scm.com/)，碰到的一个难点：如何区别[merge](http://git-scm.com/docs/git-merge)和[rebase](http://git-scm.com/docs/git-rebase)？大部分人都能理解merge的概念，但是对于rebase就不是很清楚了。在这三篇博文中我将尽可能用最简单的方式来解释它们的异同。不过在此之前，我们需要先了解一下什么是commit hash。
@@ -55,10 +55,10 @@ OK，当我们兴高采烈地在`feature1`上赶工，突然老板一个电话�
 
 ![](http://i.imgur.com/kxDIgKl.png)
 
-现在我在`feature1`分支上创建了2个新的commit，`Commit 5`和`Commit 6`。新功能已经完成了，也是时候合并`feature1`分支到`master`分支中了。这时，我们可以选择merge `feature1`分支到`master`分支，也可以reabse `feature1`分支到`master`分支，让我们在[第二部分]()中探究一下merge是什么？
+现在我在`feature1`分支上创建了2个新的commit，`Commit 5`和`Commit 6`。新功能已经完成了，也是时候合并`feature1`分支到`master`分支中了。这时，我们可以选择merge `feature1`分支到`master`分支，也可以reabse `feature1`分支到`master`分支，让我们在[第二部分](http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/)中探究一下merge是什么？
 
 
->原文地址:[http://codetunnel.com/merge-vs-rebase-part-1-what-is-a-commit-hash/](http://codetunnel.com/merge-vs-rebase-part-1-what-is-a-commit-hash/)
+>英文地址:[http://codetunnel.com/merge-vs-rebase-part-1-what-is-a-commit-hash/](http://codetunnel.com/merge-vs-rebase-part-1-what-is-a-commit-hash/)
 
 
 
