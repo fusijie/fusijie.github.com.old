@@ -4,7 +4,7 @@
   <title><![CDATA[Jacky's Blog]]></title>
   <link href="http://www.fusijie.com/atom.xml" rel="self"/>
   <link href="http://www.fusijie.com/"/>
-  <updated>2014-10-15T01:31:31+08:00</updated>
+  <updated>2014-10-15T01:33:56+08:00</updated>
   <id>http://www.fusijie.com/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
@@ -99,7 +99,7 @@
 
 <ul>
 <li>第一部分：commit hash是什么？</li>
-<li>第二部分：<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-merge/">merge是什么？</a></li>
+<li>第二部分：<a href="http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/">merge是什么？</a></li>
 <li>第三部分：<a href="">rebase是什么？</a></li>
 </ul>
 
@@ -151,7 +151,7 @@
 
 <p><img src="http://i.imgur.com/kxDIgKl.png" alt="" /></p>
 
-<p>现在我在<code>feature1</code>分支上创建了2个新的commit，<code>Commit 5</code>和<code>Commit 6</code>。新功能已经完成了，也是时候合并<code>feature1</code>分支到<code>master</code>分支中了。这时，我们可以选择merge <code>feature1</code>分支到<code>master</code>分支，也可以reabse <code>feature1</code>分支到<code>master</code>分支，让我们在<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-merge/">第二部分</a>中探究一下merge是什么？</p>
+<p>现在我在<code>feature1</code>分支上创建了2个新的commit，<code>Commit 5</code>和<code>Commit 6</code>。新功能已经完成了，也是时候合并<code>feature1</code>分支到<code>master</code>分支中了。这时，我们可以选择merge <code>feature1</code>分支到<code>master</code>分支，也可以reabse <code>feature1</code>分支到<code>master</code>分支，让我们在<a href="http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/">第二部分</a>中探究一下merge是什么？</p>
 
 <blockquote><p>英文地址:<a href="http://codetunnel.com/merge-vs-rebase-part-1-what-is-a-commit-hash/">http://codetunnel.com/merge-vs-rebase-part-1-what-is-a-commit-hash/</a></p></blockquote>
 
