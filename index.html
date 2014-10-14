@@ -11,7 +11,7 @@
   
   <meta name="description" content="内容提要 第一部分：commit hash是什么？
 第二部分：merge是什么？
-第三部分：rebase是什么？ 最近一段时间我在学习如何使用Git，碰到的一个难点：如何区别merge和rebase？大部分人都能理解merge的概念，但是对于rebase就不是很清楚了。 &hellip;">
+第三部分：rebase是什么？ 在第一部分我们创建了一个小的demo仓库，它拥有着一个feature1分支，而且这个分支已经准备好要merge到master分支中了。 ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -83,6 +83,56 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/10/15/what-is-a-merge/">(译)第二部分：什么是merge?</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-15T00:03:00+08:00" pubdate data-updated="true">Oct 15<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>内容提要</h4>
+
+<ul>
+<li>第一部分：<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">commit hash是什么？</a></li>
+<li>第二部分：merge是什么？</li>
+<li>第三部分：<a href="">rebase是什么？</a></li>
+</ul>
+
+
+<p>在<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>我们创建了一个小的demo仓库，它拥有着一个<code>feature1</code>分支，而且这个分支已经准备好要merge到<code>master</code>分支中了。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/10/15/what-is-a-merge/">继续阅读 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/10/08/what-is-a-commit-hash/">(译)第一部分：什么是commit Hash?</a></h1>
     
     
@@ -110,7 +160,7 @@
 
 <ul>
 <li>第一部分：commit hash是什么？</li>
-<li>第二部分：<a href="">merge是什么？</a></li>
+<li>第二部分：<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-merge/">merge是什么？</a></li>
 <li>第三部分：<a href="">rebase是什么？</a></li>
 </ul>
 
@@ -525,51 +575,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/08/play-cocos2dx-34/">【玩转cocos2d-x之三十四】绘图：CCDrawingPrimitives和CCDrawNode</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-08T16:10:00+08:00" pubdate data-updated="true">Feb 8<span>th</span>, 2014</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>最近忙出翔了，这年过的也揪心。好久没来更新博客了，今天就来写一写cocos2d-x中图形的绘制。</p>
-
-<h3>1.概述</h3>
-
-<p>其实cocos2d-x封装了大量的opengl的绘图函数，我们可以很轻松的在游戏中调用。但是实际上我们很少会这么做，因为编码绘图的方式效率实在太低了，尤其是诸如一些高阶贝塞尔曲线之类的，官方也不建议这么做，使用图像能更有效的提高绘图效率，同时也会更为的美观，也减少了一些精灵遮挡问题和边缘锯齿问题。cocos2d-x中绘图主要有两种方式：CCDrawingPrimitives和CCDrawNode。它们都在cocos2dx\draw_nodes目录下。</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/02/08/play-cocos2dx-34/">继续阅读 &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -593,12 +598,16 @@
 <li class='category'><a href='/blog/categories/lua/'>Lua (1)</a></li>
 <li class='category'><a href='/blog/categories/tools/'>Tools (1)</a></li>
 <li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (37)</a></li>
-<li class='category'><a href='/blog/categories/git/'>git (1)</a></li>
+<li class='category'><a href='/blog/categories/git/'>git (2)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/10/15/what-is-a-merge/">(译)第二部分：什么是merge?</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/10/08/what-is-a-commit-hash/">(译)第一部分：什么是commit Hash?</a>
@@ -614,10 +623,6 @@
     
       <li class="post">
         <a href="/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs/">如何在Windows平台使用VS搭建C++/Lua的开发环境</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/08/26/cocos2dx-faq-1/">Cocos2dx-FAQ-1</a>
       </li>
     
   </ul>

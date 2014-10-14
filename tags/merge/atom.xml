@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: merge | Jacky's Blog]]></title>
+  <link href="http://www.fusijie.com/tags/merge/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2014-10-15T01:31:31+08:00</updated>
+  <id>http://www.fusijie.com/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[(译)第二部分：什么是merge?]]></title>
+    <link href="http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/"/>
+    <updated>2014-10-15T00:03:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2014/10/15/what-is-a-merge</id>
+    <content type="html"><![CDATA[<h4>内容提要</h4>
+
+<ul>
+<li>第一部分：<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">commit hash是什么？</a></li>
+<li>第二部分：merge是什么？</li>
+<li>第三部分：<a href="">rebase是什么？</a></li>
+</ul>
+
+
+<p>在<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>我们创建了一个小的demo仓库，它拥有着一个<code>feature1</code>分支，而且这个分支已经准备好要merge到<code>master</code>分支中了。</p>
+
+<!-- more -->
+
+
+<p><img src="http://i.imgur.com/kxDIgKl.png" alt="" /></p>
+
+<p>此时，我们可以选择merge或者rebase <code>feature1</code>分支到<code>master</code>分支。关于rebase将会在<a href="">第三部分</a>进行介绍。现在我们来看一下，采用merge的方式到底发生了什么。把分支合并到一起是非常直接的。首先需要将切换到要合并进去的分支，在这里，因为我们要将<code>feature1</code>合并到<code>master</code>分支，所以需要切换到<code>master</code>分支。</p>
+
+<p><img src="http://i.imgur.com/S0av3NM.png" alt="" /></p>
+
+<p>我切换到<code>master</code>分支，然后将<code>feature1</code>分支合并进去。回过头来再看一下这之中发生了什么，为什么Source Tree生成的图形是这个样子的。</p>
+
+<p>还记得<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>中<code>Commit 3</code>和<code>Commit 4</code>引用着同一个先前commit吗？<code>Commit 2</code>是这两个commit共同的祖先，因为<code>Commit 3</code>是在另一个分支上创建的，而<code>Commit 4</code>是在<code>master</code>分支上创建的，所以它完全不知道<code>Commit 3</code>的存在。在<code>feature1</code>上我们添加了更多的commit。<code>Commit 5</code>直接引用了<code>Commit 3</code>，因为<code>Commit 4</code>只在<code>master</code>分支上有效，<code>Commit 6</code>直接引用了<code>Commit 5</code>。</p>
+
+<p>当我们将<code>feature1</code>合并到<code>master</code>中，它并不是通过某种方式神奇地把这些commit都移到<code>master</code>分支上。实际上，它创建了一个包含了<code>feature1</code>分支上<strong>所有的</strong>变更的全新commit。这个commit叫<code>Merge branch 'feature1'</code>，就像这样：</p>
+
+<p><img src="http://i.imgur.com/RECAHy7.png" alt="" /></p>
+
+<p>如果你注意到上图中的commit差异，就会看到我添加到<code>index.txt</code>中二了吧唧的这几行。你应该会注意到这几行是通过各个commit分开地添加进去的。然而，现在你看到的是所有的这些改变都在单一的一个差异中。</p>
+
+<p>Git所做的只是把<code>feature1</code>中所有的commit的所有差异汇聚到一个单一的commit中。这个新的commit干了一些我们之前没有讨论过的事。从上图可以看到它拥有2个祖先，也就拥有着从<code>Commit 4</code>和<code>Commit 6</code>过来的两条线。为什么呢？commit可以保存多个先前commit的索引。我现在才来讲这个话题是因为我不想太早地引起混淆。</p>
+
+<p>当一个commit被创建的时候，它所引用的之前commit数量可以是一个，多个，甚至没有。通常只有仓库中第一个commit才会没有先前commit，而merge commit一般都拥有超过一个的先前commit。</p>
+
+<p>如果你还记得<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>的话，分支，其实实际上只是一个指向一个指定commit的指针而已。</p>
+
+<p><img src="http://i.imgur.com/S0av3NM.png" alt="" /></p>
+
+<p>你可能会注意到<code>feature1</code>仍然指向了<code>Commit 6</code>，而<code>master</code>分支指向了新的merge commit，很简单，因为我们是将<code>feature1</code> 合并到<code>master</code>。如果我们将分支切换到<code>feature1</code>，然后再把<code>master</code>合并进来，那么Git所做的就是一个<em>fast-forward</em> marge（快进合并），这会把<code>feature1</code>的指针指向最新的commit。</p>
+
+<p><img src="http://i.imgur.com/Ggvb3UK.png" alt="" /></p>
+
+<p>如果我们完全删除了<code>feature1</code>分支，你可能会以为粉色的线消失，但是你错了。</p>
+
+<p><img src="http://i.imgur.com/rcSSPFa.png" alt="" /></p>
+
+<p>记住，Source Tree和其他的Git可视工具是通过遍历你的commit，用索引的commit hash连接各个commit来生成图形的。分支只是一个指向指定commit的指针。当你从一个远程仓库拉取更新（pull）时，Git所做的是：</p>
+
+<ul>
+<li>1.下载所有你本地机器上没有的commit</li>
+<li>2.合并丢失的commit到你的本地仓库，或是通过一个merge commit，或是通过一个<em>fast-forward</em> merge，前提是你在最后一次拉取更新后没有做任何的修改。</li>
+<li>3.把你的本地分支指向最新的commit。</li>
+</ul>
+
+
+<p>如果你曾经混淆过<code>master</code>和<code>origin/master</code>指针，那现在你应该知道它们是是啥了。<code>origin/master</code>告诉你你的<code>origin</code>远程<code>master</code>分支指向哪。如果我给这个demo仓库添加了一个远程仓库叫<code>origin</code>，然后在本地仓库上做了一些commit，Git的历史可能会像这样：</p>
+
+<p><img src="http://i.imgur.com/hSizNJB.png" alt="" /></p>
+
+<p>你会看到<code>master</code>分支指向了最新的commit，而<code>origin/master</code>指向了前一个merge commit。Source Tree甚至提示我们说有一个commit可以推送（push）到远程仓库。如果我们推送上去，Git将会上传丢失的commit，然后更新你的远程分支指针，此时<code>origin/master</code>已经和你的本地<code>master</code>分支指向了相同的commit。</p>
+
+<p><img src="http://i.imgur.com/pmyLiFb.png" alt="" /></p>
+
+<p>希望你现在对Git的合并功能有了更好的理解。跳到<a href="">第三部分</a>让我们深究下rebase，看看它和merge有什么区别吧唧。</p>
+
+<blockquote><p>英文地址:<a href="http://codetunnel.com/merge-vs-rebase-part-2-what-is-a-merge/">http://codetunnel.com/merge-vs-rebase-part-2-what-is-a-merge/</a></p></blockquote>
+]]></content>
+  </entry>
+  
+</feed>

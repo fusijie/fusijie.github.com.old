@@ -1,0 +1,385 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>(译)第二部分：什么是merge? - Jacky's Blog</title>
+  <meta name="author" content="FuSijie">
+
+  
+  <meta name="description" content="内容提要 第一部分：commit hash是什么？
+第二部分：merge是什么？
+第三部分：rebase是什么？ 在第一部分我们创建了一个小的demo仓库，它拥有着一个feature1分支，而且这个分支已经准备好要merge到master分支中了。 此时，我们可以选择merge或者rebase &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.fusijie.com/blog/2014/10/15/what-is-a-merge">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jacky's Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
+  <script src="//libs.baidu.com/jquery/1.7.2/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!--
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+-->
+
+<link href="http://fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jacky's Blog</a></h1>
+  
+    <h2>Stay Hungry,Stay Foolish!</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.fusijie.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/blog/projects">Projects</a></li>
+  <li><a href="/tag-cloud/">Tags</a></li>
+  <li><a href="http://news.fusijie.com" target="_blank">News</a></li>
+  <li><a href="http://code.fusijie.com" target="_blank">Code</a></li>
+  <li><a href="https://github.com/fusijie" target="_blank">Github</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">(译)第二部分：什么是merge?</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-15T00:03:00+08:00" pubdate data-updated="true">Oct 15<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h4>内容提要</h4>
+
+<ul>
+<li>第一部分：<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">commit hash是什么？</a></li>
+<li>第二部分：merge是什么？</li>
+<li>第三部分：<a href="">rebase是什么？</a></li>
+</ul>
+
+
+<p>在<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>我们创建了一个小的demo仓库，它拥有着一个<code>feature1</code>分支，而且这个分支已经准备好要merge到<code>master</code>分支中了。</p>
+
+<!-- more -->
+
+
+<p><img src="http://i.imgur.com/kxDIgKl.png" alt="" /></p>
+
+<p>此时，我们可以选择merge或者rebase <code>feature1</code>分支到<code>master</code>分支。关于rebase将会在<a href="">第三部分</a>进行介绍。现在我们来看一下，采用merge的方式到底发生了什么。把分支合并到一起是非常直接的。首先需要将切换到要合并进去的分支，在这里，因为我们要将<code>feature1</code>合并到<code>master</code>分支，所以需要切换到<code>master</code>分支。</p>
+
+<p><img src="http://i.imgur.com/S0av3NM.png" alt="" /></p>
+
+<p>我切换到<code>master</code>分支，然后将<code>feature1</code>分支合并进去。回过头来再看一下这之中发生了什么，为什么Source Tree生成的图形是这个样子的。</p>
+
+<p>还记得<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>中<code>Commit 3</code>和<code>Commit 4</code>引用着同一个先前commit吗？<code>Commit 2</code>是这两个commit共同的祖先，因为<code>Commit 3</code>是在另一个分支上创建的，而<code>Commit 4</code>是在<code>master</code>分支上创建的，所以它完全不知道<code>Commit 3</code>的存在。在<code>feature1</code>上我们添加了更多的commit。<code>Commit 5</code>直接引用了<code>Commit 3</code>，因为<code>Commit 4</code>只在<code>master</code>分支上有效，<code>Commit 6</code>直接引用了<code>Commit 5</code>。</p>
+
+<p>当我们将<code>feature1</code>合并到<code>master</code>中，它并不是通过某种方式神奇地把这些commit都移到<code>master</code>分支上。实际上，它创建了一个包含了<code>feature1</code>分支上<strong>所有的</strong>变更的全新commit。这个commit叫<code>Merge branch 'feature1'</code>，就像这样：</p>
+
+<p><img src="http://i.imgur.com/RECAHy7.png" alt="" /></p>
+
+<p>如果你注意到上图中的commit差异，就会看到我添加到<code>index.txt</code>中二了吧唧的这几行。你应该会注意到这几行是通过各个commit分开地添加进去的。然而，现在你看到的是所有的这些改变都在单一的一个差异中。</p>
+
+<p>Git所做的只是把<code>feature1</code>中所有的commit的所有差异汇聚到一个单一的commit中。这个新的commit干了一些我们之前没有讨论过的事。从上图可以看到它拥有2个祖先，也就拥有着从<code>Commit 4</code>和<code>Commit 6</code>过来的两条线。为什么呢？commit可以保存多个先前commit的索引。我现在才来讲这个话题是因为我不想太早地引起混淆。</p>
+
+<p>当一个commit被创建的时候，它所引用的之前commit数量可以是一个，多个，甚至没有。通常只有仓库中第一个commit才会没有先前commit，而merge commit一般都拥有超过一个的先前commit。</p>
+
+<p>如果你还记得<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>的话，分支，其实实际上只是一个指向一个指定commit的指针而已。</p>
+
+<p><img src="http://i.imgur.com/S0av3NM.png" alt="" /></p>
+
+<p>你可能会注意到<code>feature1</code>仍然指向了<code>Commit 6</code>，而<code>master</code>分支指向了新的merge commit，很简单，因为我们是将<code>feature1</code> 合并到<code>master</code>。如果我们将分支切换到<code>feature1</code>，然后再把<code>master</code>合并进来，那么Git所做的就是一个<em>fast-forward</em> marge（快进合并），这会把<code>feature1</code>的指针指向最新的commit。</p>
+
+<p><img src="http://i.imgur.com/Ggvb3UK.png" alt="" /></p>
+
+<p>如果我们完全删除了<code>feature1</code>分支，你可能会以为粉色的线消失，但是你错了。</p>
+
+<p><img src="http://i.imgur.com/rcSSPFa.png" alt="" /></p>
+
+<p>记住，Source Tree和其他的Git可视工具是通过遍历你的commit，用索引的commit hash连接各个commit来生成图形的。分支只是一个指向指定commit的指针。当你从一个远程仓库拉取更新（pull）时，Git所做的是：</p>
+
+<ul>
+<li>1.下载所有你本地机器上没有的commit</li>
+<li>2.合并丢失的commit到你的本地仓库，或是通过一个merge commit，或是通过一个<em>fast-forward</em> merge，前提是你在最后一次拉取更新后没有做任何的修改。</li>
+<li>3.把你的本地分支指向最新的commit。</li>
+</ul>
+
+
+<p>如果你曾经混淆过<code>master</code>和<code>origin/master</code>指针，那现在你应该知道它们是是啥了。<code>origin/master</code>告诉你你的<code>origin</code>远程<code>master</code>分支指向哪。如果我给这个demo仓库添加了一个远程仓库叫<code>origin</code>，然后在本地仓库上做了一些commit，Git的历史可能会像这样：</p>
+
+<p><img src="http://i.imgur.com/hSizNJB.png" alt="" /></p>
+
+<p>你会看到<code>master</code>分支指向了最新的commit，而<code>origin/master</code>指向了前一个merge commit。Source Tree甚至提示我们说有一个commit可以推送（push）到远程仓库。如果我们推送上去，Git将会上传丢失的commit，然后更新你的远程分支指针，此时<code>origin/master</code>已经和你的本地<code>master</code>分支指向了相同的commit。</p>
+
+<p><img src="http://i.imgur.com/pmyLiFb.png" alt="" /></p>
+
+<p>希望你现在对Git的合并功能有了更好的理解。跳到<a href="">第三部分</a>让我们深究下rebase，看看它和merge有什么区别吧唧。</p>
+
+<blockquote><p>英文地址:<a href="http://codetunnel.com/merge-vs-rebase-part-2-what-is-a-merge/">http://codetunnel.com/merge-vs-rebase-part-2-what-is-a-merge/</a></p></blockquote>
+
+<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/'>http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">FuSijie</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-15T00:03:00+08:00" pubdate data-updated="true">Oct 15<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/git/'>git</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+  
+      <!-- JiaThis Button BEGIN -->
+  <section>
+<div class="jiathis_style_32x32">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a href="http://www.jiathis.com/share?uid=1859056" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1859056" charset="utf-8"></script>
+</section>
+<!-- JiaThis Button END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+	    <p></p>
+        <a class="basic-alignment left" href="/blog/2014/10/08/what-is-a-commit-hash/" title="Previous Post: (译)第一部分：什么是commit hash?">&laquo; (译)第一部分：什么是commit hash?</a>
+      
+      
+    </p>
+  </footer>
+</article>
+  <section>
+      <div id="duoshuo_thread" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread" data-thread-key="/blog/2014/10/15/what-is-a-merge/" data-title="(译)第二部分：什么是merge?"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"fusijie"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+<!-- Duoshuo Comment END --></div>
+</section>
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+		<br>
+		<center><a target="_blank" href="http://blog.csdn.net/jackystudio" style="text-decoration:none" ><img src="\images\aboutme.png" border=0></img></a></center>
+		</br>
+</section><section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/android/'>Android (1)</a></li>
+<li class='category'><a href='/blog/categories/cocos2dx-faq/'>Cocos2dx-FAQ (2)</a></li>
+<li class='category'><a href='/blog/categories/lua/'>Lua (1)</a></li>
+<li class='category'><a href='/blog/categories/tools/'>Tools (1)</a></li>
+<li class='category'><a href='/blog/categories/cocos2d-x/'>cocos2d-x (37)</a></li>
+<li class='category'><a href='/blog/categories/git/'>git (2)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/10/15/what-is-a-merge/">(译)第二部分：什么是merge?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/10/08/what-is-a-commit-hash/">(译)第一部分：什么是commit Hash?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/09/08/smali-introduction/">Smali和逆向分析</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/09/02/cocos2dx-faq-2/">Cocos2dx-FAQ-2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs/">如何在Windows平台使用VS搭建C++/Lua的开发环境</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+  <section>
+<h1>Recent Comments</h1>
+<ul class="ds-recent-comments" data-num-items="10" data-show-avatars="1" data-show-time="1" data-show-admin="1" data-excerpt-length="70"></ul>
+<!--多说js加载开始，一个页面只需要加载一次 -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"fusijie"};
+(function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+</script>
+<!--多说js加载结束，一个页面只需要加载一次 -->
+</section>
+<section>
+  <h1>Sina Weibo</h1>
+  <ul id="weibo">
+    <li>
+      <iframe 
+        width="100%" 
+        height="450" 
+        class="share_self" 
+        frameborder="0" 
+        scrolling="no" 
+        src="http://widget.weibo.com/weiboshow/index.php?width=0&height=450&fansRow=0&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=0&uid=1307211523&verifier=3619ee9c">
+      </iframe>
+    </li>
+  </ul>
+</section>
+ 
+<section>
+<h1>Visitor</h1>
+<div>
+	<p></p>
+    <center>
+	<a href="http://info.flagcounter.com/3pF8"><img src="http://s08.flagcounter.com/count/3pF8/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_12/viewers_3/labels_0/pageviews_1/flags_0/" alt="Flag Counter" border="0"></a>
+	</center>
+</div>
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - FuSijie -
+  <span class="credit">牛逼自豪有情怀地使用高大上的 <a href="http://octopress.org">Octopress</a></span>
+  <script type="text/javascript">
+	var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+	document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F966a6a480d428ebd0c0c55fcfb4f8a88' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</p>
+
+</footer>
+  <div id="full" style="width:0px; height:0px; position:fixed; right:70px; bottom:70px; z-index:100; text-align:center; background-color:transparent; cursor:pointer;">
+        <a href="#" onclick="goTop();return false;"><img src="/images/top.png" border=0 alt="Top"></a>
+</div>
+<script src="/javascripts/top.js" type="text/javascript"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
