@@ -11,7 +11,7 @@ tags: [commit hash]
 
 * 第一部分：commit hash是什么？
 * 第二部分：[merge是什么？](http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/)
-* 第三部分：[rebase是什么？]()
+* 第三部分：[rebase是什么？](http://www.fusijie.com/blog/2014/11/18/what-is-a-rebase/)
 
 最近一段时间我在学习如何使用[Git](http://git-scm.com/)，碰到的一个难点：如何区别[merge](http://git-scm.com/docs/git-merge)和[rebase](http://git-scm.com/docs/git-rebase)？大部分人都能理解merge的概念，但是对于rebase就不是很清楚了。在这三篇博文中我将尽可能用最简单的方式来解释它们的异同。不过在此之前，我们需要先了解一下什么是commit hash。
 

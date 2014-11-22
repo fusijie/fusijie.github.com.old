@@ -11,7 +11,7 @@ tags: [merge]
 
 * 第一部分：[commit hash是什么？](http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/)
 * 第二部分：merge是什么？
-* 第三部分：[rebase是什么？]()
+* 第三部分：[rebase是什么？](http://www.fusijie.com/blog/2014/11/18/what-is-a-rebase/)
 
 在[第一部分](http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/)我们创建了一个小的demo仓库，它拥有着一个`feature1`分支，而且这个分支已经准备好要merge到`master`分支中了。
 
@@ -19,7 +19,7 @@ tags: [merge]
 
 ![](http://i.imgur.com/kxDIgKl.png)
 
-此时，我们可以选择merge或者rebase `feature1`分支到`master`分支。关于rebase将会在[第三部分]()进行介绍。现在我们来看一下，采用merge的方式到底发生了什么。把分支合并到一起是非常直接的。首先需要将切换到要合并进去的分支，在这里，因为我们要将`feature1`合并到`master`分支，所以需要切换到`master`分支。
+此时，我们可以选择merge或者rebase `feature1`分支到`master`分支。关于rebase将会在[第三部分](http://www.fusijie.com/blog/2014/11/18/what-is-a-rebase/)进行介绍。现在我们来看一下，采用merge的方式到底发生了什么。把分支合并到一起是非常直接的。首先需要将切换到要合并进去的分支，在这里，因为我们要将`feature1`合并到`master`分支，所以需要切换到`master`分支。
 
 ![](http://i.imgur.com/S0av3NM.png)
 
