@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: rebase | Jacky's Blog]]></title>
+  <link href="http://www.fusijie.com/tags/rebase/atom.xml" rel="self"/>
+  <link href="http://www.fusijie.com/"/>
+  <updated>2014-11-23T01:45:44+08:00</updated>
+  <id>http://www.fusijie.com/</id>
+  <author>
+    <name><![CDATA[FuSijie]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[(译)第三部分：什么是rebase?]]></title>
+    <link href="http://www.fusijie.com/blog/2014/11/18/what-is-a-rebase/"/>
+    <updated>2014-11-18T23:44:00+08:00</updated>
+    <id>http://www.fusijie.com/blog/2014/11/18/what-is-a-rebase</id>
+    <content type="html"><![CDATA[<h3>内容提要</h3>
+
+<ul>
+<li>第一部分：<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">commit hash是什么？</a></li>
+<li>第二部分：<a href="http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/">merge是什么？</a></li>
+<li>第三部分：rebase是什么？</li>
+</ul>
+
+
+<p>在<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>中，我们讨论了什么是commit hash，其中一个很重要的特点就是commit无法被修改。hash值是根据存储在commit中的信息生成的，所以修改一个commit或者commit hash，你必须要创建一个全新的commit。我们还讨论了每一个commit存储了它的前一个commit的hash值。我们所没有讨论的是它对我们Git历史的影响。</p>
+
+<!-- more -->
+
+
+<p>实际上，commit hash是基于他们本身存储的信息生成的，而这些信息其中就包含了前一个commit的hash值，所以想修改你的commit历史基本上是不可能的。每一个commit就像是链条上的一环，紧紧连接着上一环。</p>
+
+<p><img src="http://i.imgur.com/cXvBMnk.png" alt="" /></p>
+
+<p>如果你有如上图一样的一条金属链，在不打断他们的前提下是不可能把前一环和后一环连接起来的。然而，在Git环境中这将会更糟。这样的类比在这里是不靠谱的，因为在一条金属链上你可以焊接一个新环来把前一环和后一环重新连接起来。但是在Git中，你无法做到这一点。</p>
+
+<p>如果你想要在commit历史的中间删除某一个commit，那后一个commit将会指向一个不存在的commit hash。因为你无法在不改变hash的情况下来修改commit，所以你不能简单地生成一个新的commit来引用前一个commit，而后一个commit仍然引用了最原始的commit hash。</p>
+
+<p>如果你改变了一个commit的某个属性，那生成的hash值将不再一样，后一个commit也不会引用到新的commit。结果就是你不得不去修改后一个commit来引用到新的commit hash，这同样会引起commit hash的改变，就这样一路下去直到链条的末尾。</p>
+
+<p>这时候轮到<a href="http://git-scm.com/docs/git-rebase">rebase</a>上场了。如果你还记得<a href="http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/">第二部分</a>，当我们将<code>feature1</code>分支合并到<code>master</code>分支后，有一副图展示了各个commit之间的关系。</p>
+
+<p><img src="http://i.imgur.com/S0av3NM.png" alt="" /></p>
+
+<p>Merge可以很好地工作，但是伴随着所有的fork和横纵交叉的commit关系，Git仓库的图形很快就会失控。下图只是一个我平时工作的Git仓库的小片段。</p>
+
+<p><img src="http://i.imgur.com/z28Y4sX.png" alt="" /></p>
+
+<p>如果你使用一个Git GUI软件，很有可能你也见识过类似的东西。Merge是在不同分支之间移动差异的最简单的方式，因为它避免了破坏commit历史和所引发的蛋疼。然而，一旦你对rebase的工作方式有了比较深刻的理解，你将会从中收益。举个栗子，如果我们在demo仓库中rebase <code>feature1</code>分支到<code>master</code>分支(译者注：这句话的意思是切换到<code>feature1</code>分支，执行<code>git rebase master</code>命令)，将会得到一个非常漂亮干净的历史，如图：</p>
+
+<p><img src="http://i.imgur.com/pBvTytu.png" alt="" /></p>
+
+<p>注意到没？现在的历史是一条直线了。Git到底是怎么做到的呢？如果你还记得的话，我们的<code>Commit 3</code>和<code>Commit 4</code>是共享<code>Commit 2</code>作为其共同父节点的，<code>Commit 3</code>引用了<code>Commit 2</code>作为其前一个commit。现在你也许会疑惑为什么看起来<code>Commit 3</code>像是将<code>Commit 4</code>作为其前一个commit。</p>
+
+<p>还记得我刚说过的，如果想从中间打断链条，你必须从这个点上开始重现创建其之后的commit，直到结尾。没错，这实际上就是rebase做的事情。</p>
+
+<p><img src="http://i.imgur.com/1nPXWq1.png" alt="" /></p>
+
+<p>仔细看的话，你会发现<code>Commit 3</code>，<code>Commit 5</code>，<code>Commit 6</code>的commit hash已经全部改变了。这3个commit是在<code>feature 1</code>分支上提交的。通过将<code>feature 1</code>分支rebase操作到<code>master</code>分支上，从<code>master</code>分支分叉出来的的第一个commit开始，git重写了<code>feature 1</code>所有的commit，直到结束。它将分之上的每一个commit之间的差异存储在一个临时文件中，然后开始重写我们的分支历史。而这一次，分支是从<code>master</code>，<code>Commit 4</code>开始的。</p>
+
+<p>Git给分支上的每一个commit创建了一个新的commit，当然跟着修改的还有commit hash值。当它创建新的commit的时候，第一个commit被改为引用到<code>master</code>分支的最新的commit（<code>Commit 4</code>），而不是原来的（<code>Commit 2</code>）了。这个重新提交你的变更作为新的commit的流程被称为“你的commits在<code>master</code>分支上的重播”。</p>
+
+<blockquote><p>注意：不要让术语混淆。Rebase到<code>master</code>分支不会修改<code>master</code>分支本身，它的意思是你的分支commits将会紧跟着<code>master</code>分支上最新的commits（译者注：这里的<code>你的分支</code>指的是<code>feature 1</code>）。</p></blockquote>
+
+<p><img src="http://i.imgur.com/pBvTytu.png" alt="" /></p>
+
+<p>你会注意到上图中<code>master</code>分支仍然指向<code>Commit 4</code>，它的commit hash值是没有改变的。如果我们现在切换到<code>master</code>分支，然后把<code>feature 1</code>分支合并到<code>master</code>分支，这将不会产生一个合并commit。这仅仅是一个快进提交，意思就是git将会简单地将指向<code>master</code>分支的指针笔直地移到指向<code>feature 1</code>分支的指针位置上。</p>
+
+<p><img src="http://i.imgur.com/rLdDgw3.png" alt="" /></p>
+
+<p>如果不把<code>feature 1</code>分支合并到<code>master</code>分支，我们还有更多的事要做，更多的commit要提交，我们可能会再fork一个仓库。我们的下一个<code>master</code>分支的commit将会指向<code>Commit 4</code>作为它的父节点，而<code>feature 1</code>分支的第一个commit也是指向<code>Commit 4</code>作为它的父节点。为了得到一条笔直的提交历史，我们需要再切换到<code>feature1</code>分支，然后再次rebase到<code>master</code>分支。这种情况很常出现，比如你在github上提交了一个pull request然后它过期了。如果项目的维护者没有合并你 的pull request，而是在这个项目上继续做一些其他工作，那么你的pull request就需要再来一次rebase操作以获取一个干净的git历史。把你做的工作rebase到原仓库分支上才可以让这个pull request能够在合并进去的时候采用简单的快进方式。接受一个pull request只是一个简单的合并。如果在提交pull request之前就rebase了你做的工作，那么这个merge就是一个快进方式的merge，这也能保证原仓库的干净。（译者注：这里的<code>干净</code>指的是没有额外的合并信息。）</p>
+
+<h4>危险！！！</h4>
+
+<p>这部分内容是对rebase的使用进行一些警告，主要还是在多人协作上需要注意。因为rebase是一种改写commit的操作，所以相对比较危险，作者给出的意见是：</p>
+
+<blockquote><p>Undoing a rebase is not easy, and often impossible so you really need to pay attention to what you&rsquo;re doing. The benefits of rebasing are great, but not if you don&rsquo;t know what you&rsquo;re doing.</p></blockquote>
+
+<p>撤销一个rebase操作不简单，而且经常是不可能的。你必须很注意自己在干什么。rebase让人受益，当时如果你不知道你在干什么的话，别用reabse。</p>
+
+<p>这部分内容不翻译了，有兴趣自己看原文吧。</p>
+
+<blockquote><p>英文地址:<a href="http://codetunnel.com/merge-vs-rebase-part-3-what-is-a-rebase/">http://codetunnel.com/merge-vs-rebase-part-3-what-is-a-rebase/</a></p></blockquote>
+]]></content>
+  </entry>
+  
+</feed>
