@@ -20,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.fusijie.com/blog/2014/11/18/what-is-a-rebase">
+  <link rel="canonical" href="http://fusijie.github.io/blog/2014/11/18/what-is-a-rebase">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Jacky's Blog" type="application/atom+xml">
@@ -45,7 +45,7 @@
   <header role="banner"><hgroup>
   <h1><a href="/">Jacky's Blog</a></h1>
   
-    <h2>Stay Hungry,Stay Foolish!</h2>
+    <h2>Stay Hungry, Stay Foolish!</h2>
   
 </hgroup>
 
@@ -57,7 +57,7 @@
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:www.fusijie.com" />
+    <input type="hidden" name="q" value="site:fusijie.github.io" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -67,7 +67,6 @@
   <li><a href="/blog/archives">Archives</a></li>
   <li><a href="/blog/projects">Projects</a></li>
   <li><a href="/tag-cloud/">Tags</a></li>
-  <li><a href="http://code.fusijie.com" target="_blank">Code</a></li>
   <li><a href="https://github.com/fusijie" target="_blank">Github</a></li>
 </ul>
 
@@ -105,13 +104,13 @@
 <div class="entry-content"><h3>内容提要</h3>
 
 <ul>
-<li>第一部分：<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">commit hash是什么？</a></li>
-<li>第二部分：<a href="http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/">merge是什么？</a></li>
+<li>第一部分：<a href="http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash/">commit hash是什么？</a></li>
+<li>第二部分：<a href="http://fusijie.github.io/blog/2014/10/15/what-is-a-merge/">merge是什么？</a></li>
 <li>第三部分：rebase是什么？</li>
 </ul>
 
 
-<p>在<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>中，我们讨论了什么是commit hash，其中一个很重要的特点就是commit无法被修改。hash值是根据存储在commit中的信息生成的，所以修改一个commit或者commit hash，你必须要创建一个全新的commit。我们还讨论了每一个commit存储了它的前一个commit的hash值。我们所没有讨论的是它对我们Git历史的影响。</p>
+<p>在<a href="http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>中，我们讨论了什么是commit hash，其中一个很重要的特点就是commit无法被修改。hash值是根据存储在commit中的信息生成的，所以修改一个commit或者commit hash，你必须要创建一个全新的commit。我们还讨论了每一个commit存储了它的前一个commit的hash值。我们所没有讨论的是它对我们Git历史的影响。</p>
 
 <!-- more -->
 
@@ -126,7 +125,7 @@
 
 <p>如果你改变了一个commit的某个属性，那生成的hash值将不再一样，后一个commit也不会引用到新的commit。结果就是你不得不去修改后一个commit来引用到新的commit hash，这同样会引起commit hash的改变，就这样一路下去直到链条的末尾。</p>
 
-<p>这时候轮到<a href="http://git-scm.com/docs/git-rebase">rebase</a>上场了。如果你还记得<a href="http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/">第二部分</a>，当我们将<code>feature1</code>分支合并到<code>master</code>分支后，有一副图展示了各个commit之间的关系。</p>
+<p>这时候轮到<a href="http://git-scm.com/docs/git-rebase">rebase</a>上场了。如果你还记得<a href="http://fusijie.github.io/blog/2014/10/15/what-is-a-merge/">第二部分</a>，当我们将<code>feature1</code>分支合并到<code>master</code>分支后，有一副图展示了各个commit之间的关系。</p>
 
 <p><img src="http://i.imgur.com/S0av3NM.png" alt="" /></p>
 
@@ -170,7 +169,7 @@
 
 <blockquote><p>英文地址:<a href="http://codetunnel.com/merge-vs-rebase-part-3-what-is-a-rebase/">http://codetunnel.com/merge-vs-rebase-part-3-what-is-a-rebase/</a></p></blockquote>
 
-<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/11/18/what-is-a-rebase/'>http://www.fusijie.com/blog/2014/11/18/what-is-a-rebase/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+<p class='post-footer'>&nbsp;原文地址：<a href='http://fusijie.github.io/blog/2014/11/18/what-is-a-rebase/'>http://fusijie.github.io/blog/2014/11/18/what-is-a-rebase/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
 
 </div>
 

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: cocos2d-x联网 | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/cocos2d-xlian-wang/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/cocos2d-xlian-wang/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十一】服务器的网络通信编程]]></title>
-    <link href="http://www.fusijie.com/blog/2013/12/17/play-cocos2dx-31/"/>
+    <link href="http://fusijie.github.io/blog/2013/12/17/play-cocos2dx-31/"/>
     <updated>2013-12-17T14:11:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/12/17/play-cocos2dx-31</id>
+    <id>http://fusijie.github.io/blog/2013/12/17/play-cocos2dx-31</id>
     <content type="html"><![CDATA[<p>这里采用Apache+php搭建了一个简易服务器，服务端用php语言，客户端采用cocos2d-x的CCHttpClient类通过http方式访问服务端资源。模拟了cocos2d-x提交账户和密码到服务端，服务端校验帐号密码，如果正确返回客户端成功登录，如果错误则返回错误信息，同时在服务端后台保存登录log。第一次接触php，语法上和C/C++还是蛮像的，主要是给出一个cocos2d-x网络实例，代码中并没有做一些防呆纠错措施。</p>
 
 <h3>1.搭建Apache+php网页服务器</h3>

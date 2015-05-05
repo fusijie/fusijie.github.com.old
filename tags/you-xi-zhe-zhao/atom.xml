@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: 游戏遮罩 | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/you-xi-zhe-zhao/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/you-xi-zhe-zhao/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十九】利用CCClipingNode做游戏遮罩]]></title>
-    <link href="http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29/"/>
+    <link href="http://fusijie.github.io/blog/2013/12/06/play-cocos2dx-29/"/>
     <updated>2013-12-06T10:41:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29</id>
+    <id>http://fusijie.github.io/blog/2013/12/06/play-cocos2dx-29</id>
     <content type="html"><![CDATA[<p>新手引导是游戏中必备的（除了奇葩的MT用一段动画开始），也是玩家对游戏的第一印象，重要性不言而喻。一般采用的遮罩的形式来突出引导重点，同时屏蔽其他功能。这里简单的介绍一下游戏遮罩的实现，并给出一个示例。</p>
 
 <h3>1.CCClipingNode</h3>

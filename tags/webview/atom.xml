@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: webview | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/webview/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/webview/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十三】游戏嵌入Webview网页]]></title>
-    <link href="http://www.fusijie.com/blog/2013/12/26/play-cocos2dx-33/"/>
+    <link href="http://fusijie.github.io/blog/2013/12/26/play-cocos2dx-33/"/>
     <updated>2013-12-26T14:11:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/12/26/play-cocos2dx-33</id>
+    <id>http://fusijie.github.io/blog/2013/12/26/play-cocos2dx-33</id>
     <content type="html"><![CDATA[<p>手游《我叫MT》一开始会弹出一个游戏公告，有玩过的肯定都蛮熟悉的，这就是webview，就是一个网页。由于webview和平台相关，这里就介绍下cocos2d-x如何嵌入andorid的webview控件，在cocos2d-x中显示网页。</p>
 
 <h3>1.Jni</h3>

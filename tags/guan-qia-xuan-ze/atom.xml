@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: 关卡选择 | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/guan-qia-xuan-ze/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/guan-qia-xuan-ze/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十五】关卡选择的设计]]></title>
-    <link href="http://www.fusijie.com/blog/2013/10/23/play-cocos2dx-15/"/>
+    <link href="http://fusijie.github.io/blog/2013/10/23/play-cocos2dx-15/"/>
     <updated>2013-10-23T16:26:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/10/23/play-cocos2dx-15</id>
+    <id>http://fusijie.github.io/blog/2013/10/23/play-cocos2dx-15</id>
     <content type="html"><![CDATA[<p>这节介绍一下游戏中帮助界面和关卡选择的设计，其实都是一样的，关键在于美工。这里采用自定义TableView层来实现。</p>
 
 <h3>1.导入头文件和设定空间</h3>

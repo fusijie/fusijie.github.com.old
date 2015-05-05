@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: 无法执行 | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/wu-fa-zhi-xing/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/wu-fa-zhi-xing/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十七】CCSequence不能执行CCRepeatForever]]></title>
-    <link href="http://www.fusijie.com/blog/2013/11/28/play-cocos2dx-27/"/>
+    <link href="http://fusijie.github.io/blog/2013/11/28/play-cocos2dx-27/"/>
     <updated>2013-11-28T09:25:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/11/28/play-cocos2dx-27</id>
+    <id>http://fusijie.github.io/blog/2013/11/28/play-cocos2dx-27</id>
     <content type="html"><![CDATA[<p>之前在遇到这么一个问题，在CCSequence中加入CCRepeatForever，发现其他动作执行没问题，就是CCRepeatForever无法执行。代码并没有问题，很奇怪。</p>
 
 <h3>1.示例</h3>

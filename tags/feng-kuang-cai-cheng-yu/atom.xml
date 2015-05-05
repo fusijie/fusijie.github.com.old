@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: 疯狂猜成语 | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/feng-kuang-cai-cheng-yu/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/feng-kuang-cai-cheng-yu/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十八】仿《中国好学霸》文字拖拽和定位]]></title>
-    <link href="http://www.fusijie.com/blog/2013/10/28/play-cocos2dx-18/"/>
+    <link href="http://fusijie.github.io/blog/2013/10/28/play-cocos2dx-18/"/>
     <updated>2013-10-28T18:00:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/10/28/play-cocos2dx-18</id>
+    <id>http://fusijie.github.io/blog/2013/10/28/play-cocos2dx-18</id>
     <content type="html"><![CDATA[<p>现在各种猜成语猜歌名好学霸之类的游戏火的一塌糊涂。本节就介绍下文字的拖拽和定位。</p>
 
 <h3>1.基本原理</h3>

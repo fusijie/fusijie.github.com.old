@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: TexturePacket | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/texturepacket/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/texturepacket/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十二】plist解析工具：Anti_TexturePacker]]></title>
-    <link href="http://www.fusijie.com/blog/2013/10/19/play-cocos2dx-12/"/>
+    <link href="http://fusijie.github.io/blog/2013/10/19/play-cocos2dx-12/"/>
     <updated>2013-10-19T09:49:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/10/19/play-cocos2dx-12</id>
+    <id>http://fusijie.github.io/blog/2013/10/19/play-cocos2dx-12</id>
     <content type="html"><![CDATA[<p>之前拿了一些别人的图片素材，是用TexturePacker打包合成的，结果写程序的时候不知道每个合成前小png图的名字是什么，只能一个一个从plist文件中找，然后猜测对应的名字，再进行显示，如果不对，还要继续猜。。。坑爹啊，效率大大降低了，时间都耗在找图片名字上了。后来决定动手写一个解析plist的软件，就叫它Anti_TexturePacker吧。</p>
 
 <p>Anti_TexurePacker软件基于VS 2008 MFC Dialog。</p>
@@ -41,7 +41,7 @@ graphics.DrawImage(&amp;image,ORIGIN_DRAW_X,ORIGIN_DRAW_Y,(int)(m_RealWidth*m_Sc
 
 <p>看一下plist的格式：</p>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/1.jpg" alt="" border="0" title="4" /><br></br></div>
+<div align="center"><img src="http://fusijie.github.io/images/Blog/1.jpg" alt="" border="0" title="4" /><br></br></div>
 
 
 <p>这样一看，就知道了标准的plist文件中，我们需要的是第7，10，14，20，23，27&hellip;行。抓出规律，读取到CStringArray。我没有采用xml的解析库，而是直接无耻的这么做了，用起来倒是没什么问题，但是不要学啊。。。</p>

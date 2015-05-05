@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: 锚点排列 | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/mao-dian-pai-lie/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/mao-dian-pai-lie/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十三】CCMenu的布局]]></title>
-    <link href="http://www.fusijie.com/blog/2013/10/21/play-cocos2dx-13/"/>
+    <link href="http://fusijie.github.io/blog/2013/10/21/play-cocos2dx-13/"/>
     <updated>2013-10-21T10:23:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/10/21/play-cocos2dx-13</id>
+    <id>http://fusijie.github.io/blog/2013/10/21/play-cocos2dx-13</id>
     <content type="html"><![CDATA[<p>前两天写个游戏，发现CCMenu的布局还是比较有意思的，这里总结一下，以便后用。</p>
 
 <h3>1.概况</h3>

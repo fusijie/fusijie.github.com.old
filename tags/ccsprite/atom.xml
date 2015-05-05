@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: CCSprite | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/ccsprite/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/ccsprite/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之八】精灵类CCSprite]]></title>
-    <link href="http://www.fusijie.com/blog/2013/10/15/play-cocos2dx-08/"/>
+    <link href="http://fusijie.github.io/blog/2013/10/15/play-cocos2dx-08/"/>
     <updated>2013-10-15T17:17:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/10/15/play-cocos2dx-08</id>
+    <id>http://fusijie.github.io/blog/2013/10/15/play-cocos2dx-08</id>
     <content type="html"><![CDATA[<p>精灵类CCSprite可以说是游戏的主角了，也是我们平时最常用到的类。</p>
 
 <h3>1.概况</h3>

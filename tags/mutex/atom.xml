@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: mutex | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/mutex/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/mutex/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十二】多线程和同步02-售票]]></title>
-    <link href="http://www.fusijie.com/blog/2013/11/05/play-cocos2dx-22/"/>
+    <link href="http://fusijie.github.io/blog/2013/11/05/play-cocos2dx-22/"/>
     <updated>2013-11-05T11:12:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/11/05/play-cocos2dx-22</id>
+    <id>http://fusijie.github.io/blog/2013/11/05/play-cocos2dx-22</id>
     <content type="html"><![CDATA[<p>pthread有很多不同应用，官网都有相应的API解释和Sample，这里不再重复，本文主要介绍一个cocos2d-x多线程和同步示例。</p>
 
 <h3>1.售票</h3>

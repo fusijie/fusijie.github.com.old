@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,19 +15,19 @@
   
   <entry>
     <title type="html"><![CDATA[(译)第三部分：什么是rebase?]]></title>
-    <link href="http://www.fusijie.com/blog/2014/11/18/what-is-a-rebase/"/>
+    <link href="http://fusijie.github.io/blog/2014/11/18/what-is-a-rebase/"/>
     <updated>2014-11-18T23:44:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/11/18/what-is-a-rebase</id>
+    <id>http://fusijie.github.io/blog/2014/11/18/what-is-a-rebase</id>
     <content type="html"><![CDATA[<h3>内容提要</h3>
 
 <ul>
-<li>第一部分：<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">commit hash是什么？</a></li>
-<li>第二部分：<a href="http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/">merge是什么？</a></li>
+<li>第一部分：<a href="http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash/">commit hash是什么？</a></li>
+<li>第二部分：<a href="http://fusijie.github.io/blog/2014/10/15/what-is-a-merge/">merge是什么？</a></li>
 <li>第三部分：rebase是什么？</li>
 </ul>
 
 
-<p>在<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>中，我们讨论了什么是commit hash，其中一个很重要的特点就是commit无法被修改。hash值是根据存储在commit中的信息生成的，所以修改一个commit或者commit hash，你必须要创建一个全新的commit。我们还讨论了每一个commit存储了它的前一个commit的hash值。我们所没有讨论的是它对我们Git历史的影响。</p>
+<p>在<a href="http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>中，我们讨论了什么是commit hash，其中一个很重要的特点就是commit无法被修改。hash值是根据存储在commit中的信息生成的，所以修改一个commit或者commit hash，你必须要创建一个全新的commit。我们还讨论了每一个commit存储了它的前一个commit的hash值。我们所没有讨论的是它对我们Git历史的影响。</p>
 
 <!-- more -->
 
@@ -42,7 +42,7 @@
 
 <p>如果你改变了一个commit的某个属性，那生成的hash值将不再一样，后一个commit也不会引用到新的commit。结果就是你不得不去修改后一个commit来引用到新的commit hash，这同样会引起commit hash的改变，就这样一路下去直到链条的末尾。</p>
 
-<p>这时候轮到<a href="http://git-scm.com/docs/git-rebase">rebase</a>上场了。如果你还记得<a href="http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/">第二部分</a>，当我们将<code>feature1</code>分支合并到<code>master</code>分支后，有一副图展示了各个commit之间的关系。</p>
+<p>这时候轮到<a href="http://git-scm.com/docs/git-rebase">rebase</a>上场了。如果你还记得<a href="http://fusijie.github.io/blog/2014/10/15/what-is-a-merge/">第二部分</a>，当我们将<code>feature1</code>分支合并到<code>master</code>分支后，有一副图展示了各个commit之间的关系。</p>
 
 <p><img src="http://i.imgur.com/S0av3NM.png" alt="" /></p>
 
@@ -86,39 +86,39 @@
 
 <blockquote><p>英文地址:<a href="http://codetunnel.com/merge-vs-rebase-part-3-what-is-a-rebase/">http://codetunnel.com/merge-vs-rebase-part-3-what-is-a-rebase/</a></p></blockquote>
 
-<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/11/18/what-is-a-rebase/'>http://www.fusijie.com/blog/2014/11/18/what-is-a-rebase/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+<p class='post-footer'>&nbsp;原文地址：<a href='http://fusijie.github.io/blog/2014/11/18/what-is-a-rebase/'>http://fusijie.github.io/blog/2014/11/18/what-is-a-rebase/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
 
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[(译)第二部分：什么是merge?]]></title>
-    <link href="http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/"/>
+    <link href="http://fusijie.github.io/blog/2014/10/15/what-is-a-merge/"/>
     <updated>2014-10-15T00:03:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/10/15/what-is-a-merge</id>
+    <id>http://fusijie.github.io/blog/2014/10/15/what-is-a-merge</id>
     <content type="html"><![CDATA[<h4>内容提要</h4>
 
 <ul>
-<li>第一部分：<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">commit hash是什么？</a></li>
+<li>第一部分：<a href="http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash/">commit hash是什么？</a></li>
 <li>第二部分：merge是什么？</li>
-<li>第三部分：<a href="http://www.fusijie.com/blog/2014/11/18/what-is-a-rebase/">rebase是什么？</a></li>
+<li>第三部分：<a href="http://fusijie.github.io/blog/2014/11/18/what-is-a-rebase/">rebase是什么？</a></li>
 </ul>
 
 
-<p>在<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>我们创建了一个小的demo仓库，它拥有着一个<code>feature1</code>分支，而且这个分支已经准备好要merge到<code>master</code>分支中了。</p>
+<p>在<a href="http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>我们创建了一个小的demo仓库，它拥有着一个<code>feature1</code>分支，而且这个分支已经准备好要merge到<code>master</code>分支中了。</p>
 
 <!-- more -->
 
 
 <p><img src="http://i.imgur.com/kxDIgKl.png" alt="" /></p>
 
-<p>此时，我们可以选择merge或者rebase <code>feature1</code>分支到<code>master</code>分支。关于rebase将会在<a href="http://www.fusijie.com/blog/2014/11/18/what-is-a-rebase/">第三部分</a>进行介绍。现在我们来看一下，采用merge的方式到底发生了什么。把分支合并到一起是非常直接的。首先需要将切换到要合并进去的分支，在这里，因为我们要将<code>feature1</code>合并到<code>master</code>分支，所以需要切换到<code>master</code>分支。</p>
+<p>此时，我们可以选择merge或者rebase <code>feature1</code>分支到<code>master</code>分支。关于rebase将会在<a href="http://fusijie.github.io/blog/2014/11/18/what-is-a-rebase/">第三部分</a>进行介绍。现在我们来看一下，采用merge的方式到底发生了什么。把分支合并到一起是非常直接的。首先需要将切换到要合并进去的分支，在这里，因为我们要将<code>feature1</code>合并到<code>master</code>分支，所以需要切换到<code>master</code>分支。</p>
 
 <p><img src="http://i.imgur.com/S0av3NM.png" alt="" /></p>
 
 <p>我切换到<code>master</code>分支，然后将<code>feature1</code>分支合并进去。回过头来再看一下这之中发生了什么，为什么Source Tree生成的图形是这个样子的。</p>
 
-<p>还记得<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>中<code>Commit 3</code>和<code>Commit 4</code>引用着同一个先前commit吗？<code>Commit 2</code>是这两个commit共同的祖先，因为<code>Commit 3</code>是在另一个分支上创建的，而<code>Commit 4</code>是在<code>master</code>分支上创建的，所以它完全不知道<code>Commit 3</code>的存在。在<code>feature1</code>上我们添加了更多的commit。<code>Commit 5</code>直接引用了<code>Commit 3</code>，因为<code>Commit 4</code>只在<code>master</code>分支上有效，<code>Commit 6</code>直接引用了<code>Commit 5</code>。</p>
+<p>还记得<a href="http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>中<code>Commit 3</code>和<code>Commit 4</code>引用着同一个先前commit吗？<code>Commit 2</code>是这两个commit共同的祖先，因为<code>Commit 3</code>是在另一个分支上创建的，而<code>Commit 4</code>是在<code>master</code>分支上创建的，所以它完全不知道<code>Commit 3</code>的存在。在<code>feature1</code>上我们添加了更多的commit。<code>Commit 5</code>直接引用了<code>Commit 3</code>，因为<code>Commit 4</code>只在<code>master</code>分支上有效，<code>Commit 6</code>直接引用了<code>Commit 5</code>。</p>
 
 <p>当我们将<code>feature1</code>合并到<code>master</code>中，它并不是通过某种方式神奇地把这些commit都移到<code>master</code>分支上。实际上，它创建了一个包含了<code>feature1</code>分支上<strong>所有的</strong>变更的全新commit。这个commit叫<code>Merge branch 'feature1'</code>，就像这样：</p>
 
@@ -130,7 +130,7 @@
 
 <p>当一个commit被创建的时候，它所引用的之前commit数量可以是一个，多个，甚至没有。通常只有仓库中第一个commit才会没有先前commit，而merge commit一般都拥有超过一个的先前commit。</p>
 
-<p>如果你还记得<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>的话，分支，其实实际上只是一个指向一个指定commit的指针而已。</p>
+<p>如果你还记得<a href="http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>的话，分支，其实实际上只是一个指向一个指定commit的指针而已。</p>
 
 <p><img src="http://i.imgur.com/S0av3NM.png" alt="" /></p>
 
@@ -163,22 +163,22 @@
 
 <blockquote><p>英文地址:<a href="http://codetunnel.com/merge-vs-rebase-part-2-what-is-a-merge/">http://codetunnel.com/merge-vs-rebase-part-2-what-is-a-merge/</a></p></blockquote>
 
-<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/'>http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+<p class='post-footer'>&nbsp;原文地址：<a href='http://fusijie.github.io/blog/2014/10/15/what-is-a-merge/'>http://fusijie.github.io/blog/2014/10/15/what-is-a-merge/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
 
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[(译)第一部分：什么是commit hash?]]></title>
-    <link href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/"/>
+    <link href="http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash/"/>
     <updated>2014-10-08T22:25:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash</id>
+    <id>http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash</id>
     <content type="html"><![CDATA[<h4>内容提要</h4>
 
 <ul>
 <li>第一部分：commit hash是什么？</li>
-<li>第二部分：<a href="http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/">merge是什么？</a></li>
-<li>第三部分：<a href="http://www.fusijie.com/blog/2014/11/18/what-is-a-rebase/">rebase是什么？</a></li>
+<li>第二部分：<a href="http://fusijie.github.io/blog/2014/10/15/what-is-a-merge/">merge是什么？</a></li>
+<li>第三部分：<a href="http://fusijie.github.io/blog/2014/11/18/what-is-a-rebase/">rebase是什么？</a></li>
 </ul>
 
 
@@ -229,20 +229,20 @@
 
 <p><img src="http://i.imgur.com/kxDIgKl.png" alt="" /></p>
 
-<p>现在我在<code>feature1</code>分支上创建了2个新的commit，<code>Commit 5</code>和<code>Commit 6</code>。新功能已经完成了，也是时候合并<code>feature1</code>分支到<code>master</code>分支中了。这时，我们可以选择merge <code>feature1</code>分支到<code>master</code>分支，也可以reabse <code>feature1</code>分支到<code>master</code>分支，让我们在<a href="http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/">第二部分</a>中探究一下merge是什么？</p>
+<p>现在我在<code>feature1</code>分支上创建了2个新的commit，<code>Commit 5</code>和<code>Commit 6</code>。新功能已经完成了，也是时候合并<code>feature1</code>分支到<code>master</code>分支中了。这时，我们可以选择merge <code>feature1</code>分支到<code>master</code>分支，也可以reabse <code>feature1</code>分支到<code>master</code>分支，让我们在<a href="http://fusijie.github.io/blog/2014/10/15/what-is-a-merge/">第二部分</a>中探究一下merge是什么？</p>
 
 <blockquote><p>英文地址:<a href="http://codetunnel.com/merge-vs-rebase-part-1-what-is-a-commit-hash/">http://codetunnel.com/merge-vs-rebase-part-1-what-is-a-commit-hash/</a></p></blockquote>
 
-<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/'>http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+<p class='post-footer'>&nbsp;原文地址：<a href='http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash/'>http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
 
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Smali和逆向分析]]></title>
-    <link href="http://www.fusijie.com/blog/2014/09/08/smali-introduction/"/>
+    <link href="http://fusijie.github.io/blog/2014/09/08/smali-introduction/"/>
     <updated>2014-09-08T20:37:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/09/08/smali-introduction</id>
+    <id>http://fusijie.github.io/blog/2014/09/08/smali-introduction</id>
     <content type="html"><![CDATA[<p>这篇文章其实2个月前就想写了，但并不好写，就懒得写了，所以拖到现在～其实接触smali这门语法是件蛮偶然的事，接触后发现，次奥，这货在某些领域太有用了，至于为什么我想看完这篇文章应该都明白了。</p>
 
 <p>我自己也只是接触了皮毛，大概用了2个礼拜多一点，也不是很系统的学习，写这篇的目的主要还是想把知道的东西记下来，以后好追溯。</p>
@@ -533,16 +533,16 @@
 
 <p>哇咔咔，竟然写了快4个小时～</p>
 
-<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/09/08/smali-introduction/'>http://www.fusijie.com/blog/2014/09/08/smali-introduction/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+<p class='post-footer'>&nbsp;原文地址：<a href='http://fusijie.github.io/blog/2014/09/08/smali-introduction/'>http://fusijie.github.io/blog/2014/09/08/smali-introduction/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
 
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Cocos2dx-FAQ-2]]></title>
-    <link href="http://www.fusijie.com/blog/2014/09/02/cocos2dx-faq-2/"/>
+    <link href="http://fusijie.github.io/blog/2014/09/02/cocos2dx-faq-2/"/>
     <updated>2014-09-02T17:34:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/09/02/cocos2dx-faq-2</id>
+    <id>http://fusijie.github.io/blog/2014/09/02/cocos2dx-faq-2</id>
     <content type="html"><![CDATA[<h3>1.<code>Q:</code>Cocos2d-x v2.2.5 进行Android交叉编译的时候报错“&#8217;transform&#8217; is not a member of &lsquo;std&#8217;”，如何解决？</h3>
 
 <p>由于没有添加标准算法库导致的问题，在<a href="https://github.com/cocos2d/cocos2d-x/blob/v2/extensions/CocoStudio/Reader/WidgetReader/LabelReader/LabelReader.cpp">extensions/CocoStudio/Reader/LabelReader.cpp</a>增加头文件的引用即可。官方仓库已修复，可以直接拉取更新。</p>
@@ -653,16 +653,16 @@ git checkout -b v3.2 cocos2d-x-3.2
 <br></br>
 
 
-<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/09/02/cocos2dx-faq-2/'>http://www.fusijie.com/blog/2014/09/02/cocos2dx-faq-2/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+<p class='post-footer'>&nbsp;原文地址：<a href='http://fusijie.github.io/blog/2014/09/02/cocos2dx-faq-2/'>http://fusijie.github.io/blog/2014/09/02/cocos2dx-faq-2/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
 
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[如何在Windows平台使用VS搭建C++/Lua的开发环境]]></title>
-    <link href="http://www.fusijie.com/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs/"/>
+    <link href="http://fusijie.github.io/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs/"/>
     <updated>2014-08-31T00:28:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs</id>
+    <id>http://fusijie.github.io/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs</id>
     <content type="html"><![CDATA[<p>本文主要介绍如何在Windows平台利用VS搭建C++/Lua开发环境。这里的“C++/Lua开发环境”主要指的是C++调用Lua，以及Lua调用C++。Mac平台相对会比较方便，但是VS也不是很麻烦就是了。Mac上利用XCode搭建的教程可以参考<a href="http://4gamers.cn/archives/242">子龙山人的教程</a>，当然也可以利用其他IDE，比如Eclipse+CDT+LDT来搭建，这都没有问题。</p>
 
 <p>另外，本文不谈及Lua/C++的交互，相关内容可以参考<a href="http://book.luaer.cn/">《Lua程序设计》</a>，或者<a href="http://4gamers.cn/">子龙山人的Lua系列教程</a>。</p>
@@ -817,16 +817,16 @@ git checkout -b v3.2 cocos2d-x-3.2
 
 <p>如果你不想这么麻烦，也可以直接从上述2个github地址直接clone我的项目。</p>
 
-<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs/'>http://www.fusijie.com/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+<p class='post-footer'>&nbsp;原文地址：<a href='http://fusijie.github.io/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs/'>http://fusijie.github.io/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
 
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Cocos2dx-FAQ-1]]></title>
-    <link href="http://www.fusijie.com/blog/2014/08/26/cocos2dx-faq-1/"/>
+    <link href="http://fusijie.github.io/blog/2014/08/26/cocos2dx-faq-1/"/>
     <updated>2014-08-26T17:28:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/08/26/cocos2dx-faq-1</id>
+    <id>http://fusijie.github.io/blog/2014/08/26/cocos2dx-faq-1</id>
     <content type="html"><![CDATA[<h3>1. <code>Q:</code>如何在安卓上给应用程序设置透明背景？</h3>
 
 <p>(1)NativeActivity，以Cocos2d-x 3.0 rc0为例</p>
@@ -1301,16 +1301,16 @@ git checkout -b v3.2 cocos2d-x-3.2
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/08/26/cocos2dx-faq-1/'>http://www.fusijie.com/blog/2014/08/26/cocos2dx-faq-1/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+<p class='post-footer'>&nbsp;原文地址：<a href='http://fusijie.github.io/blog/2014/08/26/cocos2dx-faq-1/'>http://fusijie.github.io/blog/2014/08/26/cocos2dx-faq-1/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
 
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[PowerCmd，一个Windows下cmd的绝佳替代工具]]></title>
-    <link href="http://www.fusijie.com/blog/2014/08/24/tools-powercmd/"/>
+    <link href="http://fusijie.github.io/blog/2014/08/24/tools-powercmd/"/>
     <updated>2014-08-24T00:48:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/08/24/tools-powercmd</id>
+    <id>http://fusijie.github.io/blog/2014/08/24/tools-powercmd</id>
     <content type="html"><![CDATA[<p>由于工作关系（码奴），平时会需要接触到比较多奇奇怪怪的应用。而一些比较好的小众软件和工具，我觉得很有必要分享出来。这是第一篇，之后有的话会慢慢积累分享出来，如果你们也有好的软件，欢迎留言分享。</p>
 
 <p>因为只是介绍工具而已，所以内容会很简单。</p>
@@ -1370,15 +1370,15 @@ git checkout -b v3.2 cocos2d-x-3.2
 
 <p>好了，看了半天还不如动手试试，软件是收费的，不过有一个月的试用期。</p>
 
-<p><strong>Win下coding，良心推荐。</strong><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/08/24/tools-powercmd/'><a href="http://www.fusijie.com/blog/2014/08/24/tools-powercmd/">http://www.fusijie.com/blog/2014/08/24/tools-powercmd/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
+<p><strong>Win下coding，良心推荐。</strong><p class='post-footer'>&nbsp;原文地址：<a href='http://fusijie.github.io/blog/2014/08/24/tools-powercmd/'><a href="http://fusijie.github.io/blog/2014/08/24/tools-powercmd/">http://fusijie.github.io/blog/2014/08/24/tools-powercmd/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十七】在Cocos2d-x中集成安卓版微信SDK]]></title>
-    <link href="http://www.fusijie.com/blog/2014/08/21/play-cocos2dx-37/"/>
+    <link href="http://fusijie.github.io/blog/2014/08/21/play-cocos2dx-37/"/>
     <updated>2014-08-21T00:26:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/08/21/play-cocos2dx-37</id>
+    <id>http://fusijie.github.io/blog/2014/08/21/play-cocos2dx-37</id>
     <content type="html"><![CDATA[<h3>1.概述</h3>
 
 <p>微信的火热程度已不必说了，如果能在Cocos2d-x中集成微信SDK，让游戏能分享给好友或者朋友圈，那对游戏推广将会是非常有利的。好了，本文就是手把手地教大伙如何在Cocos2d-x中集成微信SDK。</p>
@@ -1542,7 +1542,7 @@ $ ./build_native.py
 </span><span class='line'>      <span class="k">if</span><span class="o">(</span><span class="n">api</span><span class="o">.</span><span class="na">openWXApp</span><span class="o">())</span>
 </span><span class='line'>      <span class="o">{</span>
 </span><span class='line'>          <span class="n">WXWebpageObject</span> <span class="n">webpage</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WXWebpageObject</span><span class="o">();</span>
-</span><span class='line'>            <span class="n">webpage</span><span class="o">.</span><span class="na">webpageUrl</span> <span class="o">=</span> <span class="s">&quot;http://www.fusijie.com&quot;</span><span class="o">;</span>
+</span><span class='line'>            <span class="n">webpage</span><span class="o">.</span><span class="na">webpageUrl</span> <span class="o">=</span> <span class="s">&quot;http://fusijie.github.io&quot;</span><span class="o">;</span>
 </span><span class='line'>            <span class="n">WXMediaMessage</span> <span class="n">msg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WXMediaMessage</span><span class="o">(</span><span class="n">webpage</span><span class="o">);</span>
 </span><span class='line'>            <span class="n">msg</span><span class="o">.</span><span class="na">title</span> <span class="o">=</span> <span class="s">&quot;Tittle&quot;</span><span class="o">;</span>
 </span><span class='line'>            <span class="n">msg</span><span class="o">.</span><span class="na">description</span> <span class="o">=</span> <span class="s">&quot;Description&quot;</span><span class="o">;</span>
@@ -1604,7 +1604,7 @@ $ ./build_native.py
 </span><span class='line'>          <span class="k">if</span><span class="o">(</span><span class="n">api</span><span class="o">.</span><span class="na">getWXAppSupportAPI</span><span class="o">()</span> <span class="o">&gt;=</span> <span class="mh">0x21020001</span><span class="o">)</span>
 </span><span class='line'>          <span class="o">{</span>                
 </span><span class='line'>              <span class="n">WXWebpageObject</span> <span class="n">webpage</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WXWebpageObject</span><span class="o">();</span>
-</span><span class='line'>                <span class="n">webpage</span><span class="o">.</span><span class="na">webpageUrl</span> <span class="o">=</span> <span class="s">&quot;http://www.fusijie.com&quot;</span><span class="o">;</span>
+</span><span class='line'>                <span class="n">webpage</span><span class="o">.</span><span class="na">webpageUrl</span> <span class="o">=</span> <span class="s">&quot;http://fusijie.github.io&quot;</span><span class="o">;</span>
 </span><span class='line'>                <span class="n">WXMediaMessage</span> <span class="n">msg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">WXMediaMessage</span><span class="o">(</span><span class="n">webpage</span><span class="o">);</span>
 </span><span class='line'>                <span class="n">msg</span><span class="o">.</span><span class="na">title</span> <span class="o">=</span> <span class="s">&quot;Tittle&quot;</span><span class="o">;</span>
 </span><span class='line'>                <span class="n">msg</span><span class="o">.</span><span class="na">description</span> <span class="o">=</span> <span class="s">&quot;Description&quot;</span><span class="o">;</span>
@@ -1764,16 +1764,16 @@ $ ./build_native.py
 
 <p>本demo的下载地址：<a href="https://github.com/fusijie/Cocos2dx-Wechat">我的Github</a></p>
 
-<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/08/21/play-cocos2dx-37/'>http://www.fusijie.com/blog/2014/08/21/play-cocos2dx-37/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+<p class='post-footer'>&nbsp;原文地址：<a href='http://fusijie.github.io/blog/2014/08/21/play-cocos2dx-37/'>http://fusijie.github.io/blog/2014/08/21/play-cocos2dx-37/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
 
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十六】Earth Warrior 3D 大揭秘]]></title>
-    <link href="http://www.fusijie.com/blog/2014/07/10/play-cocos2dx-36/"/>
+    <link href="http://fusijie.github.io/blog/2014/07/10/play-cocos2dx-36/"/>
     <updated>2014-07-10T00:13:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/07/10/play-cocos2dx-36</id>
+    <id>http://fusijie.github.io/blog/2014/07/10/play-cocos2dx-36</id>
     <content type="html"><![CDATA[<p>3D游戏现在玩起来门槛还是挺高的。不过如果在Cocos2d-x引擎加入3D扩展，实现2.5D游戏效果又会怎么样？</p>
 
 <h3>1.概述</h3>
@@ -1959,15 +1959,15 @@ $ ./build_native.py
 
 <p><em>④GameController::update管理游戏的碰撞检测。</em></p>
 
-<p>除了一些数学上的计算比较羞涩意外，整个游戏的逻辑还是比较简单的。。。这里就不细说了，大家直接看源码吧。。。<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/07/10/play-cocos2dx-36/'><a href="http://www.fusijie.com/blog/2014/07/10/play-cocos2dx-36/">http://www.fusijie.com/blog/2014/07/10/play-cocos2dx-36/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
+<p>除了一些数学上的计算比较羞涩意外，整个游戏的逻辑还是比较简单的。。。这里就不细说了，大家直接看源码吧。。。<p class='post-footer'>&nbsp;原文地址：<a href='http://fusijie.github.io/blog/2014/07/10/play-cocos2dx-36/'><a href="http://fusijie.github.io/blog/2014/07/10/play-cocos2dx-36/">http://fusijie.github.io/blog/2014/07/10/play-cocos2dx-36/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十五】《我叫MT offline》Demo]]></title>
-    <link href="http://www.fusijie.com/blog/2014/02/25/play-cocos2dx-35/"/>
+    <link href="http://fusijie.github.io/blog/2014/02/25/play-cocos2dx-35/"/>
     <updated>2014-02-25T19:43:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/02/25/play-cocos2dx-35</id>
+    <id>http://fusijie.github.io/blog/2014/02/25/play-cocos2dx-35</id>
     <content type="html"><![CDATA[<h3>1.写在前面</h3>
 
 <p><strong>这是怎样一个游戏？</strong></p>
@@ -2001,7 +2001,7 @@ $ ./build_native.py
 
 <p><strong>公告</strong></p>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/announcement.png" alt="" border="0" title="4" /><br></br></div>
+<div align="center"><img src="http://fusijie.github.io/images/Blog/mt/announcement.png" alt="" border="0" title="4" /><br></br></div>
 
 
 <p><strong>游戏</strong></p>
@@ -2013,75 +2013,75 @@ $ ./build_native.py
 
 <p><strong>开幕故事</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/story.gif">http://www.fusijie.com/images/Blog/mt/story.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/story.gif">http://fusijie.github.io/images/Blog/mt/story.gif</a></p>
 
 <p><strong>游戏主场景</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/mainui.gif">http://www.fusijie.com/images/Blog/mt/mainui.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/mainui.gif">http://fusijie.github.io/images/Blog/mt/mainui.gif</a></p>
 
 <p><strong>英雄</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/card.gif">http://www.fusijie.com/images/Blog/mt/card.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/card.gif">http://fusijie.github.io/images/Blog/mt/card.gif</a></p>
 
 <p><strong>进化</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/evolve.gif">http://www.fusijie.com/images/Blog/mt/evolve.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/evolve.gif">http://fusijie.github.io/images/Blog/mt/evolve.gif</a></p>
 
 <p><strong>碎片</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/chip.gif">http://www.fusijie.com/images/Blog/mt/chip.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/chip.gif">http://fusijie.github.io/images/Blog/mt/chip.gif</a></p>
 
 <p><strong>升级</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/levelup.gif">http://www.fusijie.com/images/Blog/mt/levelup.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/levelup.gif">http://fusijie.github.io/images/Blog/mt/levelup.gif</a></p>
 
 <p><strong>奖励</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/task.gif">http://www.fusijie.com/images/Blog/mt/task.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/task.gif">http://fusijie.github.io/images/Blog/mt/task.gif</a></p>
 
 <p><strong>技能学院</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/colleage.gif">http://www.fusijie.com/images/Blog/mt/colleage.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/colleage.gif">http://fusijie.github.io/images/Blog/mt/colleage.gif</a></p>
 
 <p><strong>副本列表</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/instance.gif">http://www.fusijie.com/images/Blog/mt/instance.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/instance.gif">http://fusijie.github.io/images/Blog/mt/instance.gif</a></p>
 
 <p><strong>副本战斗</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/battle.gif">http://www.fusijie.com/images/Blog/mt/battle.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/battle.gif">http://fusijie.github.io/images/Blog/mt/battle.gif</a></p>
 
 <p><strong>竞技场</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/arena.gif">http://www.fusijie.com/images/Blog/mt/arena.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/arena.gif">http://fusijie.github.io/images/Blog/mt/arena.gif</a></p>
 
 <p><strong>商店</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/store.gif">http://www.fusijie.com/images/Blog/mt/store.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/store.gif">http://fusijie.github.io/images/Blog/mt/store.gif</a></p>
 
 <p><strong>单次抽奖</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/raffleone.gif">http://www.fusijie.com/images/Blog/mt/raffleone.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/raffleone.gif">http://fusijie.github.io/images/Blog/mt/raffleone.gif</a></p>
 
 <p><strong>十连抽</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/raffleten.gif">http://www.fusijie.com/images/Blog/mt/raffleten.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/raffleten.gif">http://fusijie.github.io/images/Blog/mt/raffleten.gif</a></p>
 
 <p><strong>好友</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/friend.gif">http://www.fusijie.com/images/Blog/mt/friend.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/friend.gif">http://fusijie.github.io/images/Blog/mt/friend.gif</a></p>
 
 <p><strong>攻略</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/more.gif">http://www.fusijie.com/images/Blog/mt/more.gif</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/02/25/play-cocos2dx-35/'><a href="http://www.fusijie.com/blog/2014/02/25/play-cocos2dx-35/">http://www.fusijie.com/blog/2014/02/25/play-cocos2dx-35/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/more.gif">http://fusijie.github.io/images/Blog/mt/more.gif</a><p class='post-footer'>&nbsp;原文地址：<a href='http://fusijie.github.io/blog/2014/02/25/play-cocos2dx-35/'><a href="http://fusijie.github.io/blog/2014/02/25/play-cocos2dx-35/">http://fusijie.github.io/blog/2014/02/25/play-cocos2dx-35/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十四】绘图：CCDrawingPrimitives和CCDrawNode]]></title>
-    <link href="http://www.fusijie.com/blog/2014/02/08/play-cocos2dx-34/"/>
+    <link href="http://fusijie.github.io/blog/2014/02/08/play-cocos2dx-34/"/>
     <updated>2014-02-08T16:10:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/02/08/play-cocos2dx-34</id>
+    <id>http://fusijie.github.io/blog/2014/02/08/play-cocos2dx-34</id>
     <content type="html"><![CDATA[<p>最近忙出翔了，这年过的也揪心。好久没来更新博客了，今天就来写一写cocos2d-x中图形的绘制。</p>
 
 <h3>1.概述</h3>
@@ -2243,15 +2243,15 @@ $ ./build_native.py
 
 <h3>4.源码下载</h3>
 
-<p>可以自己看TestCpp示例，也可以从<a href="http://download.csdn.net/detail/jackyvincefu/6903357">这里</a>下载。<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2014/02/08/play-cocos2dx-34/'><a href="http://www.fusijie.com/blog/2014/02/08/play-cocos2dx-34/">http://www.fusijie.com/blog/2014/02/08/play-cocos2dx-34/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
+<p>可以自己看TestCpp示例，也可以从<a href="http://download.csdn.net/detail/jackyvincefu/6903357">这里</a>下载。<p class='post-footer'>&nbsp;原文地址：<a href='http://fusijie.github.io/blog/2014/02/08/play-cocos2dx-34/'><a href="http://fusijie.github.io/blog/2014/02/08/play-cocos2dx-34/">http://fusijie.github.io/blog/2014/02/08/play-cocos2dx-34/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十三】游戏嵌入Webview网页]]></title>
-    <link href="http://www.fusijie.com/blog/2013/12/26/play-cocos2dx-33/"/>
+    <link href="http://fusijie.github.io/blog/2013/12/26/play-cocos2dx-33/"/>
     <updated>2013-12-26T14:11:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/12/26/play-cocos2dx-33</id>
+    <id>http://fusijie.github.io/blog/2013/12/26/play-cocos2dx-33</id>
     <content type="html"><![CDATA[<p>手游《我叫MT》一开始会弹出一个游戏公告，有玩过的肯定都蛮熟悉的，这就是webview，就是一个网页。由于webview和平台相关，这里就介绍下cocos2d-x如何嵌入andorid的webview控件，在cocos2d-x中显示网页。</p>
 
 <h3>1.Jni</h3>
@@ -2596,16 +2596,16 @@ $ ./build_native.py
 
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6770315">下载地址</a></p>
 
-<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/12/26/play-cocos2dx-33/'>http://www.fusijie.com/blog/2013/12/26/play-cocos2dx-33/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+<p class='post-footer'>&nbsp;原文地址：<a href='http://fusijie.github.io/blog/2013/12/26/play-cocos2dx-33/'>http://fusijie.github.io/blog/2013/12/26/play-cocos2dx-33/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
 
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十二】xml的解析]]></title>
-    <link href="http://www.fusijie.com/blog/2013/12/18/play-cocos2dx-32/"/>
+    <link href="http://fusijie.github.io/blog/2013/12/18/play-cocos2dx-32/"/>
     <updated>2013-12-18T09:30:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/12/18/play-cocos2dx-32</id>
+    <id>http://fusijie.github.io/blog/2013/12/18/play-cocos2dx-32</id>
     <content type="html"><![CDATA[<p>cocos2d-x中对xml的解析是采用的TinyXML库，而对plist的解析同时结合了CCDictionary来处理，这里简单介绍下cocos2d-x中解析xml的两种方式，也是常用的xml两个C++解析库：TinyXML和RapidXML。xml被设计用于数据存储和传输，重点是数据内容本身，而不像html，用于表现数据。</p>
 
 <h3>1.TinyXML</h3>
@@ -2672,7 +2672,7 @@ $ ./build_native.py
 </span><span class='line'>      
 </span><span class='line'>      <span class="n">TiXmlElement</span><span class="o">*</span> <span class="n">websiteElenment</span><span class="o">=</span><span class="k">new</span> <span class="n">TiXmlElement</span><span class="p">(</span><span class="s">&quot;website&quot;</span><span class="p">);</span>
 </span><span class='line'>      <span class="n">infoElement</span><span class="o">-&gt;</span><span class="n">LinkEndChild</span><span class="p">(</span><span class="n">websiteElenment</span><span class="p">);</span>
-</span><span class='line'>      <span class="n">TiXmlText</span><span class="o">*</span> <span class="n">websitetext</span><span class="o">=</span><span class="k">new</span> <span class="n">TiXmlText</span><span class="p">(</span><span class="s">&quot;http://www.fusijie.com&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">TiXmlText</span><span class="o">*</span> <span class="n">websitetext</span><span class="o">=</span><span class="k">new</span> <span class="n">TiXmlText</span><span class="p">(</span><span class="s">&quot;http://fusijie.github.io&quot;</span><span class="p">);</span>
 </span><span class='line'>      <span class="n">websiteElenment</span><span class="o">-&gt;</span><span class="n">LinkEndChild</span><span class="p">(</span><span class="n">websitetext</span><span class="p">);</span>
 </span><span class='line'>
 </span><span class='line'>      <span class="n">myTinyXMLDoc</span><span class="o">-&gt;</span><span class="n">SaveFile</span><span class="p">(</span><span class="n">CCFileUtils</span><span class="o">::</span><span class="n">sharedFileUtils</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">fullPathForFilename</span><span class="p">(</span><span class="s">&quot;testTiny.xml&quot;</span><span class="p">).</span><span class="n">c_str</span><span class="p">());</span><span class="c1">//保存xml  </span>
@@ -2801,7 +2801,7 @@ $ ./build_native.py
 </span><span class='line'>      <span class="c1">//创建blog和website节点并追加到root  </span>
 </span><span class='line'>      <span class="n">rapidxml</span><span class="o">::</span><span class="n">xml_node</span><span class="o">&lt;&gt;*</span> <span class="n">blog</span> <span class="o">=</span> <span class="n">myRapidXMLDoc</span><span class="p">.</span><span class="n">allocate_node</span><span class="p">(</span><span class="n">rapidxml</span><span class="o">::</span><span class="n">node_element</span><span class="p">,</span><span class="s">&quot;blog&quot;</span><span class="p">,</span><span class="s">&quot;http://blog.csdn.net/jackystudio&quot;</span><span class="p">);</span>
 </span><span class='line'>      <span class="n">info</span><span class="o">-&gt;</span><span class="n">append_node</span><span class="p">(</span><span class="n">blog</span><span class="p">);</span>
-</span><span class='line'>      <span class="n">rapidxml</span><span class="o">::</span><span class="n">xml_node</span><span class="o">&lt;&gt;*</span> <span class="n">website</span> <span class="o">=</span> <span class="n">myRapidXMLDoc</span><span class="p">.</span><span class="n">allocate_node</span><span class="p">(</span><span class="n">rapidxml</span><span class="o">::</span><span class="n">node_element</span><span class="p">,</span><span class="s">&quot;website&quot;</span><span class="p">,</span><span class="s">&quot;http://www.fusijie.com&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">rapidxml</span><span class="o">::</span><span class="n">xml_node</span><span class="o">&lt;&gt;*</span> <span class="n">website</span> <span class="o">=</span> <span class="n">myRapidXMLDoc</span><span class="p">.</span><span class="n">allocate_node</span><span class="p">(</span><span class="n">rapidxml</span><span class="o">::</span><span class="n">node_element</span><span class="p">,</span><span class="s">&quot;website&quot;</span><span class="p">,</span><span class="s">&quot;http://fusijie.github.io&quot;</span><span class="p">);</span>
 </span><span class='line'>      <span class="n">info</span><span class="o">-&gt;</span><span class="n">append_node</span><span class="p">(</span><span class="n">website</span><span class="p">);</span>
 </span><span class='line'>
 </span><span class='line'>      <span class="c1">//保存xml文档  </span>
@@ -2878,7 +2878,7 @@ $ ./build_native.py
 </pre></td><td class='code'><pre><code class='xml'><span class='line'>  <span class="nt">&lt;Jacky&gt;</span>
 </span><span class='line'>      <span class="nt">&lt;Info</span> <span class="na">Name=</span><span class="s">&quot;Jacky&quot;</span> <span class="na">QQ=</span><span class="s">&quot;754505629&quot;</span> <span class="na">E-mail=</span><span class="s">&quot;Geek.Jacky@Gmail.com&quot;</span><span class="nt">&gt;</span>
 </span><span class='line'>          <span class="nt">&lt;blog&gt;</span>http://blog.csdn.net/jackystudio<span class="nt">&lt;/blog&gt;</span>
-</span><span class='line'>        <span class="nt">&lt;website&gt;</span>http://www.fusijie.com<span class="nt">&lt;/website&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;website&gt;</span>http://fusijie.github.io<span class="nt">&lt;/website&gt;</span>
 </span><span class='line'>      <span class="nt">&lt;/Info&gt;</span>
 </span><span class='line'>  <span class="nt">&lt;/Jacky&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
@@ -2888,16 +2888,16 @@ $ ./build_native.py
 
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6732361">下载地址</a></p>
 
-<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/12/18/play-cocos2dx-32/'>http://www.fusijie.com/blog/2013/12/18/play-cocos2dx-32/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+<p class='post-footer'>&nbsp;原文地址：<a href='http://fusijie.github.io/blog/2013/12/18/play-cocos2dx-32/'>http://fusijie.github.io/blog/2013/12/18/play-cocos2dx-32/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
 
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十一】服务器的网络通信编程]]></title>
-    <link href="http://www.fusijie.com/blog/2013/12/17/play-cocos2dx-31/"/>
+    <link href="http://fusijie.github.io/blog/2013/12/17/play-cocos2dx-31/"/>
     <updated>2013-12-17T14:11:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/12/17/play-cocos2dx-31</id>
+    <id>http://fusijie.github.io/blog/2013/12/17/play-cocos2dx-31</id>
     <content type="html"><![CDATA[<p>这里采用Apache+php搭建了一个简易服务器，服务端用php语言，客户端采用cocos2d-x的CCHttpClient类通过http方式访问服务端资源。模拟了cocos2d-x提交账户和密码到服务端，服务端校验帐号密码，如果正确返回客户端成功登录，如果错误则返回错误信息，同时在服务端后台保存登录log。第一次接触php，语法上和C/C++还是蛮像的，主要是给出一个cocos2d-x网络实例，代码中并没有做一些防呆纠错措施。</p>
 
 <h3>1.搭建Apache+php网页服务器</h3>
@@ -3214,15 +3214,15 @@ $ ./build_native.py
 
 <h3>6.源码下载</h3>
 
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6713471">下载地址</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/12/17/play-cocos2dx-31/'><a href="http://www.fusijie.com/blog/2013/12/17/play-cocos2dx-31/">http://www.fusijie.com/blog/2013/12/17/play-cocos2dx-31/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6713471">下载地址</a><p class='post-footer'>&nbsp;原文地址：<a href='http://fusijie.github.io/blog/2013/12/17/play-cocos2dx-31/'><a href="http://fusijie.github.io/blog/2013/12/17/play-cocos2dx-31/">http://fusijie.github.io/blog/2013/12/17/play-cocos2dx-31/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十】点九图和输入框的使用]]></title>
-    <link href="http://www.fusijie.com/blog/2013/12/13/play-cocos2dx-30/"/>
+    <link href="http://fusijie.github.io/blog/2013/12/13/play-cocos2dx-30/"/>
     <updated>2013-12-13T11:53:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/12/13/play-cocos2dx-30</id>
+    <id>http://fusijie.github.io/blog/2013/12/13/play-cocos2dx-30</id>
     <content type="html"><![CDATA[<p>登录界面一个帐号/密码输入框或者主角命名框是少不了的。这节就来了解一下点九图的输入框的使用。这里只是介绍基础知识，并不进行平台的移植，也不处理跨平台可能出现的问题。</p>
 
 <h3>1.点九图CCScale9Sprite</h3>
@@ -3413,15 +3413,15 @@ $ ./build_native.py
 
 <h3>4.源码下载</h3>
 
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6707427">下载地址</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/12/13/play-cocos2dx-30/'><a href="http://www.fusijie.com/blog/2013/12/13/play-cocos2dx-30/">http://www.fusijie.com/blog/2013/12/13/play-cocos2dx-30/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6707427">下载地址</a><p class='post-footer'>&nbsp;原文地址：<a href='http://fusijie.github.io/blog/2013/12/13/play-cocos2dx-30/'><a href="http://fusijie.github.io/blog/2013/12/13/play-cocos2dx-30/">http://fusijie.github.io/blog/2013/12/13/play-cocos2dx-30/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十九】利用CCClipingNode做游戏遮罩]]></title>
-    <link href="http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29/"/>
+    <link href="http://fusijie.github.io/blog/2013/12/06/play-cocos2dx-29/"/>
     <updated>2013-12-06T10:41:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29</id>
+    <id>http://fusijie.github.io/blog/2013/12/06/play-cocos2dx-29</id>
     <content type="html"><![CDATA[<p>新手引导是游戏中必备的（除了奇葩的MT用一段动画开始），也是玩家对游戏的第一印象，重要性不言而喻。一般采用的遮罩的形式来突出引导重点，同时屏蔽其他功能。这里简单的介绍一下游戏遮罩的实现，并给出一个示例。</p>
 
 <h3>1.CCClipingNode</h3>
@@ -3598,15 +3598,15 @@ $ ./build_native.py
 
 <h3>5.源码</h3>
 
-<p><a href="http://download.csdn.net/detail/jackyvincefu/6667189">下载地址</a><p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29/'><a href="http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29/">http://www.fusijie.com/blog/2013/12/06/play-cocos2dx-29/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
+<p><a href="http://download.csdn.net/detail/jackyvincefu/6667189">下载地址</a><p class='post-footer'>&nbsp;原文地址：<a href='http://fusijie.github.io/blog/2013/12/06/play-cocos2dx-29/'><a href="http://fusijie.github.io/blog/2013/12/06/play-cocos2dx-29/">http://fusijie.github.io/blog/2013/12/06/play-cocos2dx-29/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十八】cocos2d-x的消息和数据传递]]></title>
-    <link href="http://www.fusijie.com/blog/2013/12/03/play-cocos2dx-28/"/>
+    <link href="http://fusijie.github.io/blog/2013/12/03/play-cocos2dx-28/"/>
     <updated>2013-12-03T09:57:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/12/03/play-cocos2dx-28</id>
+    <id>http://fusijie.github.io/blog/2013/12/03/play-cocos2dx-28</id>
     <content type="html"><![CDATA[<p>如何在层间或者场景间进行消息传递，大概是每个初学者都要面对的问题吧。这里介绍cocos2d-x的一种消息/数据传递方式，内置的观察者模式，也称消息通知中心，CCNotificationCenter。</p>
 
 <h3>1.CCNotificationCenter</h3>
@@ -3831,16 +3831,16 @@ $ ./build_native.py
 
 <p><a href="http://download.csdn.net/detail/jackyvincefu/6647453">下载地址</a></p>
 
-<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/12/03/play-cocos2dx-28/'>http://www.fusijie.com/blog/2013/12/03/play-cocos2dx-28/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+<p class='post-footer'>&nbsp;原文地址：<a href='http://fusijie.github.io/blog/2013/12/03/play-cocos2dx-28/'>http://fusijie.github.io/blog/2013/12/03/play-cocos2dx-28/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
 
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十七】CCSequence不能执行CCRepeatForever]]></title>
-    <link href="http://www.fusijie.com/blog/2013/11/28/play-cocos2dx-27/"/>
+    <link href="http://fusijie.github.io/blog/2013/11/28/play-cocos2dx-27/"/>
     <updated>2013-11-28T09:25:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/11/28/play-cocos2dx-27</id>
+    <id>http://fusijie.github.io/blog/2013/11/28/play-cocos2dx-27</id>
     <content type="html"><![CDATA[<p>之前在遇到这么一个问题，在CCSequence中加入CCRepeatForever，发现其他动作执行没问题，就是CCRepeatForever无法执行。代码并没有问题，很奇怪。</p>
 
 <h3>1.示例</h3>
@@ -4118,15 +4118,15 @@ $ ./build_native.py
 
 <h3>5.总结</h3>
 
-<p>虽然CCRepeatForever也同样继承于CCActionInterval，理论上是延时动作的子类，但是和一般的延时动作又有很大的不同，所以平时在使用的时候必须很小心，不能当成一般的CCActionInterval使用。而在cocos2d-x动作的分类上是不是应该把它从CCAction继承出来会比较好一点？<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/11/28/play-cocos2dx-27/'><a href="http://www.fusijie.com/blog/2013/11/28/play-cocos2dx-27/">http://www.fusijie.com/blog/2013/11/28/play-cocos2dx-27/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
+<p>虽然CCRepeatForever也同样继承于CCActionInterval，理论上是延时动作的子类，但是和一般的延时动作又有很大的不同，所以平时在使用的时候必须很小心，不能当成一般的CCActionInterval使用。而在cocos2d-x动作的分类上是不是应该把它从CCAction继承出来会比较好一点？<p class='post-footer'>&nbsp;原文地址：<a href='http://fusijie.github.io/blog/2013/11/28/play-cocos2dx-27/'><a href="http://fusijie.github.io/blog/2013/11/28/play-cocos2dx-27/">http://fusijie.github.io/blog/2013/11/28/play-cocos2dx-27/</a></a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十六】数据结构CCDictionary]]></title>
-    <link href="http://www.fusijie.com/blog/2013/11/26/play-cocos2dx-26/"/>
+    <link href="http://fusijie.github.io/blog/2013/11/26/play-cocos2dx-26/"/>
     <updated>2013-11-26T09:00:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/11/26/play-cocos2dx-26</id>
+    <id>http://fusijie.github.io/blog/2013/11/26/play-cocos2dx-26</id>
     <content type="html"><![CDATA[<p>CCDictionary在cocos2d-x中被大量的应用，比如CCTexureCache，CCSpriteFramCache等等。</p>
 
 <h3>1.实现原理</h3>
@@ -4388,7 +4388,7 @@ $ ./build_native.py
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p class='post-footer'>&nbsp;原文地址：<a href='http://www.fusijie.com/blog/2013/11/26/play-cocos2dx-26/'>http://www.fusijie.com/blog/2013/11/26/play-cocos2dx-26/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
+<p class='post-footer'>&nbsp;原文地址：<a href='http://fusijie.github.io/blog/2013/11/26/play-cocos2dx-26/'>http://fusijie.github.io/blog/2013/11/26/play-cocos2dx-26/</a><br/>&nbsp;版权声明：自由转载-非商用-非衍生-保持署名| <a href='http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh'>Creative Commons BY-NC-ND 3.0</a></p>
 
 ]]></content>
   </entry>

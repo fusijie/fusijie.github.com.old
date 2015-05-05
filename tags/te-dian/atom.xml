@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: 特点 | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/te-dian/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/te-dian/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之六】节点类CCNode]]></title>
-    <link href="http://www.fusijie.com/blog/2013/10/14/play-cocos2dx-06/"/>
+    <link href="http://fusijie.github.io/blog/2013/10/14/play-cocos2dx-06/"/>
     <updated>2013-10-14T22:06:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/10/14/play-cocos2dx-06</id>
+    <id>http://fusijie.github.io/blog/2013/10/14/play-cocos2dx-06</id>
     <content type="html"><![CDATA[<p>节点类CCNode可以说是游戏元素的祖宗了，基本上我们看得到的游戏元素都是以它为原型进行扩展的。像CCScene，CCLayer，CCSprite，CCMenu，CCSpriteBatchNode等等都是从CCNode继承而来。另外如果我们要自定义精灵，那么从CCNode继承也是一个很不错的选择。</p>
 
 <!-- more -->

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Cocos2dx-FAQ | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/blog/categories/cocos2dx-faq/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/blog/categories/cocos2dx-faq/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Cocos2dx-FAQ-2]]></title>
-    <link href="http://www.fusijie.com/blog/2014/09/02/cocos2dx-faq-2/"/>
+    <link href="http://fusijie.github.io/blog/2014/09/02/cocos2dx-faq-2/"/>
     <updated>2014-09-02T17:34:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/09/02/cocos2dx-faq-2</id>
+    <id>http://fusijie.github.io/blog/2014/09/02/cocos2dx-faq-2</id>
     <content type="html"><![CDATA[<h3>1.<code>Q:</code>Cocos2d-x v2.2.5 进行Android交叉编译的时候报错“'transform' is not a member of &lsquo;std'”，如何解决？</h3>
 
 <p>由于没有添加标准算法库导致的问题，在<a href="https://github.com/cocos2d/cocos2d-x/blob/v2/extensions/CocoStudio/Reader/WidgetReader/LabelReader/LabelReader.cpp">extensions/CocoStudio/Reader/LabelReader.cpp</a>增加头文件的引用即可。官方仓库已修复，可以直接拉取更新。</p>
@@ -131,9 +131,9 @@ git checkout -b v3.2 cocos2d-x-3.2
   
   <entry>
     <title type="html"><![CDATA[Cocos2dx-FAQ-1]]></title>
-    <link href="http://www.fusijie.com/blog/2014/08/26/cocos2dx-faq-1/"/>
+    <link href="http://fusijie.github.io/blog/2014/08/26/cocos2dx-faq-1/"/>
     <updated>2014-08-26T17:28:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/08/26/cocos2dx-faq-1</id>
+    <id>http://fusijie.github.io/blog/2014/08/26/cocos2dx-faq-1</id>
     <content type="html"><![CDATA[<h3>1. <code>Q:</code>如何在安卓上给应用程序设置透明背景？</h3>
 
 <p>(1)NativeActivity，以Cocos2d-x 3.0 rc0为例</p>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: EarthWarrior3D | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/earthwarrior3d/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/earthwarrior3d/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十六】Earth Warrior 3D 大揭秘]]></title>
-    <link href="http://www.fusijie.com/blog/2014/07/10/play-cocos2dx-36/"/>
+    <link href="http://fusijie.github.io/blog/2014/07/10/play-cocos2dx-36/"/>
     <updated>2014-07-10T00:13:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/07/10/play-cocos2dx-36</id>
+    <id>http://fusijie.github.io/blog/2014/07/10/play-cocos2dx-36</id>
     <content type="html"><![CDATA[<p>3D游戏现在玩起来门槛还是挺高的。不过如果在Cocos2d-x引擎加入3D扩展，实现2.5D游戏效果又会怎么样？</p>
 
 <h3>1.概述</h3>

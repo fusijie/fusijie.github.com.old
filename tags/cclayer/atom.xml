@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: CCLayer | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/cclayer/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/cclayer/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之七】场景类CCScene和布景类CCLayer]]></title>
-    <link href="http://www.fusijie.com/blog/2013/10/14/play-cocos2dx-07/"/>
+    <link href="http://fusijie.github.io/blog/2013/10/14/play-cocos2dx-07/"/>
     <updated>2013-10-14T22:21:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/10/14/play-cocos2dx-07</id>
+    <id>http://fusijie.github.io/blog/2013/10/14/play-cocos2dx-07</id>
     <content type="html"><![CDATA[<p>场景类CCScene和布景类CCLayer都是作为一个容器来使用，这里简单地看下它们的实现：</p>
 
 <h3>1.场景类：CCScene</h3>

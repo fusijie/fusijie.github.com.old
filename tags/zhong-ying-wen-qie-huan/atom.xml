@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: 中英文切换 | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/zhong-ying-wen-qie-huan/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/zhong-ying-wen-qie-huan/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十七】cocos2d-x中文显示]]></title>
-    <link href="http://www.fusijie.com/blog/2013/10/25/play-cocos2dx-17/"/>
+    <link href="http://fusijie.github.io/blog/2013/10/25/play-cocos2dx-17/"/>
     <updated>2013-10-25T16:53:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/10/25/play-cocos2dx-17</id>
+    <id>http://fusijie.github.io/blog/2013/10/25/play-cocos2dx-17</id>
     <content type="html"><![CDATA[<p>cocos2d-x的中文显示其实就是一个UTF-8编码在作怪而已，一种简单的方法就是把文本保存为UTF-8编码即可（注意不是UTF-8 + BOM），建议使用UE，Sublime Text或者EditPlus之类的本文编辑器。这里介绍另一种方法：通过读取xml文件显示中文，这种方法更利于软件的国际化，demo顺便实现了中英文切换。</p>
 
 <!-- more -->

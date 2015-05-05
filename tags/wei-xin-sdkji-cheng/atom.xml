@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: 微信SDK集成 | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/wei-xin-sdkji-cheng/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/wei-xin-sdkji-cheng/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十七】在Cocos2d-x中集成安卓版微信SDK]]></title>
-    <link href="http://www.fusijie.com/blog/2014/08/21/play-cocos2dx-37/"/>
+    <link href="http://fusijie.github.io/blog/2014/08/21/play-cocos2dx-37/"/>
     <updated>2014-08-21T00:26:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/08/21/play-cocos2dx-37</id>
+    <id>http://fusijie.github.io/blog/2014/08/21/play-cocos2dx-37</id>
     <content type="html"><![CDATA[<h3>1.概述</h3>
 
 <p>微信的火热程度已不必说了，如果能在Cocos2d-x中集成微信SDK，让游戏能分享给好友或者朋友圈，那对游戏推广将会是非常有利的。好了，本文就是手把手地教大伙如何在Cocos2d-x中集成微信SDK。</p>
@@ -150,7 +150,7 @@ private void regToWX(){
     if(api.openWXApp())
     {
         WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = "http://www.fusijie.com";
+        webpage.webpageUrl = "http://fusijie.github.io";
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = "Tittle";
         msg.description = "Description";
@@ -184,7 +184,7 @@ private void regToWX(){
         if(api.getWXAppSupportAPI() &gt;= 0x21020001)
         {               
             WXWebpageObject webpage = new WXWebpageObject();
-            webpage.webpageUrl = "http://www.fusijie.com";
+            webpage.webpageUrl = "http://fusijie.github.io";
             WXMediaMessage msg = new WXMediaMessage(webpage);
             msg.title = "Tittle";
             msg.description = "Description";

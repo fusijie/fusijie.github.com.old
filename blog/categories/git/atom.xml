@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: git | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/blog/categories/git/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/blog/categories/git/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,19 +15,19 @@
   
   <entry>
     <title type="html"><![CDATA[(译)第三部分：什么是rebase?]]></title>
-    <link href="http://www.fusijie.com/blog/2014/11/18/what-is-a-rebase/"/>
+    <link href="http://fusijie.github.io/blog/2014/11/18/what-is-a-rebase/"/>
     <updated>2014-11-18T23:44:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/11/18/what-is-a-rebase</id>
+    <id>http://fusijie.github.io/blog/2014/11/18/what-is-a-rebase</id>
     <content type="html"><![CDATA[<h3>内容提要</h3>
 
 <ul>
-<li>第一部分：<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">commit hash是什么？</a></li>
-<li>第二部分：<a href="http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/">merge是什么？</a></li>
+<li>第一部分：<a href="http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash/">commit hash是什么？</a></li>
+<li>第二部分：<a href="http://fusijie.github.io/blog/2014/10/15/what-is-a-merge/">merge是什么？</a></li>
 <li>第三部分：rebase是什么？</li>
 </ul>
 
 
-<p>在<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>中，我们讨论了什么是commit hash，其中一个很重要的特点就是commit无法被修改。hash值是根据存储在commit中的信息生成的，所以修改一个commit或者commit hash，你必须要创建一个全新的commit。我们还讨论了每一个commit存储了它的前一个commit的hash值。我们所没有讨论的是它对我们Git历史的影响。</p>
+<p>在<a href="http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>中，我们讨论了什么是commit hash，其中一个很重要的特点就是commit无法被修改。hash值是根据存储在commit中的信息生成的，所以修改一个commit或者commit hash，你必须要创建一个全新的commit。我们还讨论了每一个commit存储了它的前一个commit的hash值。我们所没有讨论的是它对我们Git历史的影响。</p>
 
 <!-- more -->
 
@@ -42,7 +42,7 @@
 
 <p>如果你改变了一个commit的某个属性，那生成的hash值将不再一样，后一个commit也不会引用到新的commit。结果就是你不得不去修改后一个commit来引用到新的commit hash，这同样会引起commit hash的改变，就这样一路下去直到链条的末尾。</p>
 
-<p>这时候轮到<a href="http://git-scm.com/docs/git-rebase">rebase</a>上场了。如果你还记得<a href="http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/">第二部分</a>，当我们将<code>feature1</code>分支合并到<code>master</code>分支后，有一副图展示了各个commit之间的关系。</p>
+<p>这时候轮到<a href="http://git-scm.com/docs/git-rebase">rebase</a>上场了。如果你还记得<a href="http://fusijie.github.io/blog/2014/10/15/what-is-a-merge/">第二部分</a>，当我们将<code>feature1</code>分支合并到<code>master</code>分支后，有一副图展示了各个commit之间的关系。</p>
 
 <p><img src="http://i.imgur.com/S0av3NM.png" alt="" /></p>
 
@@ -90,32 +90,32 @@
   
   <entry>
     <title type="html"><![CDATA[(译)第二部分：什么是merge?]]></title>
-    <link href="http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/"/>
+    <link href="http://fusijie.github.io/blog/2014/10/15/what-is-a-merge/"/>
     <updated>2014-10-15T00:03:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/10/15/what-is-a-merge</id>
+    <id>http://fusijie.github.io/blog/2014/10/15/what-is-a-merge</id>
     <content type="html"><![CDATA[<h4>内容提要</h4>
 
 <ul>
-<li>第一部分：<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">commit hash是什么？</a></li>
+<li>第一部分：<a href="http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash/">commit hash是什么？</a></li>
 <li>第二部分：merge是什么？</li>
-<li>第三部分：<a href="http://www.fusijie.com/blog/2014/11/18/what-is-a-rebase/">rebase是什么？</a></li>
+<li>第三部分：<a href="http://fusijie.github.io/blog/2014/11/18/what-is-a-rebase/">rebase是什么？</a></li>
 </ul>
 
 
-<p>在<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>我们创建了一个小的demo仓库，它拥有着一个<code>feature1</code>分支，而且这个分支已经准备好要merge到<code>master</code>分支中了。</p>
+<p>在<a href="http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>我们创建了一个小的demo仓库，它拥有着一个<code>feature1</code>分支，而且这个分支已经准备好要merge到<code>master</code>分支中了。</p>
 
 <!-- more -->
 
 
 <p><img src="http://i.imgur.com/kxDIgKl.png" alt="" /></p>
 
-<p>此时，我们可以选择merge或者rebase <code>feature1</code>分支到<code>master</code>分支。关于rebase将会在<a href="http://www.fusijie.com/blog/2014/11/18/what-is-a-rebase/">第三部分</a>进行介绍。现在我们来看一下，采用merge的方式到底发生了什么。把分支合并到一起是非常直接的。首先需要将切换到要合并进去的分支，在这里，因为我们要将<code>feature1</code>合并到<code>master</code>分支，所以需要切换到<code>master</code>分支。</p>
+<p>此时，我们可以选择merge或者rebase <code>feature1</code>分支到<code>master</code>分支。关于rebase将会在<a href="http://fusijie.github.io/blog/2014/11/18/what-is-a-rebase/">第三部分</a>进行介绍。现在我们来看一下，采用merge的方式到底发生了什么。把分支合并到一起是非常直接的。首先需要将切换到要合并进去的分支，在这里，因为我们要将<code>feature1</code>合并到<code>master</code>分支，所以需要切换到<code>master</code>分支。</p>
 
 <p><img src="http://i.imgur.com/S0av3NM.png" alt="" /></p>
 
 <p>我切换到<code>master</code>分支，然后将<code>feature1</code>分支合并进去。回过头来再看一下这之中发生了什么，为什么Source Tree生成的图形是这个样子的。</p>
 
-<p>还记得<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>中<code>Commit 3</code>和<code>Commit 4</code>引用着同一个先前commit吗？<code>Commit 2</code>是这两个commit共同的祖先，因为<code>Commit 3</code>是在另一个分支上创建的，而<code>Commit 4</code>是在<code>master</code>分支上创建的，所以它完全不知道<code>Commit 3</code>的存在。在<code>feature1</code>上我们添加了更多的commit。<code>Commit 5</code>直接引用了<code>Commit 3</code>，因为<code>Commit 4</code>只在<code>master</code>分支上有效，<code>Commit 6</code>直接引用了<code>Commit 5</code>。</p>
+<p>还记得<a href="http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>中<code>Commit 3</code>和<code>Commit 4</code>引用着同一个先前commit吗？<code>Commit 2</code>是这两个commit共同的祖先，因为<code>Commit 3</code>是在另一个分支上创建的，而<code>Commit 4</code>是在<code>master</code>分支上创建的，所以它完全不知道<code>Commit 3</code>的存在。在<code>feature1</code>上我们添加了更多的commit。<code>Commit 5</code>直接引用了<code>Commit 3</code>，因为<code>Commit 4</code>只在<code>master</code>分支上有效，<code>Commit 6</code>直接引用了<code>Commit 5</code>。</p>
 
 <p>当我们将<code>feature1</code>合并到<code>master</code>中，它并不是通过某种方式神奇地把这些commit都移到<code>master</code>分支上。实际上，它创建了一个包含了<code>feature1</code>分支上<strong>所有的</strong>变更的全新commit。这个commit叫<code>Merge branch 'feature1'</code>，就像这样：</p>
 
@@ -127,7 +127,7 @@
 
 <p>当一个commit被创建的时候，它所引用的之前commit数量可以是一个，多个，甚至没有。通常只有仓库中第一个commit才会没有先前commit，而merge commit一般都拥有超过一个的先前commit。</p>
 
-<p>如果你还记得<a href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>的话，分支，其实实际上只是一个指向一个指定commit的指针而已。</p>
+<p>如果你还记得<a href="http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash/">第一部分</a>的话，分支，其实实际上只是一个指向一个指定commit的指针而已。</p>
 
 <p><img src="http://i.imgur.com/S0av3NM.png" alt="" /></p>
 
@@ -164,15 +164,15 @@
   
   <entry>
     <title type="html"><![CDATA[(译)第一部分：什么是commit hash?]]></title>
-    <link href="http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/"/>
+    <link href="http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash/"/>
     <updated>2014-10-08T22:25:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash</id>
+    <id>http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash</id>
     <content type="html"><![CDATA[<h4>内容提要</h4>
 
 <ul>
 <li>第一部分：commit hash是什么？</li>
-<li>第二部分：<a href="http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/">merge是什么？</a></li>
-<li>第三部分：<a href="http://www.fusijie.com/blog/2014/11/18/what-is-a-rebase/">rebase是什么？</a></li>
+<li>第二部分：<a href="http://fusijie.github.io/blog/2014/10/15/what-is-a-merge/">merge是什么？</a></li>
+<li>第三部分：<a href="http://fusijie.github.io/blog/2014/11/18/what-is-a-rebase/">rebase是什么？</a></li>
 </ul>
 
 
@@ -222,7 +222,7 @@ Initial commit.
 
 <p><img src="http://i.imgur.com/kxDIgKl.png" alt="" /></p>
 
-<p>现在我在<code>feature1</code>分支上创建了2个新的commit，<code>Commit 5</code>和<code>Commit 6</code>。新功能已经完成了，也是时候合并<code>feature1</code>分支到<code>master</code>分支中了。这时，我们可以选择merge <code>feature1</code>分支到<code>master</code>分支，也可以reabse <code>feature1</code>分支到<code>master</code>分支，让我们在<a href="http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/">第二部分</a>中探究一下merge是什么？</p>
+<p>现在我在<code>feature1</code>分支上创建了2个新的commit，<code>Commit 5</code>和<code>Commit 6</code>。新功能已经完成了，也是时候合并<code>feature1</code>分支到<code>master</code>分支中了。这时，我们可以选择merge <code>feature1</code>分支到<code>master</code>分支，也可以reabse <code>feature1</code>分支到<code>master</code>分支，让我们在<a href="http://fusijie.github.io/blog/2014/10/15/what-is-a-merge/">第二部分</a>中探究一下merge是什么？</p>
 
 <blockquote><p>英文地址:<a href="http://codetunnel.com/merge-vs-rebase-part-1-what-is-a-commit-hash/">http://codetunnel.com/merge-vs-rebase-part-1-what-is-a-commit-hash/</a></p></blockquote>
 ]]></content>

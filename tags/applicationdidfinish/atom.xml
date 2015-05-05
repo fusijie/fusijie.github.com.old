@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: applicationDidFinish | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/applicationdidfinish/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/applicationdidfinish/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三】cocos2d-x游戏是怎么跑起来的]]></title>
-    <link href="http://www.fusijie.com/blog/2013/10/10/play-cocos2dx-03/"/>
+    <link href="http://fusijie.github.io/blog/2013/10/10/play-cocos2dx-03/"/>
     <updated>2013-10-10T10:01:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/10/10/play-cocos2dx-03</id>
+    <id>http://fusijie.github.io/blog/2013/10/10/play-cocos2dx-03</id>
     <content type="html"><![CDATA[<p>虽然cocos2d-x v3.0 alpha版已经出来了，也改进了不少，有兴趣的可以去尝尝鲜。因为后面可能还会配合cocoStudio写一下博客，而现在v1.0.0.0版本需要配合cocos2d-x v2.2.0使用。所以这里选择了V2.2.0版的cocos2d-x。</p>
 
 <p>一个新的东西，从头开始吧！从HelloWorld出发看一下一个cocos2d-x游戏是怎么跑起来的。先看看它的结构。</p>

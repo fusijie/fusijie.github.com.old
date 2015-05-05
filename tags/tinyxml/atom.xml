@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: TinyXML | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/tinyxml/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/tinyxml/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十二】xml的解析]]></title>
-    <link href="http://www.fusijie.com/blog/2013/12/18/play-cocos2dx-32/"/>
+    <link href="http://fusijie.github.io/blog/2013/12/18/play-cocos2dx-32/"/>
     <updated>2013-12-18T09:30:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/12/18/play-cocos2dx-32</id>
+    <id>http://fusijie.github.io/blog/2013/12/18/play-cocos2dx-32</id>
     <content type="html"><![CDATA[<p>cocos2d-x中对xml的解析是采用的TinyXML库，而对plist的解析同时结合了CCDictionary来处理，这里简单介绍下cocos2d-x中解析xml的两种方式，也是常用的xml两个C++解析库：TinyXML和RapidXML。xml被设计用于数据存储和传输，重点是数据内容本身，而不像html，用于表现数据。</p>
 
 <h3>1.TinyXML</h3>
@@ -58,7 +58,7 @@
 
     TiXmlElement* websiteElenment=new TiXmlElement("website");  
     infoElement-&gt;LinkEndChild(websiteElenment);  
-    TiXmlText* websitetext=new TiXmlText("http://www.fusijie.com");  
+    TiXmlText* websitetext=new TiXmlText("http://fusijie.github.io");  
     websiteElenment-&gt;LinkEndChild(websitetext);  
 
     myTinyXMLDoc-&gt;SaveFile(CCFileUtils::sharedFileUtils()-&gt;fullPathForFilename("testTiny.xml").c_str());//保存xml  
@@ -137,7 +137,7 @@
     //创建blog和website节点并追加到root  
     rapidxml::xml_node&lt;&gt;* blog = myRapidXMLDoc.allocate_node(rapidxml::node_element,"blog","http://blog.csdn.net/jackystudio");  
     info-&gt;append_node(blog);  
-    rapidxml::xml_node&lt;&gt;* website = myRapidXMLDoc.allocate_node(rapidxml::node_element,"website","http://www.fusijie.com");  
+    rapidxml::xml_node&lt;&gt;* website = myRapidXMLDoc.allocate_node(rapidxml::node_element,"website","http://fusijie.github.io");  
     info-&gt;append_node(website);  
 
     //保存xml文档  
@@ -190,7 +190,7 @@
 <pre><code>&lt;Jacky&gt;  
     &lt;Info Name="Jacky" QQ="754505629" E-mail="Geek.Jacky@Gmail.com"&gt;  
         &lt;blog&gt;http://blog.csdn.net/jackystudio&lt;/blog&gt;  
-    &lt;website&gt;http://www.fusijie.com&lt;/website&gt;  
+    &lt;website&gt;http://fusijie.github.io&lt;/website&gt;  
     &lt;/Info&gt;  
 &lt;/Jacky&gt;  
 </code></pre>

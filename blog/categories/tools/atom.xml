@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Tools | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/blog/categories/tools/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/blog/categories/tools/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[PowerCmd，一个Windows下cmd的绝佳替代工具]]></title>
-    <link href="http://www.fusijie.com/blog/2014/08/24/tools-powercmd/"/>
+    <link href="http://fusijie.github.io/blog/2014/08/24/tools-powercmd/"/>
     <updated>2014-08-24T00:48:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/08/24/tools-powercmd</id>
+    <id>http://fusijie.github.io/blog/2014/08/24/tools-powercmd</id>
     <content type="html"><![CDATA[<p>由于工作关系（码奴），平时会需要接触到比较多奇奇怪怪的应用。而一些比较好的小众软件和工具，我觉得很有必要分享出来。这是第一篇，之后有的话会慢慢积累分享出来，如果你们也有好的软件，欢迎留言分享。</p>
 
 <p>因为只是介绍工具而已，所以内容会很简单。</p>

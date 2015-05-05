@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: CCARRAY_FOREACH | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/ccarray-foreach/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/ccarray-foreach/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十五】数据结构CCArray]]></title>
-    <link href="http://www.fusijie.com/blog/2013/11/25/play-cocos2dx-25/"/>
+    <link href="http://fusijie.github.io/blog/2013/11/25/play-cocos2dx-25/"/>
     <updated>2013-11-25T13:53:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/11/25/play-cocos2dx-25</id>
+    <id>http://fusijie.github.io/blog/2013/11/25/play-cocos2dx-25</id>
     <content type="html"><![CDATA[<p>CCArray是从cocos2d中移植过来的，类似于Apple的NSMutableArray，但是比NSMutableArray更为的好用。要注意的是虽然CCArray和CCDictionary可以管理cocos2d-x中绝大多数的类，但是仍然无法替代STL库，STL库更为强有力。</p>
 
 <h3>1.API</h3>

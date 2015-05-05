@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: 观察者模式 | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/guan-cha-zhe-mo-shi/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/guan-cha-zhe-mo-shi/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之二十八】cocos2d-x的消息和数据传递]]></title>
-    <link href="http://www.fusijie.com/blog/2013/12/03/play-cocos2dx-28/"/>
+    <link href="http://fusijie.github.io/blog/2013/12/03/play-cocos2dx-28/"/>
     <updated>2013-12-03T09:57:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/12/03/play-cocos2dx-28</id>
+    <id>http://fusijie.github.io/blog/2013/12/03/play-cocos2dx-28</id>
     <content type="html"><![CDATA[<p>如何在层间或者场景间进行消息传递，大概是每个初学者都要面对的问题吧。这里介绍cocos2d-x的一种消息/数据传递方式，内置的观察者模式，也称消息通知中心，CCNotificationCenter。</p>
 
 <h3>1.CCNotificationCenter</h3>

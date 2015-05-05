@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: Lua | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/lua/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/lua/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[如何在Windows平台使用VS搭建C++/Lua的开发环境]]></title>
-    <link href="http://www.fusijie.com/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs/"/>
+    <link href="http://fusijie.github.io/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs/"/>
     <updated>2014-08-31T00:28:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs</id>
+    <id>http://fusijie.github.io/blog/2014/08/31/how-to-complie-cpp-with-lua-in-the-vs</id>
     <content type="html"><![CDATA[<p>本文主要介绍如何在Windows平台利用VS搭建C++/Lua开发环境。这里的“C++/Lua开发环境”主要指的是C++调用Lua，以及Lua调用C++。Mac平台相对会比较方便，但是VS也不是很麻烦就是了。Mac上利用XCode搭建的教程可以参考<a href="http://4gamers.cn/archives/242">子龙山人的教程</a>，当然也可以利用其他IDE，比如Eclipse+CDT+LDT来搭建，这都没有问题。</p>
 
 <p>另外，本文不谈及Lua/C++的交互，相关内容可以参考<a href="http://book.luaer.cn/">《Lua程序设计》</a>，或者<a href="http://4gamers.cn/">子龙山人的Lua系列教程</a>。</p>

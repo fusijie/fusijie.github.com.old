@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: 游戏破解 | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/you-xi-po-jie/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/you-xi-po-jie/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Smali和逆向分析]]></title>
-    <link href="http://www.fusijie.com/blog/2014/09/08/smali-introduction/"/>
+    <link href="http://fusijie.github.io/blog/2014/09/08/smali-introduction/"/>
     <updated>2014-09-08T20:37:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/09/08/smali-introduction</id>
+    <id>http://fusijie.github.io/blog/2014/09/08/smali-introduction</id>
     <content type="html"><![CDATA[<p>这篇文章其实2个月前就想写了，但并不好写，就懒得写了，所以拖到现在～其实接触smali这门语法是件蛮偶然的事，接触后发现，次奥，这货在某些领域太有用了，至于为什么我想看完这篇文章应该都明白了。</p>
 
 <p>我自己也只是接触了皮毛，大概用了2个礼拜多一点，也不是很系统的学习，写这篇的目的主要还是想把知道的东西记下来，以后好追溯。</p>

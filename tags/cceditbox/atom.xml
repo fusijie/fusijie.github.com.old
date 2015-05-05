@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: CCEditBox | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/cceditbox/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/cceditbox/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十】点九图和输入框的使用]]></title>
-    <link href="http://www.fusijie.com/blog/2013/12/13/play-cocos2dx-30/"/>
+    <link href="http://fusijie.github.io/blog/2013/12/13/play-cocos2dx-30/"/>
     <updated>2013-12-13T11:53:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/12/13/play-cocos2dx-30</id>
+    <id>http://fusijie.github.io/blog/2013/12/13/play-cocos2dx-30</id>
     <content type="html"><![CDATA[<p>登录界面一个帐号/密码输入框或者主角命名框是少不了的。这节就来了解一下点九图的输入框的使用。这里只是介绍基础知识，并不进行平台的移植，也不处理跨平台可能出现的问题。</p>
 
 <h3>1.点九图CCScale9Sprite</h3>

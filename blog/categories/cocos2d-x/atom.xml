@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: cocos2d-x | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/blog/categories/cocos2d-x/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/blog/categories/cocos2d-x/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十七】在Cocos2d-x中集成安卓版微信SDK]]></title>
-    <link href="http://www.fusijie.com/blog/2014/08/21/play-cocos2dx-37/"/>
+    <link href="http://fusijie.github.io/blog/2014/08/21/play-cocos2dx-37/"/>
     <updated>2014-08-21T00:26:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/08/21/play-cocos2dx-37</id>
+    <id>http://fusijie.github.io/blog/2014/08/21/play-cocos2dx-37</id>
     <content type="html"><![CDATA[<h3>1.概述</h3>
 
 <p>微信的火热程度已不必说了，如果能在Cocos2d-x中集成微信SDK，让游戏能分享给好友或者朋友圈，那对游戏推广将会是非常有利的。好了，本文就是手把手地教大伙如何在Cocos2d-x中集成微信SDK。</p>
@@ -150,7 +150,7 @@ private void regToWX(){
     if(api.openWXApp())
     {
         WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = "http://www.fusijie.com";
+        webpage.webpageUrl = "http://fusijie.github.io";
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = "Tittle";
         msg.description = "Description";
@@ -184,7 +184,7 @@ private void regToWX(){
         if(api.getWXAppSupportAPI() &gt;= 0x21020001)
         {               
             WXWebpageObject webpage = new WXWebpageObject();
-            webpage.webpageUrl = "http://www.fusijie.com";
+            webpage.webpageUrl = "http://fusijie.github.io";
             WXMediaMessage msg = new WXMediaMessage(webpage);
             msg.title = "Tittle";
             msg.description = "Description";
@@ -320,9 +320,9 @@ WeiXinShare::sendToTimeLine();
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十六】Earth Warrior 3D 大揭秘]]></title>
-    <link href="http://www.fusijie.com/blog/2014/07/10/play-cocos2dx-36/"/>
+    <link href="http://fusijie.github.io/blog/2014/07/10/play-cocos2dx-36/"/>
     <updated>2014-07-10T00:13:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/07/10/play-cocos2dx-36</id>
+    <id>http://fusijie.github.io/blog/2014/07/10/play-cocos2dx-36</id>
     <content type="html"><![CDATA[<p>3D游戏现在玩起来门槛还是挺高的。不过如果在Cocos2d-x引擎加入3D扩展，实现2.5D游戏效果又会怎么样？</p>
 
 <h3>1.概述</h3>
@@ -493,9 +493,9 @@ if(_Model){
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十五】《我叫MT offline》Demo]]></title>
-    <link href="http://www.fusijie.com/blog/2014/02/25/play-cocos2dx-35/"/>
+    <link href="http://fusijie.github.io/blog/2014/02/25/play-cocos2dx-35/"/>
     <updated>2014-02-25T19:43:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/02/25/play-cocos2dx-35</id>
+    <id>http://fusijie.github.io/blog/2014/02/25/play-cocos2dx-35</id>
     <content type="html"><![CDATA[<h3>1.写在前面</h3>
 
 <p><strong>这是怎样一个游戏？</strong></p>
@@ -529,7 +529,7 @@ if(_Model){
 
 <p><strong>公告</strong></p>
 
-<div align="center"><img src="http://www.fusijie.com/images/Blog/mt/announcement.png" alt="" border="0" title="4" /><br></br></div>
+<div align="center"><img src="http://fusijie.github.io/images/Blog/mt/announcement.png" alt="" border="0" title="4" /><br></br></div>
 
 
 <p><strong>游戏</strong></p>
@@ -541,75 +541,75 @@ if(_Model){
 
 <p><strong>开幕故事</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/story.gif">http://www.fusijie.com/images/Blog/mt/story.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/story.gif">http://fusijie.github.io/images/Blog/mt/story.gif</a></p>
 
 <p><strong>游戏主场景</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/mainui.gif">http://www.fusijie.com/images/Blog/mt/mainui.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/mainui.gif">http://fusijie.github.io/images/Blog/mt/mainui.gif</a></p>
 
 <p><strong>英雄</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/card.gif">http://www.fusijie.com/images/Blog/mt/card.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/card.gif">http://fusijie.github.io/images/Blog/mt/card.gif</a></p>
 
 <p><strong>进化</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/evolve.gif">http://www.fusijie.com/images/Blog/mt/evolve.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/evolve.gif">http://fusijie.github.io/images/Blog/mt/evolve.gif</a></p>
 
 <p><strong>碎片</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/chip.gif">http://www.fusijie.com/images/Blog/mt/chip.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/chip.gif">http://fusijie.github.io/images/Blog/mt/chip.gif</a></p>
 
 <p><strong>升级</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/levelup.gif">http://www.fusijie.com/images/Blog/mt/levelup.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/levelup.gif">http://fusijie.github.io/images/Blog/mt/levelup.gif</a></p>
 
 <p><strong>奖励</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/task.gif">http://www.fusijie.com/images/Blog/mt/task.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/task.gif">http://fusijie.github.io/images/Blog/mt/task.gif</a></p>
 
 <p><strong>技能学院</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/colleage.gif">http://www.fusijie.com/images/Blog/mt/colleage.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/colleage.gif">http://fusijie.github.io/images/Blog/mt/colleage.gif</a></p>
 
 <p><strong>副本列表</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/instance.gif">http://www.fusijie.com/images/Blog/mt/instance.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/instance.gif">http://fusijie.github.io/images/Blog/mt/instance.gif</a></p>
 
 <p><strong>副本战斗</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/battle.gif">http://www.fusijie.com/images/Blog/mt/battle.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/battle.gif">http://fusijie.github.io/images/Blog/mt/battle.gif</a></p>
 
 <p><strong>竞技场</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/arena.gif">http://www.fusijie.com/images/Blog/mt/arena.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/arena.gif">http://fusijie.github.io/images/Blog/mt/arena.gif</a></p>
 
 <p><strong>商店</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/store.gif">http://www.fusijie.com/images/Blog/mt/store.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/store.gif">http://fusijie.github.io/images/Blog/mt/store.gif</a></p>
 
 <p><strong>单次抽奖</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/raffleone.gif">http://www.fusijie.com/images/Blog/mt/raffleone.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/raffleone.gif">http://fusijie.github.io/images/Blog/mt/raffleone.gif</a></p>
 
 <p><strong>十连抽</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/raffleten.gif">http://www.fusijie.com/images/Blog/mt/raffleten.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/raffleten.gif">http://fusijie.github.io/images/Blog/mt/raffleten.gif</a></p>
 
 <p><strong>好友</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/friend.gif">http://www.fusijie.com/images/Blog/mt/friend.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/friend.gif">http://fusijie.github.io/images/Blog/mt/friend.gif</a></p>
 
 <p><strong>攻略</strong></p>
 
-<p><a href="http://www.fusijie.com/images/Blog/mt/more.gif">http://www.fusijie.com/images/Blog/mt/more.gif</a></p>
+<p><a href="http://fusijie.github.io/images/Blog/mt/more.gif">http://fusijie.github.io/images/Blog/mt/more.gif</a></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十四】绘图：CCDrawingPrimitives和CCDrawNode]]></title>
-    <link href="http://www.fusijie.com/blog/2014/02/08/play-cocos2dx-34/"/>
+    <link href="http://fusijie.github.io/blog/2014/02/08/play-cocos2dx-34/"/>
     <updated>2014-02-08T16:10:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2014/02/08/play-cocos2dx-34</id>
+    <id>http://fusijie.github.io/blog/2014/02/08/play-cocos2dx-34</id>
     <content type="html"><![CDATA[<p>最近忙出翔了，这年过的也揪心。好久没来更新博客了，今天就来写一写cocos2d-x中图形的绘制。</p>
 
 <h3>1.概述</h3>
@@ -730,9 +730,9 @@ void drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &amp;fillCo
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之三十三】游戏嵌入Webview网页]]></title>
-    <link href="http://www.fusijie.com/blog/2013/12/26/play-cocos2dx-33/"/>
+    <link href="http://fusijie.github.io/blog/2013/12/26/play-cocos2dx-33/"/>
     <updated>2013-12-26T14:11:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/12/26/play-cocos2dx-33</id>
+    <id>http://fusijie.github.io/blog/2013/12/26/play-cocos2dx-33</id>
     <content type="html"><![CDATA[<p>手游《我叫MT》一开始会弹出一个游戏公告，有玩过的肯定都蛮熟悉的，这就是webview，就是一个网页。由于webview和平台相关，这里就介绍下cocos2d-x如何嵌入andorid的webview控件，在cocos2d-x中显示网页。</p>
 
 <h3>1.Jni</h3>

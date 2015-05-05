@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: 屏幕坐标系 | Jacky's Blog]]></title>
-  <link href="http://www.fusijie.com/tags/ping-mu-zuo-biao-xi/atom.xml" rel="self"/>
-  <link href="http://www.fusijie.com/"/>
-  <updated>2015-01-20T22:43:41+08:00</updated>
-  <id>http://www.fusijie.com/</id>
+  <link href="http://fusijie.github.io/tags/ping-mu-zuo-biao-xi/atom.xml" rel="self"/>
+  <link href="http://fusijie.github.io/"/>
+  <updated>2015-05-05T23:37:15+08:00</updated>
+  <id>http://fusijie.github.io/</id>
   <author>
     <name><![CDATA[FuSijie]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[【玩转cocos2d-x之十】cocos2d-x坐标系]]></title>
-    <link href="http://www.fusijie.com/blog/2013/10/17/play-cocos2dx-10/"/>
+    <link href="http://fusijie.github.io/blog/2013/10/17/play-cocos2dx-10/"/>
     <updated>2013-10-17T14:43:00+08:00</updated>
-    <id>http://www.fusijie.com/blog/2013/10/17/play-cocos2dx-10</id>
+    <id>http://fusijie.github.io/blog/2013/10/17/play-cocos2dx-10</id>
     <content type="html"><![CDATA[<p>cocos2d-x采用的是笛卡尔平面坐标系，也就是平面上两条垂直线构成的坐标系，平面上任意一点都可以用（x，y）来表示。</p>
 
 <p><em>（1）就坐标系方向而言，cocos2d-x分为屏幕坐标系和OpenGL坐标系。</em></p>
