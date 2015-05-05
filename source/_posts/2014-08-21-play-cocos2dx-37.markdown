@@ -125,7 +125,7 @@ tags: 微信SDK集成
     	if(api.openWXApp())
     	{
     		WXWebpageObject webpage = new WXWebpageObject();
-            webpage.webpageUrl = "http://www.fusijie.com";
+            webpage.webpageUrl = "http://fusijie.github.io";
             WXMediaMessage msg = new WXMediaMessage(webpage);
             msg.title = "Tittle";
             msg.description = "Description";
@@ -158,7 +158,7 @@ tags: 微信SDK集成
         	if(api.getWXAppSupportAPI() >= 0x21020001)
         	{        		
         		WXWebpageObject webpage = new WXWebpageObject();
-                webpage.webpageUrl = "http://www.fusijie.com";
+                webpage.webpageUrl = "http://fusijie.github.io";
                 WXMediaMessage msg = new WXMediaMessage(webpage);
                 msg.title = "Tittle";
                 msg.description = "Description";

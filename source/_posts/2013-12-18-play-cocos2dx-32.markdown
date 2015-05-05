@@ -45,7 +45,7 @@ TinyXML的[主页](http://www.grinninglizard.com/tinyxml/)，本来不打算介�
   	
     	TiXmlElement* websiteElenment=new TiXmlElement("website");  
     	infoElement->LinkEndChild(websiteElenment);  
-    	TiXmlText* websitetext=new TiXmlText("http://www.fusijie.com");  
+    	TiXmlText* websitetext=new TiXmlText("http://fusijie.github.io");  
     	websiteElenment->LinkEndChild(websitetext);  
   
     	myTinyXMLDoc->SaveFile(CCFileUtils::sharedFileUtils()->fullPathForFilename("testTiny.xml").c_str());//保存xml  
@@ -121,7 +121,7 @@ RapidXML的[主页](http://rapidxml.sourceforge.net/)。在其手册中第四节
     	//创建blog和website节点并追加到root  
     	rapidxml::xml_node<>* blog = myRapidXMLDoc.allocate_node(rapidxml::node_element,"blog","http://blog.csdn.net/jackystudio");  
     	info->append_node(blog);  
-    	rapidxml::xml_node<>* website = myRapidXMLDoc.allocate_node(rapidxml::node_element,"website","http://www.fusijie.com");  
+    	rapidxml::xml_node<>* website = myRapidXMLDoc.allocate_node(rapidxml::node_element,"website","http://fusijie.github.io");  
     	info->append_node(website);  
       
     	//保存xml文档  
@@ -171,7 +171,7 @@ RapidXML的[主页](http://rapidxml.sourceforge.net/)。在其手册中第四节
 	<Jacky>  
     	<Info Name="Jacky" QQ="754505629" E-mail="Geek.Jacky@Gmail.com">  
         	<blog>http://blog.csdn.net/jackystudio</blog>  
-        <website>http://www.fusijie.com</website>  
+        <website>http://fusijie.github.io</website>  
     	</Info>  
 	</Jacky>  
 

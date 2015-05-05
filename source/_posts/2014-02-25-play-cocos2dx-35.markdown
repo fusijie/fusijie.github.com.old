@@ -52,64 +52,64 @@ tags: [我叫MT]
 
 **开幕故事**
 
-[http://www.fusijie.com/images/Blog/mt/story.gif](http://www.fusijie.com/images/Blog/mt/story.gif)
+[http://fusijie.github.io/images/Blog/mt/story.gif](http://fusijie.github.io/images/Blog/mt/story.gif)
 
 **游戏主场景**
 
-[http://www.fusijie.com/images/Blog/mt/mainui.gif](http://www.fusijie.com/images/Blog/mt/mainui.gif)
+[http://fusijie.github.io/images/Blog/mt/mainui.gif](http://fusijie.github.io/images/Blog/mt/mainui.gif)
 
 **英雄**
 
-[http://www.fusijie.com/images/Blog/mt/card.gif](http://www.fusijie.com/images/Blog/mt/card.gif)
+[http://fusijie.github.io/images/Blog/mt/card.gif](http://fusijie.github.io/images/Blog/mt/card.gif)
 
 **进化**
 
-[http://www.fusijie.com/images/Blog/mt/evolve.gif](http://www.fusijie.com/images/Blog/mt/evolve.gif)
+[http://fusijie.github.io/images/Blog/mt/evolve.gif](http://fusijie.github.io/images/Blog/mt/evolve.gif)
 
 **碎片**
 
-[http://www.fusijie.com/images/Blog/mt/chip.gif](http://www.fusijie.com/images/Blog/mt/chip.gif)
+[http://fusijie.github.io/images/Blog/mt/chip.gif](http://fusijie.github.io/images/Blog/mt/chip.gif)
 
 **升级**
 
-[http://www.fusijie.com/images/Blog/mt/levelup.gif](http://www.fusijie.com/images/Blog/mt/levelup.gif)
+[http://fusijie.github.io/images/Blog/mt/levelup.gif](http://fusijie.github.io/images/Blog/mt/levelup.gif)
 
 **奖励**
 
-[http://www.fusijie.com/images/Blog/mt/task.gif](http://www.fusijie.com/images/Blog/mt/task.gif)
+[http://fusijie.github.io/images/Blog/mt/task.gif](http://fusijie.github.io/images/Blog/mt/task.gif)
 
 **技能学院**
 
-[http://www.fusijie.com/images/Blog/mt/colleage.gif](http://www.fusijie.com/images/Blog/mt/colleage.gif)
+[http://fusijie.github.io/images/Blog/mt/colleage.gif](http://fusijie.github.io/images/Blog/mt/colleage.gif)
 
 **副本列表**
 
-[http://www.fusijie.com/images/Blog/mt/instance.gif](http://www.fusijie.com/images/Blog/mt/instance.gif)
+[http://fusijie.github.io/images/Blog/mt/instance.gif](http://fusijie.github.io/images/Blog/mt/instance.gif)
 
 **副本战斗**
 
-[http://www.fusijie.com/images/Blog/mt/battle.gif](http://www.fusijie.com/images/Blog/mt/battle.gif)
+[http://fusijie.github.io/images/Blog/mt/battle.gif](http://fusijie.github.io/images/Blog/mt/battle.gif)
 
 **竞技场**
 
-[http://www.fusijie.com/images/Blog/mt/arena.gif](http://www.fusijie.com/images/Blog/mt/arena.gif)
+[http://fusijie.github.io/images/Blog/mt/arena.gif](http://fusijie.github.io/images/Blog/mt/arena.gif)
 
 **商店**
 
-[http://www.fusijie.com/images/Blog/mt/store.gif](http://www.fusijie.com/images/Blog/mt/store.gif)
+[http://fusijie.github.io/images/Blog/mt/store.gif](http://fusijie.github.io/images/Blog/mt/store.gif)
 
 **单次抽奖**
 
-[http://www.fusijie.com/images/Blog/mt/raffleone.gif](http://www.fusijie.com/images/Blog/mt/raffleone.gif)
+[http://fusijie.github.io/images/Blog/mt/raffleone.gif](http://fusijie.github.io/images/Blog/mt/raffleone.gif)
 
 **十连抽**
 
-[http://www.fusijie.com/images/Blog/mt/raffleten.gif](http://www.fusijie.com/images/Blog/mt/raffleten.gif)
+[http://fusijie.github.io/images/Blog/mt/raffleten.gif](http://fusijie.github.io/images/Blog/mt/raffleten.gif)
 
 **好友**
 
-[http://www.fusijie.com/images/Blog/mt/friend.gif](http://www.fusijie.com/images/Blog/mt/friend.gif)
+[http://fusijie.github.io/images/Blog/mt/friend.gif](http://fusijie.github.io/images/Blog/mt/friend.gif)
 
 **攻略**
 
-[http://www.fusijie.com/images/Blog/mt/more.gif](http://www.fusijie.com/images/Blog/mt/more.gif)
+[http://fusijie.github.io/images/Blog/mt/more.gif](http://fusijie.github.io/images/Blog/mt/more.gif)

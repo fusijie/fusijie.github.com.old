@@ -9,11 +9,11 @@ tags: [rebase]
 
 ###内容提要
 
-* 第一部分：[commit hash是什么？](http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/)
-* 第二部分：[merge是什么？](http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/)
+* 第一部分：[commit hash是什么？](http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash/)
+* 第二部分：[merge是什么？](http://fusijie.github.io/blog/2014/10/15/what-is-a-merge/)
 * 第三部分：rebase是什么？
 
-在[第一部分](http://www.fusijie.com/blog/2014/10/08/what-is-a-commit-hash/)中，我们讨论了什么是commit hash，其中一个很重要的特点就是commit无法被修改。hash值是根据存储在commit中的信息生成的，所以修改一个commit或者commit hash，你必须要创建一个全新的commit。我们还讨论了每一个commit存储了它的前一个commit的hash值。我们所没有讨论的是它对我们Git历史的影响。
+在[第一部分](http://fusijie.github.io/blog/2014/10/08/what-is-a-commit-hash/)中，我们讨论了什么是commit hash，其中一个很重要的特点就是commit无法被修改。hash值是根据存储在commit中的信息生成的，所以修改一个commit或者commit hash，你必须要创建一个全新的commit。我们还讨论了每一个commit存储了它的前一个commit的hash值。我们所没有讨论的是它对我们Git历史的影响。
 
 <!-- more -->
 
@@ -27,7 +27,7 @@ tags: [rebase]
 
 如果你改变了一个commit的某个属性，那生成的hash值将不再一样，后一个commit也不会引用到新的commit。结果就是你不得不去修改后一个commit来引用到新的commit hash，这同样会引起commit hash的改变，就这样一路下去直到链条的末尾。
 
-这时候轮到[rebase](http://git-scm.com/docs/git-rebase)上场了。如果你还记得[第二部分](http://www.fusijie.com/blog/2014/10/15/what-is-a-merge/)，当我们将`feature1`分支合并到`master`分支后，有一副图展示了各个commit之间的关系。
+这时候轮到[rebase](http://git-scm.com/docs/git-rebase)上场了。如果你还记得[第二部分](http://fusijie.github.io/blog/2014/10/15/what-is-a-merge/)，当我们将`feature1`分支合并到`master`分支后，有一副图展示了各个commit之间的关系。
 
 ![](http://i.imgur.com/S0av3NM.png)
 
